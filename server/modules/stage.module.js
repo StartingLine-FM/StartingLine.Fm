@@ -1,8 +1,9 @@
 const pool = require('./pool');
 
+// function fetches businesses based on stage (parameter) selected
 module.exports = async function fetchBusinessesByStage(stage) {
     let queryText;
-
+//user selects a business stage here and the stage results/plus the ones that fit under All results show up
     switch(stage) {
       case "Nascent":
       case "Early Stage":
