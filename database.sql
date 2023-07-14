@@ -5,7 +5,7 @@ CREATE TABLE "stage" (
 );
 
 INSERT INTO "stage" ("name")
-VALUES ('All'), ('Nascent'), ('Early Sage'), ('Startup/Seed'), ('Growth');
+VALUES ('All'), ('Nascent'), ('Early Stage'), ('Startup/Seed'), ('Growth');
 
 
 CREATE TABLE "user" (
