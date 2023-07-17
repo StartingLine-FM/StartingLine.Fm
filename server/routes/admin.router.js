@@ -5,6 +5,7 @@ const {
   rejectUnauthenticated,
 } = require('../modules/authentication-middleware');
 
+//middleware that checks if the user has admin privileges 
 const isAdmin = (req, res, next) => {
     if (req.user && req.user.admin) {
       next();
@@ -16,6 +17,7 @@ const isAdmin = (req, res, next) => {
 //Route to (POST), add a resource for the admin
 router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
     const newResource = req.body;
+    //shows all the fields that a resource has
     const queryText = 'INSERT INTO resource(stage_id, category_id, name, image_url, description, website, email, address, linkedin) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)';
     try {
         await pool.query(queryText, [newResource.stage_id, newResource.category_id, newResource.name, newResource.image_url, newResource.description, newResource.website, newResource.email, newResource.address, newResource.linkedin]);
