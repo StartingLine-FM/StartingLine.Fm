@@ -44,6 +44,7 @@ CREATE TABLE "todo" (
     "id" SERIAL PRIMARY KEY,
     "user_id" INTEGER REFERENCES "user" ("id"),
     "resource_id" INTEGER REFERENCES "resource" ("id"),
+    "title" VARCHAR(150) DEFAULT 'To-Do',
     "notes" VARCHAR(1000),
     "completed" BOOLEAN DEFAULT FALSE
 );
