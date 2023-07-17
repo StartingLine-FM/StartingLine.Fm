@@ -1,30 +1,19 @@
-const { Pool } = require('pg');
+function specificSearch(searchText, bling) {
 
-async function specificSearch(searchText) {
-  // try {
+  const queryText = 
+  // feeds bling variable in, just so we're not locked into only using $1
+  // SIMILARITY takes the column title as the first arg, and the search query as the second arg,
+  // returns results according to a similarity threshold between 0 and 1 (> 0.07, in our case)
+  `
+    SIMILARITY(name, ${bling}) > 0.07
+    OR SIMILARITY(website, ${bling}) > 0.07
+    OR SIMILARITY(email, ${bling}) > 0.07
+    OR SIMILARITY(address, ${bling}) > 0.07
+    OR SIMILARITY(linkedin, ${bling}) > 0.07
+    OR SIMILARITY(description, ${bling}) > 0.07
+  `;
 
-    // Perform the fuzzy search using the pg_trgm extension
-    const queryText = `
-          'name' ILIKE '%' || $1 || '%'
-          OR 'website' ILIKE '%' || $1 || '%'
-          OR 'email' ILIKE '%' || $1 || '%'
-          OR 'address' ILIKE '%' || $1 || '%'
-          OR 'linkedin' ILIKE '%' || $1 || '%'
-          OR 'description' ILIKE '%' || $1 || '%';
-      `;
-    // const values = [searchText];
-    // const result = await client.query(query, values);
-
-    return queryText;
-    // } catch (error) {
-    //   console.error('Error occurred during specific search:', error);
-    //   throw error;
-    // }
-  }
-
-
-
+  return queryText;
+}
 
 module.exports = specificSearch;
-
-  "name, website, email. address, linkedin, description"
