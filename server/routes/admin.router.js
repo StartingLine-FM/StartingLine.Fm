@@ -38,7 +38,16 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req,res) => {
     }
 });
 //Route to (DELETE), a resource for the admin
-
+router.delete('/:id', rejectUnauthenticated, isAdmin, async (req,res) => {
+    const queryText = 'DELETE FROM resource WHERE id =$1';
+    try {
+        await pool.query(queryText, [req.params.id]);
+        res.sendStatus(200);
+    } catch (err) {
+        console.log('Error deleting resource', err);
+        res.sendStatus(500);
+    }
+});
 
 
 module.exports = router;
