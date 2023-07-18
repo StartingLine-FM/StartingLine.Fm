@@ -6,3 +6,5 @@ switch (action.type) {
         return state;
 }
 }
+
+module.exports = todoListReducer;

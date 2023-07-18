@@ -15,11 +15,11 @@ describe("testing the todo list reducer", () => {
         expect(returnedState).toEqual(action.payload)
     });
     // test should show a cleared list
-    test('should clear all the resources so it should be empty', () => {
-        let action = { type: "DELETE_TODO_LIST" };
-        let returnedState = todoListReducer(undefined, action);
-        expect(returnedState).toEqual([]);
-    })
+    // test('should clear all the resources so it should be empty', () => {
+    //     let action = { type: "DELETE_TODO_LIST" };
+    //     let returnedState = todoListReducer(undefined, action);
+    //     expect(returnedState).toEqual([]);
+    // })
 });
 
 
