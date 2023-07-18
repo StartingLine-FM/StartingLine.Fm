@@ -24,7 +24,7 @@ function* putResource(action) {
 //Worker Saga: fired with a resource is deleted 
 function* deleteResource(action) {
     try {
-        yield call(axios.delete, '/api/admin/{action.payload');
+        yield call(axios.delete, '/api/admin/{action.payload}');
         yield put({ type: 'FETCH_RESOURCES'});
     } catch (error) {
         console.log('Error deleting resource', error);
