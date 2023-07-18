@@ -5,7 +5,7 @@ CREATE TABLE "stage" (
 );
 
 INSERT INTO "stage" ("name")
-VALUES ('All'), ('Nascent'), ('Early Sage'), ('Startup/Seed'), ('Growth');
+VALUES ('All'), ('Nascent'), ('Early Stage'), ('Startup/Seed'), ('Growth');
 
 
 CREATE TABLE "user" (
@@ -44,6 +44,7 @@ CREATE TABLE "todo" (
     "id" SERIAL PRIMARY KEY,
     "user_id" INTEGER REFERENCES "user" ("id"),
     "resource_id" INTEGER REFERENCES "resource" ("id"),
+    "title" VARCHAR(150) DEFAULT 'To-Do',
     "notes" VARCHAR(1000),
     "completed" BOOLEAN DEFAULT FALSE
 );
