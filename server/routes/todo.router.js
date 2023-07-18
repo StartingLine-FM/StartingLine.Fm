@@ -92,33 +92,5 @@ router.delete('/', rejectUnauthenticated, async (req, res) => {
   }
 })
 
-// get for grabbing todo lists and ordering them by title
-router.get('/user',rejectUnauthenticated, async (req, res) => {
-  try {
-    // grab title from params
-    const user_id = req.user.id
-    const queryText =`SELECT * FROM "todo" WHERE "user_id"=$1;`;
-    // send off query text
-    const response = await pool.query(queryText, [user_id]);
-    console.log(response.data) // check the response data
-    res.status(200).send(response.rows); // send back the matching todo list
-  } catch (error) {
-    console.log('there was an error DELETING from the todo list', error);
-  }
-})
-
-// get for grabbing the resources based on the todo list
-router.get('/user/todolist/resources', (req, res) => {
-  try {
-    const queryText = `SELECT * FROM "todo" JOIN "resource" ON "resource"."id"= "todo"."resource_id" 
-    JOIN "stage" ON "stage"."id" = "resource"."stage_id" JOIN "category" ON "category"."id" =
-    "resource"."category_id";`;
-    const response = await(queryText);
-    console.log(response.data);
-    res.status(200).send(response.rows);
-  } catch (error) {
-    console.log('there was an error getting the resource numebrs')
-  }
-})
 
 module.exports = router;
