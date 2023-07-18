@@ -1,4 +1,4 @@
-import adminReducer from '../redux/reducers/admin.reducer';
+import adminReducer from './admin.reducer';
 
 describe('adminReducer', () => {
   it('should return the initial state', () => {
