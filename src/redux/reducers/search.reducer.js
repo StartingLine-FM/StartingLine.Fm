@@ -1,12 +1,12 @@
 const searchReducer = (state = [], action) => {
     switch (action.type) {
       case 'SET_SEARCH':
-        return action.payload;
+        return action.payload || state;
       default:
         return state;
     }
   };
   
   // user will be on the redux state at:
-  // state.user
+  // state.search
   export default searchReducer;
