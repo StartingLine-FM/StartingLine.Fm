@@ -1,4 +1,4 @@
-const todoListReducer = require('./todolist.reducer'); // import in the todo list reducer
+import todoListReducer from "./todolist.reducer"; // import in the todo list reducer
 
 // describe what it should be for empty tests
 describe("testing the todo list reducer", () => {
@@ -14,12 +14,6 @@ describe("testing the todo list reducer", () => {
         let returnedState = todoListReducer(undefined, action);
         expect(returnedState).toEqual(action.payload)
     });
-    // test should show a cleared list
-    // test('should clear all the resources so it should be empty', () => {
-    //     let action = { type: "DELETE_TODO_LIST" };
-    //     let returnedState = todoListReducer(undefined, action);
-    //     expect(returnedState).toEqual([]);
-    // })
 });
 
 

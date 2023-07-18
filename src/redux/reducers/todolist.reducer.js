@@ -7,4 +7,4 @@ switch (action.type) {
 }
 }
 
-module.exports = todoListReducer;
+export default todoListReducer;
