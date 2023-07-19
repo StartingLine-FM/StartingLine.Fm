@@ -14,16 +14,21 @@ import {
     ListItemText,
     Collapse,
 } from '@mui/material';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 
 export default function SearchFilter() {
 
-    // local state
+    // local state:
+    // Category
     const [selectedCategory, setSelectedCategory] = useState("");
     const [categoryOpen, setCategoryOpen] = useState(false);
-
+    // Stage
     const [selectedStage, setSelectedStage] = useState("");
     const [stageOpen, setStageOpen] = useState(false);
+    // Text
     const [textSearch, setTextSearch] = useState("");
+    // Order By queries
     const [order, setOrder] = useState("");
 
     const dispatch = useDispatch();
@@ -36,6 +41,13 @@ export default function SearchFilter() {
     // click handler for Stage filter dropdown
     const handleStageClick = () => {
         setStageOpen(!stageOpen);
+    }
+
+    // clears all selected filters / text search
+    const clearFilters = () => {
+        setSelectedCategory("");
+        setSelectedStage("");
+        setTextSearch("");
     }
 
     // execute search with selected filters / text
@@ -79,20 +91,20 @@ export default function SearchFilter() {
 
         console.log(query, order);
 
-        // order
-        // ? dispatch({
-        //     type: "FETCH_SEARCH",
-        //     payload: {
-        //         query,
-        //         order
-        //     }
-        // })
-        // : dispatch({
-        //     type: "FETCH_SEARCH",
-        //     payload: {
-        //         query
-        //     }
-        // })
+        order
+        ? dispatch({
+            type: "FETCH_SEARCH",
+            payload: {
+                query,
+                order
+            }
+        })
+        : dispatch({
+            type: "FETCH_SEARCH",
+            payload: {
+                query
+            }
+        })
 
     }
 
@@ -102,6 +114,8 @@ export default function SearchFilter() {
             <Grid container flexDirection={"column"}>
                 <Grid item>
                     <TextField
+                        placeholder="Search"
+                        size="small"
                         value={textSearch}
                         onChange={(e) => setTextSearch(e.target.value)}
                     />
@@ -112,53 +126,58 @@ export default function SearchFilter() {
                     <List>
                         <ListItemButton onClick={handleCategoryClick}>
                             <ListItemText primary="Category" />
+                            {categoryOpen ? <ExpandLess /> : <ExpandMore />}
                         </ListItemButton>
+                        
+                        
                         <Collapse in={categoryOpen} timeout="auto" unmountOnExit>
                             <List>
-                                <ListItemButton value="Government" >
-                                    <ListItemText primary="Government" value="Government" onClick={(e) => setSelectedCategory(e.target.value)} />
+                                <ListItemButton>
+                                    <ListItemText primary="Government" onClick={(e) => {setSelectedCategory("Government"); }} />
                                 </ListItemButton>
                                 <ListItemButton>
-                                    <ListItemText primary="Funding Organization" value="Funding Organization" onClick={(e) => setSelectedCategory(e.target.value)} />
+                                    <ListItemText primary="Funding Organization" onClick={(e) => setSelectedCategory("Funding Organization")} />
                                 </ListItemButton>
                                 <ListItemButton>
-                                    <ListItemText primary="University" value="University" onClick={(e) => setSelectedCategory(e.target.value)} />
+                                    <ListItemText primary="University" onClick={(e) => setSelectedCategory("University")} />
                                 </ListItemButton>
                                 <ListItemButton>
-                                    <ListItemText primary="Support Organization" value="Support Organization" onClick={(e) => setSelectedCategory(e.target.value)} />
+                                    <ListItemText primary="Support Organization" onClick={(e) => setSelectedCategory("Support Organization")} />
                                 </ListItemButton>
                                 <ListItemButton>
-                                    <ListItemText primary="Service Provider" value="Service Provider" onClick={(e) => setSelectedCategory(e.target.value)} />
+                                    <ListItemText primary="Service Provider" onClick={(e) => setSelectedCategory("Service Provider")} />
                                 </ListItemButton>
                                 <ListItemButton>
-                                    <ListItemText primary="Big Company" value="Big Company" onClick={(e) => setSelectedCategory(e.target.value)} />
+                                    <ListItemText primary="Big Company" onClick={(e) => setSelectedCategory("Big Company")} />
                                 </ListItemButton>
                                 <ListItemButton>
-                                    <ListItemText primary="Research Organization" value="Research Organization" onClick={(e) => setSelectedCategory(e.target.value)} />
+                                    <ListItemText primary="Research Organization" onClick={(e) => setSelectedCategory("Research Organization")} />
                                 </ListItemButton>
                             </List>
                         </Collapse>
                         <ListItemButton onClick={handleStageClick}>
-                            <ListItemText primary="Stage" />
+                            <ListItemText primary="Business Stage" />
+                            {stageOpen ? <ExpandLess /> : <ExpandMore />}
                         </ListItemButton>
                         <Collapse in={stageOpen} timeout="auto" unmountOnExit>
                             <List>
                                 <ListItemButton>
-                                    <ListItemText primary="Nascent" value="Nascent" onClick={(e) => setSelectedStage(e.target.value)} />
+                                    <ListItemText primary="Nascent" onClick={(e) => setSelectedStage("Nascent")} />
                                 </ListItemButton>
                                 <ListItemButton>
-                                    <ListItemText primary="Early Stage" value="Early Stage" onClick={(e) => setSelectedStage(e.target.value)} />
+                                    <ListItemText primary="Early Stage" onClick={(e) => setSelectedStage("Early Stage")} />
                                 </ListItemButton>
                                 <ListItemButton>
-                                    <ListItemText primary="Startup/Seed" value="Startup/Seed" onClick={(e) => setSelectedStage(e.target.value)} />
+                                    <ListItemText primary="Startup/Seed" onClick={(e) => setSelectedStage("Startup/Seed")} />
                                 </ListItemButton>
                                 <ListItemButton>
-                                    <ListItemText primary="Growth" value="Growth" onClick={(e) => setSelectedStage(e.target.value)} />
+                                    <ListItemText primary="Growth" onClick={(e) => setSelectedStage("Growth")} />
                                 </ListItemButton>
                             </List>
                         </Collapse>
                     </List>
                     <Button variant="contained" onClick={fetchSearch} >Apply Filters</Button>
+                    <Button variant="contained" onClick={clearFilters} >Clear Filters</Button>
                 </Grid>
             </Grid>
         </Container>
