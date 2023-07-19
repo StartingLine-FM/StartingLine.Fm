@@ -7,6 +7,4 @@ const searchReducer = (state = [], action) => {
     }
   };
   
-  // user will be on the redux state at:
-  // state.search
   export default searchReducer;
