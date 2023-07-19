@@ -19,7 +19,7 @@ import InfoPage from './Pages/InfoPage/InfoPage';
 import LandingPage from './Pages/LandingPage/LandingPage';
 import LoginPage from './Pages/LoginPage/LoginPage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
-
+import CalendarPage from './Pages/CalendarPage/CalendarPage';
 import './App.css';
 
 function App() {
@@ -46,6 +46,13 @@ function App() {
             path="/about"
           >
             <AboutPage />
+          </Route>
+          <Route
+            // shows CalendarPage at all times (logged in or not)
+            exact
+            path="/calendar"
+          >
+            <CalendarPage />
           </Route>
 
           {/* For protected routes, the view could show one of several things on the same route.
