@@ -6,6 +6,7 @@ import { Container, Paper, Grid } from '@mui/material';
 
 // CUSTOM COMPONENTS
 import SearchFilter from './SearchFilter';
+import Result from './Result';
 
 function LandingPage() {
 
@@ -33,7 +34,6 @@ function LandingPage() {
             search.map(result => {
               return (
                 <Grid item>
-                  <Result name={result.name} image={result.image_url} description={result.description} />
                 <Grid />
               )
             })}
@@ -42,7 +42,7 @@ function LandingPage() {
             search.map(result => {
               return (
                 <Grid item>
-                  <p>{result.name} - {result.description}</p>
+                  <Result result={result} />
                   </Grid>
             )})}
         </Grid>
