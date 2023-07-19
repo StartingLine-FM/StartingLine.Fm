@@ -17,14 +17,14 @@ import chamber_Reducer from './chamber.reducer';
 const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
-  search, // current search results
+  search,// current search results
   admin, //gives the user access to adding, updating and deleting resources if logged in as an admin
   EP_Reducer, //gives the user access to the scraped Emerging Prairie Calendar
   FU_Reducer, //gives the user access to the scraped Fargo Underground Calendar
   chamber_Reducer, //gives the user access to the scraped FMWF Chamber of Commerce Calendar
   todoListReducer,
    // will have an id and username if someone is logged in
-  
+
 });
 
 export default rootReducer;
