@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Container, Paper, Grid } from '@mui/material';
 
 // CUSTOM COMPONENTS
-import RegisterForm from '../RegisterPage/RegisterForm';
+import SearchFilter from './SearchFilter';
 
 function LandingPage() {
 
@@ -23,7 +23,7 @@ function LandingPage() {
       <Paper>
         <Grid container>
           <Grid item>
-            {/* SearchFilter.jsx goes here */}
+            <SearchFilter />
           </Grid>
         </Grid>
         <Grid container>
