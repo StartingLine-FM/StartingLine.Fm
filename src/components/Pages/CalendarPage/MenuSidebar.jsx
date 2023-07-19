@@ -5,10 +5,10 @@ import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
 
 
 
-const CalendarMenu = () => {
-    const EP_Events = useSelector((store) => store.EP.events);
-    const FU_Events = useSelector((store) => store.FU.events);
-    const CHAMBER_Events = useSelector((store) => store.CHAMBER.events);
+const MenuSidebar = () => {
+    const EP_Events = useSelector((store) => store.EP_events);
+    const FU_Events = useSelector((store) => store.FU_events);
+    const CHAMBER_Events = useSelector((store) => store.CHAMBER_events);
     const dispatch = useDispatch();
   
     const handleEP_Click = () => {
@@ -37,4 +37,4 @@ const CalendarMenu = () => {
     );
   };
   
-  export default CalendarMenu;
+  export default MenuSidebar

@@ -12,6 +12,7 @@ const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
   admin, //gives the user access to adding, updating and deleting resources if logged in as an admin
+  
 });
 
 export default rootReducer;
