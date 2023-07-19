@@ -2,21 +2,21 @@ const express = require('express');
 const pool = require('../modules/pool');
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const router = express.Router();
+// get to grab the users todo lists by title
 
-router.get('/', async (req, res) => {
+router.get('/', rejectUnauthenticated, async (req, res) => {
   try {
-    // user params to get the user id
-    const id = req.user.id;
-    // query text to grab the todo list.
-    const queryText = `SELECT * FROM "todo" WHERE "user_id"=$1;`;
+    const user_id = req.user.id
+    // grab title from params
+    const queryText = `SELECT "title" FROM "todo" WHERE "user_id"=$1;`;
     // send off query text
-    const response = await pool.query(queryText, [id]);
-    console.log(response.data); // check the data
-    res.status(200).send(response.rows); // send data to the front end
+    const response = await pool.query(queryText, [user_id]);
+    console.log(response.data) // check the response data
+    res.status(200).send(response.rows); // send back the matching todo list
   } catch (error) {
-    console.log('there was an error getting the todo list', error);
+    console.log('there was an error DELETING from the todo list', error);
   }
-});
+})
 
 router.post(`/:resource_id`, async (req, res) => {
   try {
@@ -77,14 +77,14 @@ router.delete('/resource/:resource_id', rejectUnauthenticated, async (req, res) 
 })
 
 // delete for a whole todo list
-router.delete('/', rejectUnauthenticated, async (req, res) => {
+router.delete('/:titleName', rejectUnauthenticated, async (req, res) => {
   try {
-    // grab the user_id from req.params
-    const user_id = req.user.id;
+    // grab the title from req.params
+    const titleName = req.params.titleName
     // query text to send to the backend
-    const queryText = `DELETE FROM "todo" WHERE "user_id" = $1;`;
+    const queryText = `DELETE FROM "todo" WHERE "title" = $1;`;
     // send off query text
-    const response = await pool.query(queryText, [user_id]);
+    const response = await pool.query(queryText, [titleName]);
     console.log(response.data);
     res.status(204).send(response.rows);
   } catch (error) {
@@ -92,27 +92,18 @@ router.delete('/', rejectUnauthenticated, async (req, res) => {
   }
 })
 
-// get for grabbing todo lists and ordering them by title
-router.get('/user',rejectUnauthenticated, async (req, res) => {
-  try {
-    // grab title from params
-    const user_id = req.user.id
-    const queryText =`SELECT * FROM "todo" WHERE "user_id"=$1;`;
-    // send off query text
-    const response = await pool.query(queryText, [user_id]);
-    console.log(response.data) // check the response data
-    res.status(200).send(response.rows); // send back the matching todo list
-  } catch (error) {
-    console.log('there was an error DELETING from the todo list', error);
-  }
-})
 
 // get for grabbing the resources based on the todo list
 router.get('/user/todolist/resources', (req, res) => {
   try {
-    const queryText = `SELECT * FROM "todo" JOIN "resource" ON "resource"."id"= "todo"."resource_id" 
-    JOIN "stage" ON "stage"."id" = "resource"."stage_id" JOIN "category" ON "category"."id" =
-    "resource"."category_id";`;
+    const queryText = `SELECT todo.notes, todo.completed, todo.title, resource.name AS resource_name,
+    resource.image_url, resource.description AS resource_description,
+    resource.website, resource.email, resource.address, resource.linkedin
+    FROM todo
+    JOIN resource ON resource.id = todo.resource_id
+    JOIN stage ON stage.id = resource.stage_id
+    JOIN category ON category.id = resource.category_id
+    WHERE todo.title = 'Your Selected Title';`;
     const response = await(queryText);
     console.log(response.data);
     res.status(200).send(response.rows);
