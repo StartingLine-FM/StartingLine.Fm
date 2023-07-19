@@ -22,5 +22,6 @@ export default function* rootSaga() {
     watchCalendars(), //calls the calendar sagas
     searchSaga(),
     adminSaga(),
+    searchSaga()
   ]);
 }
