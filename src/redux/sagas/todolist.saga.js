@@ -8,9 +8,10 @@ function* todolistSaga() {
     yield takeLatest('PUT_TODO_LIST', putTodoList);
     yield takeLatest('DELETE_TODO_LIST', deleteTodoListResource);
     yield takeLatest('CLEAR_TODO_LIST', clearTodoList);
+    yield takeLatest('FETCH_TODO_LIST_RESOURCES', fetchResourceInformation)
 
 }
-// function to get the todo list
+// function to get the todo lists for the particular user
 function* fetchTodoList() {
     try {
         const response = yield axios.get('/api/todo/'); // call to the backend
@@ -59,6 +60,16 @@ function* clearTodoList() {
         put({ type: "FETCH_TODO_LIST" });
     } catch (error) {
         console.log('there was an error clearing the todo list', error)
+    }
+}
+
+function* fetchResourceInformation() {
+    try {
+        const response = yield axios.get('/api/todo/user/todolist/resources');
+        console.log(response.data);
+        put({ type: "SET_TODO_LIST_RESOURCES" });
+    } catch (error) {
+        console.log('there was an error grabbing the resource by the id', error)
     }
 }
 
