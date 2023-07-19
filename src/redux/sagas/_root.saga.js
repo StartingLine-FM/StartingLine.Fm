@@ -5,7 +5,6 @@ import userSaga from './user.saga';
 import todolistSaga from './todolist.saga';
 import searchSaga from './search.saga';
 import watchCalendars from './calendar.saga';
-
 import adminSaga from './admin.saga';
 // rootSaga is the primary saga.
 // It bundles up all of the other sagas so our project can use them.
@@ -20,6 +19,8 @@ export default function* rootSaga() {
     registrationSaga(),
     userSaga(),
     todolistSaga(), // calls the todolist saga
-    watchCalendars() //calls the calendar sagas
+    watchCalendars(), //calls the calendar sagas
+    searchSaga(),
+    adminSaga(),
   ]);
 }

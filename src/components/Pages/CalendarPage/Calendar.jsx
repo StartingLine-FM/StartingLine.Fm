@@ -2,6 +2,7 @@ import React from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list'; // import list plugin
+import MenuSidebar from './MenuSidebar';
 
 const Calendar = () => {
   return (
