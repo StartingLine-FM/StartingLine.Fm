@@ -33,9 +33,9 @@ function* fetchChamberCalendarSaga() {
 
 // Watcher saga for calendars
 function* watchCalendars() {
-  yield takeLatest('FETCH_EP_CALENDAR', fetchEmergingPrairieCalendarSaga);
-  yield takeLatest('FETCH_FU_CALENDAR', fetchFargoUndergroundCalendarSaga);
-  yield takeLatest('FETCH_CHAMBER_CALENDAR', fetchChamberCalendarSaga);
+  yield takeLatest('FETCH_EP', fetchEmergingPrairieCalendarSaga);
+  yield takeLatest('FETCH_FU', fetchFargoUndergroundCalendarSaga);
+  yield takeLatest('FETCH_CHAMBER', fetchChamberCalendarSaga);
 }
 
 export default watchCalendars;
