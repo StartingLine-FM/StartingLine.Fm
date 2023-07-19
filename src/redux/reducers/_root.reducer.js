@@ -4,6 +4,9 @@ import user from './user.reducer';
 import search from './search.reducer'
 import admin from './admin.reducer';
 import todoListReducer from './todolist.reducer';
+import EP_Reducer from './EP.reducer';
+import FU_Reducer from './FU.reducer';
+import chamber_Reducer from './chamber.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -14,8 +17,11 @@ import todoListReducer from './todolist.reducer';
 const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
-  search // current search results
+  search, // current search results
   admin, //gives the user access to adding, updating and deleting resources if logged in as an admin
+  EP_Reducer, //gives the user access to the scraped Emerging Prairie Calendar
+  FU_Reducer, //gives the user access to the scraped Fargo Underground Calendar
+  chamber_Reducer, //gives the user access to the scraped FMWF Chamber of Commerce Calendar
   todoListReducer,
    // will have an id and username if someone is logged in
   

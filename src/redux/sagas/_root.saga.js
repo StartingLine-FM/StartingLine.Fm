@@ -4,6 +4,7 @@ import registrationSaga from './registration.saga';
 import userSaga from './user.saga';
 import todolistSaga from './todolist.saga';
 import searchSaga from './search.saga';
+import watchCalendars from './calendar.saga';
 
 import adminSaga from './admin.saga';
 // rootSaga is the primary saga.
@@ -18,6 +19,7 @@ export default function* rootSaga() {
     loginSaga(), // login saga is now registered
     registrationSaga(),
     userSaga(),
-    todolistSaga() // calls the todolist saga
+    todolistSaga(), // calls the todolist saga
+    watchCalendars() //calls the calendar sagas
   ]);
 }
