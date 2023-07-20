@@ -4,14 +4,18 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction'; 
 import listPlugin from '@fullcalendar/list'; // import list plugin
-import MenuSidebar from './MenuSidebar';
+
 
 import { Box, Typography } from '@mui/material';
 
 const Calendar = () => {
-  const EP_Events = useSelector((store) => store.EP_events);
-  const FU_Events = useSelector((store) => store.FU_events);
-  const CHAMBER_Events = useSelector((store) => store.CHAMBER_events);
+  const EP_Events = useSelector((store) => store.EP_Reducer);
+  const FU_Events = useSelector((store) => store.FU_Reducer);
+  const CHAMBER_Events = useSelector((store) => store.chamber_Reducer);
+  console.log('EP events are', EP_Events);
+  console.log('FU events are', FU_Events);
+  console.log('Chamber events are', CHAMBER_Events);
+
 
   const handleEventMouseEnter = (info) => {
     // Display the event info when a user hovers over the event
@@ -41,6 +45,7 @@ const Calendar = () => {
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         events={EP_Events || FU_Events || CHAMBER_Events}
+        // events={allEvents}
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
