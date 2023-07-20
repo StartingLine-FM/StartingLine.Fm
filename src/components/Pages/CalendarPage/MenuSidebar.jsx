@@ -24,6 +24,10 @@ const MenuSidebar = () => {
       // Fetch Chamber of Commerce Calendar Data
       dispatch({ type: 'FETCH_CHAMBER' });
     };
+
+    const handleClearClick = () => {
+      dispatch({ type: 'CLEAR_CALENDARS'})
+    }
   
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -37,6 +41,10 @@ const MenuSidebar = () => {
         <IconButton onClick={handleChamber_Click}>
           <Business />
           <Typography>Chamber of Commerce</Typography>
+        </IconButton>
+        <IconButton onClick={handleClearClick}>
+          <Event />
+          <Typography>Clear Calendars</Typography>
         </IconButton>
       </Box>
     );
