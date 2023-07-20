@@ -23,7 +23,7 @@ const rootReducer = combineReducers({
   FU_Reducer, //gives the user access to the scraped Fargo Underground Calendar
   chamber_Reducer, //gives the user access to the scraped FMWF Chamber of Commerce Calendar
   todoListReducer,
-   // will have an id and username if someone is logged in
+ // will have an id and username if someone is logged in
 
 });
 
