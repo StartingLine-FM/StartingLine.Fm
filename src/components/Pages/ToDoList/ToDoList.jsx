@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 // material ui imports
-import { Typography, Container, Paper } from '@mui/material/';
+import { Typography, Container, Paper, heading } from '@mui/material/';
 import SaveIcon from '@mui/icons-material/Save'; // save icon
 import ContentCopyIcon from '@mui/icons-material/ContentCopy'; // copy icon
 import ModeEditIcon from '@mui/icons-material/ModeEdit'; // edit icon
@@ -21,22 +21,23 @@ export default function ToDoList() {
     const dispatch = useDispatch();
     // use effect to rerender the page whenever the list chagnes
     useEffect(() => {
+        dispatch({ type: "FETCH_TODO_LIST"})
         dispatch({ type: "FETCH_TODO_LIST_RESOURCES" });
     }, [])
     // init use selector to grab the resources 
     const resources = useSelector(store => store.todoListResourcesReducer);
-    const titles = useSelector(store => store.todolist); // grab the titles of past todo lists for current users
+    const titles = useSelector(store => store.todoListReducer); // grab the titles of past todo lists for current users
     console.log(resources) // test the resourcess
     console.log(titles) // test to make sure the titles are coming back good
     return (
         <>
             <Container sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }} >
-                <Typography variant='h2' gutterBottomn align='center' paddingBottom={4}>Todo List Page</Typography>
+                <Typography variant='h2' gutterBottom align='center' paddingBottom={4}>Todo List Page</Typography>
                 <Paper sx={{ display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
                     <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}
                         component={'nav'} aria-labelledby='nested-list-subheader'
                         subheader={
-                            <ListSubheader variant='h4' component={'heading'}>
+                            <ListSubheader variant='h4' >
                                 Todo List Title
                             </ListSubheader>}>
                         <ListItemButton>

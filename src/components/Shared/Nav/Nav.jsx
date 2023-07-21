@@ -47,6 +47,9 @@ function Nav() {
         <Link className="navLink" to="/calendar">
           Calendar
         </Link>
+        <Link className="navLink" to="/todolist">
+          Todo List
+        </Link>
       </div>
     </div>
   );
