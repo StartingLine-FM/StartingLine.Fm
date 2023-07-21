@@ -3,7 +3,7 @@ const FU_Reducer = (state = [], action) => {
       case 'SET_FU':
         return action.payload;
       default:
-        return state;
+        return state.map(event => ({...event, color: 'orange'}));;
     }
   };
   
