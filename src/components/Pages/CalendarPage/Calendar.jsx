@@ -44,7 +44,8 @@ const Calendar = () => {
       <FullCalendar
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        events={EP_Events || FU_Events || CHAMBER_Events}
+        events={EP_Events}
+        // events={EP_Events || FU_Events || CHAMBER_Events}
         // events={allEvents}
         headerToolbar={{
           left: 'prev,next today',
