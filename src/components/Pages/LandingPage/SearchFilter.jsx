@@ -61,7 +61,7 @@ export default function SearchFilter() {
 
         let query = {};
 
-            // all 3 defined
+        // all 3 defined
         if (selectedCategory && selectedStage && textSearch) {
             query = {
                 category: selectedCategory,
@@ -183,7 +183,7 @@ export default function SearchFilter() {
                                 <List>
                                     <ListItemButton>
                                         {/* Same idea as shown in the Category list above of faking the Radio Buttons
-                                     and sending the correct string */}
+                                        and sending the correct string */}
                                         {selectedStage === "Nascent" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
                                         <ListItemText sx={{ ml: 1 }} primary="Nascent" onClick={(e) => setSelectedStage("Nascent")} />
                                     </ListItemButton>
