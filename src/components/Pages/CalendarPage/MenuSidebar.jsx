@@ -1,15 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid' // a plugin!
-
-
+import { Box, IconButton, Typography, Un} from '@mui/material';
+import { Event, Business } from '@mui/icons-material';
 
 const MenuSidebar = () => {
     const EP_Events = useSelector((store) => store.EP_events);
     const FU_Events = useSelector((store) => store.FU_events);
     const CHAMBER_Events = useSelector((store) => store.CHAMBER_events);
     const dispatch = useDispatch();
+
   
     const handleEP_Click = () => {
       // Fetch Emerging Prairies Calendar Data
@@ -25,16 +24,30 @@ const MenuSidebar = () => {
       // Fetch Chamber of Commerce Calendar Data
       dispatch({ type: 'FETCH_CHAMBER' });
     };
+
+    const handleClearClick = () => {
+      dispatch({ type: 'CLEAR_CALENDARS'})
+    }
   
     return (
-      <div className='button-container'>
-        {/* Dashboard to Call Calendar Data */}
-        <button className='calendar-call' onClick={handleEP_Click}>Emerging Prairie</button>
-        <button className='calendar-call' onClick={handleFU_Click}>Fargo Underground</button>
-        <button className='calendar-call' onClick={handleChamber_Click}>Chamber of Commerce</button>
-
-      </div>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <IconButton onClick={handleEP_Click}>
+          <Event />
+          <Typography>Emerging Prairie</Typography>
+        </IconButton>
+        <IconButton onClick={handleFU_Click}>
+          <Typography>Fargo Underground</Typography>
+        </IconButton>
+        <IconButton onClick={handleChamber_Click}>
+          <Business />
+          <Typography>Chamber of Commerce</Typography>
+        </IconButton>
+        <IconButton onClick={handleClearClick}>
+          <Event />
+          <Typography>Clear Calendars</Typography>
+        </IconButton>
+      </Box>
     );
-  };
+};
   
   export default MenuSidebar
