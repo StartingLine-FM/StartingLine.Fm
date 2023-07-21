@@ -19,8 +19,19 @@ const parseEventDate = (eventStart) => {
 
   const parsedDate = moment(eventStart, formats, true); // Parse the date string using moment.js
 
-  return parsedDate.isValid() ? parsedDate.format('YYYY-MM-DD') : null; // Format the parsed date into 'yyyy-mm-dd' format
+  if (parsedDate.isValid()) {
+    // If the parsed date includes hours and minutes, format it in ISO8601 format
+    if (parsedDate.hours() !== 0 || parsedDate.minutes() !== 0) {
+      return parsedDate.format(); // Default format is ISO8601
+    } else {
+      // If the parsed date is an all-day event with no specific time, format it as "YYYY-MM-DD"
+      return parsedDate.format('YYYY-MM-DD');
+    }
+  } else {
+    return null; // Return null for invalid date strings
+  }
 };
+
 
 
 router.get('/emerging-prairie', (req, res) => {

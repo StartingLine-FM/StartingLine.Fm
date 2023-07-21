@@ -43,7 +43,9 @@ const Calendar = () => {
   const handleEventClick = (info) => {
     // Format start and end dates for Google Calendar
     let startDate = moment(info.event.start).format('YYYYMMDD[T]HHmmSS[Z]');
-    let endDate = moment(info.event.end).format('YYYYMMDD[T]HHmmSS[Z]');
+    let endDate = info.event.end 
+      ? moment(info.event.end).format('YYYYMMDD[T]HHmmSS[Z]')
+      : moment(info.event.start).add(1, 'hour').format('YYYYMMDD[T]HHmmSS[Z]'); // Default to 1 hour if no end time
   
     // Encode description to ensure it's URL-safe
     let description = encodeURIComponent(info.event.extendedProps.description);
