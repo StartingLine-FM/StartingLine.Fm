@@ -42,7 +42,7 @@ function* putTodoList(action) {
     }
 }
 // delete for a particular resource
-function* deleteTodoListResource() {
+function* deleteTodoListResource(action) {
     try {
         const response = yield axios.delete(`/api/todo/resource/${action.payload.resource_id}`);
         console.log(response.data);
@@ -53,9 +53,9 @@ function* deleteTodoListResource() {
 }
 
 // clear a todo list
-function* clearTodoList() {
+function* clearTodoList(action) {
     try {
-        const response = yield axios.delete('/api/todo/');
+        const response = yield axios.delete(`/api/todo/${action.payload.title}`);
         console.log(response.data);
         put({ type: "FETCH_TODO_LIST" });
     } catch (error) {
