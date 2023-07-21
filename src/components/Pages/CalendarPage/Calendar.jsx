@@ -14,9 +14,8 @@ const Calendar = () => {
   const EP_Events = useSelector((store) => store.EP_Reducer);
   const FU_Events = useSelector((store) => store.FU_Reducer);
   const CHAMBER_Events = useSelector((store) => store.chamber_Reducer);
-  console.log('EP events are', EP_Events);
-  console.log('FU events are', FU_Events);
-  console.log('Chamber events are', CHAMBER_Events);
+  console.log('EP_Events are', EP_Events)
+
 
   // Combine events from all three reducers into a single array
   const allEvents = [...EP_Events, ...FU_Events, ...CHAMBER_Events];
@@ -29,7 +28,6 @@ const Calendar = () => {
     // Create a Bootstrap Popover on hover to display event details
     let eventDetails = `<div>
                             <span>Start: ${moment(info.event.start).format('LLL')}</span>
-                            <p>End: ${moment(info.event.end).format('LLL')}</p>
                             <p>${info.event.extendedProps.description}</p>
                             <p>Location: ${info.event.extendedProps.location}</p>
                         </div>`;
@@ -46,9 +44,12 @@ const Calendar = () => {
     // Format start and end dates for Google Calendar
     let startDate = moment(info.event.start).format('YYYYMMDD[T]HHmmSS[Z]');
     let endDate = moment(info.event.end).format('YYYYMMDD[T]HHmmSS[Z]');
-
+  
+    // Encode description to ensure it's URL-safe
+    let description = encodeURIComponent(info.event.extendedProps.description);
+  
     // Open Google Calendar event creation in a new tab
-    window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${info.event.title}&dates=${startDate}/${endDate}&details=${info.event.extendedProps.description}&location=${info.event.extendedProps.location}`, '_blank');
+    window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${info.event.title}&dates=${startDate}/${endDate}&details=${description}&location=${info.event.extendedProps.location}`, '_blank');
   }
 
   return (
