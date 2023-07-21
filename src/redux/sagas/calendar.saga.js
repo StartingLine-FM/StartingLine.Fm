@@ -31,11 +31,19 @@ function* fetchChamberCalendarSaga() {
   }
 }
 
+// Clear all calendars saga
+function* clearCalendarsSaga() {
+  yield put({ type: 'SET_EP', payload: [] });
+  yield put({ type: 'SET_FU', payload: [] });
+  yield put({ type: 'SET_CHAMBER', payload: [] });
+}
+
 // Watcher saga for calendars
 function* watchCalendars() {
-  yield takeLatest('FETCH_EP_CALENDAR', fetchEmergingPrairieCalendarSaga);
-  yield takeLatest('FETCH_FU_CALENDAR', fetchFargoUndergroundCalendarSaga);
-  yield takeLatest('FETCH_CHAMBER_CALENDAR', fetchChamberCalendarSaga);
+  yield takeLatest('FETCH_EP', fetchEmergingPrairieCalendarSaga);
+  yield takeLatest('FETCH_FU', fetchFargoUndergroundCalendarSaga);
+  yield takeLatest('FETCH_CHAMBER', fetchChamberCalendarSaga);
+  yield takeLatest('CLEAR_CALENDARS', clearCalendarsSaga);
 }
 
 export default watchCalendars;
