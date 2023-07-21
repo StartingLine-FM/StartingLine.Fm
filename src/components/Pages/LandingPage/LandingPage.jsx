@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 // MUI
-import { Container, Paper, Grid } from '@mui/material';
+import { Container, Paper, Grid, Typography } from '@mui/material';
 
 // CUSTOM COMPONENTS
 import SearchFilter from './SearchFilter';
@@ -38,13 +38,16 @@ function LandingPage() {
               )
             })}
           */}
-          {search.length > 0 &&
-            search.map(result => {
+          {search.length > 0
+            ? search.map(result => {
               return (
-                <Grid item>
-                  <p>{result.name} - {result.description}</p>
+                <Grid item key={result.id}>
+                  <p >{result.name} - {result.description}</p>
                   </Grid>
-            )})}
+            )})
+            :
+              <Typography>Your search returned 0 results.</Typography>
+          }
         </Grid>
       </Paper>
     </Container>

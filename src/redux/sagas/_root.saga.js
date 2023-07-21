@@ -18,10 +18,10 @@ export default function* rootSaga() {
     loginSaga(), // login saga is now registered
     registrationSaga(),
     userSaga(),
+feature-search-filter
     todolistSaga(), // calls the todolist saga
     watchCalendars(), //calls the calendar sagas
     searchSaga(),
     adminSaga(),
-    searchSaga()
   ]);
 }
