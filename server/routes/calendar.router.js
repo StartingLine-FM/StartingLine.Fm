@@ -13,6 +13,8 @@ const parseEventDate = (eventStart) => {
   const formats = [
     "MMMM D [\\@] h:mm a - h:mm a", // Format for "September 13 @ 4:00 pm - 6:00 pm"
     "MMMM D", // Format for "October 11"
+    "MMMM D - MMMM D", // Format for "November 8 - November 10"
+    "dddd MMM D, YYYY", // Format for "Tuesday Jul 25, 2023"
   ];
 
   const parsedDate = moment(eventStart, formats, true); // Parse the date string using moment.js
@@ -35,7 +37,7 @@ router.get('/emerging-prairie', (req, res) => {
 
         const parsedDate = moment(eventStart); // Parse the date string using moment.js
         const formattedDate = parseEventDate(eventStart); // Use the helper function to parse the date
-          console.log('formatted date is', formattedDate)
+       
         const EP_CalendarBlock = { //Scraped Data is formatted within this object.
           title: eventHeader,
           start: formattedDate,
@@ -67,10 +69,13 @@ router.get('/emerging-prairie', (req, res) => {
           const eventStart = $(element).find('.tribe-events-calendar-list__event-datetime-wrapper.tribe-common-b2').text().replace(/\n|\t/g, '');
           const eventLocation = $(element).find('.tribe-events-calendar-list__event-venue-address').text().replace(/\n|\t/g, '');
           const eventDescription = $(element).find('p').text().replace(/\n|\t/g, '');
+
+          const parsedDate = moment(eventStart); // Parse the date string using moment.js
+          const formattedDate = parseEventDate(eventStart); // Use the helper function to parse the date
   
           const FU_CalendarBlock = { //Scraped Data is formatted within this object.
             title: eventHeader,
-            start: eventStart,
+            start: formattedDate,
             location: eventLocation,
             description: eventDescription,
           };
@@ -97,10 +102,13 @@ router.get('/emerging-prairie', (req, res) => {
             const eventHeader = $(element).find('.card-title.gz-card-title').text().replace(/\s+/g, ' ').trim();
             const eventStart = $(element).find('.list-group-item.gz-card-date').text().replace(/\s+/g, ' ').trim();
             const eventDescription = $(element).find('.card-text.gz-description.gz-events-description').text().replace(/\s+/g, ' ').trim();
+
+            const parsedDate = moment(eventStart); // Parse the date string using moment.js
+            const formattedDate = parseEventDate(eventStart); // Use the helper function to parse the date
           
             const CHAMBER_CalendarBlock = {
               title: eventHeader,
-              start: eventStart,
+              start: formattedDate,
               description: eventDescription,
             };
           
