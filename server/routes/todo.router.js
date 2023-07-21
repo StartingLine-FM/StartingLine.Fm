@@ -4,7 +4,7 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const router = express.Router();
 // get to grab the users todo lists by title
 
-router.get('/', rejectUnauthenticated, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const user_id = req.user.id
     // grab title from params
@@ -79,12 +79,13 @@ router.delete('/resource/:resource_id', rejectUnauthenticated, async (req, res) 
 // delete for a whole todo list
 router.delete('/:titleName', rejectUnauthenticated, async (req, res) => {
   try {
+    const user_id = req.user.id
     // grab the title from req.params
     const titleName = req.params.titleName
     // query text to send to the backend
     const queryText = `DELETE FROM "todo" WHERE "title" = $1;`;
     // send off query text
-    const response = await pool.query(queryText, [titleName]);
+    const response = await pool.query(queryText, [titleName, user_id]);
     console.log(response.data);
     res.status(204).send(response.rows);
   } catch (error) {
@@ -94,8 +95,12 @@ router.delete('/:titleName', rejectUnauthenticated, async (req, res) => {
 
 
 // get for grabbing the resources based on the todo list
-router.get('/user/todolist/resources', (req, res) => {
+router.get('/user/todolist/resources/:titleName', (req, res) => {
   try {
+    // get user id
+    const id = req.user.id;
+    // grab the title for the resource
+    const titleName = req.params.titleName
     const queryText = `SELECT todo.notes, todo.completed, todo.title, resource.name AS resource_name,
     resource.image_url, resource.description AS resource_description,
     resource.website, resource.email, resource.address, resource.linkedin
@@ -103,8 +108,8 @@ router.get('/user/todolist/resources', (req, res) => {
     JOIN resource ON resource.id = todo.resource_id
     JOIN stage ON stage.id = resource.stage_id
     JOIN category ON category.id = resource.category_id
-    WHERE todo.title = 'Your Selected Title';`;
-    const response = await(queryText);
+    WHERE todo.title = $1;`;
+    const response = await(queryText, [id, titleName]);
     console.log(response.data);
     res.status(200).send(response.rows);
   } catch (error) {
