@@ -2,8 +2,9 @@ const express = require('express');
 const pool = require('../modules/pool');
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const router = express.Router();
-// get to grab the users todo lists by title
 
+
+// get to grab the users todo lists by title
 router.get('/', async (req, res) => {
   try {
     const user_id = req.user.id
