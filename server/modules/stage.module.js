@@ -16,12 +16,4 @@ module.exports = function fetchBusinessesByStage(stage) {
       default:  // if no or unknown stage is given, or 'All' is specified, fetch all businesses
        return queryText = ''
     }
-
-    // try {
-    //   const { rows } = await pool.query(queryText, [stage]);
-    //   return rows;
-    // } catch (error) {
-    //   console.error(`Error fetching businesses in stage "${stage}"`, error);
-    //   throw error;
-    // }
 };
