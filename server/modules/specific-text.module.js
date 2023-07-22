@@ -7,25 +7,25 @@ function specificSearch(variant) {
   if (variant === "text only"){
   queryText =
   `
-  SIMILARITY(resource.name, $1) > 0.06
-  OR SIMILARITY(website, $1) > 0.06
-  OR SIMILARITY(email, $1) > 0.06
-  OR SIMILARITY(address, $1) > 0.06
-  OR SIMILARITY(linkedin, $1) > 0.06
-  OR SIMILARITY(resource.description, $1) > 0.06
-  OR SIMILARITY(stage.name, $1) > 0.7
-  OR SIMILARITY(category.name, $1) > 0.07
+  WORD_SIMILARITY($1, resource.description) > 0.4
+  OR WORD_SIMILARITY($1, resource.name) > 0.4
+  OR WORD_SIMILARITY($1, stage.name) > 0.4
+  OR WORD_SIMILARITY($1, category.name) > 0.4
+  OR WORD_SIMILARITY($1, website) > 0.4
+  OR WORD_SIMILARITY($1, email) > 0.4
+  OR WORD_SIMILARITY($1, address) > 0.4
+  OR WORD_SIMILARITY($1, linkedin) > 0.4
   `;
 }
   else if (variant === "combined"){
   queryText = 
   `
-  SIMILARITY(name, $1) > 0.06
-  OR SIMILARITY(website, $1) > 0.06
-  OR SIMILARITY(email, $1) > 0.06
-  OR SIMILARITY(address, $1) > 0.06
-  OR SIMILARITY(linkedin, $1) > 0.06
-  OR SIMILARITY(description, $1) > 0.06
+  WORD_SIMILARITY($1, description) > 0.4
+  OR WORD_SIMILARITY($1, name) > 0.4
+  OR WORD_SIMILARITY($1, website) > 0.4
+  OR WORD_SIMILARITY($1, email) > 0.4
+  OR WORD_SIMILARITY($1, address) > 0.4
+  OR WORD_SIMILARITY($1, linkedin) > 0.4
   `;
 }
 
