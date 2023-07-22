@@ -3,7 +3,7 @@ const chamber_Reducer = (state = [], action) => {
       case 'SET_CHAMBER':
         return action.payload;
       default:
-        return state;
+        return state.map(event => ({...event, color: 'purple'}));;
     }
   };
   
