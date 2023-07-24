@@ -14,7 +14,7 @@ const Calendar = () => {
   const EP_Events = useSelector((store) => store.EP_Reducer);
   const FU_Events = useSelector((store) => store.FU_Reducer);
   const CHAMBER_Events = useSelector((store) => store.chamber_Reducer);
-  console.log('EP_Events are', EP_Events)
+ 
 
 
   // Combine events from all three reducers into a single array
