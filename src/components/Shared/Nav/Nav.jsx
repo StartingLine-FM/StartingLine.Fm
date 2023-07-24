@@ -37,6 +37,12 @@ function Nav() {
               Info Page
             </Link>
 
+            {user.admin && (
+              <Link className="navLink" to="/admin">
+                Admin Page
+              </Link>
+            )}
+
             <LogOutButton className="navLink" />
           </>
         )}
