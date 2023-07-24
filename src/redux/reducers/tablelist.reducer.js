@@ -1,10 +1,10 @@
-const todoListReducer = (state = [], action) => {
+const tableListReducer = (state = [], action) => {
     switch (action.type) {
-        case "SET_TODO_LIST":
+        case "SET_TABLE_LIST":
             return action.payload;
         default:
             return state;
     }
     }
     
-    export default todoListReducer;
+    export default tableListReducer;

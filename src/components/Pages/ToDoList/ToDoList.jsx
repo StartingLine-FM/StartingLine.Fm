@@ -1,56 +1,135 @@
-import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-// material ui imports
-import { Typography, Container, Paper } from '@mui/material/';
-import SaveIcon from '@mui/icons-material/Save'; // save icon
-import ContentCopyIcon from '@mui/icons-material/ContentCopy'; // copy icon
-import ModeEditIcon from '@mui/icons-material/ModeEdit'; // edit icon
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'; // delete icon
-import ListSubheader from '@mui/material/ListSubheader';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-
-// TODO: bring in resources by going back and changing those things on the backend
-// TODO: map over resources by inserting a mock todo list so we having something to go off of 
-// TODO: condiitonally render for users vs gloabl user
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { Typography, Container, Paper, ListSubheader, Button, List, ListItemButton, ListItemText, ListItemIcon, ListItem, IconButton } from '@mui/material';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { AnimatePresence, motion } from 'framer-motion';
+import './ToDoList.css'
 
 export default function ToDoList() {
+
+    // set state for edit mode
+    const [editMode, setEditMode] = useState(false)
+    // set state for selected resource
+    const [selectedResource, setSelectedResource] = useState(null);
+    // set modal state
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // init dispatch
     const dispatch = useDispatch();
-    // use effect to rerender the page whenever the list chagnes
+
+    // grab titles from the title reducer
+    const list_titles = useSelector(store => store.tableListReducer);
+    // grab reesources from the store
+    const title_resources = useSelector(store => store.todoListResourcesReducer);
+    console.log(title_resources);
+
     useEffect(() => {
-        dispatch({ type: "FETCH_TODO_LIST_RESOURCES" });
+        dispatch({ type: "FETCH_TABLE_LISTS" })
     }, [])
-    // init use selector to grab the resources 
-    const resources = useSelector(store => store.todoListResourcesReducer);
-    const titles = useSelector(store => store.todolist); // grab the titles of past todo lists for current users
-    console.log(resources) // test the resourcess
-    console.log(titles) // test to make sure the titles are coming back good
+
     return (
         <>
-            <Container sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }} >
-                <Typography variant='h2' gutterBottomn align='center' paddingBottom={4}>Todo List Page</Typography>
-                <Paper sx={{ display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
-                    <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}
-                        component={'nav'} aria-labelledby='nested-list-subheader'
-                        subheader={
-                            <ListSubheader variant='h4' component={'heading'}>
-                                Todo List Title
-                            </ListSubheader>}>
-                        <ListItemButton>
-                            <ListItemText> item 1</ListItemText>
-                        </ListItemButton>
-                        <List component="div" disablePadding>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText>sub text for item 1</ListItemText>
-                            </ListItemButton>
+            <Container sx={{ flexDirection: 'row', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
+                <Container sx={{ paddingBottom: 4, flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
+                    <Typography variant='h4' gutterBottom align='center' paddingBottom={4}>Todo Lists</Typography>
+                    <Paper sx={{ display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
+                        <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
+                            {list_titles.map((list, i) => (
+                                <>
+                                    <ListItem secondaryAction={
+                                        <IconButton edge={'end'} aria-label={'delete'}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    }>
+                                        <ListItemButton onClick={() => dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id })} key={i}>
+                                            <ListItemText key={i} variant='h4' >{list.title}</ListItemText>
+                                        </ListItemButton>
+                                    </ListItem>
+                                </>
+                            ))}
                         </List>
-                    </List>
+                    </Paper>
+                </Container>
+            </Container>
+            <Container sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
+                <Typography variant='h4' gutterBottom align='center' paddingBottom={4}>Resources</Typography>
+                <Paper sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
+                    {title_resources.map((resource, i) => (
+                        <>
+                            <List component={motion.div} layoutId={resource.id} sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
+                                {/* TODO change backend to get the table title id in the resources */}
+                                <ListItem component={motion.div} onClick={() => {setSelectedResource(resource.id); setIsModalOpen(true)}}>
+                                    <ListItemText component={motion.h4}>{resource.resource_name}</ListItemText>
+                                </ListItem>
+                                <ListItem>
+                                    <ListItemText component={motion.h4}>{resource.notes}</ListItemText>
+                                </ListItem>
+                                <ListItem component={motion.h5} secondaryAction={
+                                    <IconButton onClick={() => setEditMode(true)} edge={'end'} aria-label={'delete'}>
+                                        <ModeEditIcon />
+                                    </IconButton>
+                                }>
+                                    <ListItemText component={motion.h5}>{resource.completed ? 'Completed' : 'Incomplete'}</ListItemText>
+                                </ListItem >
+                            </List>
+                            <AnimatePresence>
+                                        {selectedResource && isModalOpen && (
+                                            <>
+                                <motion.div className='modal-overlay'>
+                                                <motion.div initial={{ y: 50, opacity: 0 }}
+                                                    animate={{
+                                                        y: 0,
+                                                        opacity: 1
+                                                    }}
+                                                    exit={{
+                                                        y: -50,
+                                                        opacity: 0
+                                                    }}
+                                                    transition={{ type: "spring", bounce: 0, duration: 0.4 }} component={motion.div} layoutId={resource.id} className='modal-content'>
+                                                    <List sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
+                                                        {resource.resource_name && <ListItem component={motion.div}>
+                                                            <ListItemText component={motion.h4}>{resource.resource_name}</ListItemText>
+                                                        </ListItem>}
+                                                        {resource.notes && <ListItem component={motion.div}>
+                                                            <ListItemText component={motion.h4}>{resource.notes}</ListItemText>
+                                                        </ListItem>}
+                                                        {resource.resource_description && <ListItem component={motion.div}>
+                                                            <ListItemText component={motion.h4}>{resource.resource_description}</ListItemText>
+                                                        </ListItem>}
+                                                        {resource.email && <ListItem component={motion.div}>
+                                                            <ListItemText component={motion.h4}>{resource.email}</ListItemText>
+                                                        </ListItem>}
+                                                        {resource.linkedin && <ListItem component={motion.div}>
+                                                            <ListItemText component={motion.h4}>{resource.linkedin}</ListItemText>
+                                                        </ListItem>}
+                                                        {resource.website && <ListItem component={motion.div}>
+                                                            <ListItemText component={motion.h4}>{resource.website}</ListItemText>
+                                                        </ListItem>}
+                                                        {resource.completed ? <ListItem component={motion.div}>
+                                                            <ListItemText component={motion.h4}>Completed</ListItemText>
+                                                        </ListItem> : <ListItem component={motion.div}>
+                                                            <ListItemText component={motion.h4}>Incomplete</ListItemText>
+                                                        </ListItem>}
+                                                        <ListItem component={motion.h5} secondaryAction={
+                                                            <IconButton onClick={() => setEditMode(true)} edge={'end'} aria-label={'delete'}>
+                                                                <ModeEditIcon />
+                                                            </IconButton>
+                                                        }></ListItem>
+                                                        <Button component={motion.button} onClick={() => {setSelectedResource(null); setIsModalOpen(false)}}>Exit</Button>
+                                                    </List>
+                                                </motion.div>
+                                    </motion.div>
+                                            </>
+                                        )
+                                        }
 
+                            </AnimatePresence>
+                        </>
+                    ))}
                 </Paper>
             </Container>
+
         </>
-    )
+    );
 }
