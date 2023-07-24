@@ -25,8 +25,8 @@ export default function Result({ result }) {
 
     return (
         <>
-        {result && 
-        <ResultModal open={open} handleClose={handleClose} result={result} />}
+            {result &&
+                <ResultModal open={open} handleClose={handleClose} result={result} />}
             <Card sx={{ height: 250 }}>
                 <StarBorderIcon sx={{ m: 1 }} />
                 <CardMedia
@@ -36,16 +36,16 @@ export default function Result({ result }) {
                             ? result.image
                             : 'https://images.unsplash.com/photo-1595343208792-b7d268abb3be?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'}
                     title='Resource Image' />
-                <CardContent>
-                    <Typography>
-                        {result.name}
-                    </Typography>
-                    <CardActionArea onClick={handleClickOpen} >
-                        <Typography variant="caption" sx={{fontSize:"10px"}}>
+                <CardActionArea onClick={handleClickOpen} sx={{mx:1}} >
+                    <CardContent sx={{ maxHeight: 100 }}>
+                        <Typography variant="body2">
+                            {result.name}
+                        </Typography>
+                        <Typography variant="caption" sx={{ fontSize: "10px", maxHeight: 75, lineHeight: "normal" }}>
                             {result.description}
                         </Typography>
-                    </CardActionArea>
-                </CardContent>
+                    </CardContent>
+                </CardActionArea>
             </Card>
         </>
     )
