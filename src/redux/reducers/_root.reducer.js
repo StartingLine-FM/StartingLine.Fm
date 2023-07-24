@@ -8,7 +8,7 @@ import todoListResourcesReducer from './todolistresources.reducer';
 import EP_Reducer from './EP.reducer';
 import FU_Reducer from './FU.reducer';
 import chamber_Reducer from './chamber.reducer';
-
+import tableListReducer from './tablelist.reducer';
 
 
 // rootReducer is the primary reducer for our entire project
@@ -26,7 +26,8 @@ const rootReducer = combineReducers({
   FU_Reducer, //gives the user access to the scraped Fargo Underground Calendar
   chamber_Reducer, //gives the user access to the scraped FMWF Chamber of Commerce Calendar
   todoListReducer,
-  todoListResourcesReducer
+  todoListResourcesReducer,
+  tableListReducer
  // will have an id and username if someone is logged in
 
 });
