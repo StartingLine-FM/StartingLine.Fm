@@ -1,17 +1,33 @@
-function specificSearch() {
+function specificSearch(variant) {
 
-  const queryText = 
+  let queryText;
   // feeds bling variable in, just so we're not locked into only using $1
   // SIMILARITY takes the column title as the first arg, and the search query as the second arg,
-  // returns results according to a similarity threshold between 0 and 1 (> 0.07, in our case)
+  // returns results according to a similarity threshold between 0 and 1
+  if (variant === "text only"){
+  queryText =
   `
-    SIMILARITY(name, $1) > 0.07
-    OR SIMILARITY(website, $1) > 0.07
-    OR SIMILARITY(email, $1) > 0.07
-    OR SIMILARITY(address, $1) > 0.07
-    OR SIMILARITY(linkedin, $1) > 0.07
-    OR SIMILARITY(description, $1) > 0.07
+  WORD_SIMILARITY($1, resource.description) > 0.4
+  OR WORD_SIMILARITY($1, resource.name) > 0.4
+  OR WORD_SIMILARITY($1, stage.name) > 0.4
+  OR WORD_SIMILARITY($1, category.name) > 0.4
+  OR WORD_SIMILARITY($1, website) > 0.4
+  OR WORD_SIMILARITY($1, email) > 0.4
+  OR WORD_SIMILARITY($1, address) > 0.4
+  OR WORD_SIMILARITY($1, linkedin) > 0.4
   `;
+}
+  else if (variant === "combined"){
+  queryText = 
+  `
+  WORD_SIMILARITY($1, description) > 0.4
+  OR WORD_SIMILARITY($1, name) > 0.4
+  OR WORD_SIMILARITY($1, website) > 0.4
+  OR WORD_SIMILARITY($1, email) > 0.4
+  OR WORD_SIMILARITY($1, address) > 0.4
+  OR WORD_SIMILARITY($1, linkedin) > 0.4
+  `;
+}
 
   return queryText;
 }

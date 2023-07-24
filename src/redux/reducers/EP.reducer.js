@@ -3,7 +3,7 @@ const EP_Reducer = (state = [], action) => {
       case 'SET_EP':
         return action.payload;
       default:
-        return state;
+        return state.map(event => ({...event, color: 'red'}));;
     }
   };
   

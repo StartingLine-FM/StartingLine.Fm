@@ -11,41 +11,26 @@ router.get('/', (req, res) => {
     let stageQuery = req.query.stage;
     let textQuery = req.query.text;
 
-    // variable to add an ORDER BY clause to the end of a query via the req.body.order key
-    // for the front-end functionality of this, I'd like to look into adding onto the string via the spread operator
-    // so we can ORDER BY multiple parameters
-    // ex. ORDER BY "stage_id" DESC 
-    let orderText = `ORDER BY ${req.body.order};`
-
-
     // conditional to return queryText based on what's searched for using req.query
     if (categoryQuery && !stageQuery && !textQuery) {
+
         // only category
-        queryText = `SELECT * FROM "resource" WHERE ${filterSearchThroughCategory(categoryQuery)}`;
-        // declaring the final query as one of 2 options:
-        // if there's no req.body.order statement provided, the queryText above is sent with a default ORDER BY.
-        // if there IS a provided req.body.order statement, add that to the end of the queryText to make the finalQuery.
-        let finalQuery = !req.body.order ? `${queryText} ORDER BY "name";` : `${queryText} ${orderText};`;
-        pool.query(finalQuery)
+        queryText = `SELECT * FROM "resource" WHERE ${filterSearchThroughCategory(categoryQuery)} ORDER BY "name"`;
+        pool.query(queryText)
             .then(result => {
                 res.send(result.rows);
             })
             .catch(err => {
                 console.log("Error on search.router GET", err);
                 res.sendStatus(500);
-            });
+            })
 
     } else if (!categoryQuery && stageQuery && !textQuery) {
-        
+
         // only stage
         queryText = `SELECT * FROM "resource" WHERE ${fetchBusinessesByStage(stageQuery)}`;
-        
-        // declaring the final query as one of 2 options:
-        // if there's no req.body.order statement provided, the queryText above is sent with a default ORDER BY.
-        // if there IS a provided req.body.order statement, add that to the end of the queryText to make the finalQuery.
-        let finalQuery = !req.body.order ? `${queryText} ORDER BY "name";` : `${queryText} ${orderText};`;
-        
-        pool.query(finalQuery)
+
+        pool.query(queryText)
             .then(result => {
                 res.send(result.rows);
             })
@@ -55,16 +40,17 @@ router.get('/', (req, res) => {
             });
 
     } else if (!categoryQuery && !stageQuery && textQuery) {
-       
+
         // only text
-        queryText = `SELECT * FROM "resource" WHERE ${specificSearch()}`;
-       
-        // declaring the final query as one of 2 options:
-        // if there's no req.body.order statement provided, the queryText above is sent with a default ORDER BY.
-        // if there IS a provided req.body.order statement, add that to the end of the queryText to make the finalQuery.
-        let finalQuery = !req.body.order ? `${queryText} ORDER BY ${specificSearch()};` : `${queryText} ${orderText};`;
-       
-        pool.query(finalQuery, [textQuery])
+        queryText = `SELECT "resource"."id", "stage_id", "category_id", "resource"."name", "image_url", "resource"."description", "website", "email", "address", "linkedin", 
+        "category"."name" AS "category_name", 
+        "stage"."name" AS "stage_name" FROM "resource"
+        JOIN "category" ON "category"."id" = "resource"."category_id"
+        JOIN "stage" ON "stage"."id" = "resource"."stage_id" 
+        WHERE ${specificSearch("text only")} 
+        ORDER BY "resource"."name";`;
+
+        pool.query(queryText, [textQuery])
             .then(result => {
                 res.send(result.rows);
             })
@@ -74,16 +60,13 @@ router.get('/', (req, res) => {
             });
 
     } else if (categoryQuery && stageQuery && !textQuery) {
-       
+
         // category and stage
-        queryText = `SELECT * FROM "resource" WHERE ${filterSearchThroughCategory(categoryQuery)} AND (${fetchBusinessesByStage(stageQuery)})`;
-       
-        // declaring the final query as one of 2 options:
-        // if there's no req.body.order statement provided, the queryText above is sent with a default ORDER BY.
-        // if there IS a provided req.body.order statement, add that to the end of the queryText to make the finalQuery.
-        let finalQuery = !req.body.order ? `${queryText} ORDER BY "name";` : `${queryText} ${orderText};`;
-       
-        pool.query(finalQuery)
+        queryText = `SELECT * FROM "resource" 
+        WHERE ${filterSearchThroughCategory(categoryQuery)} 
+        AND (${fetchBusinessesByStage(stageQuery)})`;
+
+        pool.query(queryText)
             .then(result => {
                 res.send(result.rows);
             })
@@ -93,16 +76,14 @@ router.get('/', (req, res) => {
             });
 
     } else if (categoryQuery && !stageQuery && textQuery) {
-       
+
         // category and text
-        queryText = `SELECT * FROM "resource" WHERE ${filterSearchThroughCategory(categoryQuery)} AND ${specificSearch()}`;
-       
-        // declaring the final query as one of 2 options:
-        // if there's no req.body.order statement provided, the queryText above is sent with a default ORDER BY.
-        // if there IS a provided req.body.order statement, add that to the end of the queryText to make the finalQuery.
-        let finalQuery = !req.body.order ? `${queryText} ORDER BY ${specificSearch()};` : `${queryText} ${orderText};`;
-       
-        pool.query(finalQuery, [textQuery])
+        queryText = `SELECT * FROM "resource"
+        WHERE ${filterSearchThroughCategory(categoryQuery)} 
+        AND (${specificSearch("combined")})
+        ORDER BY "resource"."name";`;
+
+        pool.query(queryText, [textQuery])
             .then(result => {
                 res.send(result.rows);
             })
@@ -112,16 +93,14 @@ router.get('/', (req, res) => {
             });
 
     } else if (!categoryQuery && stageQuery && textQuery) {
-       
+
         // stage and text
-        queryText = `SELECT * FROM "resource" WHERE ${specificSearch()} AND (${fetchBusinessesByStage(stageQuery)})`;
-       
-        // declaring the final query as one of 2 options:
-        // if there's no req.body.order statement provided, the queryText above is sent with a default ORDER BY.
-        // if there IS a provided req.body.order statement, add that to the end of the queryText to make the finalQuery.
-        let finalQuery = !req.body.order ? `${queryText} ORDER BY ${specificSearch()};` : `${queryText} ${orderText};`;
-       
-        pool.query(finalQuery, [textQuery])
+        queryText = `SELECT * FROM "resource" 
+        WHERE (${specificSearch("combined")})
+        AND (${fetchBusinessesByStage(stageQuery)}) 
+        ORDER BY "resource"."name";`;
+
+        pool.query(queryText, [textQuery])
             .then(result => {
                 res.send(result.rows);
             })
@@ -131,16 +110,15 @@ router.get('/', (req, res) => {
             });
 
     } else if (categoryQuery && stageQuery && textQuery) {
-       
+
         // category, stage, and text all specified
-        queryText = `SELECT * FROM "resource" WHERE ${filterSearchThroughCategory(categoryQuery)} AND (${fetchBusinessesByStage(stageQuery)}) AND ${specificSearch()}`;
-       
-        // declaring the final query as one of 2 options:
-        // if there's no req.body.order statement provided, the queryText above is sent with a default ORDER BY.
-        // if there IS a provided req.body.order statement, add that to the end of the queryText to make the finalQuery.
-        let finalQuery = !req.body.order ? `${queryText} ORDER BY ${specificSearch()};` : `${queryText} ${orderText};`;
-       
-        pool.query(finalQuery, [textQuery])
+        queryText = `SELECT * FROM "resource"
+        WHERE ${filterSearchThroughCategory(categoryQuery)} 
+        AND (${fetchBusinessesByStage(stageQuery)}) 
+        AND (${specificSearch("combined")})
+        ORDER BY "resource"."name";`;
+
+        pool.query(queryText, [textQuery])
             .then(result => {
                 res.send(result.rows);
             })
@@ -150,16 +128,11 @@ router.get('/', (req, res) => {
             });
 
     } else {
-       
+
         // default
-        queryText = `SELECT * FROM "resource"`;
-        
-        // declaring the final query as one of 2 options:
-        // if there's no req.body.order statement provided, the queryText above is sent with a default ORDER BY.
-        // if there IS a provided req.body.order statement, add that to the end of the queryText to make the finalQuery.
-        let finalQuery = !req.body.order ? `${queryText} ORDER BY "name";` : `${queryText} ${orderText};`;
-        
-        pool.query(finalQuery)
+        queryText = `SELECT * FROM "resource" ORDER BY "name"`;
+
+        pool.query(queryText)
             .then(result => {
                 res.send(result.rows);
             })
