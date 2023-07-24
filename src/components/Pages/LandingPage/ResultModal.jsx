@@ -116,98 +116,97 @@ export default function ResultModal({ open, handleClose, result }) {
     }
 
     return (
-        result
-            ? editMode
-                // If in Edit Mode, show the following:
-                ? <Dialog open={open} onClose={handleClose}>
-                    <DialogActions>
-                        <IconButton onClick={putResource} >
-                            <SaveIcon />
-                        </IconButton>
-                        <IconButton onClick={() => { handleClose(), clearInputs() }} >
-                            <CloseIcon />
-                        </IconButton>
-                    </DialogActions>
-                    <DialogTitle>Edit entry for {result.name}</DialogTitle>
-                    <DialogContent>
-                        <TextField
-                            placeholder={result.name}
-                            value={newName}
-                            onChange={(e) => setNewName(e.target.value)}
-                        />
-                        <TextField
-                            placeholder={result.description ? result.description : 'Add description'}
-                            value={newDescription}
-                            onChange={(e) => setNewDescription(e.target.value)}
-                            multiline
-                            rows={5}
-                            maxLength="1000"
-                        />
-                        <TextField
-                            placeholder={result.website ? result.website : 'Add website url'}
-                            value={newWebsite}
-                            onChange={(e) => setNewWebsite(e.target.value)}
-                        />
-                        <TextField
-                            placeholder={result.email ? result.email : 'Add email'}
-                            value={newEmail}
-                            onChange={(e) => setNewEmail(e.target.value)}
-                        />
-                        <TextField
-                            placeholder={result.linkedin ? result.linkedin : 'Add LinkedIn url'}
-                            value={newLinkedIn}
-                            onChange={(e) => setNewLinkedIn(e.target.value)}
-                        />
-                        <TextField
-                            placeholder={result.address ? result.address : 'Add address'}
-                            value={newAddress}
-                            onChange={(e) => setNewAddress(e.target.value)}
-                        />
-                        <TextField
-                            placeholder={result.image ? result.image : 'Add image url'}
-                            value={newImage}
-                            onChange={(e) => setNewImage(e.target.value)}
-                        />
-                    </DialogContent>
-                </Dialog>
-                // if NOT in edit mode, show as normal
-                : <Dialog open={open} onClose={handleClose} >
-                    <DialogActions>
-                        {/* render Edit and Delete buttons if the user is logged in as admin */}
-                        {user && user.admin
-                            ? <>
-                                <IconButton onClick={() => setEditMode(true)} >
-                                    <EditIcon />
-                                </IconButton>
-                                <IconButton onClick={deleteResource} >
-                                    <DeleteIcon />
-                                </IconButton>
-                            </>
-                            : <>
-                                <IconButton >
-                                    <StarBorderIcon />
-                                </IconButton>
-                            </>
-                        }
-                        <IconButton onClick={handleClose} >
-                            <CloseIcon />
-                        </IconButton>
-                    </DialogActions>
-                    <DialogTitle>{result.name}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText >
-                            {result.description}
-                        </DialogContentText>
-                        {result.website || result.linkedin || result.email || result.address &&
-                            <DialogActions>
-                                Contact:
-                                <Link>{result.website && result.website}</Link>
-                                <Link>{result.email && result.email}</Link>
-                                <Link>{result.linkedin && result.linkedin}</Link>
-                                {result.address && result.address}
-                            </DialogActions>}
-                    </DialogContent>
-                </Dialog>
-            : null
+        editMode
+            // If in Edit Mode, show the following:
+            ? <Dialog open={open} onClose={handleClose}>
+                <DialogActions>
+                    <IconButton onClick={putResource} >
+                        <SaveIcon />
+                    </IconButton>
+                    <IconButton onClick={() => { handleClose(), clearInputs() }} >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogActions>
+                <DialogTitle>Edit entry for {result.name}</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        placeholder={result.name}
+                        value={newName}
+                        onChange={(e) => setNewName(e.target.value)}
+                    />
+                    <TextField
+                        placeholder={result.description ? result.description : 'Add description'}
+                        value={newDescription}
+                        onChange={(e) => setNewDescription(e.target.value)}
+                        multiline
+                        rows={5}
+                        maxLength="1000"
+                    />
+                    <TextField
+                        placeholder={result.website ? result.website : 'Add website url'}
+                        value={newWebsite}
+                        onChange={(e) => setNewWebsite(e.target.value)}
+                    />
+                    <TextField
+                        placeholder={result.email ? result.email : 'Add email'}
+                        value={newEmail}
+                        onChange={(e) => setNewEmail(e.target.value)}
+                    />
+                    <TextField
+                        placeholder={result.linkedin ? result.linkedin : 'Add LinkedIn url'}
+                        value={newLinkedIn}
+                        onChange={(e) => setNewLinkedIn(e.target.value)}
+                    />
+                    <TextField
+                        placeholder={result.address ? result.address : 'Add address'}
+                        value={newAddress}
+                        onChange={(e) => setNewAddress(e.target.value)}
+                    />
+                    <TextField
+                        placeholder={result.image ? result.image : 'Add image url'}
+                        value={newImage}
+                        onChange={(e) => setNewImage(e.target.value)}
+                    />
+                </DialogContent>
+            </Dialog>
+            // if NOT in edit mode, show as normal
+            : <Dialog open={open} onClose={handleClose} >
+                <DialogActions>
+                    {/* render Edit and Delete buttons if the user is logged in as admin */}
+                    {user && user.admin
+                        ? <>
+                            <IconButton onClick={() => setEditMode(true)} >
+                                <EditIcon />
+                            </IconButton>
+                            <IconButton onClick={deleteResource} >
+                                <DeleteIcon />
+                            </IconButton>
+                        </>
+                        : <>
+                            <IconButton >
+                                <StarBorderIcon />
+                            </IconButton>
+                        </>
+                    }
+                    <IconButton onClick={handleClose} >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogActions>
+                <DialogTitle>{result.name}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText >
+                        {result.description}
+                    </DialogContentText>
+                    {result.website || result.linkedin || result.email || result.address &&
+                        <DialogActions>
+                            Contact:
+                            <Link>{result.website && result.website}</Link>
+                            <Link>{result.email && result.email}</Link>
+                            <Link>{result.linkedin && result.linkedin}</Link>
+                            {result.address && result.address}
+                        </DialogActions>}
+                </DialogContent>
+            </Dialog>
+            // : null
     )
 }

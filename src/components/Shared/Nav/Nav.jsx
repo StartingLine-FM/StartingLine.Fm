@@ -23,9 +23,6 @@ function Nav() {
             <Link className="navLink" to="/login">
               Login / Register
             </Link>
-            <Link className="navLink" to="/todolist">
-              Todo List
-            </Link>
           </>
         )}
 
@@ -56,9 +53,14 @@ function Nav() {
         <Link className="navLink" to="/calendar">
           Calendar
         </Link>
-        <Link className="navLink" to="/todolist">
+        {user.id
+        ? <Link className="navLink" to="/todolist">
           Todo List
         </Link>
+        : <Link className="navLink" to="/anonlist">
+        Todo List
+      </Link>
+        }
       </div>
     </div>
     </AppBar>
