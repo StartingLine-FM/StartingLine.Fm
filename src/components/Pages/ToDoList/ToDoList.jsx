@@ -1,19 +1,23 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { Typography, Container, Paper, ListSubheader, Button, List, ListItemButton, ListItemText, ListItemIcon, ListItem, IconButton } from '@mui/material';
+import {
+    Typography, Container, Paper, ListSubheader, Button, List, ListItemButton,
+    ListItemText, ListItemIcon, ListItem, IconButton, Modal, Box, Dialog, DialogContent, DialogTitle
+} from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AnimatePresence, motion } from 'framer-motion';
-import './ToDoList.css'
+import ToDoListModal from './ToDoListModal';
 
 export default function ToDoList() {
 
-    // set state for edit mode
-    const [editMode, setEditMode] = useState(false)
+
     // set state for selected resource
     const [selectedResource, setSelectedResource] = useState(null);
     // set modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const open = () => setIsModalOpen(true);
+    const close = () => setIsModalOpen(false);
 
     // init dispatch
     const dispatch = useDispatch();
@@ -23,6 +27,9 @@ export default function ToDoList() {
     // grab reesources from the store
     const title_resources = useSelector(store => store.todoListResourcesReducer);
     console.log(title_resources);
+
+    // edit mode
+    const [editMode, setEditMode] = useState(false)
 
     useEffect(() => {
         dispatch({ type: "FETCH_TABLE_LISTS" })
@@ -57,79 +64,34 @@ export default function ToDoList() {
                 <Paper sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
                     {title_resources.map((resource, i) => (
                         <>
-                            <List component={motion.div} layoutId={resource.id} sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
+                            <List layoutId={resource.id} onClick={() => { setSelectedResource(resource.id); open(); }}
+                                sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
                                 {/* TODO change backend to get the table title id in the resources */}
-                                <ListItem component={motion.div} onClick={() => {setSelectedResource(resource.id); setIsModalOpen(true)}}>
+                                <ListItem >
                                     <ListItemText component={motion.h4}>{resource.resource_name}</ListItemText>
                                 </ListItem>
                                 <ListItem>
                                     <ListItemText component={motion.h4}>{resource.notes}</ListItemText>
                                 </ListItem>
-                                <ListItem component={motion.h5} secondaryAction={
-                                    <IconButton onClick={() => {setEditMode(true); setSelectedResource(resource.id); setIsModalOpen(true);}} edge={'end'} aria-label={'delete'}>
+
+                                <ListItem secondaryAction={
+                                    <IconButton onClick={() => setEditMode(true)} edge={'end'} aria-label={'delete'}>
+
                                         <ModeEditIcon />
                                     </IconButton>
                                 }>
-                                    <ListItemText component={motion.h5}>{resource.completed ? 'Completed' : 'Incomplete'}</ListItemText>
+                                    <ListItemText >{resource.completed ? 'Completed' : 'Incomplete'}</ListItemText>
                                 </ListItem >
                             </List>
                             <AnimatePresence>
-                                        {selectedResource && isModalOpen && (
-                                            <>
-                                <motion.div className='modal-overlay'>
-                                                <motion.div initial={{ y: 50, opacity: 0 }}
-                                                    animate={{
-                                                        y: 0,
-                                                        opacity: 1
-                                                    }}
-                                                    exit={{
-                                                        y: -50,
-                                                        opacity: 0
-                                                    }}
-                                                    transition={{ type: "spring", bounce: 0, duration: 0.4 }} component={motion.div} layoutId={resource.id} className='modal-content'>
-                                                    <List sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                                                        {resource.resource_name && <ListItem component={motion.div}>
-                                                            <ListItemText component={motion.h4}>{resource.resource_name}</ListItemText>
-                                                        </ListItem>}
-                                                        {resource.notes && <ListItem component={motion.div}>
-                                                            <ListItemText component={motion.h4}>{resource.notes}</ListItemText>
-                                                        </ListItem>}
-                                                        {resource.resource_description && <ListItem component={motion.div}>
-                                                            <ListItemText component={motion.h4}>{resource.resource_description}</ListItemText>
-                                                        </ListItem>}
-                                                        {resource.email && <ListItem component={motion.div}>
-                                                            <ListItemText component={motion.h4}>{resource.email}</ListItemText>
-                                                        </ListItem>}
-                                                        {resource.linkedin && <ListItem component={motion.div}>
-                                                            <ListItemText component={motion.h4}>{resource.linkedin}</ListItemText>
-                                                        </ListItem>}
-                                                        {resource.website && <ListItem component={motion.div}>
-                                                            <ListItemText component={motion.h4}>{resource.website}</ListItemText>
-                                                        </ListItem>}
-                                                        {resource.completed ? <ListItem component={motion.div}>
-                                                            <ListItemText component={motion.h4}>Completed</ListItemText>
-                                                        </ListItem> : <ListItem component={motion.div}>
-                                                            <ListItemText component={motion.h4}>Incomplete</ListItemText>
-                                                        </ListItem>}
-                                                        <ListItem component={motion.h5} secondaryAction={
-                                                            <IconButton onClick={() => setEditMode(true)} edge={'end'} aria-label={'delete'}>
-                                                                <ModeEditIcon />
-                                                            </IconButton>
-                                                        }></ListItem>
-                                                        <Button component={motion.button} onClick={() => {setSelectedResource(null); setIsModalOpen(false)}}>Exit</Button>
-                                                    </List>
-                                                </motion.div>
-                                    </motion.div>
-                                            </>
-                                        )
-                                        }
-
+                                {selectedResource && isModalOpen && (
+                                   <ToDoListModal open={open} close={close} isModalOpen={isModalOpen} setSelectedResource={setSelectedResource} resource={resource}/>
+                                )}
                             </AnimatePresence>
                         </>
                     ))}
                 </Paper>
             </Container>
-
         </>
     );
 }
