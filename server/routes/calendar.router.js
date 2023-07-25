@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const cheerio = require("cheerio");
-
+const moment = require("moment");
 const chrono = require("chrono-node");
 
 const EP_url = "https://www.emergingprairie.com/calendar/";
@@ -49,8 +49,8 @@ const parseEventDate = (displayStart) => {
     const formattedEndTime = `${endHours}:${endMinutes}:${endSeconds}`;
 
     return {
-      start: `${startYear}-${startMonth}-${startDay}T${formattedStartTime}.000Z`,
-      end: `${endYear}-${endMonth}-${endDay}T${formattedEndTime}.000Z`,
+      start: moment(`${startYear}-${startMonth}-${startDay}T${formattedStartTime}.000`).utcOffset(-5).format(),
+      end: moment(`${endYear}-${endMonth}-${endDay}T${formattedEndTime}.000`).utcOffset(-5).format(),
     };
   }
 
