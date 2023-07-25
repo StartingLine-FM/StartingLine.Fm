@@ -144,14 +144,22 @@ router.get("/fargo-underground", (req, res) => {
             )
             .text()
             .replace(/\n|\t/g, "");
-          const eventStart = $(element)
-            .find(
-              ".tribe-events-calendar-list__event-datetime-wrapper.tribe-common-b2"
-            )
+            const displayStart = $(element)
+            .find(".tribe-event-date-start")
+            .text()
+            .replace(/\n|\t/g, "");
+          const displayTime = $(element)
+            .find(".tribe-event-time")
+            .text()
+            .replace(/\n|\t/g, "");
+          const displayEnd = $(element)
+            .find(".tribe-event-date-end")
             .text()
             .replace(/\n|\t/g, "");
           const eventLocation = $(element)
-            .find(".tribe-events-calendar-list__event-venue-address")
+            .find(
+              ".tribe-events-calendar-list__event-venue-title.tribe-common-b2--bold"
+            )
             .text()
             .replace(/\n|\t/g, "");
           const eventDescription = $(element)
@@ -159,11 +167,22 @@ router.get("/fargo-underground", (req, res) => {
             .text()
             .replace(/\n|\t/g, "");
 
-          const formattedDate = parseEventDate(eventStart); // Use the helper function to parse the date
+            let date;
+
+            if (Boolean(displayTime)) {
+              date = `${displayStart} - ${displayTime}`;
+            } else if (Boolean(displayEnd)) {
+              date = `${displayStart} - ${displayEnd}`;
+            } else {
+              date = `${displayStart} 8:00 - 5:00`;
+            }
+  
+            const formattedDate = parseEventDate(date);
 
           const FU_CalendarBlock = {
             title: eventHeader,
-            start: formattedDate,
+            start: formattedDate.start,
+            end: formattedDate.end,
             location: eventLocation,
             description: eventDescription,
           };
@@ -208,7 +227,8 @@ router.get("/chamber", (req, res) => {
 
         const CHAMBER_CalendarBlock = {
           title: eventHeader,
-          start: formattedDate,
+          start: formattedDate.start,
+          end: formattedDate.end,
           description: eventDescription,
         };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction'; 
+import interactionPlugin from '@fullcalendar/interaction'
 import listPlugin from '@fullcalendar/list'; // import list plugin
 import moment from 'moment';
 import { format, parseISO } from 'date-fns';
