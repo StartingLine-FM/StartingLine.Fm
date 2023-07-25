@@ -48,6 +48,17 @@ CREATE TABLE "todo" (
     "notes" VARCHAR(1000),
     "completed" BOOLEAN DEFAULT FALSE
 );
+-- add a title table id to reference the table
+ALTER TABLE "todo" ADD "title_table_id" INTEGER REFERENCES "title_table" ("id");
+
+-- create a new table to have all of the titles in it
+CREATE TABLE "title_table" (
+	"id" SERIAL PRIMARY KEY,
+	"title" VARCHAR(100)
+);
+-- alter the title_table to have a reference to the user id so we can query titles based on user
+ALTER TABLE "title_table" ADD "user_id" INTEGER REFERENCES "user" ("id");
+
 
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 

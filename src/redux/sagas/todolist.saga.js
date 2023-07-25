@@ -26,7 +26,7 @@ function* fetchTodoList() {
 // function to add a resource to a todo list
 function* postTodoList(action) {
     try {
-        const response = yield axios.post(`/api/todo/${action.payload.resource_id}`); // call to the backend
+        const response = yield axios.post(`/api/todo/${action.payload.resource_id}/${action.payload.title_table_id}`); // call to the backend
         console.log(response.data); // check the response data 
         yield put({ type: "FETCH_TODO_LIST"})
     } catch (error) {
@@ -46,7 +46,7 @@ function* putTodoList(action) {
 // delete for a particular resource
 function* deleteTodoListResource(action) {
     try {
-        const response = yield axios.delete(`/api/todo/resource/${action.payload.resource_id}`);
+        const response = yield axios.delete(`/api/todo/resource/${action.payload.id}/${action.payload.title_table_id}`);
         console.log(response.data);
         yield put({ type: "FETCH_TODO_LIST" });
     } catch (error) {
@@ -57,7 +57,7 @@ function* deleteTodoListResource(action) {
 // clear a todo list
 function* clearTodoList(action) {
     try {
-        const response = yield axios.delete(`/api/todo/${action.payload.title}`);
+        const response = yield axios.delete(`/api/todo/${action.payload.title_table_id}`);
         console.log(response.data);
         yield put({ type: "FETCH_TODO_LIST" });
     } catch (error) {
