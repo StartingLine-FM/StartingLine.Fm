@@ -12,7 +12,8 @@ import {
     Typography,
     TextField,
     IconButton,
-    Link
+    Link,
+    Chip
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -21,7 +22,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 
-export default function ResultModal({ open, handleClose, result }) {
+export default function ResultModal({ open, handleClose, result, categoryTag, stageTag }) {
 
     // local state
     const [editMode, setEditMode] = useState(false);
@@ -205,8 +206,14 @@ export default function ResultModal({ open, handleClose, result }) {
                             <Link>{result.linkedin && result.linkedin}</Link>
                             {result.address && result.address}
                         </DialogActions>}
+                    {result.category_id &&
+                        <Chip sx={{mt:2, mr:1}} label={categoryTag(result.category_id)} />
+                    }
+                    {result.stage_id &&
+                        <Chip sx={{mt:2}} label={stageTag(result.stage_id)} />
+                    }
                 </DialogContent>
             </Dialog>
-            // : null
+        // : null
     )
 }
