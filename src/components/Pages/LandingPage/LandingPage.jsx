@@ -27,7 +27,7 @@ function LandingPage() {
             {search.length > 0
               ? search.map(result => {
                 return (
-                  <Grid item xs={4}>
+                  <Grid item xs={4} key={result.id}>
                     <Result result={result} />
                   </Grid>
                 )

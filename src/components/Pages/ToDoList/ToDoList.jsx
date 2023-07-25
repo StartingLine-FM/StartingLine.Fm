@@ -66,7 +66,7 @@ export default function ToDoList() {
                                     <ListItemText component={motion.h4}>{resource.notes}</ListItemText>
                                 </ListItem>
                                 <ListItem component={motion.h5} secondaryAction={
-                                    <IconButton onClick={() => setEditMode(true)} edge={'end'} aria-label={'delete'}>
+                                    <IconButton onClick={() => {setEditMode(true); setSelectedResource(resource.id); setIsModalOpen(true);}} edge={'end'} aria-label={'delete'}>
                                         <ModeEditIcon />
                                     </IconButton>
                                 }>

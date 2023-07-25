@@ -21,6 +21,7 @@ import LoginPage from './Pages/LoginPage/LoginPage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
 import CalendarPage from './Pages/CalendarPage/CalendarPage';
 import ToDoList from './Pages/ToDoList/ToDoList';
+import AnonToDo from './Pages/ToDoList/AnonToDo';
 
 
 import AdminPage from './Pages/AdminPage/AdminPage';
@@ -62,10 +63,15 @@ function App() {
           <Route
             // shows CalendarPage at all times (logged in or not)
             exact
-            path="/todolist"
+            path="/anonlist"
+          >
+            <AnonToDo />
+          </Route>
+          
+          <ProtectedRoute exact path="/todolist"
           >
             <ToDoList />
-          </Route>
+          </ProtectedRoute>
 
           {/* For protected routes, the view could show one of several things on the same route.
             Visiting localhost:3000/user will show the UserPage if the user is logged in.
@@ -74,7 +80,7 @@ function App() {
           <ProtectedRoute
             // logged in shows UserPage else shows LoginPage
             exact
-            path="/todolist"
+            path="/user"
           >
             <UserPage />
           </ProtectedRoute>
