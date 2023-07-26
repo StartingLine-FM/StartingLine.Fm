@@ -251,16 +251,17 @@ export default function SearchFilter({ currentList, setCurrentList }) {
                                 <ListItemText primary={`${user.username}'s Lists`} />
                                 {stageOpen ? <ExpandLess /> : <ExpandMore />}
                             </ListItemButton>
+                            <Collapse in={titleOpen} timeout="auto" unmountOnExit>
                             {titles &&
                                 titles.map(list => {
                                     return (
-                                    <Collapse in={titleOpen} timeout="auto" unmountOnExit>
-                                        <ListItemButton onClick={() => { setCurrentList(list.id)}}>
+                                        <ListItemButton key={list.id} onClick={() => {setCurrentList(list.id)}}>
                                             {currentList === list.id ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
                                             <ListItemText sx={{ ml: 1 }} primary={list.title} />
                                         </ListItemButton>
-                                    </Collapse>
+                                    
                                 )})}
+                            </Collapse>
                         </>
                     }
                 </Grid>
