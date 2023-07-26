@@ -32,10 +32,12 @@ export default function ToDoListModal({ isModalOpen, handleOpen, handleClose, re
 
         newName ? name = newName : name = resource.resource_name;
         newNotes ? notes = newNotes : notes = resource.notes;
-        newCompleted ? completed = newCompleted : completed = resource.completed;
-        console.log(todo_id)
         // logic for completed
-        
+        if (newCompleted === false) {
+            completed = false;
+          } else {
+            completed = newCompleted;
+          }
         
         
         // send off updated resource
@@ -53,7 +55,8 @@ export default function ToDoListModal({ isModalOpen, handleOpen, handleClose, re
 
         // clear the inputs
         clearInputs();
-
+        
+        handleClose;
     }
 
     // clear inputs

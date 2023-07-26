@@ -69,7 +69,7 @@ export default function ToDoList() {
                         <Container key={resource.id}>
                             <List
                                 sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                                <ListItemButton key={resource.id} onClick={() => setSelectedResource(resource.id)}>
+                                <ListItemButton key={resource.id} onClick={() => {setSelectedResource(resource.id); handleOpen();}}>
                                     <ListItemText  >{resource.resource_name}</ListItemText>
                                     <ListItemText>{resource.notes}</ListItemText>
                                     <ListItemText >{resource.completed ? 'Completed' : 'Incomplete'}</ListItemText>
