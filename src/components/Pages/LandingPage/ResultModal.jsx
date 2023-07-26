@@ -185,7 +185,8 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                         }}
                         label="Edit Category"
                         onChange={e => setNewCategory(e.target.value)}
-                    >
+                    >   
+                        <option value={0}>Add Category</option>
                         <option value={1}>Government</option>
                         <option value={2}>Funding Organization</option>
                         <option value={3}>University</option>
@@ -204,7 +205,7 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                         }}
                         label="Edit Business Stage"
                         onChange={e => setNewStage(e.target.value)}
-                    >
+                    >   <option value={0}>Add Business Stage</option>
                         <option value={1}>All</option>
                         <option value={2}>Nascent</option>
                         <option value={3}>Early Stage</option>
