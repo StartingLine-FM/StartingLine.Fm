@@ -4,22 +4,6 @@ const { rejectUnauthenticated } = require('../modules/authentication-middleware'
 const router = express.Router();
 
 
-// get to grab the users todo lists by title
-// router.get('/', async (req, res) => {
-//   try {
-//     const user_id = req.user.id
-//     // grab title from params
-//     const queryText = `SELECT "title" FROM "todo" WHERE "user_id"=$1;`;
-//     // send off query text
-//     const response = await pool.query(queryText, [user_id]);
-//     console.log(response.data) // check the response data
-//     res.status(200).send(response.rows); // send back the matching todo list
-//   } catch (error) {
-//     console.log('there was an error GETTING from the todo list', error);
-//   }
-// })
-
-
 router.post(`/:resource_id/:title_table_id`, async (req, res) => {
   try {
     // get id fromt the user

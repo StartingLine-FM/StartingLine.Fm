@@ -3,7 +3,6 @@ import axios from "axios";
 import { takeLatest, put, take } from "redux-saga/effects";
 
 function* todolistSaga() {
-    yield takeLatest('FETCH_TODO_LIST', fetchTodoList);
     yield takeLatest('POST_TODO_LIST', postTodoList);
     yield takeLatest('PUT_TODO_LIST', putTodoList);
     yield takeLatest('DELETE_TODO_LIST', deleteTodoListResource);
@@ -14,15 +13,7 @@ function* todolistSaga() {
 }
 
 // function to get the todo lists for the particular user
-function* fetchTodoList() {
-    try {
-        const response = yield axios.get('/api/todo/'); // call to the backend
-        console.log(response.data); // check the response data
-        yield put({ type: 'SET_TODO_LIST', payload: response.data });
-    } catch (error) {
-        console.log('there was an error fetching the todo list', error);
-    }
-}
+
 
 // function to add a resource to a todo list
 function* postTodoList(action) {
@@ -37,9 +28,9 @@ function* postTodoList(action) {
 
 function* putTodoList(action) {
     try {
-        const response = yield axios.put(`/api/todo/${action.payload.resource_id}/${action.payload.title_table_id}`); // call to the backend
+        const response = yield axios.put(`/api/todo/${action.payload.id}/${action.payload.title_table_id}`); // call to the backend
         console.log(response.data) // check the response data
-        yield put({ type: "FETCH_TODO_LIST" });
+        yield put({ type: "FETCH_TODO_LIST_RESOURCES" });
     } catch (error) {
         console.log('there was an error in the put to do list saga', error)
     }
@@ -49,7 +40,7 @@ function* deleteTodoListResource(action) {
     try {
         const response = yield axios.delete(`/api/todo/resource/${action.payload.id}/${action.payload.title_table_id}`);
         console.log(response.data);
-        yield put({ type: "FETCH_TODO_LIST" });
+        yield put({ type: "FETCH_TODO_LIST_RESOURCES" });
     } catch (error) {
         console.log('there was an error in deleting to do list resource saga', error);
     }
@@ -60,7 +51,7 @@ function* clearTodoList(action) {
     try {
         const response = yield axios.delete(`/api/todo/${action.payload.title_table_id}`);
         console.log(response.data);
-        yield put({ type: "FETCH_TODO_LIST" });
+        yield put({ type: "FETCH_TODO_LIST_RESOURCES" });
     } catch (error) {
         console.log('there was an error clearing the todo list', error)
     }
