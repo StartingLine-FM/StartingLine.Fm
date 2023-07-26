@@ -57,6 +57,10 @@ const parseEventDate = (displayStart) => {
   return null;
 };
 
+
+
+
+
 router.get("/emerging-prairie", (req, res) => {
   axios
     .get(EP_url)
@@ -210,28 +214,25 @@ router.get("/chamber", (req, res) => {
         const eventHeader = $(element)
           .find(".card-title.gz-card-title")
           .text()
-          .replace(/\s+/g, " ")
-          .trim();
+          .replace(/\s+/g, " ");
         const eventStart = $(element)
-          .find(".list-group-item.gz-card-date")
-          .text()
-          .replace(/\s+/g, " ")
-          .trim();
+          .find(".list-group-item.gz-card-date span")
+          .attr('content');
+        const eventEnd = $(element)
+          .find(".list-group-item.gz-card-date meta")
+          .attr("content");
         const eventDescription = $(element)
           .find(".card-text.gz-description.gz-events-description")
           .text()
-          .replace(/\s+/g, " ")
-          .trim();
+          .replace(/\s+/g, " ");
 
-        const formattedDate = parseEventDate(eventStart); // Use the helper function to parse the date
 
         const CHAMBER_CalendarBlock = {
           title: eventHeader,
-          start: formattedDate.start,
-          end: formattedDate.end,
+          start: eventStart,
+          end: eventEnd,
           description: eventDescription,
-        };
-
+        }
         CHAMBER_events.push(CHAMBER_CalendarBlock);
       });
 
@@ -242,5 +243,6 @@ router.get("/chamber", (req, res) => {
       res.sendStatus(500);
     });
 });
+
 
 module.exports = router;
