@@ -50,16 +50,16 @@ router.put('/:resource_id/:title_table_id', rejectUnauthenticated, async (req, r
 })
 
 // delete for a resource
-router.delete('/resource/:resource_id/:title_table_id', rejectUnauthenticated, async (req, res) => {
+router.delete('/resource/:id/:title_table_id', rejectUnauthenticated, async (req, res) => {
   try {
     // grab the resource_id from req.params
-    const resource_id = req.params.resource_id;
-    // grab title table id
+    const id = req.params.id;
+    // title id
     const title_table_id = req.params.title_table_id;
     // query text to send to the backend
-    const queryText = `DELETE FROM "todo" WHERE "resource_id" = $1 AND "title_table_id" = $2;`;
+    const queryText = `DELETE FROM "todo" WHERE "id" = $1;`;
     // send off query text
-    const response = await pool.query(queryText, [resource_id, title_table_id]);
+    const response = await pool.query(queryText, [id]);
     console.log(response.data);
     res.status(204).send(response.rows);
   } catch (error) {
@@ -91,9 +91,7 @@ router.get(`/user/todolist/resources/:title_table_id`, (req, res) => {
     const id = req.user.id;
     // grab the title for the resource
     const title_table_id = req.params.title_table_id
-
-    const queryText = `SELECT todo.notes, todo.id, todo.title_table_id,todo.resource_id, todo.completed, resource.name AS resource_name,
-
+    const queryText = `SELECT todo.notes, todo.id, todo.title_table_id, todo.resource_id, todo.completed, resource.name AS resource_name,
     resource.image_url, resource.description AS resource_description,
     resource.website, resource.email, resource.address, resource.linkedin
 FROM todo

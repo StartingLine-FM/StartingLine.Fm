@@ -5,7 +5,7 @@ import { takeLatest, put, take } from "redux-saga/effects";
 function* todolistSaga() {
     yield takeLatest('POST_TODO_LIST', postTodoList);
     yield takeLatest('PUT_TODO_LIST', putTodoList);
-    yield takeLatest('DELETE_TODO_LIST', deleteTodoListResource);
+    yield takeLatest('DELETE_TODO_LIST_RESOURCE', deleteTodoListResource);
     yield takeLatest('CLEAR_TODO_LIST', clearTodoList);
     yield takeLatest('FETCH_TODO_LIST_RESOURCES', fetchResourceInformation)
     yield takeLatest('FETCH_TABLE_LISTS', fetchTableLists)
@@ -20,7 +20,7 @@ function* postTodoList(action) {
     try {
         const response = yield axios.post(`/api/todo/${action.payload.resource_id}/${action.payload.title_table_id}`); // call to the backend
         console.log(response.data); // check the response data 
-        yield put({ type: "FETCH_TODO_LIST_RESOURCES", payload: title_table_id })
+        yield put({ type: "FETCH_TODO_LIST_RESOURCES", payload: action.payload.title_table_id })
     } catch (error) {
         console.log('there was an error posting a new resource', error)
     }
@@ -39,9 +39,10 @@ function* putTodoList(action) {
 // delete for a particular resource
 function* deleteTodoListResource(action) {
     try {
-        const response = yield axios.delete(`/api/todo/resource/${action.payload.id}/${action.payload.title_table_id}`);
+        console.log(action.payload)
+        const response = yield axios.delete(`/api/todo/resource/${action.payload.id}/${action.payload.title_table_id}` );
         console.log(response.data);
-        yield put({ type: "FETCH_TODO_LIST_RESOURCES" });
+        yield put({ type: "FETCH_TODO_LIST_RESOURCES", payload: action.payload.title_table_id });
     } catch (error) {
         console.log('there was an error in deleting to do list resource saga', error);
     }
