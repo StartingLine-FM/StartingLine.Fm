@@ -13,7 +13,8 @@ import {
     TextField,
     IconButton,
     Link,
-    Chip
+    Chip,
+    List
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -119,7 +120,7 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
     return (
         editMode
             // If in Edit Mode, show the following:
-            ? <Dialog open={open} onClose={handleClose}>
+            ? <Dialog open={open} onClose={handleClose} >
                 <DialogActions>
                     <IconButton onClick={putResource} >
                         <SaveIcon />
@@ -129,45 +130,88 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                     </IconButton>
                 </DialogActions>
                 <DialogTitle>Edit entry for {result.name}</DialogTitle>
-                <DialogContent>
+                <DialogContent sx={{ pt: 1, mt: 1 }}>
                     <TextField
-                        placeholder={result.name}
+                        sx={{ m: 1 }}
+                        label={result.name}
                         value={newName}
                         onChange={(e) => setNewName(e.target.value)}
                     />
                     <TextField
-                        placeholder={result.description ? result.description : 'Add description'}
+                        sx={{ m: 1, width:"50%" }}
+                        label={result.description ? result.description : 'Add description'}
                         value={newDescription}
                         onChange={(e) => setNewDescription(e.target.value)}
                         multiline
-                        rows={5}
+                        rows={3}
                         maxLength="1000"
                     />
                     <TextField
-                        placeholder={result.website ? result.website : 'Add website url'}
+                        sx={{ m: 1 }}
+                        label={result.website ? result.website : 'Add website url'}
                         value={newWebsite}
                         onChange={(e) => setNewWebsite(e.target.value)}
                     />
                     <TextField
-                        placeholder={result.email ? result.email : 'Add email'}
+                        sx={{ m: 1 }}
+                        label={result.email ? result.email : 'Add email'}
                         value={newEmail}
                         onChange={(e) => setNewEmail(e.target.value)}
                     />
                     <TextField
-                        placeholder={result.linkedin ? result.linkedin : 'Add LinkedIn url'}
+                        sx={{ m: 1 }}
+                        label={result.linkedin ? result.linkedin : 'Add LinkedIn url'}
                         value={newLinkedIn}
                         onChange={(e) => setNewLinkedIn(e.target.value)}
                     />
                     <TextField
-                        placeholder={result.address ? result.address : 'Add address'}
+                        sx={{ m: 1 }}
+                        label={result.address ? result.address : 'Add address'}
                         value={newAddress}
                         onChange={(e) => setNewAddress(e.target.value)}
                     />
                     <TextField
-                        placeholder={result.image ? result.image : 'Add image url'}
+                        sx={{ m: 1 }}
+                        label={result.image ? result.image : 'Add image url'}
                         value={newImage}
                         onChange={(e) => setNewImage(e.target.value)}
                     />
+                    <TextField
+                        sx={{ m: 1 }}
+                        select
+                        defaultValue={result.category_id}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        label="Edit Category"
+                        onChange={e => setNewCategory(e.target.value)}
+                    >   
+                        <option value={0}>Add Category</option>
+                        <option value={1}>Government</option>
+                        <option value={2}>Funding Organization</option>
+                        <option value={3}>University</option>
+                        <option value={4}>Support Organization</option>
+                        <option value={5}>Service Provider</option>
+                        <option value={6}>Big Company</option>
+                        <option value={7}>Research Organization</option>
+                    </TextField>
+                    <br/>
+                    <TextField
+                        sx={{ m: 1 }}
+                        select
+                        defaultValue={result.stage_id}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        label="Edit Business Stage"
+                        onChange={e => setNewStage(e.target.value)}
+                    >   <option value={0}>Add Business Stage</option>
+                        <option value={1}>All</option>
+                        <option value={2}>Nascent</option>
+                        <option value={3}>Early Stage</option>
+                        <option value={4}>Startup/Seed</option>
+                        <option value={5}>Growth</option>
+                    </TextField>
                 </DialogContent>
             </Dialog>
             // if NOT in edit mode, show as normal
@@ -207,10 +251,10 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                             {result.address && result.address}
                         </DialogActions>}
                     {result.category_id &&
-                        <Chip sx={{mt:2, mr:1}} label={categoryTag(result.category_id)} />
+                        <Chip sx={{ mt: 2, mr: 1 }} label={categoryTag(result.category_id)} />
                     }
                     {result.stage_id &&
-                        <Chip sx={{mt:2}} label={stageTag(result.stage_id)} />
+                        <Chip sx={{ mt: 2 }} label={stageTag(result.stage_id)} />
                     }
                 </DialogContent>
             </Dialog>
