@@ -11,14 +11,14 @@ import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
-export default function ToDoListModal({ open, close, isModalOpen, resource, setSelectedResource, selectedResource }) {
+export default function ToDoListModal({ isModalOpen, handleOpen, handleClose, resource, setSelectedResource, selectedResource }) {
     // set local state
     const [editMode, setEditMode] = useState(false);
     const [newName, setNewName] = useState('');
     const [newCompleted, setNewCompleted] = useState(false);
     const [newNotes, setNewNotes] = useState('');
 
-
+    console.log(resource)
     // init dispatch
     const dispatch = useDispatch();
     // update a resource
@@ -26,14 +26,19 @@ export default function ToDoListModal({ open, close, isModalOpen, resource, setS
         let name;
         let notes;
         let completed = false;
+        let title_table_id = resource.title_table_id;
+        let id = resource.resource_id;
+        let todo_id = resource.id
 
         newName ? name = newName : name = resource.resource_name;
         newNotes ? notes = newNotes : notes = resource.notes;
         newCompleted ? completed = newCompleted : completed = resource.completed;
-
-
+        console.log(todo_id)
+        // logic for completed
+        
+        
+        
         // send off updated resource
-        // TODO check the payload
         dispatch({
             type: 'PUT_TODO_LIST',
             payload: {
@@ -41,15 +46,14 @@ export default function ToDoListModal({ open, close, isModalOpen, resource, setS
                 id,
                 name,
                 notes,
-                completed
+                completed,
+                todo_id
             }
         })
 
         // clear the inputs
         clearInputs();
 
-        // close modal
-        close;
     }
 
     // clear inputs
@@ -63,13 +67,13 @@ export default function ToDoListModal({ open, close, isModalOpen, resource, setS
         <>
             {editMode ?
                 <>
-                    <Dialog component={motion.div} open={isModalOpen} close={close} aria-labelledby='modal-modal-title'
+                    <Dialog open={isModalOpen} onClose={handleClose}  aria-labelledby='modal-modal-title'
                         aria-describedby='modal-modal-description'>
                         <DialogActions>
-                            <IconButton edge='end' onClick={() => { putResource }}>
+                            <IconButton edge='end' onClick={() => {putResource();}}>
                                 <SaveIcon />
                             </IconButton>
-                            <IconButton component={motion.button} onClick={() => { setSelectedResource(null); setEditMode(false); close; clearInputs(); }} edge={'end'} aria-label={'delete'}>
+                            <IconButton onClick={() => { setSelectedResource(null); setEditMode(false); clearInputs(); }} edge={'end'} aria-label={'delete'}>
                                 <CloseIcon />
                             </IconButton>
                             <DialogTitle variant='h5'>{resource.resource_name}</DialogTitle>
@@ -84,9 +88,9 @@ export default function ToDoListModal({ open, close, isModalOpen, resource, setS
                             </Button></DialogContent>
                     </Dialog>
                 </> :
-                <Dialog open={isModalOpen} close={close}>
+                <Dialog open={isModalOpen} onClose={handleClose} >
                     <DialogActions>
-                        <IconButton component={motion.button} onClick={() => { setSelectedResource(null); setEditMode(false); close; clearInputs(); }} edge={'start'} aria-label={'delete'}>
+                        <IconButton onClick={() => { handleClose;  setSelectedResource(null); setEditMode(false);clearInputs();  }} edge={'start'} aria-label={'delete'}>
                             <CloseIcon />
                         </IconButton>
                         <IconButton onClick={() => setEditMode(true)} edge={'end'} aria-label={'delete'}>

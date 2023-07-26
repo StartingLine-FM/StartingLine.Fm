@@ -27,9 +27,10 @@ function* postTodoList(action) {
 
 function* putTodoList(action) {
     try {
-        const response = yield axios.put(`/api/todo/${action.payload.id}/${action.payload.title_table_id}`); // call to the backend
+        console.log(action.payload)
+        const response = yield axios.put(`/api/todo/${action.payload.id}/${action.payload.title_table_id}`, {todo_id: action.payload.todo_id, completed: action.payload.completed, notes: action.payload.notes}); // call to the backend
         console.log(response.data) // check the response data
-        yield put({ type: "FETCH_TODO_LIST_RESOURCES" });
+        yield put({ type: "FETCH_TODO_LIST_RESOURCES", payload: action.payload.title_table_id });
     } catch (error) {
         console.log('there was an error in the put to do list saga', error)
     }
