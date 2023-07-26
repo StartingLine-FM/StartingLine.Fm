@@ -10,13 +10,29 @@ const FU_url =
   "https://fargounderground.com/events/category/community/business/list/";
 const CHAMBER_url = "https://www.fmwfchamber.com/events/catgid/6?";
 
+
+
 const parseEventDate = (displayStart) => {
   displayStart.includes("@") && (displayStart = displayStart.replace("@", ""));
 
-  const parsedDateRange = chrono.parse(displayStart);
+  // Check if the date is in range format like "November 8 - November 10"
+  const dateRangeMatch = displayStart.match(/^(.+) - (.+)$/);
+  if (dateRangeMatch) {
+    const start = chrono.parseDate(dateRangeMatch[1]);
+    const end = chrono.parseDate(dateRangeMatch[2]);
 
-  if (parsedDateRange && parsedDateRange.length > 0) {
-    const startTime = parsedDateRange[0].start;
+    if (start && end) {
+      return {
+        start: moment(start).utcOffset(-5).format(),
+        end: moment(end).utcOffset(-5).format(),
+      };
+    }
+  }
+
+  const parsedDate = chrono.parse(displayStart);
+
+  if (parsedDate && parsedDate.length > 0) {
+    const startTime = parsedDate[0].start;
     const startYear = startTime.impliedValues.year.toString().padStart(4, "0");
     const startMonth = startTime.knownValues.month.toString().padStart(2, "0");
     const startDay = startTime.knownValues.day.toString().padStart(2, "0");
@@ -31,7 +47,7 @@ const parseEventDate = (displayStart) => {
       : "00";
     const formattedStartTime = `${startHours}:${startMinutes}:${startSeconds}`;
 
-    const endTime = parsedDateRange[0].end;
+    const endTime = parsedDate[0].end;
     const endYear = endTime.impliedValues.year
       ? endTime.impliedValues.year.toString().padStart(4, "0")
       : endTime.knownValues.year.toString().padStart(4, "0");
@@ -39,7 +55,7 @@ const parseEventDate = (displayStart) => {
     const endDay = endTime.knownValues.day.toString().padStart(2, "0");
     const endHours = endTime.knownValues.hour
       ? endTime.knownValues.hour.toString().padStart(2, "0")
-      : "5";
+      : "17";
     const endMinutes = endTime.knownValues.minute
       ? endTime.knownValues.minute.toString().padStart(2, "0")
       : "00";
@@ -56,7 +72,6 @@ const parseEventDate = (displayStart) => {
 
   return null;
 };
-
 
 
 
