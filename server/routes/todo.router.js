@@ -29,19 +29,20 @@ router.put('/:resource_id/:title_table_id', rejectUnauthenticated, async (req, r
     const user_id = req.user.id;
     // grab the resource id from params
     const resource_id = req.params.resource_id;
+    // grab the title table id
+    const title_table_id = req.params.title_table_id;
+    console.log(req.body)
     // create query text to update the data
     const queryText = `UPDATE "todo" SET 
-      "title" = $1,
-       "notes" = $2,
-       "completed" = $3
-       WHERE "resource_id" = $4;`;
+       "notes" = $1,
+       "completed" = $2
+       WHERE "id"= $3;`;
 
     const response = await pool.query(queryText,
-      [req.body.title,
-      req.body.notes,
+      [req.body.notes,
       req.body.completed,
-        resource_id])
-    console.log(response.data)
+        req.body.todo_id])
+    console.log(response.rows)
     res.status(204).send(response.rows)
   } catch (error) {
     console.log('there was an error PUTTING to the todo list', error)
@@ -90,9 +91,9 @@ router.get(`/user/todolist/resources/:title_table_id`, (req, res) => {
     const id = req.user.id;
     // grab the title for the resource
     const title_table_id = req.params.title_table_id
-    console.log(id, title_table_id);
-    const queryText = `SELECT todo.notes, todo.completed, todo.title_table_id, todo.resource_id,
-    resource.name AS resource_name,
+
+    const queryText = `SELECT todo.notes, todo.id, todo.title_table_id,todo.resource_id, todo.completed, resource.name AS resource_name,
+
     resource.image_url, resource.description AS resource_description,
     resource.website, resource.email, resource.address, resource.linkedin
 FROM todo
