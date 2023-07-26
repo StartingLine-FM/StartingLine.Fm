@@ -1,6 +1,7 @@
 // import use selector and use dispatch
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import moment from "moment";
 
 import ResultModal from "./ResultModal";
 
@@ -21,13 +22,21 @@ import StarIcon from '@mui/icons-material/Star';
 
 export default function Result({ result }) {
 
+    useEffect(() => {
+        dispatch({
+            type: "FETCH_TABLE_LISTS"
+        })
+    }, [])
+
     // local state
     const [open, setOpen] = useState(false);
+    const [currentList, setCurrentList] = useState('')
 
     // Redux
     const user = useSelector(store => store.user)
     const todoResources = useSelector(store => store.todoListResourcesReducer);
     const todoList = useSelector(store => store.todoListReducer);
+    const tableList = useSelector(store => store.tableListReducer);
     const dispatch = useDispatch();
 
     // click handler for opening ResultModal
@@ -40,7 +49,6 @@ export default function Result({ result }) {
     }
 
     const categoryTag = (id) => {
-        console.log(result)
         if (result) {
             switch (id) {
                 case 1:
@@ -90,18 +98,48 @@ export default function Result({ result }) {
         })
     }
 
+    const userPostTodo = () => {
+
+        if (tableList.length === 0) {
+            console.log(moment().format("MM/DD/YYYY"));
+            let currentDate = moment().format("MM/DD/YYYY");
+
+            dispatch({
+                type: "POST_NEW_TITLE",
+                payload: {
+                    title: `TO-DO: ${currentDate}`
+                }
+            });
+        }
+            
+        setCurrentList(tableList[0].id);
+        
+        console.log(`${tableList[0].id}`);
+        console.log(currentList);
+
+        currentList &&
+            dispatch({
+                type: "POST_TODO_LIST",
+                payload: {
+                    resource_id: result.id,
+                    title_table_id: currentList
+                }
+            })
+
+    }
+
     return (
         <>
             {result &&
                 <ResultModal open={open} handleClose={handleClose} result={result} categoryTag={categoryTag} stageTag={stageTag} />}
             <Card raised sx={{ height: 250, maxWidth: 250, pb: 1 }}>
                 {
-                    todoResources.some(e => e.id === result.id)
+                    todoResources.some(e => e.id === result.id || e.resource_id === result.id)
                         ? <IconButton>
                             <StarIcon color="warning" />
                         </IconButton>
                         : user.id
-                            ? <IconButton >
+                            ? <IconButton onClick={() => userPostTodo()} >
                                 <StarBorderIcon />
                             </IconButton>
                             : <IconButton onClick={() => anonPostTodo()}>

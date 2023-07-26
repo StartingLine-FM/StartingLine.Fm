@@ -120,10 +120,11 @@ export default function SearchFilter() {
         <Grid container flexDirection={"column"} width={"25%"}>
             <Paper sx={{ mr: 2, px: 2, pt: 2, pb: 100 }}>
                 {/* Text search input */}
-                <Grid item sx={{ m: 1 }}>
+                <Grid item sx={{mb:1}}>
                     <TextField
                         placeholder="Search"
                         size="small"
+                        sx={{width:"70%"}}
                         value={textSearch}
                         onChange={(e) => setTextSearch(e.target.value)}
                     />

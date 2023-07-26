@@ -5,19 +5,19 @@ const router = express.Router();
 
 
 // get to grab the users todo lists by title
-router.get('/', async (req, res) => {
-  try {
-    const user_id = req.user.id
-    // grab title from params
-    const queryText = `SELECT "title" FROM "todo" WHERE "user_id"=$1;`;
-    // send off query text
-    const response = await pool.query(queryText, [user_id]);
-    console.log(response.data) // check the response data
-    res.status(200).send(response.rows); // send back the matching todo list
-  } catch (error) {
-    console.log('there was an error DELETING from the todo list', error);
-  }
-})
+// router.get('/', async (req, res) => {
+//   try {
+//     const user_id = req.user.id
+//     // grab title from params
+//     const queryText = `SELECT "title" FROM "todo" WHERE "user_id"=$1;`;
+//     // send off query text
+//     const response = await pool.query(queryText, [user_id]);
+//     console.log(response.data) // check the response data
+//     res.status(200).send(response.rows); // send back the matching todo list
+//   } catch (error) {
+//     console.log('there was an error GETTING from the todo list', error);
+//   }
+// })
 
 
 router.post(`/:resource_id/:title_table_id`, async (req, res) => {
@@ -101,12 +101,14 @@ router.delete('/:title_table_name', rejectUnauthenticated, async (req, res) => {
 
 
 // get for grabbing the resources based on the todo list
-router.get('/user/todolist/resources/:title_table_id', (req, res) => {
+router.get(`/user/todolist/resources/:title_table_id`, (req, res) => {
     // get user id
     const id = req.user.id;
     // grab the title for the resource
     const title_table_id = req.params.title_table_id
-    const queryText = `SELECT todo.notes, todo.id, todo.title_table_id,todo.resource_id, todo.completed, todo.title, resource.name AS resource_name,
+    console.log(id, title_table_id);
+    const queryText = `SELECT todo.notes, todo.completed, todo.title_table_id, todo.resource_id,
+    resource.name AS resource_name,
     resource.image_url, resource.description AS resource_description,
     resource.website, resource.email, resource.address, resource.linkedin
 FROM todo
@@ -118,6 +120,7 @@ AND todo.title_table_id = $2;`;
     pool.query(queryText, [id, title_table_id]).then(response => {
 
       res.status(200).send(response.rows);
+      console.log(response.rows)
     }).catch((err) => {
 
       console.log('there was an error getting the resource', err)
