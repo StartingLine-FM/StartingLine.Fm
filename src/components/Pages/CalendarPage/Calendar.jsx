@@ -45,10 +45,12 @@ const Calendar = () => {
   
   const handleEventClick = (info) => {
     // Format start and end dates for Google Calendar
+
     console.log(info)
     let startDate = moment(info.event.start).format('YYYYMMDD[T]HHmmSS');
     let endDate = moment(info.event.end).format('YYYYMMDD[T]HHmmSS')
     
+
   
     // Encode description to ensure it's URL-safe
     let description = encodeURIComponent(info.event.extendedProps.description);
