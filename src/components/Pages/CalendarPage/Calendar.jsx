@@ -29,11 +29,19 @@ const Calendar = () => {
   const handleEventDidMount = (info) => {
     // Format the start date using date-fns
     const startDate = format(new Date(info.event.start), 'MMMM d @ h:mm a');
+    const { description, location } = info.event.extendedProps;
+  
     let eventDetails = `<div>
                             <span>Start: ${startDate}</span>
-                            <p>${info.event.extendedProps.description}</p>
-                            <p>Location: ${info.event.extendedProps.location}</p>
-                        </div>`;
+                            <p>${description}</p>`;
+    
+    // Only include location if it is not an empty string or undefined
+    if (location && location.trim() !== '') {
+      eventDetails += `<p>Location: ${location}</p>`;
+    }
+  
+    eventDetails += `</div>`;
+  
     new bootstrap.Popover(info.el, {
       title: info.event.title,
       placement: 'auto',
@@ -41,7 +49,8 @@ const Calendar = () => {
       content: eventDetails,
       html: true,
     });
-  }
+  };
+  
   
   const handleEventClick = (info) => {
     // Format start and end dates for Google Calendar
