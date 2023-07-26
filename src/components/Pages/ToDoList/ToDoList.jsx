@@ -66,7 +66,6 @@ export default function ToDoList() {
                         <>
                             <List  onClick={() => { setSelectedResource(resource.id); openModal(); }}
                                 sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                                {/* TODO change backend to get the table title id in the resources */}
                                 <ListItem >
                                     <ListItemText component={motion.h4}>{resource.resource_name}</ListItemText>
                                 </ListItem>
