@@ -49,7 +49,7 @@ export default function ToDoList() {
                         <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
                             {list_titles.map((list, i) => (
                                 <ListItem key={i} secondaryAction={
-                                    <IconButton edge={'end'} aria-label={'delete'}>
+                                    <IconButton onClick={() => dispatch({ type: "CLEAR_TODO_LIST", payload: {title: list.title, title_table_id: list.id}})} edge={'end'} aria-label={'delete'}>
                                         <DeleteIcon />
                                     </IconButton>
                                 }>

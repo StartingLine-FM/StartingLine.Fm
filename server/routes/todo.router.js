@@ -68,17 +68,21 @@ router.delete('/resource/:id/:title_table_id', rejectUnauthenticated, async (req
 })
 
 // delete for a whole todo list
-router.delete('/:title_table_name', rejectUnauthenticated, async (req, res) => {
+router.delete('/:title/:title_table_id', rejectUnauthenticated, async (req, res) => {
   try {
     const user_id = req.user.id
     // grab the title from req.params
-    const title_table_name = req.params.title_table_name
+    const title = req.params.title;
+    // grab id
+    const title_table_id = req.params.title_table_id;
+    // delete items from the list text
+    const deleteItemsQuery = `DELETE FROM "todo" WHERE "title_table_id" = $1;`;
+    await pool.query(deleteItemsQuery, [title_table_id])
     // query text to send to the backend
     const queryText = `DELETE FROM "title_table" WHERE "title" = $1;`;
     // send off query text
-    const response = await pool.query(queryText, [title_table_name]);
-    console.log(response.data);
-    res.status(204).send(response.rows);
+    await pool.query(queryText, [title]);
+    res.status(204)
   } catch (error) {
     console.log('there was an error DELETING from the todo list', error);
   }

@@ -51,9 +51,10 @@ function* deleteTodoListResource(action) {
 // clear a todo list
 function* clearTodoList(action) {
     try {
-        const response = yield axios.delete(`/api/todo/${action.payload.title_table_id}`);
+        console.log(action.payload)
+        const response = yield axios.delete(`/api/todo/${action.payload.title}/${action.payload.title_table_id}`);
         console.log(response.data);
-        yield put({ type: "FETCH_TODO_LIST_RESOURCES" });
+        yield put({ type: "FETCH_TABLE_LISTS", payload: action.payload.title_table_id  });
     } catch (error) {
         console.log('there was an error clearing the todo list', error)
     }
@@ -61,7 +62,7 @@ function* clearTodoList(action) {
 
 function* fetchResourceInformation(action) {
     try {
-        console.log(action.payload)
+        console.log(action.payload) 
         const response = yield axios.get(`/api/todo/user/todolist/resources/${action.payload}`);
         console.log("response is", response.data);
         yield put({ type: "SET_TODO_LIST_RESOURCES", payload: response.data });
