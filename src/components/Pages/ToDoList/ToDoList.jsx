@@ -16,8 +16,8 @@ export default function ToDoList() {
     const [selectedResource, setSelectedResource] = useState(null);
     // set modal state
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const open = () => setIsModalOpen(true);
-    const close = () => setIsModalOpen(false);
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
     // init dispatch
     const dispatch = useDispatch();
@@ -64,9 +64,8 @@ export default function ToDoList() {
                 <Paper sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
                     {title_resources.map((resource, i) => (
                         <>
-                            <List layoutId={resource.id} onClick={() => { setSelectedResource(resource.id); open(); }}
+                            <List  onClick={() => { setSelectedResource(resource.id); openModal(); }}
                                 sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                                {/* TODO change backend to get the table title id in the resources */}
                                 <ListItem >
                                     <ListItemText component={motion.h4}>{resource.resource_name}</ListItemText>
                                 </ListItem>
@@ -84,8 +83,8 @@ export default function ToDoList() {
                                 </ListItem >
                             </List>
                             <AnimatePresence>
-                                {selectedResource && isModalOpen && (
-                                   <ToDoListModal open={open} close={close} isModalOpen={isModalOpen} setSelectedResource={setSelectedResource} resource={resource}/>
+                                {selectedResource && (
+                                   <ToDoListModal isModalOpen={isModalOpen} open={open} close={close} setSelectedResource={setSelectedResource} resource={resource}/>
                                 )}
                             </AnimatePresence>
                         </>
