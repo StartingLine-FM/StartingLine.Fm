@@ -20,7 +20,7 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 
 
-export default function Result({ result }) {
+export default function Result({ result, currentList, setCurrentList }) {
 
     useEffect(() => {
         dispatch({
@@ -28,9 +28,15 @@ export default function Result({ result }) {
         })
     }, [])
 
+    useEffect(() => {
+        dispatch({
+            type: "FETCH_TODO_LIST_RESOURCES",
+            payload: currentList
+        })
+    }, [setCurrentList])
+
     // local state
     const [open, setOpen] = useState(false);
-    const [currentList, setCurrentList] = useState('')
 
     // Redux
     const user = useSelector(store => store.user)
@@ -75,7 +81,7 @@ export default function Result({ result }) {
         if (result) {
             switch (id) {
                 case 1:
-                    return "All";
+                    return "All Stages";
                 case 2:
                     return "Nascent";
                 case 3:
@@ -111,10 +117,7 @@ export default function Result({ result }) {
                 }
             });
         }
-            
-        setCurrentList(tableList[0].id);
-        
-        console.log(`${tableList[0].id}`);
+
         console.log(currentList);
 
         currentList &&

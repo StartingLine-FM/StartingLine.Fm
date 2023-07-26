@@ -20,7 +20,7 @@ function* postTodoList(action) {
     try {
         const response = yield axios.post(`/api/todo/${action.payload.resource_id}/${action.payload.title_table_id}`); // call to the backend
         console.log(response.data); // check the response data 
-        yield put({ type: "FETCH_TODO_LIST_RESOURCES" })
+        yield put({ type: "FETCH_TODO_LIST_RESOURCES", payload: title_table_id })
     } catch (error) {
         console.log('there was an error posting a new resource', error)
     }

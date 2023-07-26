@@ -3,7 +3,6 @@ import errors from './errors.reducer';
 import user from './user.reducer';
 import search from './search.reducer'
 import admin from './admin.reducer';
-import todoListReducer from './todolist.reducer';
 import todoListResourcesReducer from './todolistresources.reducer';
 import EP_Reducer from './EP.reducer';
 import FU_Reducer from './FU.reducer';
@@ -25,7 +24,6 @@ const rootReducer = combineReducers({
   EP_Reducer, //gives the user access to the scraped Emerging Prairie Calendar
   FU_Reducer, //gives the user access to the scraped Fargo Underground Calendar
   chamber_Reducer, //gives the user access to the scraped FMWF Chamber of Commerce Calendar
-  todoListReducer,
   todoListResourcesReducer,
   tableListReducer
  // will have an id and username if someone is logged in
