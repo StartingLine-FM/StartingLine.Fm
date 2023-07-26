@@ -11,6 +11,7 @@ function* todolistSaga() {
     yield takeLatest('FETCH_TABLE_LISTS', fetchTableLists)
     yield takeLatest('POST_NEW_TITLE', postNewTitle)
 }
+
 // function to get the todo lists for the particular user
 
 
@@ -19,7 +20,7 @@ function* postTodoList(action) {
     try {
         const response = yield axios.post(`/api/todo/${action.payload.resource_id}/${action.payload.title_table_id}`); // call to the backend
         console.log(response.data); // check the response data 
-        yield put({ type: "FETCH_TODO_LIST_RESOURCES"})
+        yield put({ type: "FETCH_TODO_LIST_RESOURCES", payload: title_table_id })
     } catch (error) {
         console.log('there was an error posting a new resource', error)
     }
@@ -60,7 +61,7 @@ function* fetchResourceInformation(action) {
     try {
         console.log(action.payload)
         const response = yield axios.get(`/api/todo/user/todolist/resources/${action.payload}`);
-        console.log(response.data);
+        console.log("response is", response.data);
         yield put({ type: "SET_TODO_LIST_RESOURCES", payload: response.data });
     } catch (error) {
         console.log('there was an error grabbing the resource by the id', error)
@@ -78,10 +79,10 @@ function* fetchTableLists() {
     }
 }
 
-function* postNewTitle() {
+function* postNewTitle(action) {
     try {
         // make request
-        const response = yield axios.post('api/todo/title')
+        const response = yield axios.post('api/todo/title', action.payload)
         console.log(response.data) // make sure you are getting the correct data
         yield put({ type: "FETCH_TABLE_LISTS" })
     } catch (error) {
