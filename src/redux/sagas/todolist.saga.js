@@ -97,7 +97,7 @@ function* fetchTableLists() {
 function* postNewTitle(action) {
     try {
         // make request
-        const response = yield axios.post('api/todo/title', action.payload)
+        const response = yield axios.post('api/todo/title', {title: action.payload.title})
         console.log(response.data) // make sure you are getting the correct data
         yield put({ type: "FETCH_TABLE_LISTS" })
     } catch (error) {
