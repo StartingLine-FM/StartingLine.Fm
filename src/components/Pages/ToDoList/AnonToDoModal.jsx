@@ -27,7 +27,6 @@ export default function AnonToDoModal({ open, resource, handleClose }) {
                         {resource.linkedin &&
                             <Typography variant='body1'>LinkedIn: {resource.linkedin}</Typography>}
                         {resource.website && <Typography variant='body1'>Website: {resource.website}</Typography>}
-                            <Typography>Completed :{resource.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />} </Typography>
                     </DialogContent>
                 </Dialog>
     )

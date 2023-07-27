@@ -14,7 +14,6 @@ import {
     IconButton,
     Link,
     Chip,
-    List
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -215,7 +214,7 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                 </DialogContent>
             </Dialog>
             // if NOT in edit mode, show as normal
-            : <Dialog open={open} onClose={handleClose} >
+            : <Dialog open={open} onClose={handleClose}  >
                 <DialogActions>
                     {/* render Edit and Delete buttons if the user is logged in as admin */}
                     {user && user.admin
@@ -245,26 +244,16 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                     </IconButton>
                 </DialogActions>
                 <DialogTitle>{result.name}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText >
-                        {result.description}
-                    </DialogContentText>
-                    {result.website || result.linkedin || result.email || result.address &&
-                        <DialogActions>
-                            Contact:
-                            <Link>{result.website && result.website}</Link>
-                            <Link>{result.email && result.email}</Link>
-                            <Link>{result.linkedin && result.linkedin}</Link>
-                            {result.address && result.address}
-                        </DialogActions>}
-                    {result.category_id &&
-                        <Chip sx={{ mt: 2, mr: 1 }} label={categoryTag(result.category_id)} />
-                    }
-                    {result.stage_id &&
-                        <Chip sx={{ mt: 2 }} label={stageTag(result.stage_id)} />
-                    }
+                <DialogContent sx={{ gap: 2, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
+                        <Typography variant="body1">{result.description}</Typography>
+                        <Link target="_blank" rel="noopener noreferrer" href={result.website}>{result.website && result.website}</Link>
+                        <Link href={`mailto:${result.email}`}>{result.email && result.email}</Link>
+                        <Link target="_blank" rel="noopener noreferrer" href={result.linkedin}>{result.linkedin && result.linkedin}</Link>
+                        <Typography variant="body1">{result.address && result.address}</Typography>
+                    
+                    <Chip sx={{ mt: 2, mr: 1 }} label={categoryTag(result.category_id)} />
+                    <Chip sx={{ mt: 2 }} label={stageTag(result.stage_id)} />
                 </DialogContent>
             </Dialog>
-        // : null
     )
 }

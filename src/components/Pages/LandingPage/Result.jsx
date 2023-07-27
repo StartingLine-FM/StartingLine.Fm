@@ -151,14 +151,11 @@ export default function Result({ result, currentList, setCurrentList }) {
                                 <StarBorderIcon />
                             </IconButton>
                 }
-                <CardMedia
-                    sx={{ height: 100 }}
-                    image={
-                        result.image
-                            ? result.image
-                            : 'https://images.unsplash.com/photo-1595343208792-b7d268abb3be?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'}
-                    title='Resource Image' />
                 <CardActionArea onClick={handleClickOpen} >
+                    <CardMedia
+                        sx={{height: 100 }}
+                        image={result.image_url}
+                        title='Resource Image' />
                     <CardContent sx={{ py: 1 }}>
                         <Typography
                             sx={{
