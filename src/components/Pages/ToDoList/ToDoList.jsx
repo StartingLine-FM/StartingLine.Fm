@@ -2,29 +2,30 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState, React } from 'react';
 import {
     Typography, Container, Paper, ListSubheader, Button, List, ListItemButton,
-    ListItemText, ListItemIcon, ListItem, IconButton, Modal, Box, Dialog, DialogContent, DialogTitle
+    ListItemText, ListItemIcon, ListItem, IconButton, Modal, Box, Dialog, DialogContent, DialogTitle,
+    Grid,
+    TextField
 } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { AnimatePresence, motion } from 'framer-motion';
 import ToDoListModal from './ToDoListModal';
-
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import SaveIcon from '@mui/icons-material/Save';
 
 export default function ToDoList() {
-
-
+    // set state for edit mode
+    const [editMode, setEditMode] = useState(false);
     // set state for selected resource
     const [selectedResource, setSelectedResource] = useState(null);
+    // use state for edit inputs
+    const [newCompleted, setNewCompleted] = useState(false);
+    const [newNotes, setNewNotes] = useState('');
+    const [newName, setNewName] = useState('');
     // set modal state
     const [isModalOpen, setIsModalOpen] = useState(false)
-
-    const handleOpen = () => {
-        setIsModalOpen(true);
-    }
-
-    const handleClose = () => {
-        setIsModalOpen(false);
-    }
+    // modal toggles
     // init dispatch
     const dispatch = useDispatch();
 
@@ -32,67 +33,174 @@ export default function ToDoList() {
     const list_titles = useSelector(store => store.tableListReducer);
     // grab reesources from the store
     const title_resources = useSelector(store => store.todoListResourcesReducer);
-    console.log(title_resources);
+    // state for checkboxes
 
+    // toggle modals
+    const handleOpen = () => {
+        setIsModalOpen(true);
+    }
 
+    const handleClose = () => {
+        setIsModalOpen(false);
+    }
 
     useEffect(() => {
         dispatch({ type: "FETCH_TABLE_LISTS" })
     }, [])
 
+
+    const putResource = (resource, check) => {
+        let name;
+        let notes;
+        let completed = false;
+        let title_table_id = resource.title_table_id;
+        let id = resource.resource_id;
+        let todo_id = resource.id;
+
+        newName ? name = newName : name = resource.resource_name;
+        newNotes ? notes = newNotes : notes = resource.notes;
+        // logic for completed
+        if (newCompleted === false) {
+            completed = false;
+        } else {
+            completed = newCompleted;
+        }
+
+        // check
+        if(check) {
+            completed = !resource.completed;
+        } else {
+            completed = resource.completed
+        }
+
+        // send off updated resource
+        dispatch({
+            type: 'PUT_TODO_LIST',
+            payload: {
+                title_table_id,
+                id,
+                name,
+                notes,
+                completed,
+                todo_id
+            }
+        })
+
+        // clear the inputs
+        clearInputs();
+
+        handleClose();
+    }
+
+    // clear inputs
+    const clearInputs = () => {
+        setNewNotes('');
+        setNewName('');
+        setNewCompleted(false);
+    }
+
+
+    // changes the background color of a list item based on the resource's "completed" key
+    const listStyle = (resource) => {
+        if (resource.completed) {
+            return {
+                display: 'flex',
+                flexDirection: 'row',
+                width: '100%',
+                maxWidth: '100%',
+                bgcolor: 'lightgray'
+            }
+        } else return {
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            maxWidth: '100%',
+            bgcolor: 'background.paper'
+        }
+    }
+
+    // TODO create toggle for prgramatic refresh of page
+
     return (
         <>
-            <Container sx={{ flexDirection: 'row', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
-                <Container sx={{ paddingBottom: 4, flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
-                    <Typography variant='h4' gutterBottom align='center' paddingBottom={4}>Todo Lists</Typography>
-                    <Paper sx={{ display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
-                        <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                            {list_titles.map((list, i) => (
-                                <ListItem key={i} secondaryAction={
-                                    <IconButton onClick={() => dispatch({ type: "CLEAR_TODO_LIST", payload: {title_table_id: list.id}})} edge={'end'} aria-label={'delete'}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                }>
-                                    <ListItemButton onClick={() => dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id })} key={i}>
-                                        <ListItemText variant='h4' >{list.title}</ListItemText>
-                                    </ListItemButton>
-                                </ListItem>
-                            ))}
-                        </List>
-                    </Paper>
-                </Container>
-            </Container>
-            <Container sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
-                <Typography variant='h4' gutterBottom align='center' paddingBottom={4}>Resources</Typography>
-                <Paper sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
-                    {title_resources.map((resource, i) => (
-                        <Container key={resource.id}>
-                            <List
-                                sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                                <ListItem secondaryAction={<IconButton onClick={() => dispatch({ type: "DELETE_TODO_LIST_RESOURCE", payload: {id: resource.id, title_table_id: resource.title_table_id }})} edge={'end'} aria-label={'delete'}>
-                                    <DeleteIcon />
-                                </IconButton>} >
-                                    <ListItemButton key={resource.id} onClick={() => { setSelectedResource(resource.id); handleOpen(); }}>
-                                        <ListItemText  >{resource.resource_name}</ListItemText>
-                                        <ListItemText>{resource.notes}</ListItemText>
-                                        <ListItemText >{resource.completed ? 'Completed' : 'Incomplete'}</ListItemText>
-                                    </ListItemButton  >
-                                </ListItem>
+            <Grid container>
+                {/* Sidebar */}
+                <Grid item md={4} xs={12}>
+                    <Container sx={{ paddingBottom: 4 }}>
+                        <Typography variant='h4' gutterBottom align='center' paddingBottom={4}>Todo Lists</Typography>
+                        <Paper sx={{ width: '100%' }} elevation={2}>
+                            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                                {list_titles.map((list, i) => (
+                                    <ListItem key={i} secondaryAction={
+                                        <IconButton onClick={() => dispatch({ type: "CLEAR_TODO_LIST", payload: { title_table_id: list.id } })} edge={'end'} aria-label={'delete'}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    }>
+                                        <ListItemButton onClick={() => dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id })} key={i}>
+                                            <ListItemText variant='h4' >{list.title}</ListItemText>
+                                        </ListItemButton>
+                                    </ListItem>
+                                ))}
                             </List>
-                            <AnimatePresence>
-                                {selectedResource === resource.id && (
-                                    <ToDoListModal
-                                        isModalOpen={isModalOpen}
-                                        handleClose={handleClose}
-                                        resource={resource}
-                                        setSelectedResource={setSelectedResource}
-                                    />
-                                )}
-                            </AnimatePresence>
-                        </Container>
-                    ))}
-                </Paper>
-            </Container>
+                        </Paper>
+                    </Container>
+                </Grid>
+
+                {/* Center Content */}
+                <Grid item md={8} xs={12}>
+                    <Container sx={{ paddingBottom: 4 }}>
+                        <Typography variant='h4' gutterBottom align='center' paddingBottom={4}>Resources</Typography>
+                        <Paper sx={{ width: '100%' }} elevation={2}>
+                            {title_resources.map((resource, i) => (
+                                <Container key={resource.id}>
+                                    <List sx={listStyle(resource)}>
+                                        <ListItem key={resource.id} secondaryAction={<IconButton onClick={() => dispatch({ type: "DELETE_TODO_LIST_RESOURCE", payload: { id: resource.id, title_table_id: resource.title_table_id } })} edge={'end'} aria-label={'delete'}>
+                                            <DeleteIcon />
+                                        </IconButton>} >
+
+                                            <ListItem>
+                                                <ListItemText onClick={() => { setSelectedResource(resource.id); handleOpen(); }}>{resource.resource_name}</ListItemText>
+                                            </ListItem>
+                                            {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)} variant='filled' placeholder={resource.notes ? resource.notes : 'Click edit to add notes'}>{resource.notes ? resource.notes : 'Click edit to add notes'}</TextField></ListItem> :
+                                                <ListItem>
+                                                    <ListItemText>{resource.notes ? resource.notes : 'Click edit to add notes'}</ListItemText>
+                                                </ListItem>}
+                                            {editMode && selectedResource === resource.id ? <ListItem>                            <Button
+                                                variant='text'
+                                                onClick={() => setNewCompleted((prevCompleted) => !prevCompleted)}
+                                            >
+                                                {newCompleted ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+                                            </Button></ListItem> :
+                                                <ListItemButton onClick={() => putResource(resource, true)}>
+                                                    <ListItemText >{resource.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}</ListItemText>
+                                                </ListItemButton>}
+
+
+                                            {editMode && selectedResource === resource.id ? <ListItem><IconButton edge='end' onClick={() => { putResource(resource); setEditMode(false)  }}>
+                                                <SaveIcon />
+                                            </IconButton></ListItem> :
+                                                <ListItem><IconButton onClick={() => { setEditMode(true); setSelectedResource(resource.id); }} edge={'end'} aria-label={'delete'}>
+                                                    <ModeEditIcon />
+                                                </IconButton></ListItem>}
+
+                                        </ListItem>
+                                    </List>
+                                    <AnimatePresence>
+                                        {selectedResource === resource.id && (
+                                            <ToDoListModal
+                                                isModalOpen={isModalOpen}
+                                                handleClose={handleClose}
+                                                resource={resource}
+                                                setSelectedResource={setSelectedResource}
+                                            />
+                                        )}
+                                    </AnimatePresence>
+                                </Container>
+                            ))}
+                        </Paper>
+                    </Container>
+                </Grid>
+            </Grid>
         </>
     );
 }
