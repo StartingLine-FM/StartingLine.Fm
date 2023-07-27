@@ -1,0 +1,19 @@
+.admin-container {
+    background-color: hsla(55, 28%, 92%, 0.70);
+    color: black;
+    padding: 30px 10px;
+    margin: 100px 0;
+    font-size:22px;
+    /* background-color: rgba(0,0,0,0.5); */
+}
+
+.admin-page {
+    /* background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)), url("/./public/images/Discurso_funebre_pericles.PNG"); */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    opacity: 100%;
+    width: 100%;
+    padding: 30px;
+}
