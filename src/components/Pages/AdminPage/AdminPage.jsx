@@ -60,6 +60,7 @@ function AdminPage() {
    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
   return (
+    <Box className='style-box'>
     <Container  className='admin-container'>
       <form className='admin-form' onSubmit={handleSubmit}>
         <TextField
@@ -147,9 +148,10 @@ function AdminPage() {
         <Button variant="contained" color="primary" type="submit">
           Add Resource
         </Button>
+
       </form>
           {/* Form to add a new category */}
-          <form onSubmit={handleAddCategory}>
+          {/* <form onSubmit={handleAddCategory}>
         <TextField
           label="New Category"
           value={newCategory}
@@ -157,11 +159,9 @@ function AdminPage() {
         />
         <Button variant="contained" color="primary" type="submit">
           Add Category
-        </Button>
-      </form>
-
+      </form> */}
       {/* Form to add a new stage */}
-      <form onSubmit={handleAddStage}>
+      {/* <form onSubmit={handleAddStage}>
         <TextField
           label="New Stage"
           value={newStage}
@@ -170,8 +170,9 @@ function AdminPage() {
         <Button variant="contained" color="primary" type="submit">
           Add Stage
         </Button>
-      </form>
+      </form>   */}
     </Container>
+    </Box>
   );
 }
 
