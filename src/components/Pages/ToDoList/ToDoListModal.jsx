@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 // framer motion imports
-import { motion } from 'framer-motion'
+// import { motion } from 'framer-motion'
 // material ui imports 
 import { Dialog, DialogTitle, DialogContent, Typography, IconButton, Button, DialogActions } from "@mui/material";
 import TextField from '@mui/material/TextField';

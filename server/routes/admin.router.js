@@ -33,7 +33,7 @@ router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
 router.put('/:id', rejectUnauthenticated, isAdmin, async (req,res) => {
     const updatedResource = req.body;
     //query text to update a resource already on the app
-    const queryText = 'UPDATE resource SET stage_id = $1, category_id = $2, name = $3, image_url = $4, description = $5, website = $6, email = $7, address = $8, linkedin = $9 WHERE id = $10';
+    const queryText = 'UPDATE resource SET stage = $1, category = $2, name = $3, image_url = $4, description = $5, website = $6, email = $7, address = $8, linkedin = $9 WHERE id = $10';
     try {
         //updates the resource based on the id
         await pool.query(queryText, [updatedResource.stage_id, updatedResource.category_id, updatedResource.name, updatedResource.image_url, updatedResource.description, updatedResource.website, updatedResource.email, updatedResource.address, updatedResource.linkedin, req.params.id]);
@@ -57,5 +57,29 @@ router.delete('/:id', rejectUnauthenticated, isAdmin, async (req,res) => {
     }
 });
 
+//Route to (POST) add a new category for the admin
+router.post('/categories', rejectUnauthenticated, isAdmin, async (req, res) => {
+    const newCategory = req.body;
+    const queryText = 'INSERT INTO category (name) VALUES ($1)';
+    try {
+        await pool.query(queryText, [newCategory.name]);
+        res.sendStatus(201);
+    } catch (err) {
+        console.log('Error adding category', err);
+        res.sendStatus(500);
+    }
+});
+//Route to (POST) add a new stage for the admin
+router.post('/stages', rejectUnauthenticated, isAdmin, async (req, res) => {
+    const newStage = req.body;
+    const queryText = "INSERT INTO stage (name, description) VALUES ($1, $2)";
+    try {
+        await pool.query(queryText, [newStage.name]);
+        res.sendStatus(201);
+    } catch (err) {
+        console.log('Error adding stage', err);
+        res.sendStatus(500);
+    }
+});
 
 module.exports = router;
