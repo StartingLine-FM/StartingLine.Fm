@@ -8,7 +8,8 @@ import EP_Reducer from './EP.reducer';
 import FU_Reducer from './FU.reducer';
 import chamber_Reducer from './chamber.reducer';
 import tableListReducer from './tablelist.reducer';
-
+import CategoriesReducer from './categories.reducer';
+import StagesReducer from './stages.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -25,9 +26,9 @@ const rootReducer = combineReducers({
   FU_Reducer, //gives the user access to the scraped Fargo Underground Calendar
   chamber_Reducer, //gives the user access to the scraped FMWF Chamber of Commerce Calendar
   todoListResourcesReducer,
-  tableListReducer
- // will have an id and username if someone is logged in
-
+  tableListReducer, // will have an id and username if someone is logged in
+  CategoriesReducer, //sets the categories for the project
+  StagesReducer, // sets the stages for the project
 });
 
 export default rootReducer;
