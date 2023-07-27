@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 function AdminPage() {
   const [newResource, setNewResource] = useState({
@@ -10,7 +10,9 @@ function AdminPage() {
     website: '',
     email: '',
     address: '',
-    linkedin: ''
+    linkedin: '',
+    category: '',
+    stage: ''
   });
 
   const dispatch = useDispatch();
@@ -25,7 +27,9 @@ function AdminPage() {
       website: '',
       email: '',
       address: '',
-      linkedin: ''
+      linkedin: '',
+      category: '',
+      stage: ''
     });
   };
 
@@ -67,6 +71,41 @@ function AdminPage() {
           value={newResource.linkedin}
           onChange={(event) => setNewResource({...newResource, linkedin: event.target.value})}
         />
+        <TextField
+          select
+          value={newResource.category_id}
+          SelectProps={{
+            native: true,
+        }}
+        // label="Choose Category"
+        onChange={(event) => setNewResource({...newResource, category_id: event.target.value})}
+        >
+          <option value={0}>Add Category</option>
+          <option value={1}>Government</option>
+          <option value={2}>Funding Organization</option>
+          <option value={3}>University</option>
+          <option value={4}>Support Organization</option>
+          <option value={5}>Service Provider</option>
+          <option value={6}>Big Company</option>
+          <option value={7}>Research Organization</option>
+        </TextField>
+        <TextField
+          select
+          value={newResource.stage_id}
+          SelectProps={{
+            native: true,
+        }}
+        // label="Choose Stage"
+        onChange={(event) => setNewResource({...newResource, stage_id: event.target.value})}
+        >
+          <option value={0}>Add Stage</option>
+          <option value={1}>All</option>
+          <option value={2}>Nascent</option>
+          <option value={3}>Early Stage</option>
+          <option value={4}>Startup/Seed</option>
+          <option value={5}>Growth</option>
+
+        </TextField>
         <Button variant="contained" color="primary" type="submit">Add Resource</Button>
       </form>
     </div>
