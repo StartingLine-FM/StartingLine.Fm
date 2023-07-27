@@ -23,17 +23,13 @@ import StarIcon from '@mui/icons-material/Star';
 export default function Result({ result, currentList, setCurrentList }) {
 
     useEffect(() => {
-        dispatch({
-            type: "FETCH_TABLE_LISTS"
-        })
-    }, [])
+        if (user.id) {
+            dispatch({
+                type: "FETCH_TABLE_LISTS"
+            });
+        }
+    }, []);
 
-    useEffect(() => {
-        dispatch({
-            type: "FETCH_TODO_LIST_RESOURCES",
-            payload: currentList
-        })
-    }, [setCurrentList])
 
     // local state
     const [open, setOpen] = useState(false);
@@ -41,7 +37,6 @@ export default function Result({ result, currentList, setCurrentList }) {
     // Redux
     const user = useSelector(store => store.user)
     const todoResources = useSelector(store => store.todoListResourcesReducer);
-    const todoList = useSelector(store => store.todoListReducer);
     const tableList = useSelector(store => store.tableListReducer);
     const dispatch = useDispatch();
 
@@ -134,7 +129,14 @@ export default function Result({ result, currentList, setCurrentList }) {
     return (
         <>
             {result &&
-                <ResultModal open={open} handleClose={handleClose} result={result} categoryTag={categoryTag} stageTag={stageTag} />}
+                <ResultModal
+                    open={open}
+                    handleClose={handleClose}
+                    result={result} categoryTag={categoryTag}
+                    stageTag={stageTag}
+                    userPostTodo={userPostTodo}
+                    anonPostTodo={anonPostTodo}
+                />}
             <Card raised sx={{ height: 250, maxWidth: 250, pb: 1 }}>
                 {
                     todoResources.some(e => e.id === result.id || e.resource_id === result.id)
