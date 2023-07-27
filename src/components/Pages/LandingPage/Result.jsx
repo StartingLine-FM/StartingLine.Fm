@@ -22,18 +22,15 @@ import StarIcon from '@mui/icons-material/Star';
 
 export default function Result({ result, currentList, setCurrentList }) {
 
-    useEffect(() => {
-        dispatch({
-            type: "FETCH_TABLE_LISTS"
-        })
-    }, [])
 
     useEffect(() => {
-        dispatch({
-            type: "FETCH_TODO_LIST_RESOURCES",
-            payload: currentList
-        })
-    }, [setCurrentList])
+        if (user.id) {
+            dispatch({
+                type: "FETCH_TABLE_LISTS"
+            });
+        }
+    }, []);
+
 
     // local state
     const [open, setOpen] = useState(false);
@@ -134,7 +131,14 @@ export default function Result({ result, currentList, setCurrentList }) {
     return (
         <>
             {result &&
-                <ResultModal open={open} handleClose={handleClose} result={result} categoryTag={categoryTag} stageTag={stageTag} />}
+                <ResultModal
+                    open={open}
+                    handleClose={handleClose}
+                    result={result} categoryTag={categoryTag}
+                    stageTag={stageTag}
+                    userPostTodo={userPostTodo}
+                    anonPostTodo={anonPostTodo}
+                />}
             <Card raised sx={{ height: 250, maxWidth: 250, pb: 1 }}>
                 {
                     todoResources.some(e => e.id === result.id || e.resource_id === result.id)

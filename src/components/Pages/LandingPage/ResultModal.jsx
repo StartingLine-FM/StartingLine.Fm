@@ -23,7 +23,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 
-export default function ResultModal({ open, handleClose, result, categoryTag, stageTag }) {
+export default function ResultModal({ open, handleClose, result, categoryTag, stageTag, userPostTodo, anonPostTodo }) {
 
     // local state
     const [editMode, setEditMode] = useState(false);
@@ -138,7 +138,7 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                         onChange={(e) => setNewName(e.target.value)}
                     />
                     <TextField
-                        sx={{ m: 1, width:"50%" }}
+                        sx={{ m: 1, width: "50%" }}
                         label={result.description ? result.description : 'Add description'}
                         value={newDescription}
                         onChange={(e) => setNewDescription(e.target.value)}
@@ -185,7 +185,7 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                         }}
                         label="Edit Category"
                         onChange={e => setNewCategory(e.target.value)}
-                    >   
+                    >
                         <option value={0}>Add Category</option>
                         <option value={1}>Government</option>
                         <option value={2}>Funding Organization</option>
@@ -195,7 +195,7 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                         <option value={6}>Big Company</option>
                         <option value={7}>Research Organization</option>
                     </TextField>
-                    <br/>
+                    <br />
                     <TextField
                         sx={{ m: 1 }}
                         select
@@ -227,11 +227,18 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                                 <DeleteIcon />
                             </IconButton>
                         </>
-                        : <>
-                            <IconButton >
-                                <StarBorderIcon />
+                        : todoResources.some(e => e.id === result.id || e.resource_id === result.id)
+                            ? <IconButton>
+                                <StarIcon color="warning" />
                             </IconButton>
-                        </>
+                            : user.id
+                                ? <IconButton onClick={() => userPostTodo()} >
+                                    <StarBorderIcon />
+                                </IconButton>
+                                : <IconButton onClick={() => anonPostTodo()}>
+                                    <StarBorderIcon />
+                                </IconButton>
+
                     }
                     <IconButton onClick={handleClose} >
                         <CloseIcon />
