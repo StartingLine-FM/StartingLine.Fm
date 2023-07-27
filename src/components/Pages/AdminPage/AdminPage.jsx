@@ -16,6 +16,9 @@ function AdminPage() {
     stage_id: '',
   });
 
+  const [newCategory, setNewCategory] = useState('');
+  const [newStage, setNewStage] = useState('');
+
   const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
@@ -41,13 +44,24 @@ function AdminPage() {
     }
   };
 
+  const handleAddCategory = (event) => {
+    event.preventDefault();
+    dispatch({ type: 'POST_CATEGORY', payload: newCategory });
+    setNewCategory('');
+  };
+
+  const handleAddStage = (event) => {
+    event.preventDefault();
+    dispatch({ type: 'POST_STAGE', payload: newStage });
+    setNewStage('');
+  };
+
    // Regular expression for validating URLs
    const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
   return (
-    <Box className='admin-page'>
-    <Container className='admin-container'>
-      <form onSubmit={handleSubmit}>
+    <Container  className='admin-container'>
+      <form className='admin-form' onSubmit={handleSubmit}>
         <TextField
           label="Name"
           value={newResource.name}
@@ -105,7 +119,7 @@ function AdminPage() {
           onChange={(event) => setNewResource({ ...newResource, category_id: event.target.value })}
           required // This makes the field mandatory
         >
-          <option value={0}>Add Category</option>
+          <option value={0}>Pick Category</option>
           <option value={1}>Government</option>
           <option value={2}>Funding Organization</option>
           <option value={3}>University</option>
@@ -123,7 +137,7 @@ function AdminPage() {
           onChange={(event) => setNewResource({ ...newResource, stage_id: event.target.value })}
           required // This makes the field mandatory
         >
-          <option value={0}>Add Stage</option>
+          <option value={0}>Pick Stage</option>
           <option value={1}>All</option>
           <option value={2}>Nascent</option>
           <option value={3}>Early Stage</option>
@@ -134,8 +148,30 @@ function AdminPage() {
           Add Resource
         </Button>
       </form>
+          {/* Form to add a new category */}
+          <form onSubmit={handleAddCategory}>
+        <TextField
+          label="New Category"
+          value={newCategory}
+          onChange={(event) => setNewCategory(event.target.value)}
+        />
+        <Button variant="contained" color="primary" type="submit">
+          Add Category
+        </Button>
+      </form>
+
+      {/* Form to add a new stage */}
+      <form onSubmit={handleAddStage}>
+        <TextField
+          label="New Stage"
+          value={newStage}
+          onChange={(event) => setNewStage(event.target.value)}
+        />
+        <Button variant="contained" color="primary" type="submit">
+          Add Stage
+        </Button>
+      </form>
     </Container>
-    </Box>
   );
 }
 
