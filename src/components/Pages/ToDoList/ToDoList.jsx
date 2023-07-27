@@ -49,7 +49,7 @@ export default function ToDoList() {
                         <List sx={{ width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
                             {list_titles.map((list, i) => (
                                 <ListItem key={i} secondaryAction={
-                                    <IconButton edge={'end'} aria-label={'delete'}>
+                                    <IconButton onClick={() => dispatch({ type: "CLEAR_TODO_LIST", payload: {title_table_id: list.id}})} edge={'end'} aria-label={'delete'}>
                                         <DeleteIcon />
                                     </IconButton>
                                 }>
@@ -69,11 +69,15 @@ export default function ToDoList() {
                         <Container key={resource.id}>
                             <List
                                 sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                                <ListItemButton key={resource.id} onClick={() => {setSelectedResource(resource.id); handleOpen();}}>
-                                    <ListItemText  >{resource.resource_name}</ListItemText>
-                                    <ListItemText>{resource.notes}</ListItemText>
-                                    <ListItemText >{resource.completed ? 'Completed' : 'Incomplete'}</ListItemText>
-                                </ListItemButton >
+                                <ListItem secondaryAction={<IconButton onClick={() => dispatch({ type: "DELETE_TODO_LIST_RESOURCE", payload: {id: resource.id, title_table_id: resource.title_table_id }})} edge={'end'} aria-label={'delete'}>
+                                    <DeleteIcon />
+                                </IconButton>} >
+                                    <ListItemButton key={resource.id} onClick={() => { setSelectedResource(resource.id); handleOpen(); }}>
+                                        <ListItemText  >{resource.resource_name}</ListItemText>
+                                        <ListItemText>{resource.notes}</ListItemText>
+                                        <ListItemText >{resource.completed ? 'Completed' : 'Incomplete'}</ListItemText>
+                                    </ListItemButton  >
+                                </ListItem>
                             </List>
                             <AnimatePresence>
                                 {selectedResource === resource.id && (
