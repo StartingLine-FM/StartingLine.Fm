@@ -13,6 +13,8 @@ import ToDoListModal from './ToDoListModal';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import SaveIcon from '@mui/icons-material/Save';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+
 
 export default function ToDoList() {
     // set state for edit mode
@@ -25,7 +27,7 @@ export default function ToDoList() {
     const [newName, setNewName] = useState('');
     // set modal state
     const [isModalOpen, setIsModalOpen] = useState(false)
-    // modal toggles
+
     // init dispatch
     const dispatch = useDispatch();
 
@@ -48,6 +50,25 @@ export default function ToDoList() {
         dispatch({ type: "FETCH_TABLE_LISTS" })
     }, [])
 
+    // copy to clipboard functionality
+    const copyResourcesToClipboard = (title_table_id) => {
+        // Find all resources with the specified title_table_id
+        const resourcesToCopy = title_resources.filter(resource => resource.title_table_id === title_table_id);
+
+        // Format the resources as a string
+        const resourcesString = resourcesToCopy.map(resource => `${resource.resource_name}: ${resource.notes}`).join('\n');
+
+        // Write the formatted string to the clipboard
+        navigator.clipboard.writeText(resourcesString)
+            .then(() => {
+                alert('Resources copied to clipboard!');
+            })
+            .catch((error) => {
+                alert('Failed to copy resources to clipboard.');
+                console.error('Clipboard writeText error:', error);
+            });
+    };
+
 
     const putResource = (resource, check) => {
         let name;
@@ -67,7 +88,7 @@ export default function ToDoList() {
         }
 
         // check
-        if(check) {
+        if (check) {
             completed = !resource.completed;
         } else {
             completed = resource.completed
@@ -136,7 +157,7 @@ export default function ToDoList() {
                                             <DeleteIcon />
                                         </IconButton>
                                     }>
-                                        <ListItemButton onClick={() => dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id })} key={i}>
+                                        <ListItemButton onClick={() => { setSelectedResource(list.id); dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id }) }} key={i}>
                                             <ListItemText variant='h4' >{list.title}</ListItemText>
                                         </ListItemButton>
                                     </ListItem>
@@ -150,13 +171,17 @@ export default function ToDoList() {
                 <Grid item md={8} xs={12}>
                     <Container sx={{ paddingBottom: 4 }}>
                         <Typography variant='h4' gutterBottom align='center' paddingBottom={4}>Resources</Typography>
-                        <Paper sx={{ width: '100%' }} elevation={2}>
+                        <Paper sx={{ flexDirection: 'column', width: '100%', paddingRight: 2, display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
+                                {title_resources.length > 0 && <IconButton sx={{  justifyContent: 'right'}} onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
+                                    <FileCopyIcon />
+                                </IconButton>}
                             {title_resources.map((resource, i) => (
                                 <Container key={resource.id}>
                                     <List sx={listStyle(resource)}>
-                                        <ListItem key={resource.id} secondaryAction={<IconButton onClick={() => dispatch({ type: "DELETE_TODO_LIST_RESOURCE", payload: { id: resource.id, title_table_id: resource.title_table_id } })} edge={'end'} aria-label={'delete'}>
-                                            <DeleteIcon />
-                                        </IconButton>} >
+                                        <ListItem key={resource.id} secondaryAction={
+                                            <IconButton onClick={() => dispatch({ type: "DELETE_TODO_LIST_RESOURCE", payload: { id: resource.id, title_table_id: resource.title_table_id } })} edge={'end'} aria-label={'delete'}>
+                                                <DeleteIcon />
+                                            </IconButton>}>
 
                                             <ListItem>
                                                 <ListItemText onClick={() => { setSelectedResource(resource.id); handleOpen(); }}>{resource.resource_name}</ListItemText>
@@ -165,7 +190,7 @@ export default function ToDoList() {
                                                 <ListItem>
                                                     <ListItemText>{resource.notes ? resource.notes : 'Click edit to add notes'}</ListItemText>
                                                 </ListItem>}
-                                            {editMode && selectedResource === resource.id ? <ListItem>                            <Button
+                                            {editMode && selectedResource === resource.id ? <ListItem><Button
                                                 variant='text'
                                                 onClick={() => setNewCompleted((prevCompleted) => !prevCompleted)}
                                             >
@@ -176,12 +201,12 @@ export default function ToDoList() {
                                                 </ListItemButton>}
 
 
-                                            {editMode && selectedResource === resource.id ? <ListItem><IconButton edge='end' onClick={() => { putResource(resource); setEditMode(false)  }}>
+                                            {editMode && selectedResource === resource.id ? <ListItemButton onClick={() => { putResource(resource); setEditMode(false) }}>
                                                 <SaveIcon />
-                                            </IconButton></ListItem> :
-                                                <ListItem><IconButton onClick={() => { setEditMode(true); setSelectedResource(resource.id); }} edge={'end'} aria-label={'delete'}>
+                                            </ListItemButton> :
+                                                <ListItemButton onClick={() => { setEditMode(true); setSelectedResource(resource.id); }}  aria-label={'delete'}>
                                                     <ModeEditIcon />
-                                                </IconButton></ListItem>}
+                                                </ListItemButton>}
 
                                         </ListItem>
                                     </List>

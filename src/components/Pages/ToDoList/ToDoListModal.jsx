@@ -59,7 +59,7 @@ export default function ToDoListModal({ isModalOpen, handleOpen, handleClose, re
         handleClose();
     }
 
-    // clear inputs
+    // clear inputs handler
     const clearInputs = () => {
         setNewName('');
         setNewNotes('');
