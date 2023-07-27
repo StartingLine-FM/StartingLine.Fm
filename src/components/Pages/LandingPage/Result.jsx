@@ -22,7 +22,6 @@ import StarIcon from '@mui/icons-material/Star';
 
 export default function Result({ result, currentList, setCurrentList }) {
 
-
     useEffect(() => {
         if (user.id) {
             dispatch({
@@ -38,7 +37,6 @@ export default function Result({ result, currentList, setCurrentList }) {
     // Redux
     const user = useSelector(store => store.user)
     const todoResources = useSelector(store => store.todoListResourcesReducer);
-    const todoList = useSelector(store => store.todoListReducer);
     const tableList = useSelector(store => store.tableListReducer);
     const dispatch = useDispatch();
 

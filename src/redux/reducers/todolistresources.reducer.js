@@ -8,9 +8,8 @@ const todoListResourcesReducer = (state = [], action) => {
             let putState = state.map(resource => {
                 if (resource.id === action.payload.id) {
                     return {
-                        ...resource, name: action.payload.name,
+                        ...resource,
                         notes: action.payload.notes,
-                        completed: action.payload.completed
                     }
                 } else return resource
             })
