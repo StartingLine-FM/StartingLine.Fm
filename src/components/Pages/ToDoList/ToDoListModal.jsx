@@ -18,7 +18,7 @@ export default function ToDoListModal({ isModalOpen, handleOpen, handleClose, re
     const [newCompleted, setNewCompleted] = useState(false);
     const [newNotes, setNewNotes] = useState('');
 
-    console.log(resource)
+
     // init dispatch
     const dispatch = useDispatch();
     // update a resource
@@ -56,7 +56,7 @@ export default function ToDoListModal({ isModalOpen, handleOpen, handleClose, re
         // clear the inputs
         clearInputs();
         
-        handleClose;
+        handleClose();
     }
 
     // clear inputs
@@ -112,7 +112,7 @@ export default function ToDoListModal({ isModalOpen, handleOpen, handleClose, re
                             <Typography variant='body1'>LinkedIn: {resource.linkedin}</Typography>}
                         {resource.website && <Typography variant='body1'>Website: {resource.website}</Typography>}
                         {resource.website && <Typography variant='body1'>Website: {resource.website}</Typography>}
-                            <Typography>Completed :{newCompleted ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />} </Typography>
+                            <Typography>{newCompleted ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />} </Typography>
                     </DialogContent>
                 </Dialog>
             }
