@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Container, Box, IconButton, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save'; // Added SaveIcon
+import CancelIcon from '@mui/icons-material/Cancel'; // Added CancelIcon
 
 
 function AdminPage() {
@@ -21,6 +23,7 @@ function AdminPage() {
 
   const [newCategory, setNewCategory] = useState('');
   const [newStage, setNewStage] = useState('');
+  
   // New state variables for tracking edited category and stage names
   const [editedCategoryName, setEditedCategoryName] = useState('');
   const [editedStageName, setEditedStageName] = useState('');
@@ -63,8 +66,12 @@ function AdminPage() {
 
   const handleAddCategory = (event) => {
     event.preventDefault();
-    dispatch({ type: 'POST_CATEGORY', payload: { name: newCategory } });
-    setNewCategory('');
+    if (newCategory !== '') {
+      dispatch({ type: 'POST_CATEGORY', payload: { name: newCategory } });
+      setNewCategory('');
+    } else {
+      alert('Please enter a non-empty category name.');
+    }
   };
 
   // Function to handle editing a category
@@ -92,8 +99,12 @@ function AdminPage() {
 
   const handleAddStage = (event) => {
     event.preventDefault();
-    dispatch({ type: 'POST_STAGE', payload: { name: newStage } });
-    setNewStage('');
+    if (newStage !== '') {
+      dispatch({ type: 'POST_STAGE', payload: { name: newStage } });
+      setNewStage('');
+    } else {
+      alert('Please enter a non-empty stage name.');
+    }
   };
 
   // Function to handle editing a stage
@@ -111,9 +122,6 @@ function AdminPage() {
   const handleCancelEditStage = () => {
     setEditedStageName('');
   };
-
-
-
 
   const handleDeleteStage = (stageId) => {
     if (window.confirm('Are you sure you want to delete this stage?')) {
