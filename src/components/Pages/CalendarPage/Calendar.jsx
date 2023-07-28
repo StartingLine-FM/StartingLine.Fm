@@ -10,7 +10,7 @@ import { format, parseISO } from 'date-fns';
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
 
 const Calendar = () => {
   const EP_Events = useSelector((store) => store.EP_Reducer);
@@ -77,6 +77,7 @@ const Calendar = () => {
         alignItems: 'center',
       }}
     >
+      <Paper>
       <Typography className='calendar-title' variant="h4" component="h2">
         StartingLine.FM
       </Typography>
@@ -120,6 +121,7 @@ const Calendar = () => {
           },
         }}
       />
+      </Paper>
     </Box>
   );
 };
