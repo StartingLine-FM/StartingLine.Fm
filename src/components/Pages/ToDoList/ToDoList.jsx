@@ -184,9 +184,9 @@ export default function ToDoList() {
                     <Container sx={{ paddingBottom: 4 }}>
                         <Typography variant='h4' gutterBottom align='center' paddingBottom={4}>Resources</Typography>
                         <Paper sx={{ flexDirection: 'column', width: '100%', paddingRight: 2, display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
-                            {title_resources.length > 0 && <IconButton sx={{ justifyContent: 'right' }} onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
+                            {title_resources.length > 0 && <ListItem  sx={{ justifyContent: 'right' }}><IconButton onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
                                 <FileCopyIcon />
-                            </IconButton>}
+                            </IconButton></ListItem>}
                             {title_resources.map((resource, i) => (
                                 <Container key={resource.id}>
                                     <List sx={listStyle(resource)}>
