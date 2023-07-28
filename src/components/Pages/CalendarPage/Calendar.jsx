@@ -1,4 +1,5 @@
 import React from 'react';
+import "./CalendarPage.css";
 import { useSelector } from 'react-redux';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -9,7 +10,7 @@ import { format, parseISO } from 'date-fns';
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
 
 const Calendar = () => {
   const EP_Events = useSelector((store) => store.EP_Reducer);
@@ -76,12 +77,17 @@ const Calendar = () => {
         alignItems: 'center',
       }}
     >
-      <Typography variant="h4" component="h2">
+      <Paper>
+      <Typography className='calendar-title' variant="h4" component="h2">
         StartingLine.FM
       </Typography>
       <FullCalendar
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         initialView="dayGridMonth"
+        // height={'75vh'}
+        contentHeight={'65vh'}
+        
+        
         
         events={filteredEvents}
         // events={[
@@ -115,6 +121,7 @@ const Calendar = () => {
           },
         }}
       />
+      </Paper>
     </Box>
   );
 };

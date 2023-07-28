@@ -69,6 +69,33 @@ router.post('/categories', rejectUnauthenticated, isAdmin, async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+// Route to (PUT) update a category for the admin
+router.put('/categories/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
+    const updatedCategory = req.body;
+    const queryText = 'UPDATE category SET name = $1 WHERE id = $2';
+    try {
+        await pool.query(queryText, [updatedCategory.name, req.params.id]);
+        res.sendStatus(200);
+    } catch (err) {
+        console.log('Error updating category', err);
+        res.sendStatus(500);
+    }
+});
+
+
+// Route to (DELETE) a category for the admin
+router.delete('/categories/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
+    const queryText = 'DELETE FROM category WHERE id = $1';
+    try {
+        await pool.query(queryText, [req.params.id]);
+        res.sendStatus(200);
+    } catch (err) {
+        console.log('Error deleting category', err);
+        res.sendStatus(500);
+    }
+});
+
 //Route to (POST) add a new stage for the admin
 router.post('/stages', rejectUnauthenticated, isAdmin, async (req, res) => {
     const newStage = req.body;
@@ -78,6 +105,31 @@ router.post('/stages', rejectUnauthenticated, isAdmin, async (req, res) => {
         res.sendStatus(201);
     } catch (err) {
         console.log('Error adding stage', err);
+        res.sendStatus(500);
+    }
+});
+
+// Route to (PUT) update a stage for the admin
+router.put('/stages/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
+    const updatedStage = req.body;
+    const queryText = 'UPDATE stage SET name = $1, description = $2 WHERE id = $3';
+    try {
+        await pool.query(queryText, [updatedStage.name, updatedStage.description, req.params.id]);
+        res.sendStatus(200);
+    } catch (err) {
+        console.log('Error updating stage', err);
+        res.sendStatus(500);
+    }
+});
+
+// Route to (DELETE) a stage for the admin
+router.delete('/stages/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
+    const queryText = 'DELETE FROM stage WHERE id = $1';
+    try {
+        await pool.query(queryText, [req.params.id]);
+        res.sendStatus(200);
+    } catch (err) {
+        console.log('Error deleting stage', err);
         res.sendStatus(500);
     }
 });

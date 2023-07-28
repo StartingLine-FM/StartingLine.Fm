@@ -160,14 +160,14 @@ export default function SearchFilter({ currentList, setCurrentList }) {
                 <Grid item>
                     <ButtonGroup sx={{ mb: 1 }}>
                         {/* Apply filters button */}
-                        {changes
+                        {changes 
                             ? <Button variant="contained" onClick={fetchSearch} >Apply</Button>
                             : <Button variant="outlined" onClick={fetchSearch} >Apply</Button>
                         }
                         {/* Clear filters button */}
-                        {selectedCategory || selectedStage
-                            ? <Button variant="contained" onClick={clearFilters} >Clear</Button>
-                            : <Button variant="outlined" onClick={clearFilters} >Clear</Button>
+                        {selectedCategory || selectedStage || textSearch
+                            ? <Button color="secondary" variant="contained" onClick={clearFilters} >Clear</Button>
+                            : <Button color="secondary" variant="outlined" onClick={clearFilters} >Clear</Button>
                         }
                     </ButtonGroup>
                     <br />
@@ -176,7 +176,7 @@ export default function SearchFilter({ currentList, setCurrentList }) {
                         {/* Category 'header' dropdown */}
                         <ListItemButton onClick={handleCategoryClick}>
                             <ListItemText primary="Category" />
-                            {categoryOpen ? <ExpandLess /> : <ExpandMore />}
+                            {categoryOpen ? <ExpandLess color="primary" /> : <ExpandMore color="primary" />}
                         </ListItemButton>
                         {/* Category list */}
                         <Collapse in={categoryOpen} timeout="auto" unmountOnExit>
@@ -185,32 +185,32 @@ export default function SearchFilter({ currentList, setCurrentList }) {
                                     {/* We're using MUI Icons to fake Radio Button functionality here lol
                                         If the selectedCategory matches this line, we're showing a Checked Radio Button icon,
                                         if not, it's unchecked. */}
-                                    {selectedCategory === "Government" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                    {selectedCategory === "Government" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
                                     {/* Clicking on this list item sets the selectedCategory to the correct string to send to the backend */}
                                     <ListItemText sx={{ ml: 1 }} primary="Government" />
                                 </ListItemButton>
                                 <ListItemButton onClick={() => { setSelectedCategory("Funding Organization"); !changes && setChanges(true); }} >
-                                    {selectedCategory === "Funding Organization" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                    {selectedCategory === "Funding Organization" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
                                     <ListItemText sx={{ ml: 1 }} primary="Funding Organization" />
                                 </ListItemButton>
                                 <ListItemButton onClick={() => { setSelectedCategory("University"); !changes && setChanges(true); }} >
-                                    {selectedCategory === "University" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                    {selectedCategory === "University" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
                                     <ListItemText sx={{ ml: 1 }} primary="University" />
                                 </ListItemButton>
                                 <ListItemButton onClick={() => { setSelectedCategory("Support Organization"); !changes && setChanges(true); }} >
-                                    {selectedCategory === "Support Organization" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                    {selectedCategory === "Support Organization" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
                                     <ListItemText sx={{ ml: 1 }} primary="Support Organization" />
                                 </ListItemButton>
                                 <ListItemButton onClick={() => { setSelectedCategory("Service Provider"); !changes && setChanges(true); }}>
-                                    {selectedCategory === "Service Provider" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                    {selectedCategory === "Service Provider" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
                                     <ListItemText sx={{ ml: 1 }} primary="Service Provider"  />
                                 </ListItemButton>
                                 <ListItemButton onClick={() => { setSelectedCategory("Big Company"); !changes && setChanges(true); }} >
-                                    {selectedCategory === "Big Company" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                    {selectedCategory === "Big Company" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
                                     <ListItemText sx={{ ml: 1 }} primary="Big Company" />
                                 </ListItemButton>
                                 <ListItemButton onClick={() => { setSelectedCategory("Research Organization"); !changes && setChanges(true); }}>
-                                    {selectedCategory === "Research Organization" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                    {selectedCategory === "Research Organization" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
                                     <ListItemText sx={{ ml: 1 }} primary="Research Organization"  />
                                 </ListItemButton>
                             </List>
@@ -218,7 +218,7 @@ export default function SearchFilter({ currentList, setCurrentList }) {
                         {/* Business Stage dropdown */}
                         <ListItemButton onClick={handleStageClick}>
                             <ListItemText primary="Business Stage" />
-                            {stageOpen ? <ExpandLess /> : <ExpandMore />}
+                            {stageOpen ? <ExpandLess color="secondary" /> : <ExpandMore color="secondary" />}
                         </ListItemButton>
                         {/* Business Stage list */}
                         <Collapse in={stageOpen} timeout="auto" unmountOnExit>
@@ -226,19 +226,19 @@ export default function SearchFilter({ currentList, setCurrentList }) {
                                 <ListItemButton onClick={() => { setSelectedStage("Nascent"); !changes && setChanges(true); }}>
                                     {/* Same idea as shown in the Category list above of faking the Radio Buttons
                                         and sending the correct string */}
-                                    {selectedStage === "Nascent" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                    {selectedStage === "Nascent" ? <RadioButtonCheckedIcon color="secondary" /> : <RadioButtonUncheckedIcon />}
                                     <ListItemText sx={{ ml: 1 }} primary="Nascent" />
                                 </ListItemButton>
                                 <ListItemButton onClick={() => { setSelectedStage("Early Stage"); !changes && setChanges(true); }} >
-                                    {selectedStage === "Early Stage" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                    {selectedStage === "Early Stage" ? <RadioButtonCheckedIcon color="secondary" /> : <RadioButtonUncheckedIcon />}
                                     <ListItemText sx={{ ml: 1 }} primary="Early Stage"/>
                                 </ListItemButton>
                                 <ListItemButton onClick={() => { setSelectedStage("Startup/Seed"); !changes && setChanges(true); }} >
-                                    {selectedStage === "Startup/Seed" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                    {selectedStage === "Startup/Seed" ? <RadioButtonCheckedIcon color="secondary" /> : <RadioButtonUncheckedIcon />}
                                     <ListItemText sx={{ ml: 1 }} primary="Startup/Seed" />
                                 </ListItemButton>
                                 <ListItemButton onClick={() => { setSelectedStage("Growth"); !changes && setChanges(true); }} >
-                                    {selectedStage === "Growth" ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                    {selectedStage === "Growth" ? <RadioButtonCheckedIcon color="secondary" /> : <RadioButtonUncheckedIcon />}
                                     <ListItemText sx={{ ml: 1 }} primary="Growth" />
                                 </ListItemButton>
                             </List>

@@ -19,7 +19,6 @@ import {
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 
-
 export default function Result({ result, currentList, setCurrentList }) {
 
     useEffect(() => {
@@ -141,7 +140,7 @@ export default function Result({ result, currentList, setCurrentList }) {
                 {
                     todoResources.some(e => e.id === result.id || e.resource_id === result.id)
                         ? <IconButton>
-                            <StarIcon color="warning" />
+                            <StarIcon color="primary" />
                         </IconButton>
                         : user.id
                             ? <IconButton onClick={() => userPostTodo()} >
@@ -179,16 +178,16 @@ export default function Result({ result, currentList, setCurrentList }) {
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
                                 display: "-webkit-box",
-                                WebkitLineClamp: "4",
+                                WebkitLineClamp: "3",
                                 WebkitBoxOrient: "vertical",
                             }}>
                             {result.description}
                         </Typography>
                         {result.category_id &&
-                            <Chip size="small" sx={{ fontSize: "10px" }} label={categoryTag(result.category_id)} />
+                            <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={categoryTag(result.category_id)} />
                         }
                         {result.stage_id &&
-                            <Chip size="small" sx={{ fontSize: "10px" }} label={stageTag(result.stage_id)} />
+                            <Chip color="secondary" size="small" sx={{ fontSize: "10px", mx:1 }} label={stageTag(result.stage_id)} />
                         }
                     </CardContent>
                 </CardActionArea>
