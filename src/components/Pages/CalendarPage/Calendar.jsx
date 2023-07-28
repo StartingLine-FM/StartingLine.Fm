@@ -1,4 +1,5 @@
 import React from 'react';
+import "./CalendarPage.css";
 import { useSelector } from 'react-redux';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -76,12 +77,16 @@ const Calendar = () => {
         alignItems: 'center',
       }}
     >
-      <Typography variant="h4" component="h2">
+      <Typography className='calendar-title' variant="h4" component="h2">
         StartingLine.FM
       </Typography>
       <FullCalendar
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         initialView="dayGridMonth"
+        // height={'75vh'}
+        contentHeight={'65vh'}
+        
+        
         
         events={filteredEvents}
         // events={[
