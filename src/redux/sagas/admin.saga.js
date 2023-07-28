@@ -40,11 +40,31 @@ function* deleteResource(action) {
     }
 };
 
+function* postCategory(action) {
+    try {
+        yield call(axios.post, '/api/admin/categories', action.payload);
+        yield put({ type: 'FETCH_CATEGORIES '});
+    } catch (error) {
+        console.log('Error posting category:', error);
+    }
+};
+
+function* postStage(action) {
+    try {
+        yield call(axios.post, '/api/admin/stages', action.payload);
+        yield put({ type: 'FETCH_STAGES '});
+    } catch (error) {
+        console.log('Error posting stage:', error);
+    }
+};
+
 //watcher saga, that makes sure the actions are dispatched and tiggered correctly
 function* adminSaga() {
     yield takeLatest('POST_RESOURCE', postResource);
     yield takeLatest('UPDATE_RESOURCE', putResource);
     yield takeLatest('DELETE_RESOURCE', deleteResource);
+    yield takeLatest('POST_CATEGORY', postCategory);
+    yield takeLatest('POST_STAGE', postStage);
 }
 
 export default adminSaga;
