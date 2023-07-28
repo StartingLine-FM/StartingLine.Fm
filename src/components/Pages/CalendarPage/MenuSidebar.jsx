@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, IconButton, Typography, CircularProgress } from '@mui/material';
-import { Event, Business } from '@mui/icons-material';
+import { Business, BrightnessLow, HorizontalSplit, Clear } from '@mui/icons-material';
 
 
 const MenuSidebar = () => {
@@ -31,18 +31,19 @@ const MenuSidebar = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <IconButton onClick={handleEP_Click} disabled={loadingEP}>
-        {loadingEP ? <CircularProgress size={20} /> : <Event />}
+        {loadingEP ? <CircularProgress size={20} /> : <BrightnessLow />}
         <Typography>Emerging Prairie</Typography>
       </IconButton>
       <IconButton onClick={handleFU_Click} disabled={loadingFU}>
-        {loadingFU ? <CircularProgress size={20} /> : <Typography>Fargo Underground</Typography>}
+        {loadingFU ? <CircularProgress size={20} /> : <HorizontalSplit />}
+        <Typography>Fargo Underground</Typography>
       </IconButton>
       <IconButton onClick={handleChamber_Click} disabled={loadingChamber}>
         {loadingChamber ? <CircularProgress size={20} /> : <Business />}
         <Typography>Chamber of Commerce</Typography>
       </IconButton>
       <IconButton onClick={handleClearClick}>
-        <Event />
+        <Clear />
         <Typography>Clear Calendars</Typography>
       </IconButton>
     </Box>
