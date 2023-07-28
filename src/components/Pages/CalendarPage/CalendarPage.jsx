@@ -2,7 +2,7 @@ import React from 'react';
 import "./CalendarPage.css";
 import Calendar from './Calendar';
 import MenuSidebar from './MenuSidebar';
-import { Grid, Box, Container, Typography, Paper } from '@mui/material';
+import { Grid, Box, Container, Typography, Paper,  } from '@mui/material';
 
 const CalendarPage = () => {
   return (
