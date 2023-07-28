@@ -54,7 +54,13 @@ const theme = createTheme({
 
 function App() {
   const dispatch = useDispatch();
-
+  const [openRegisterModal, setOpenRegisterModal] = useState(false);
+  const handleCloseRegister = () => {
+    setOpenRegisterModal(false);
+  }
+  const handleOpenRegister = () => {
+    setOpenRegisterModal(true);
+  }
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const handleOpen = () => {
     setOpenLoginModal(true)
@@ -77,6 +83,7 @@ function App() {
           <LoginPage openLoginModal={openLoginModal}
                   setOpenLoginModal={setOpenLoginModal}
                   handleOpen={handleOpen} handleClose={handleClose} />
+                  
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />
@@ -163,7 +170,10 @@ function App() {
                 <Redirect to="/user" />
                 :
                 // Otherwise, show the registration page
-                <RegisterPage />
+                <RegisterPage handleCloseRegister={handleCloseRegister}
+                 handleOpenRegister={handleOpenRegister} 
+                 setOpenRegisterModal={setOpenLoginModal} 
+                 openRegisterModal={openRegisterModal} />
               }
             </Route>
 

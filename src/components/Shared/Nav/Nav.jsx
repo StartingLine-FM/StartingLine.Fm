@@ -26,13 +26,11 @@ function Nav({ setOpenLoginModal, openLoginModal, handleOpen}) {
             {!user.id && (
               // If there's no user, show login/registration links
               <>
-              {/* TODO figure out why modal won't pop up */}
                 <Button variant="contained" onClick={handleOpen} >
                     Login / Register
                 </Button>
               </>
             )}
-
             {/* If a user is logged in, show these links */}
             {user.id && (
               <>

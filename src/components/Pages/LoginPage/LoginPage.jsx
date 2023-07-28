@@ -10,16 +10,6 @@ function LoginPage({ handleOpen, setOpenLoginModal, openLoginModal, handleClose 
   return (
     <Container>
       <LoginForm openLoginModal={openLoginModal} handleClose={handleClose} setOpenLoginModal={setOpenLoginModal}  />
-      <Paper>
-        <Button
-          type="button"
-          onClick={() => {
-            history.push('/registration');
-          }}
-        >
-          Register
-        </Button>
-      </Paper>
     </Container>
   );
 }

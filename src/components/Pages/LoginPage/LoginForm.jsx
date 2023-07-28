@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 // material ui imports
 import { Paper, IconButton, Typography, Dialog, Button, DialogTitle, DialogContent, DialogActions, DialogContentText, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-function LoginForm({openLoginModal, setOpenLoginModal, handleClose, handleOpen}) {
+// import register page
+import RegisterPage from '../RegisterPage/RegisterPage';
+function LoginForm({ openLoginModal, handleOpenRegisterModal, setOpenLoginModal, handleClose, handleOpen }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   // set state for dialog modal
   const errors = useSelector(store => store.errors);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const login = (event) => {
     event.preventDefault();
@@ -22,23 +26,21 @@ function LoginForm({openLoginModal, setOpenLoginModal, handleClose, handleOpen})
           password: password,
         },
       });
+
+      handleClose();
+      history.push('/#/home')
     } else {
       dispatch({ type: 'LOGIN_INPUT_ERROR' });
     }
   }; // end login
 
-  // handle open
-  // const handleOpen = () => {
-  //   setOpenLoginModal(true)
-  // }
-  // handle close
 
   return (
     <div>
       <Dialog onClose={handleClose} open={openLoginModal}>
-      <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           Login
-          <IconButton onClick={handleClose}  aria-label={'delete'}>
+          <IconButton onClick={handleClose} aria-label={'delete'}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
@@ -67,9 +69,16 @@ function LoginForm({openLoginModal, setOpenLoginModal, handleClose, handleOpen})
           />
         </DialogContent>
         <DialogActions>
+          <Button
+            type="button"
+            onClick={handleOpenRegisterModal}
+          >
+            Register
+          </Button>
           <Button onClick={login} type="submit" name="submit" value="Log In">Log In</Button>
         </DialogActions>
       </Dialog>
+      <RegisterPage />
     </div>
   );
 }
