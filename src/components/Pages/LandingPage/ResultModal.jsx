@@ -228,7 +228,7 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                         </>
                         : todoResources.some(e => e.id === result.id || e.resource_id === result.id)
                             ? <IconButton>
-                                <StarIcon color="warning" />
+                                <StarIcon color="primary" />
                             </IconButton>
                             : user.id
                                 ? <IconButton onClick={() => userPostTodo()} >
@@ -245,14 +245,15 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                 </DialogActions>
                 <DialogTitle>{result.name}</DialogTitle>
                 <DialogContent sx={{ gap: 2, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                        <Typography variant="body1">{result.description}</Typography>
-                        <Link target="_blank" rel="noopener noreferrer" href={result.website}>{result.website && result.website}</Link>
-                        <Link href={`mailto:${result.email}`}>{result.email && result.email}</Link>
-                        <Link target="_blank" rel="noopener noreferrer" href={result.linkedin}>{result.linkedin && result.linkedin}</Link>
-                        <Typography variant="body1">{result.address && result.address}</Typography>
-                    
-                    <Chip sx={{ mt: 2, mr: 1 }} label={categoryTag(result.category_id)} />
-                    <Chip sx={{ mt: 2 }} label={stageTag(result.stage_id)} />
+                    <Typography variant="body1">{result.description}</Typography>
+                    <Link target="_blank" rel="noopener noreferrer" href={result.website}>{result.website && result.website}</Link>
+                    <Link href={`mailto:${result.email}`}>{result.email && result.email}</Link>
+                    <Link target="_blank" rel="noopener noreferrer" href={result.linkedin}>{result.linkedin && result.linkedin}</Link>
+                    <Typography variant="body1">{result.address && result.address}</Typography>
+                    <DialogContentText>
+                        <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={categoryTag(result.category_id)} />
+                        <Chip color="secondary" sx={{ mt: 2 }} label={stageTag(result.stage_id)} />
+                    </DialogContentText>
                 </DialogContent>
             </Dialog>
     )

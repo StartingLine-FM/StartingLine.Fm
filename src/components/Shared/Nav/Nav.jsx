@@ -1,68 +1,81 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { AppBar } from '@mui/material';
+import { AppBar, Typography, Link, Button, ButtonGroup, Grid } from '@mui/material';
 import LogOutButton from '../LogOutButton/LogOutButton';
-import './Nav.css';
 import { useSelector } from 'react-redux';
 
 function Nav() {
+
   const user = useSelector((store) => store.user);
 
   return (
-    <AppBar position="sticky" sx={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', 
-    paddingLeft: '-10px' }}>
-    <div className="nav">
-      <Link to="/home">
-        <h2 className="nav-title">StartingLine.FM</h2>
-      </Link>
-      <div>
-        {/* If no user is logged in, show these links */}
-        {!user.id && (
-          // If there's no user, show login/registration links
-          <>
-            <Link className="navLink" to="/login">
-              Login / Register
-            </Link>
-          </>
-        )}
-
-        {/* If a user is logged in, show these links */}
-        {user.id && (
-          <>
-            <Link className="navLink" to="/home">
-              Home
-            </Link>
-
-            <Link className="navLink" to="/info">
-              Info Page
-            </Link>
-
-            {user.admin && (
-              <Link className="navLink" to="/admin">
-                Admin Page
-              </Link>
+    <AppBar color="background" position="sticky" >
+      <Grid container sx={{
+        display: "flex",
+        justifyContent: "space-between",
+      }}>
+        <Grid item>
+          <Link underline='none' href="/#/home">
+            <Typography sx={{ my: 2, mx: 4 }} variant="h3" variantMapping={"h1"}>StartingLine.FM</Typography>
+          </Link>
+        </Grid>
+        <Grid item sx={{ m: 3 }}>
+          <ButtonGroup>
+            {/* If no user is logged in, show these links */}
+            {!user.id && (
+              // If there's no user, show login/registration links
+              <>
+                <Button variant="contained">
+                  <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/login">
+                    Login / Register
+                  </Link>
+                </Button>
+              </>
             )}
 
-            <LogOutButton className="navLink" />
-          </>
-        )}
+            {/* If a user is logged in, show these links */}
+            {user.id && (
+              <>
+                <Button variant="contained">
+                  <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/home">
+                    Home
+                  </Link>
+                </Button>
 
-        <Link className="navLink" to="/about">
-          About
-        </Link>
-        <Link className="navLink" to="/calendar">
-          Calendar
-        </Link>
-        {user.id
-        ? <Link className="navLink" to="/todolist">
-          Todo List
-        </Link>
-        : <Link className="navLink" to="/anonlist">
-        Todo List
-      </Link>
-        }
-      </div>
-    </div>
+                {user.admin && (
+                  <Button variant="contained">
+                    <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/admin">
+                      Admin Page
+                    </Link>
+                  </Button>
+                )}
+                <LogOutButton />
+              </>
+            )}
+            <Button variant="contained">
+              <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/about">
+                About
+              </Link>
+            </Button>
+            <Button variant="contained">
+              <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/calendar">
+                Calendar
+              </Link>
+            </Button>
+            {user.id
+              ? <Button variant="contained">
+                <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/todolist">
+                  Todo List
+                </Link>
+              </Button >
+              : <Button variant="contained">
+                <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/anonlist">
+                  Todo List
+                </Link>
+              </Button>
+            }
+          </ButtonGroup>
+        </Grid>
+      </Grid>
     </AppBar>
   );
 }
