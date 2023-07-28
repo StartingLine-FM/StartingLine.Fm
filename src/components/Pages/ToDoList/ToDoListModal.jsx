@@ -3,15 +3,9 @@ import { useState } from "react";
 // framer motion imports
 // import { motion } from 'framer-motion'
 // material ui imports 
-import { Dialog, DialogTitle, DialogContent, Typography, IconButton, Button, DialogActions } from "@mui/material";
-import TextField from '@mui/material/TextField';
-
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import SaveIcon from '@mui/icons-material/Save';
+import { Dialog, DialogTitle, DialogContent, Typography, IconButton, DialogActions } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-export default function ToDoListModal({ isModalOpen, handleOpen, handleClose, resource, setSelectedResource, selectedResource }) {
+export default function ToDoListModal({ isModalOpen, handleClose, resource, setSelectedResource }) {
     // set local state
     const [editMode, setEditMode] = useState(false);
     const [newName, setNewName] = useState('');
