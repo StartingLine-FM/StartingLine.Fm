@@ -199,7 +199,10 @@ function AdminPage() {
           <h2>Categories</h2>
           <ul>
             {categories.map((category) => (
-              <li key={category.id}>{category.name}</li>
+              <li key={category.id}>
+                {category.name}
+                <button onClick={() => handleDeleteCategory(category.id)}>Delete</button>
+              </li>
             ))}
           </ul>
         </div>
@@ -209,7 +212,10 @@ function AdminPage() {
           <h2>Stages</h2>
           <ul>
             {stages.map((stage) => (
-              <li key={stage.id}>{stage.name}</li>
+              <li key={stage.id}>
+                {stage.name}
+                <button onClick={() => handleDeleteStage(stage.id)}>Delete</button>
+              </li>
             ))}
           </ul>
         </div>
