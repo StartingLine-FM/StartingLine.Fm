@@ -59,7 +59,7 @@ export default function ToDoListModal({ isModalOpen, handleOpen, handleClose, re
         handleClose();
     }
 
-    // clear inputs
+    // clear inputs handler
     const clearInputs = () => {
         setNewName('');
         setNewNotes('');
@@ -68,36 +68,10 @@ export default function ToDoListModal({ isModalOpen, handleOpen, handleClose, re
 
     return (
         <>
-            {editMode ?
-                <>
-                    <Dialog open={isModalOpen} onClose={handleClose}  aria-labelledby='modal-modal-title'
-                        aria-describedby='modal-modal-description'>
-                        <DialogActions>
-                            <IconButton edge='end' onClick={() => {putResource();}}>
-                                <SaveIcon />
-                            </IconButton>
-                            <IconButton onClick={() => { setSelectedResource(null); setEditMode(false); clearInputs(); }} edge={'end'} aria-label={'delete'}>
-                                <CloseIcon />
-                            </IconButton>
-                            <DialogTitle variant='h5'>{resource.resource_name}</DialogTitle>
-                        </DialogActions>
-                        <DialogContent sx={{ gap: 2, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                            <TextField onChange={(e) => setNewNotes(e.target.value)} variant='outlined' placeholder={resource.notes} value={newNotes}></TextField>
-                            <Button
-                                variant='text'
-                                onClick={() => setNewCompleted((prevCompleted) => !prevCompleted)}
-                            >Check if Completed
-                                {newCompleted ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
-                            </Button></DialogContent>
-                    </Dialog>
-                </> :
                 <Dialog open={isModalOpen} onClose={handleClose} >
                     <DialogActions>
                         <IconButton onClick={() => { handleClose;  setSelectedResource(null); setEditMode(false);clearInputs();  }} edge={'start'} aria-label={'delete'}>
                             <CloseIcon />
-                        </IconButton>
-                        <IconButton onClick={() => setEditMode(true)} edge={'end'} aria-label={'delete'}>
-                            <ModeEditIcon />
                         </IconButton>
                     </DialogActions>
                     <DialogTitle variant='h5'>{resource.resource_name}</DialogTitle>
@@ -111,11 +85,8 @@ export default function ToDoListModal({ isModalOpen, handleOpen, handleClose, re
                         {resource.linkedin &&
                             <Typography variant='body1'>LinkedIn: {resource.linkedin}</Typography>}
                         {resource.website && <Typography variant='body1'>Website: {resource.website}</Typography>}
-                        {resource.website && <Typography variant='body1'>Website: {resource.website}</Typography>}
-                            <Typography>{newCompleted ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />} </Typography>
                     </DialogContent>
                 </Dialog>
-            }
         </>
     )
 }
