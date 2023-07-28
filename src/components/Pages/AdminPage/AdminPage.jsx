@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./AdminPage.css"
 import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Container, Box } from '@mui/material';
@@ -24,6 +24,13 @@ function AdminPage() {
 
   const categories = useSelector((state) => state.categories) || [];
   const stages = useSelector((state) => state.stages) || [];
+
+  useEffect(() => {
+    // Fetch categories and stages on component mount
+    dispatch({ type: 'FETCH_CATEGORIES' });
+    dispatch({ type: 'FETCH_STAGES' });
+  }, [dispatch]);
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -58,6 +65,18 @@ function AdminPage() {
     event.preventDefault();
     dispatch({ type: 'POST_STAGE', payload: { name: newStage } });
     setNewStage('');
+  };
+
+  const handleDeleteCategory = (categoryId) => {
+    if (window.confirm('Are you sure you want to delete this category?')) {
+      dispatch({ type: 'DELETE_CATEGORY', payload: categoryId });
+    }
+  };
+
+  const handleDeleteStage = (stageId) => {
+    if (window.confirm('Are you sure you want to delete this stage?')) {
+      dispatch({ type: 'DELETE_STAGE', payload: stageId });
+    }
   };
 
   return (
@@ -126,6 +145,7 @@ function AdminPage() {
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
+                <button onClick={() => handleDeleteCategory(category.id)}>Delete</button>
               </option>
             ))}
           </TextField>
@@ -142,6 +162,7 @@ function AdminPage() {
             {stages.map((stage) => (
               <option key={stage.id} value={stage.id}>
                 {stage.name}
+                <button onClick={() => handleDeleteStage(stage.id)}>Delete</button>
               </option>
             ))}
           </TextField>

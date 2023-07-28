@@ -58,6 +58,18 @@ function* postCategory(action) {
     }
 };
 
+// Worker Saga: fired when a category is deleted
+function* deleteCategory(action) {
+    try {
+        // Sends a DELETE request to the server to delete a category
+        yield call(axios.delete, `/api/admin/categories/${action.payload}`);
+        // Dispatches a fetch to get updated list of categories
+        yield put({ type: 'FETCH_CATEGORIES' });
+    } catch (error) {
+        console.log('Error deleting category', error);
+    }
+}
+
 function* fetchStages() {
     try {
       const response = yield call(axios.get, '/api/admin/stages');
@@ -76,6 +88,18 @@ function* postStage(action) {
     }
 };
 
+// Worker Saga: fired when a stage is deleted
+function* deleteStage(action) {
+    try {
+        // Sends a DELETE request to the server to delete a stage
+        yield call(axios.delete, `/api/admin/stages/${action.payload}`);
+        // Dispatches a fetch to get updated list of stages
+        yield put({ type: 'FETCH_STAGES' });
+    } catch (error) {
+        console.log('Error deleting stage', error);
+    }
+}
+
 //watcher saga, that makes sure the actions are dispatched and tiggered correctly
 function* adminSaga() {
     yield takeLatest('POST_RESOURCE', postResource);
@@ -85,6 +109,8 @@ function* adminSaga() {
     yield takeLatest('POST_STAGE', postStage);
     yield takeLatest('FETCH_CATEGORIES', fetchCategories);
     yield takeLatest('FETCH_STAGES', fetchStages);
+    yield takeLatest('DELETE_CATEGORY', deleteCategory);
+    yield takeLatest('DELETE_STAGE', deleteStage);
 }
 
 export default adminSaga;

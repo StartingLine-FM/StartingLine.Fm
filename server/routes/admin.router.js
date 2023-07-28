@@ -57,6 +57,18 @@ router.delete('/:id', rejectUnauthenticated, isAdmin, async (req,res) => {
     }
 });
 
+// Route to fetch all categories
+router.get('/categories', async (req, res) => {
+    try {
+      const queryText = 'SELECT * FROM category';
+      const result = await pool.query(queryText);
+      res.send(result.rows);
+    } catch (error) {
+      console.log('Error fetching categories', error);
+      res.sendStatus(500);
+    }
+  });
+
 //Route to (POST) add a new category for the admin
 router.post('/categories', rejectUnauthenticated, isAdmin, async (req, res) => {
     const newCategory = req.body;
@@ -95,6 +107,18 @@ router.delete('/categories/:id', rejectUnauthenticated, isAdmin, async (req, res
         res.sendStatus(500);
     }
 });
+
+// Route to fetch all stages
+router.get('/stages', async (req, res) => {
+    try {
+      const queryText = 'SELECT * FROM stage';
+      const result = await pool.query(queryText);
+      res.send(result.rows);
+    } catch (error) {
+      console.log('Error fetching stages', error);
+      res.sendStatus(500);
+    }
+  });
 
 //Route to (POST) add a new stage for the admin
 router.post('/stages', rejectUnauthenticated, isAdmin, async (req, res) => {
