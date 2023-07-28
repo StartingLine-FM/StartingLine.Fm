@@ -74,7 +74,7 @@ router.post('/stages', rejectUnauthenticated, isAdmin, async (req, res) => {
     const newStage = req.body;
     const queryText = "INSERT INTO stage (name, description) VALUES ($1, $2)";
     try {
-        await pool.query(queryText, [newStage.name]);
+        await pool.query(queryText, [newStage.name, newStage.description]);
         res.sendStatus(201);
     } catch (err) {
         console.log('Error adding stage', err);
