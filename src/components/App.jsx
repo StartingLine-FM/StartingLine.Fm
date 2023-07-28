@@ -54,13 +54,6 @@ const theme = createTheme({
 
 function App() {
   const dispatch = useDispatch();
-  const [openRegisterModal, setOpenRegisterModal] = useState(false);
-  const handleCloseRegister = () => {
-    setOpenRegisterModal(false);
-  }
-  const handleOpenRegister = () => {
-    setOpenRegisterModal(true);
-  }
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const handleOpen = () => {
     setOpenLoginModal(true)
@@ -170,10 +163,7 @@ function App() {
                 <Redirect to="/user" />
                 :
                 // Otherwise, show the registration page
-                <RegisterPage handleCloseRegister={handleCloseRegister}
-                 handleOpenRegister={handleOpenRegister} 
-                 setOpenRegisterModal={setOpenLoginModal} 
-                 openRegisterModal={openRegisterModal} />
+                <RegisterPage />
               }
             </Route>
 
