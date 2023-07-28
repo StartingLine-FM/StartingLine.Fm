@@ -67,20 +67,19 @@ function AdminPage() {
     setNewCategory('');
   };
 
-    // Function to handle editing a category
-    const handleEditCategory = (categoryId, currentName) => {
-      setEditedCategoryName(currentName);
-      dispatch({ type: 'UPDATE_CATEGORY', payload: { id: categoryId, name: currentName } });
-    };
+  // Function to handle editing a category
+  const handleEditCategory = (categoryId, currentName) => {
+    setEditedCategoryName({ id: categoryId, name: currentName });
+  };
 
-     // Function to save the edited category name
+  // Function to save the edited category name
   const handleSaveEditedCategory = (categoryId) => {
     // Call the API to update the category name in the backend
     dispatch({ type: 'UPDATE_CATEGORY', payload: { id: categoryId, name: editedCategoryName } });
   };
 
-   // Function to cancel the edit for a category
-   const handleCancelEditCategory = () => {
+  // Function to cancel the edit for a category
+  const handleCancelEditCategory = () => {
     setEditedCategoryName('');
   };
 
@@ -89,7 +88,7 @@ function AdminPage() {
       dispatch({ type: 'DELETE_CATEGORY', payload: categoryId });
     }
   };
-  
+
 
   const handleAddStage = (event) => {
     event.preventDefault();
@@ -97,23 +96,22 @@ function AdminPage() {
     setNewStage('');
   };
 
-    // Function to handle editing a stage
-    const handleEditStage = (stageId, currentName) => {
-      setEditedStageName(currentName);
-      dispatch({ type: 'UPDATE_STAGE', payload: { id: stageId, name: currentName } });
-    };
+  // Function to handle editing a stage
+  const handleEditStage = (stageId, currentName) => {
+    setEditedStageName({ id: stageId, name: currentName });
+  };
 
-     // Function to save the edited category name
+  // Function to save the edited category name
   const handleSaveEditedStage = (categoryId) => {
     // Call the API to update the category name in the backend
     dispatch({ type: 'UPDATE_STAGE', payload: { id: categoryId, name: editedCategoryName } });
   };
 
-    // Function to cancel the edit for a stage
-    const handleCancelEditStage = () => {
-      setEditedStageName('');
-    };
-  
+  // Function to cancel the edit for a stage
+  const handleCancelEditStage = () => {
+    setEditedStageName('');
+  };
+
 
 
 
@@ -126,6 +124,8 @@ function AdminPage() {
   return (
     <Box className='style-box'>
       <Container className='admin-container'>
+         {/* Title for the whole page */}
+         <h1 style={{ textAlign: 'center' }}>Admin</h1>
         {/* Form to add a new resource */}
         <form className='admin-form' onSubmit={handleSubmit}>
           <TextField
@@ -214,7 +214,7 @@ function AdminPage() {
         </form>
 
         {/* Form to add a new category */}
-        <form onSubmit={handleAddCategory}>
+        <form className="admin-form" onSubmit={handleAddCategory}>
           <TextField
             label="New Category"
             value={newCategory}
@@ -226,7 +226,7 @@ function AdminPage() {
         </form>
 
         {/* Form to add a new stage */}
-        <form onSubmit={handleAddStage}>
+        <form className="admin-form" onSubmit={handleAddStage}>
           <TextField
             label="New Stage"
             value={newStage}
@@ -236,10 +236,10 @@ function AdminPage() {
             Add Stage
           </Button>
         </form>
-
-       {/* Display existing categories */}
-       <div>
-          <h2>Categories</h2>
+        {/* Display existing categories */}
+        <div>
+          {/* Title for categories */}
+          <h2 style={{ textAlign: 'center' }}>Categories</h2>
           <ul className="admin-list">
             {categories.map((category) => (
               <li key={category.id}>
@@ -298,7 +298,8 @@ function AdminPage() {
 
         {/* Display existing stages */}
         <div>
-          <h2>Stages</h2>
+          {/* Title for stages */}
+          <h2 style={{ textAlign: 'center' }}>Stages</h2>
           <ul className="admin-list">
             {stages.map((stage) => (
               <li key={stage.id}>
