@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import "./AdminPage.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Container, Box } from '@mui/material';
+import { TextField, Button, Container, Box, IconButton, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
 
 function AdminPage() {
   const [newResource, setNewResource] = useState({
@@ -18,6 +21,9 @@ function AdminPage() {
 
   const [newCategory, setNewCategory] = useState('');
   const [newStage, setNewStage] = useState('');
+  // New state variables for tracking edited category and stage names
+  const [editedCategoryName, setEditedCategoryName] = useState('');
+  const [editedStageName, setEditedStageName] = useState('');
 
   const dispatch = useDispatch();
   const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
@@ -61,10 +67,21 @@ function AdminPage() {
     setNewCategory('');
   };
 
-  const handleAddStage = (event) => {
-    event.preventDefault();
-    dispatch({ type: 'POST_STAGE', payload: { name: newStage } });
-    setNewStage('');
+    // Function to handle editing a category
+    const handleEditCategory = (categoryId, currentName) => {
+      setEditedCategoryName(currentName);
+      dispatch({ type: 'UPDATE_CATEGORY', payload: { id: categoryId, name: currentName } });
+    };
+
+     // Function to save the edited category name
+  const handleSaveEditedCategory = (categoryId) => {
+    // Call the API to update the category name in the backend
+    dispatch({ type: 'UPDATE_CATEGORY', payload: { id: categoryId, name: editedCategoryName } });
+  };
+
+   // Function to cancel the edit for a category
+   const handleCancelEditCategory = () => {
+    setEditedCategoryName('');
   };
 
   const handleDeleteCategory = (categoryId) => {
@@ -72,6 +89,33 @@ function AdminPage() {
       dispatch({ type: 'DELETE_CATEGORY', payload: categoryId });
     }
   };
+  
+
+  const handleAddStage = (event) => {
+    event.preventDefault();
+    dispatch({ type: 'POST_STAGE', payload: { name: newStage } });
+    setNewStage('');
+  };
+
+    // Function to handle editing a stage
+    const handleEditStage = (stageId, currentName) => {
+      setEditedStageName(currentName);
+      dispatch({ type: 'UPDATE_STAGE', payload: { id: stageId, name: currentName } });
+    };
+
+     // Function to save the edited category name
+  const handleSaveEditedStage = (categoryId) => {
+    // Call the API to update the category name in the backend
+    dispatch({ type: 'UPDATE_STAGE', payload: { id: categoryId, name: editedCategoryName } });
+  };
+
+    // Function to cancel the edit for a stage
+    const handleCancelEditStage = () => {
+      setEditedStageName('');
+    };
+  
+
+
 
   const handleDeleteStage = (stageId) => {
     if (window.confirm('Are you sure you want to delete this stage?')) {
@@ -145,7 +189,6 @@ function AdminPage() {
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
                 {category.name}
-                <button onClick={() => handleDeleteCategory(category.id)}>Delete</button>
               </option>
             ))}
           </TextField>
@@ -162,7 +205,6 @@ function AdminPage() {
             {stages.map((stage) => (
               <option key={stage.id} value={stage.id}>
                 {stage.name}
-                <button onClick={() => handleDeleteStage(stage.id)}>Delete</button>
               </option>
             ))}
           </TextField>
@@ -171,37 +213,84 @@ function AdminPage() {
           </Button>
         </form>
 
-          {/* Form to add a new category */}
-          <form onSubmit={handleAddCategory}>
-        <TextField
-          label="New Category"
-          value={newCategory}
-          onChange={(event) => setNewCategory(event.target.value)}
-        />
-        <Button variant="contained" color="primary" type="submit">
-          Add Category
+        {/* Form to add a new category */}
+        <form onSubmit={handleAddCategory}>
+          <TextField
+            label="New Category"
+            value={newCategory}
+            onChange={(event) => setNewCategory(event.target.value)}
+          />
+          <Button variant="contained" color="primary" type="submit">
+            Add Category
           </Button>
-      </form>
-      {/* Form to add a new stage */}
-      <form onSubmit={handleAddStage}>
-        <TextField
-          label="New Stage"
-          value={newStage}
-          onChange={(event) => setNewStage(event.target.value)}
-        />
-        <Button variant="contained" color="primary" type="submit">
-          Add Stage
-        </Button>
-      </form>  
+        </form>
 
-          {/* Display existing categories */}
-          <div>
+        {/* Form to add a new stage */}
+        <form onSubmit={handleAddStage}>
+          <TextField
+            label="New Stage"
+            value={newStage}
+            onChange={(event) => setNewStage(event.target.value)}
+          />
+          <Button variant="contained" color="primary" type="submit">
+            Add Stage
+          </Button>
+        </form>
+
+       {/* Display existing categories */}
+       <div>
           <h2>Categories</h2>
-          <ul>
+          <ul className="admin-list">
             {categories.map((category) => (
               <li key={category.id}>
-                {category.name}
-                <button onClick={() => handleDeleteCategory(category.id)}>Delete</button>
+                {editedCategoryName && category.id === editedCategoryName.id ? (
+                  // Show the input field for editing the category name
+                  <TextField
+                    value={editedCategoryName.name}
+                    onChange={(event) =>
+                      setEditedCategoryName({ ...editedCategoryName, name: event.target.value })
+                    }
+                  />
+                ) : (
+                  // Display the category name
+                  <span>{category.name}</span>
+                )}
+
+                <div>
+                  {editedCategoryName && category.id === editedCategoryName.id ? (
+                    <>
+                      <IconButton
+                        color="primary"
+                        aria-label="Save category"
+                        onClick={() => handleSaveEditedCategory(category.id)}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton
+                        color="secondary"
+                        aria-label="Cancel edit category"
+                        onClick={handleCancelEditCategory}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </>
+                  ) : (
+                    <IconButton
+                      color="primary"
+                      aria-label="Edit category"
+                      onClick={() => handleEditCategory(category.id, category.name)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  )}
+                  <IconButton
+                    color="secondary"
+                    aria-label="Delete category"
+                    onClick={() => handleDeleteCategory(category.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </div>
               </li>
             ))}
           </ul>
@@ -210,16 +299,62 @@ function AdminPage() {
         {/* Display existing stages */}
         <div>
           <h2>Stages</h2>
-          <ul>
+          <ul className="admin-list">
             {stages.map((stage) => (
               <li key={stage.id}>
-                {stage.name}
-                <button onClick={() => handleDeleteStage(stage.id)}>Delete</button>
+                {editedStageName && stage.id === editedStageName.id ? (
+                  // Show the input field for editing the stage name
+                  <TextField
+                    value={editedStageName.name}
+                    onChange={(event) =>
+                      setEditedStageName({ ...editedStageName, name: event.target.value })
+                    }
+                  />
+                ) : (
+                  // Display the stage name
+                  <span>{stage.name}</span>
+                )}
+
+                <div>
+                  {editedStageName && stage.id === editedStageName.id ? (
+                    <>
+                      <IconButton
+                        color="primary"
+                        aria-label="Save stage"
+                        onClick={() => handleSaveEditedStage(stage.id)}
+                      >
+                        <SaveIcon />
+                      </IconButton>
+                      <IconButton
+                        color="secondary"
+                        aria-label="Cancel edit stage"
+                        onClick={handleCancelEditStage}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </>
+                  ) : (
+                    <IconButton
+                      color="primary"
+                      aria-label="Edit stage"
+                      onClick={() => handleEditStage(stage.id, stage.name)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                  )}
+                  <IconButton
+                    color="secondary"
+                    aria-label="Delete stage"
+                    onClick={() => handleDeleteStage(stage.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </div>
               </li>
             ))}
           </ul>
         </div>
-    </Container>
+      </Container>
     </Box>
   );
 }
