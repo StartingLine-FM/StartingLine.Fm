@@ -1,12 +1,14 @@
 import React from 'react';
+import { useState } from 'react';
 import { AppBar, Typography, Link, Button, ButtonGroup, Grid } from '@mui/material';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import { useSelector } from 'react-redux';
+import LoginPage from '../../Pages/LoginPage/LoginPage';
 
-function Nav() {
 
+function Nav({ setOpenLoginModal, openLoginModal, handleOpen}) {
+  // handle modal
   const user = useSelector((store) => store.user);
-
   return (
     <AppBar color="background" position="sticky" >
       <Grid container sx={{
@@ -24,10 +26,9 @@ function Nav() {
             {!user.id && (
               // If there's no user, show login/registration links
               <>
-                <Button variant="contained">
-                  <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/login">
+              {/* TODO figure out why modal won't pop up */}
+                <Button variant="contained" onClick={handleOpen} >
                     Login / Register
-                  </Link>
                 </Button>
               </>
             )}
