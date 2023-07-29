@@ -1,9 +1,11 @@
 // import axios for requests nad take lastest and put for sagas
 import axios from "axios";
-import { takeLatest, put, take } from "redux-saga/effects";
+import { takeLatest, put, select } from "redux-saga/effects";
+import moment from "moment";
 
 function* todolistSaga() {
     yield takeLatest('POST_TODO_LIST', postTodoList);
+    yield takeLatest('POST_ANON_TO_REGISTERED', postAnonToRegistered)
     yield takeLatest('PUT_TODO_LIST', putTodoList);
     yield takeLatest('DELETE_TODO_LIST_RESOURCE', deleteTodoListResource);
     yield takeLatest('CLEAR_TODO_LIST', clearTodoList);
@@ -27,7 +29,7 @@ function* clearTodoResources() {
 // function to add a resource to a todo list
 function* postTodoList(action) {
     try {
-        const response = yield axios.post(`/api/todo/${action.payload.resource_id}/${action.payload.title_table_id}`); // call to the backend
+        const response = yield axios.post(`/api/todo/${action.payload.resource_id}/${action.payload.title_table_id}`, action.payload); // call to the backend
         console.log(response.data); // check the response data 
         yield put({ type: "FETCH_TODO_LIST_RESOURCES", payload: action.payload.title_table_id })
     } catch (error) {
@@ -83,12 +85,34 @@ function* fetchResourceInformation(action) {
     }
 }
 
-function* fetchTableLists() {
+function* fetchTableLists(action) {
     try {
         // make request
         const response = yield axios.get('/api/todo/titles')
         console.log(response.data) // log the response
         yield put({ type: "SET_TABLE_LIST", payload: response.data });
+
+        console.log(action);
+
+        if(action.payload){
+
+            const titles = yield select(store => store.tableListReducer)
+            let title_table_id = titles[0].id
+            let todo = action.payload
+            console.log(title_table_id);
+            console.log(todo);
+   
+             for(let item of todo) {
+               yield put({
+                 type: "POST_TODO_LIST",
+                 payload: {
+                   resource_id: item.id,
+                   title_table_id,
+                   notes: item.notes
+                 }
+               })
+             }
+        }
     } catch (error) {
         console.log('there was an error fetching the table title lists', error)
     }
@@ -99,11 +123,38 @@ function* postNewTitle(action) {
         // make request
         const response = yield axios.post('api/todo/title', {title: action.payload.title})
         console.log(response.data) // make sure you are getting the correct data
-        yield put({ type: "FETCH_TABLE_LISTS" })
+        console.log("post new title action.payload:", action.payload);
+
+        if(action.payload.todo){
+            console.log("sending to fetchTableLists:", action.payload.todo)
+            yield put({ type: "FETCH_TABLE_LISTS", payload: action.payload.todo})
+        } else yield put({ type: "FETCH_TABLE_LISTS" });
     } catch (error) {
         console.log('there was an error posting a new title', error)
     }
 }
 
+function* postAnonToRegistered(action) {
+    try {
+
+        let todo = action.payload
+
+        // if the newly registered user had a todo list
+        if (todo.length > 0) {
+    
+          let currentDate = moment().format("MM/DD/YYYY");
+
+          yield put({
+            type: "POST_NEW_TITLE",
+            payload: {
+              title: `TO-DO: ${currentDate}`,
+              todo
+            }
+          })
+        } else return;
+    } catch (error) {
+        console.log("Error posting new user's anon todo list", error);
+    }
+}
 
 export default todolistSaga;

@@ -5,16 +5,24 @@ function RegisterForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector((store) => store.errors);
+  const todo = useSelector(store => store.todoListResourcesReducer)
   const dispatch = useDispatch();
 
   const registerUser = (event) => {
     event.preventDefault();
 
+    console.log({
+      user: {username: username,
+      password: password},
+      todo
+    })
+
     dispatch({
       type: 'REGISTER',
       payload: {
-        username: username,
-        password: password,
+        user: {username: username,
+        password: password},
+        todo
       },
     });
   }; // end registerUser
