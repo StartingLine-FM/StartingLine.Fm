@@ -16,6 +16,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import SaveIcon from '@mui/icons-material/Save';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close'
 
 
 export default function ToDoList() {
@@ -150,7 +151,7 @@ export default function ToDoList() {
                 <Grid item md={4} xs={12}>
                     <Container sx={{ padding: 4 }}>
                         <Paper sx={{ flexDirection: 'column', width: '100%', paddingRight: 2, display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
-                            <Typography variant='h4' gutterBottom align='center'>Todo Lists</Typography>
+                            <Typography variant='h4' gutterBottom paddingLeft={3} align='left'>To-Do Lists</Typography>
                             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                                 {list_titles.map((list, i) => (
                                     <ListItem key={i} secondaryAction={
@@ -163,9 +164,17 @@ export default function ToDoList() {
                                         </ListItemButton>
                                     </ListItem>
                                 ))}
-                                {newTitleEditMode ? <ListItem secondaryAction={<IconButton edge='end' onClick={() => { setNewTitleEditMode(false); dispatch({ type: "POST_NEW_TITLE", payload: { title: newTitle } }); setNewTitle('') }} aria-label='save'>
-                                    <SaveIcon />
-                                </IconButton>}>
+                                {newTitleEditMode ? <ListItem
+                                    secondaryAction={<Box>
+                                        <IconButton onClick={() => { handleClose; setSelectedResource(null); setNewTitleEditMode(false); clearInputs(); }} edge={'start'} aria-label={'delete'}>
+                                            <Tooltip title='Cancel' placement='top' arrow>
+                                                <CloseIcon />
+                                            </Tooltip>
+                                        </IconButton>
+                                        <IconButton color='primary' edge='end' onClick={() => { setNewTitleEditMode(false); dispatch({ type: "POST_NEW_TITLE", payload: { title: newTitle } }); setNewTitle('') }} aria-label='save'>
+                                            <SaveIcon />
+                                        </IconButton>
+                                    </Box>}>
                                     <TextField variant='filled' placeholder={newTitle} value={newTitle} onChange={(e) => setNewTitle(e.target.value)}>Add A New To Do List</TextField></ListItem> :
                                     <ListItem secondaryAction={<IconButton color='primary' edge='end' onClick={() => { setNewTitleEditMode(true) }} aria-label={'copy'}>
                                         <AddIcon />
@@ -184,7 +193,7 @@ export default function ToDoList() {
                         <Paper sx={{ flexDirection: 'column', width: '100%', display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
 
                             {title_resources.length > 0 && <Typography paddingRight={3.5} secondaryAction variant='h4' gutterBottom align='center' justifyContent={'left'}>
-                                <span style={{  display: 'flex', alignContent: 'center', paddingLeft: 65, paddingTop: 20, justifyContent: 'space-between' }}>
+                                <span style={{ display: 'flex', alignContent: 'center', paddingLeft: 65, paddingTop: 20, justifyContent: 'space-between' }}>
                                     Resources<IconButton color='primary' onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
                                         <Tooltip title='Copy to clipboard' placement='top' arrow>
                                             <FileCopyIcon />
@@ -200,22 +209,29 @@ export default function ToDoList() {
                                             <Tooltip title="Click to see description" placement='left-start' arrow>
                                                 <ListItem>
                                                     <Box>
-                                                    <ListItemButton onClick={() => { setSelectedResource(resource.id); handleOpen(); }}>{resource.resource_name}</ListItemButton>
+                                                        <ListItemButton onClick={() => { setSelectedResource(resource.id); handleOpen(); }}>{resource.resource_name}</ListItemButton>
                                                     </Box>
                                                 </ListItem>
-                                                
+
                                             </Tooltip>
                                             {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)} variant='filled' placeholder={resource.notes}>{resource.notes ? resource.notes : <em>Click the edit icon to add notes</em>}</TextField></ListItem> :
                                                 <ListItem>
                                                     <ListItemText>{resource.notes ? resource.notes : <em>Click the edit icon to add notes</em>}</ListItemText>
                                                 </ListItem>}
-                                            {editMode && selectedResource === resource.id ? <ListItem ><Button
-                                                variant='text'
-                                                onClick={() => setNewCompleted((prevCompleted) => !prevCompleted)}
-                                            >
-                                                {newCompleted ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
-                                            </Button></ListItem> :
-                                                <Button onClick={() => putResource(resource, true)}>
+                                            {editMode && selectedResource === resource.id ?
+                                                <>
+                                                    <Button
+                                                        sx={{ color: 'black' }}
+                                                        onClick={() => setNewCompleted((prevCompleted) => !prevCompleted)}>
+                                                        {newCompleted ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+                                                    </Button>
+                                                    <IconButton onClick={() => { handleClose; setSelectedResource(null); setEditMode(false); clearInputs(); }} edge={'start'} aria-label={'delete'}>
+                                                        <Tooltip title='Cancel' placement='top' arrow>
+                                                            <CloseIcon />
+                                                        </Tooltip>
+                                                    </IconButton>
+                                                </> :
+                                                <Button sx={{ color: 'black' }} onClick={() => putResource(resource, true)}>
                                                     <ListItemText >{resource.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}</ListItemText>
                                                 </Button>}
                                             {editMode && selectedResource === resource.id ? <IconButton color='primary' onClick={() => { putResource(resource); setEditMode(false) }}>
