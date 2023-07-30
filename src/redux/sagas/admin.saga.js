@@ -52,7 +52,7 @@ function* fetchCategories() {
 function* postCategory(action) {
     try {
         yield call(axios.post, '/api/admin/categories', action.payload);
-        yield put({ type: 'FETCH_CATEGORIES '});
+        yield put({ type: 'FETCH_CATEGORIES'});
     } catch (error) {
         console.log('Error posting category:', error);
     }
@@ -94,7 +94,7 @@ function* fetchStages() {
 function* postStage(action) {
     try {
         yield call(axios.post, '/api/admin/stages', action.payload);
-        yield put({ type: 'FETCH_STAGES '});
+        yield put({ type: 'FETCH_STAGES'});
     } catch (error) {
         console.log('Error posting stage:', error);
     }
@@ -131,12 +131,12 @@ function* adminSaga() {
     yield takeLatest('DELETE_RESOURCE', deleteResource);
     yield takeLatest('POST_CATEGORY', postCategory);
     yield takeLatest('POST_STAGE', postStage);
-    yield takeLatest('FETCH_CATEGORIES', fetchCategories);
-    yield takeLatest('FETCH_STAGES', fetchStages);
     yield takeLatest('UPDATE_CATEGORY', putCategory);
     yield takeLatest('UPDATE_STAGE', putStage);
     yield takeLatest('DELETE_CATEGORY', deleteCategory);
     yield takeLatest('DELETE_STAGE', deleteStage);
+    yield takeLatest('FETCH_CATEGORIES', fetchCategories);
+    yield takeLatest('FETCH_STAGES', fetchStages);
 }
 
 export default adminSaga;
