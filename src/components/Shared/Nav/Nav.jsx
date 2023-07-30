@@ -6,9 +6,10 @@ import { useSelector } from 'react-redux';
 import LoginPage from '../../Pages/LoginPage/LoginPage';
 
 
-function Nav({ setOpenLoginModal, openLoginModal, handleOpen}) {
-  // handle modal
+
+function Nav({ handleOpen}) {
   const user = useSelector((store) => store.user);
+
   return (
     <AppBar color="background" position="sticky" >
       <Grid container sx={{
@@ -66,7 +67,7 @@ function Nav({ setOpenLoginModal, openLoginModal, handleOpen}) {
                   Todo List
                 </Link>
               </Button >
-              : <Button variant="contained">
+              : <Button  variant="contained">
                 <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/anonlist">
                   Todo List
                 </Link>

@@ -7,17 +7,12 @@ import { Paper, IconButton, Typography, Dialog, Button, DialogTitle, DialogConte
 import CloseIcon from '@mui/icons-material/Close';
 // import register page
 import RegisterPage from '../RegisterPage/RegisterPage';
-function LoginForm({ handleClose, openLoginModal, handleOpen }) {
+function LoginForm({ handleClose, openLoginModal, handleOpen,
+   openRegisterModal, setOpenRegisterModal, handleCloseRegister, handleOpenRegister }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   // set state for dialog modal
-  const [openRegisterModal, setOpenRegisterModal] = useState(false);
-  const handleCloseRegister = () => {
-    setOpenRegisterModal(false);
-  }
-  const handleOpenRegister = () => {
-    setOpenRegisterModal(true);
-  }
+
   const errors = useSelector(store => store.errors);
   const dispatch = useDispatch();
   const history = useHistory();

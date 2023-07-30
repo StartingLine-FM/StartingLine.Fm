@@ -25,6 +25,8 @@ function RegisterForm({ handleOpenRegister, setOpenRegisterModal, openRegisterMo
         password: password,
       },
     });
+    handleCloseRegister();
+    history.push('/#/home')
   }; // end registerUser
 
   return (

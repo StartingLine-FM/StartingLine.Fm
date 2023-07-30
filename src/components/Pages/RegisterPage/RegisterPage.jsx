@@ -10,7 +10,7 @@ function RegisterPage({ handleOpenRegister, setOpenRegisterModal, openRegisterMo
 
   return (
     <Container>
-      <RegisterForm openRegisterModal={openRegisterModal} handleCloseRegister={handleCloseRegister} setOpenRegisterModal={setOpenRegisterModal} />
+      <RegisterForm handleOpenRegister={handleOpenRegister} openRegisterModal={openRegisterModal} handleCloseRegister={handleCloseRegister} setOpenRegisterModal={setOpenRegisterModal} />
     </Container>
   );
 }

@@ -55,6 +55,14 @@ const theme = createTheme({
 function App() {
   const dispatch = useDispatch();
   const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [openRegisterModal, setOpenRegisterModal] = useState(false);
+  const handleCloseRegister = () => {
+    setOpenRegisterModal(false);
+  }
+  const handleOpenRegister = () => {
+    setOpenRegisterModal(true);
+  }
+
   const handleOpen = () => {
     setOpenLoginModal(true)
   }
@@ -75,7 +83,10 @@ function App() {
           <Nav openLoginModal={openLoginModal} setOpenLoginModal={setOpenLoginModal} handleOpen={handleOpen} />
           <LoginPage openLoginModal={openLoginModal}
                   setOpenLoginModal={setOpenLoginModal}
-                  handleOpen={handleOpen} handleClose={handleClose} />
+                  handleOpen={handleOpen} handleClose={handleClose} openRegisterModal={openRegisterModal} 
+                  setOpenRegisterModal={setOpenRegisterModal} 
+                  handleCloseRegister={handleCloseRegister} 
+                  handleOpenRegister={handleOpenRegister} />
                   
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
@@ -101,7 +112,13 @@ function App() {
               exact
               path="/anonlist"
             >
-              <AnonToDo />
+              <AnonToDo  openLoginModal={openLoginModal}
+                  setOpenLoginModal={setOpenLoginModal}
+                  handleOpen={handleOpen} handleClose={handleClose} 
+                  openRegisterModal={openRegisterModal} 
+                  setOpenRegisterModal={setOpenRegisterModal} 
+                  handleCloseRegister={handleCloseRegister} 
+                  handleOpenRegister={handleOpenRegister} />
             </Route>
 
             <ProtectedRoute exact path="/todolist"
@@ -149,7 +166,11 @@ function App() {
                 // Otherwise, show the login page
                 <LoginPage openLoginModal={openLoginModal}
                   setOpenLoginModal={setOpenLoginModal}
-                  handleOpen={handleOpen} handleClose={handleClose} />
+                  handleOpen={handleOpen} handleClose={handleClose} 
+                  openRegisterModal={openRegisterModal} 
+                  setOpenRegisterModal={setOpenRegisterModal} 
+                  handleCloseRegister={handleCloseRegister} 
+                  handleOpenRegister={handleOpenRegister} />
               }
             </Route>
 
@@ -163,7 +184,10 @@ function App() {
                 <Redirect to="/user" />
                 :
                 // Otherwise, show the registration page
-                <RegisterPage />
+                <RegisterPage openRegisterModal={openRegisterModal} 
+                setOpenRegisterModal={setOpenRegisterModal} 
+                handleCloseRegister={handleCloseRegister} 
+                handleOpenRegister={handleOpenRegister}  />
               }
             </Route>
 
