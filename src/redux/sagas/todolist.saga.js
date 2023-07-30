@@ -32,6 +32,7 @@ function* postTodoList(action) {
         const response = yield axios.post(`/api/todo/${action.payload.resource_id}/${action.payload.title_table_id}`, action.payload); // call to the backend
         console.log(response.data); // check the response data 
         yield put({ type: "FETCH_TODO_LIST_RESOURCES", payload: action.payload.title_table_id })
+        console.log("THIS IS THE CULPRIT");
     } catch (error) {
         console.log('there was an error posting a new resource', error)
     }
@@ -43,6 +44,7 @@ function* putTodoList(action) {
         const response = yield axios.put(`/api/todo/${action.payload.id}/${action.payload.title_table_id}`, { todo_id: action.payload.todo_id, completed: action.payload.completed, notes: action.payload.notes }); // call to the backend
         console.log(response.data) // check the response data
         yield put({ type: "FETCH_TODO_LIST_RESOURCES", payload: action.payload.title_table_id });
+        console.log("THIS IS THE CULPRIT");
     } catch (error) {
         console.log('there was an error in the put to do list saga', error)
     }
@@ -54,6 +56,7 @@ function* deleteTodoListResource(action) {
         const response = yield axios.delete(`/api/todo/resource/${action.payload.id}/${action.payload.title_table_id}`);
         console.log(response.data);
         yield put({ type: "FETCH_TODO_LIST_RESOURCES", payload: action.payload.title_table_id });
+        console.log("THIS IS THE CULPRIT");
     } catch (error) {
         console.log('there was an error in deleting to do list resource saga', error);
     }

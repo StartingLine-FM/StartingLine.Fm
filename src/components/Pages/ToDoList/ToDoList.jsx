@@ -159,7 +159,7 @@ export default function ToDoList() {
                                             <DeleteIcon />
                                         </IconButton>
                                     }>
-                                        <ListItemButton onClick={() => { setSelectedResource(list.id); dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id }) }} key={i}>
+                                        <ListItemButton onClick={() => { setSelectedResource(list.id); dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id }); console.log('THIS IS THE CULPRIT') }} key={i}>
                                             <ListItemText variant='h4' >{list.title}</ListItemText>
                                         </ListItemButton>
                                     </ListItem>
