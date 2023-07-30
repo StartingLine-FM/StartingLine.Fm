@@ -1,10 +1,13 @@
 import React from 'react';
+import { useState } from 'react';
 import { AppBar, Typography, Link, Button, ButtonGroup, Grid } from '@mui/material';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import { useSelector } from 'react-redux';
+import LoginPage from '../../Pages/LoginPage/LoginPage';
 
-function Nav() {
 
+
+function Nav({ handleOpen}) {
   const user = useSelector((store) => store.user);
 
   return (
@@ -24,14 +27,11 @@ function Nav() {
             {!user.id && (
               // If there's no user, show login/registration links
               <>
-                <Button variant="contained">
-                  <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/login">
+                <Button variant="contained" onClick={handleOpen} >
                     Login / Register
-                  </Link>
                 </Button>
               </>
             )}
-
             {/* If a user is logged in, show these links */}
             {user.id && (
               <>
@@ -67,7 +67,7 @@ function Nav() {
                   Todo List
                 </Link>
               </Button >
-              : <Button variant="contained">
+              : <Button  variant="contained">
                 <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/anonlist">
                   Todo List
                 </Link>

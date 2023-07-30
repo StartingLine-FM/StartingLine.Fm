@@ -11,7 +11,9 @@ import {
     ListItemIcon,
     ListItem,
     IconButton,
-    TextField
+    TextField,
+    Button,
+    Box
 } from '@mui/material';
 // MUI Icons
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -25,9 +27,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 // components
 import './ToDoList.css'
 import AnonToDoModal from './AnonToDoModal';
+import LoginPage from '../LoginPage/LoginPage';
+import RegisterPage from '../RegisterPage/RegisterPage';
 
 
-export default function AnonToDo() {
+export default function AnonToDo({ setOpenLoginModal, openLoginModal, handleOpen }) {
 
     // set state for edit mode
     const [editMode, setEditMode] = useState(false)
@@ -37,6 +41,16 @@ export default function AnonToDo() {
     const [open, setOpen] = useState(false);
     // new values to update
     const [newNotes, setNewNotes] = useState('');
+    // set register modal state
+    const [registerModal, setRegisterModal] = useState(false);
+    // handler for opening register modal
+    const handleRegisterModalOpen = () => {
+        setRegisterModal(true);
+    }
+    // handler for closing register modal
+    const handleRegisterModalClose = () => {
+        setRegisterModal(false)
+    }
 
     // update a resource
     const putResource = (resource) => {
@@ -74,18 +88,20 @@ export default function AnonToDo() {
     // changes the background color of a list item based on the resource's "completed" key
     const listStyle = (resource) => {
         if (resource.completed) {
-            return { 
-                display: 'flex', 
-                flexDirection: 'row', 
-                width: '100%', 
-                maxWidth: '100%', 
-                bgcolor: 'lightgray' }
-        } else return { 
-            display: 'flex', 
-            flexDirection: 'row', 
-            width: '100%', 
-            maxWidth: '100%', 
-            bgcolor: 'background.paper' }
+            return {
+                display: 'flex',
+                flexDirection: 'row',
+                width: '100%',
+                maxWidth: '100%',
+                bgcolor: 'lightgray'
+            }
+        } else return {
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            maxWidth: '100%',
+            bgcolor: 'background.paper'
+        }
     }
 
     // Redux    
@@ -93,7 +109,7 @@ export default function AnonToDo() {
     const dispatch = useDispatch();
 
     return (
-        <Container sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
+        <Container registerModal={registerModal} open={handleRegisterModalOpen} sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
             <Typography variant='h4' gutterBottom align='center' py={4}>TO-DO</Typography>
             <Paper sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
                 {title_resources.length > 0
@@ -163,14 +179,20 @@ export default function AnonToDo() {
                                         handleClose={handleClose} />
                                 )}
                             </AnimatePresence>
+                            <Box textAlign={'center'}>
+                                <Button align="center" variant='text' m={2} onClick={handleOpen}>Click Here to login or register</Button>
+                            </Box>
                         </>
                     ))
                     :
-                    <Typography paragraph align="center" variant="body2" m={2} >
-                        Welcome to the To-Do page! You can add resources to this page by clicking on the star icon for any entry you're interested in on the search page.
-                        Once you've added resources, you will be able to add notes, mark entries as complete, or remove them. Need to take your to-do list with you? You can copy
-                        the entire list to your clipboard, or create an account to save multiple to-do lists to your profile.
-                    </Typography>
+                    <Box textAlign={'center'}>
+                        <Typography paragraph align="center" variant="body2" m={2} >
+                            Welcome to the To-Do page! You can add resources to this page by clicking on the star icon for any entry you're interested in on the search page.
+                            Once you've added resources, you will be able to add notes, mark entries as complete, or remove them. Need to take your to-do list with you? You can copy
+                            the entire list to your clipboard, or create an account to save multiple to-do lists to your profile.
+                        </Typography>
+                        <Button align="center" variant='text' onClick={handleOpen}>Click Here to login or register</Button>
+                    </Box>
 
                 }
             </Paper>
