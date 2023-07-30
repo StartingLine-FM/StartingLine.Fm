@@ -1,10 +1,18 @@
 
 .the-calendar {
-    margin-top: 40px;
+    margin-top: 20px;
 
 }
 
 .the-sidebar {
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
+.fc {
+    /* the calendar root */
+    color: green;
+    width: 800px;
+    min-height: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
