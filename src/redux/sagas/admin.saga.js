@@ -58,6 +58,18 @@ function* postCategory(action) {
     }
 };
 
+// Worker Saga: fired when a category is updated
+function* putCategory(action) {
+    try {
+        // Sends a PUT request to the server to update a category
+        yield call(axios.put, `/api/admin/categories/${action.payload.id}`, action.payload);
+        // Dispatches a fetch to get the updated list of categories
+        yield put({ type: 'FETCH_CATEGORIES' });
+    } catch (error) {
+        console.log('Error updating category', error);
+    }
+};
+
 // Worker Saga: fired when a category is deleted
 function* deleteCategory(action) {
     try {
@@ -88,6 +100,18 @@ function* postStage(action) {
     }
 };
 
+// Worker Saga: fired when a stage is updated
+function* putStage(action) {
+    try {
+        // Sends a PUT request to the server to update a stage
+        yield call(axios.put, `/api/admin/stages/${action.payload.id}`, action.payload);
+        // Dispatches a fetch to get the updated list of stages
+        yield put({ type: 'FETCH_STAGES' });
+    } catch (error) {
+        console.log('Error updating stage', error);
+    }
+};
+
 // Worker Saga: fired when a stage is deleted
 function* deleteStage(action) {
     try {
@@ -109,6 +133,8 @@ function* adminSaga() {
     yield takeLatest('POST_STAGE', postStage);
     yield takeLatest('FETCH_CATEGORIES', fetchCategories);
     yield takeLatest('FETCH_STAGES', fetchStages);
+    yield takeLatest('UPDATE_CATEGORY', putCategory);
+    yield takeLatest('UPDATE_STAGE', putStage);
     yield takeLatest('DELETE_CATEGORY', deleteCategory);
     yield takeLatest('DELETE_STAGE', deleteStage);
 }

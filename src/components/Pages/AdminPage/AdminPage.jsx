@@ -31,8 +31,8 @@ function AdminPage() {
   const dispatch = useDispatch();
   const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
-  const categories = useSelector((state) => state.categories) || [];
-  const stages = useSelector((state) => state.stages) || [];
+  const categories = useSelector((state) => state.categories);
+  const stages = useSelector((state) => state.stages);
 
   useEffect(() => {
     // Fetch categories and stages on component mount
@@ -83,6 +83,8 @@ function AdminPage() {
   const handleSaveEditedCategory = (categoryId) => {
     // Call the API to update the category name in the backend
     dispatch({ type: 'UPDATE_CATEGORY', payload: { id: categoryId, name: editedCategoryName } });
+    setEditedCategoryName(''); // Reset the edited category name state after saving changes
+    dispatch({ type: 'FETCH_CATEGORIES' }); // Refetch the categories
   };
 
   // Function to cancel the edit for a category
@@ -110,12 +112,14 @@ function AdminPage() {
   // Function to handle editing a stage
   const handleEditStage = (stageId, currentName) => {
     setEditedStageName({ id: stageId, name: currentName });
+    setEditedStageName(''); // Reset the edited stage name state after saving changes
+    dispatch({ type: 'FETCH_STAGES' }); // Refetch the stages
   };
 
   // Function to save the edited category name
-  const handleSaveEditedStage = (categoryId) => {
+  const handleSaveEditedStage = (stageId) => {
     // Call the API to update the category name in the backend
-    dispatch({ type: 'UPDATE_STAGE', payload: { id: categoryId, name: editedCategoryName } });
+    dispatch({ type: 'UPDATE_STAGE', payload: { id: stageId, name: editedStageName } });
   };
 
   // Function to cancel the edit for a stage
