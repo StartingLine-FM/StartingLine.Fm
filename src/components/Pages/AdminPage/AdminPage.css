@@ -24,7 +24,6 @@
 }
 
 .style-box {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)), url("/public/images/Fargo-Theatre_Downtown-Night-6_home.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
