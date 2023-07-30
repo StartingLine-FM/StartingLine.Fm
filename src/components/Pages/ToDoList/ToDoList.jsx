@@ -198,9 +198,9 @@ export default function ToDoList() {
                                             <ListItem>
                                                 <ListItemText onClick={() => { setSelectedResource(resource.id); handleOpen(); }}>{resource.resource_name}</ListItemText>
                                             </ListItem>
-                                            {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)} variant='filled' placeholder={resource.notes ? resource.notes : 'Click edit to add notes'}>{resource.notes ? resource.notes : <em>Click edit button to add notes</em>}</TextField></ListItem> :
+                                            {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)} variant='filled' placeholder={resource.notes ? resource.notes : <em>Click edit button to add notess</em>}>{resource.notes ? resource.notes : <em>Click edit button to add notes</em>}</TextField></ListItem> :
                                                 <ListItem>
-                                                    <ListItemText>{resource.notes ? resource.notes : 'Click edit to add notes'}</ListItemText>
+                                                    <ListItemText>{resource.notes ? resource.notes : <em>Click edit to add notes</em>}</ListItemText>
                                                 </ListItem>}
                                             {editMode && selectedResource === resource.id ? <ListItem><Button
                                                 variant='text'
