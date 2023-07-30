@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import "./AdminPage.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Container, Box, IconButton, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { TextField, Button, Container, Box, IconButton, } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save'; // Added SaveIcon
@@ -23,7 +23,7 @@ function AdminPage() {
 
   const [newCategory, setNewCategory] = useState('');
   const [newStage, setNewStage] = useState('');
-  
+
   // New state variables for tracking edited category and stage names
   const [editedCategoryName, setEditedCategoryName] = useState('');
   const [editedStageName, setEditedStageName] = useState('');
@@ -82,7 +82,7 @@ function AdminPage() {
   // Function to save the edited category name
   const handleSaveEditedCategory = (categoryId) => {
     // Call the API to update the category name in the backend
-    dispatch({ type: 'UPDATE_CATEGORY', payload: { id: categoryId, name: editedCategoryName } });
+    dispatch({ type: 'UPDATE_CATEGORY', payload: { id: categoryId, name: editedCategoryName.name } });
     setEditedCategoryName(''); // Reset the edited category name state after saving changes
     dispatch({ type: 'FETCH_CATEGORIES' }); // Refetch the categories
   };
@@ -112,14 +112,14 @@ function AdminPage() {
   // Function to handle editing a stage
   const handleEditStage = (stageId, currentName) => {
     setEditedStageName({ id: stageId, name: currentName });
-    setEditedStageName(''); // Reset the edited stage name state after saving changes
     dispatch({ type: 'FETCH_STAGES' }); // Refetch the stages
   };
 
   // Function to save the edited category name
   const handleSaveEditedStage = (stageId) => {
-    // Call the API to update the category name in the backend
-    dispatch({ type: 'UPDATE_STAGE', payload: { id: stageId, name: editedStageName } });
+    dispatch({ type: 'UPDATE_STAGE', payload: { id: stageId, name: editedStageName.name } });
+    setEditedStageName(''); // Reset the edited stage name state after saving changes
+    dispatch({ type: 'FETCH_STAGES' }); // Refetch the stages
   };
 
   // Function to cancel the edit for a stage
@@ -136,8 +136,8 @@ function AdminPage() {
   return (
     <Box className='style-box'>
       <Container className='admin-container'>
-         {/* Title for the whole page */}
-         <h1 style={{ textAlign: 'center' }}>Admin</h1>
+        {/* Title for the whole page */}
+        <h1 style={{ textAlign: 'center' }}>Admin</h1>
         {/* Form to add a new resource */}
         <form className='admin-form' onSubmit={handleSubmit}>
           <TextField
