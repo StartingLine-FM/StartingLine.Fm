@@ -77,33 +77,24 @@ const Calendar = () => {
         alignItems: 'center',
       }}
     >
+      
       <Paper>
-      <Typography className='calendar-title' variant="h4" component="h2">
-        StartingLine.FM
-      </Typography>
       <FullCalendar
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         initialView="dayGridMonth"
-        // height={'75vh'}
         contentHeight={'65vh'}
         
-        
+      
         
         events={filteredEvents}
-        // events={[
-        //   {
-        //     title: 'Test Event 1',
-        //     start: '2023-07-26T12:00 PM',
-        //     description: 'This is a test event.',
-        //     location: 'Test Location',
-        //   }
-        // ]}
 
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
           right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek',
         }}
+
+
         eventDidMount={handleEventDidMount} // attach the handleEventDidMount handler
         eventClick={handleEventClick} // attach the handleEventClick handler
         views={{

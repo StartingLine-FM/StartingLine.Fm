@@ -15,11 +15,13 @@ function* loginUser(action) {
     // send the action.payload as the body
     // the config includes credentials which
     // allow the server session to recognize the user
-    yield axios.post('/api/user/login', action.payload, config);
+    yield axios.post('/api/user/login', action.payload.user, config);
 
     // after the user has logged in
     // get the user information from the server
-    yield put({ type: 'FETCH_USER' });
+    if (action.payload.todo){
+    yield put({ type: 'FETCH_USER', payload: action.payload.todo })
+  } else yield put({ type: 'FETCH_USER' })
   } catch (error) {
     console.log('Error with user login:', error);
     if (error.response.status === 401) {

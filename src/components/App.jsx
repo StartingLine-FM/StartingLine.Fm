@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThemeProvider, createTheme } from '@mui/material';
-
+import { useState } from 'react';
 import Nav from './Shared/Nav/Nav';
 import Footer from './Shared/Footer/Footer';
 import ProtectedRoute from './Shared/ProtectedRoute/ProtectedRoute';
@@ -54,7 +54,22 @@ const theme = createTheme({
 
 function App() {
   const dispatch = useDispatch();
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [openRegisterModal, setOpenRegisterModal] = useState(false);
+  const handleCloseRegister = () => {
+    setOpenRegisterModal(false);
+  }
+  const handleOpenRegister = () => {
+    setOpenRegisterModal(true);
+  }
 
+  const handleOpen = () => {
+    setOpenLoginModal(true)
+  }
+
+  const handleClose = () => {
+    setOpenLoginModal(false)
+  }
   const user = useSelector(store => store.user);
 
   useEffect(() => {
@@ -65,7 +80,14 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <div>
-          <Nav />
+          <Nav openLoginModal={openLoginModal} setOpenLoginModal={setOpenLoginModal} handleOpen={handleOpen} />
+          <LoginPage openLoginModal={openLoginModal}
+                  setOpenLoginModal={setOpenLoginModal}
+                  handleOpen={handleOpen} handleClose={handleClose} openRegisterModal={openRegisterModal} 
+                  setOpenRegisterModal={setOpenRegisterModal} 
+                  handleCloseRegister={handleCloseRegister} 
+                  handleOpenRegister={handleOpenRegister} />
+                  
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />
@@ -90,7 +112,13 @@ function App() {
               exact
               path="/anonlist"
             >
-              <AnonToDo />
+              <AnonToDo  openLoginModal={openLoginModal}
+                  setOpenLoginModal={setOpenLoginModal}
+                  handleOpen={handleOpen} handleClose={handleClose} 
+                  openRegisterModal={openRegisterModal} 
+                  setOpenRegisterModal={setOpenRegisterModal} 
+                  handleCloseRegister={handleCloseRegister} 
+                  handleOpenRegister={handleOpenRegister} />
             </Route>
 
             <ProtectedRoute exact path="/todolist"
@@ -136,7 +164,13 @@ function App() {
                 <Redirect to="/user" />
                 :
                 // Otherwise, show the login page
-                <LoginPage />
+                <LoginPage openLoginModal={openLoginModal}
+                  setOpenLoginModal={setOpenLoginModal}
+                  handleOpen={handleOpen} handleClose={handleClose} 
+                  openRegisterModal={openRegisterModal} 
+                  setOpenRegisterModal={setOpenRegisterModal} 
+                  handleCloseRegister={handleCloseRegister} 
+                  handleOpenRegister={handleOpenRegister} />
               }
             </Route>
 
@@ -150,7 +184,10 @@ function App() {
                 <Redirect to="/user" />
                 :
                 // Otherwise, show the registration page
-                <RegisterPage />
+                <RegisterPage handleClose={handleClose} openRegisterModal={openRegisterModal} 
+                setOpenRegisterModal={setOpenRegisterModal} 
+                handleCloseRegister={handleCloseRegister} 
+                handleOpenRegister={handleOpenRegister}  />
               }
             </Route>
 

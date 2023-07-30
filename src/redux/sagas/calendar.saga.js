@@ -4,30 +4,39 @@ import axios from 'axios';
 // Fetch Emerging Prairie calendar saga
 function* fetchEmergingPrairieCalendarSaga() {
   try {
+    yield put({ type: 'SET_LOADING_EP'});// set load to true
     const calendarData = yield call(axios.get, '/api/calendar/emerging-prairie');
     yield put({ type: 'SET_EP', payload: calendarData.data });
+    yield put({ type: 'CLEAR_LOADING_EP'}); // set load to false
   } catch (error) {
     console.log('Error fetching Emerging Prairie calendar:', error);
+    yield put({ type: 'CLEAR_LOADING_EP'}); // set load to false
   }
 }
 
 // Fetch Fargo Underground calendar saga
 function* fetchFargoUndergroundCalendarSaga() {
   try {
+    yield put({ type: 'SET_LOADING_FU'});// set load to true
     const calendarData = yield call(axios.get, '/api/calendar/fargo-underground');
     yield put({ type: 'SET_FU', payload: calendarData.data });
+    yield put({ type: 'CLEAR_LOADING_FU'}); // set load to false
   } catch (error) {
     console.log('Error fetching Fargo Underground calendar:', error);
+    yield put({ type: 'CLEAR_LOADING_FU'}); // set load to false
   }
 }
 
 // Fetch Chamber of Commerce calendar saga
 function* fetchChamberCalendarSaga() {
   try {
+    yield put({ type: 'SET_LOADING_CHAMBER'});// set load to true
     const calendarData = yield call(axios.get, '/api/calendar/chamber');
     yield put({ type: 'SET_CHAMBER', payload: calendarData.data });
+    yield put({ type: 'CLEAR_LOADING_CHAMBER'}); // set load to false
   } catch (error) {
     console.log('Error fetching Chamber of Commerce calendar:', error);
+    yield put({ type: 'CLEAR_LOADING_CHAMBER'}); // set load to false
   }
 }
 

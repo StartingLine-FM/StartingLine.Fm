@@ -184,9 +184,9 @@ export default function ToDoList() {
                     <Container sx={{ paddingBottom: 4 }}>
                         <Typography variant='h4' gutterBottom align='center' paddingBottom={4}>Resources</Typography>
                         <Paper sx={{ flexDirection: 'column', width: '100%', paddingRight: 2, display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
-                            {title_resources.length > 0 && <IconButton sx={{ justifyContent: 'right' }} onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
+                            {title_resources.length > 0 && <ListItem  sx={{ justifyContent: 'right' }}><IconButton onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
                                 <FileCopyIcon />
-                            </IconButton>}
+                            </IconButton></ListItem>}
                             {title_resources.map((resource, i) => (
                                 <Container key={resource.id}>
                                     <List sx={listStyle(resource)}>
@@ -198,7 +198,7 @@ export default function ToDoList() {
                                             <ListItem>
                                                 <ListItemText onClick={() => { setSelectedResource(resource.id); handleOpen(); }}>{resource.resource_name}</ListItemText>
                                             </ListItem>
-                                            {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)} variant='filled' placeholder={resource.notes ? resource.notes : 'Click edit to add notes'}>{resource.notes ? resource.notes : 'Click edit to add notes'}</TextField></ListItem> :
+                                            {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)} variant='filled' placeholder={resource.notes ? resource.notes : 'Click edit to add notes'}>{resource.notes ? resource.notes : <em>Click edit button to add notes</em>}</TextField></ListItem> :
                                                 <ListItem>
                                                     <ListItemText>{resource.notes ? resource.notes : 'Click edit to add notes'}</ListItemText>
                                                 </ListItem>}

@@ -1,60 +1,87 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { Dialog, DialogContent, TextField, DialogActions, Button, DialogTitle, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
-function RegisterForm() {
+
+
+
+function RegisterForm({ handleClose, handleOpenRegister, setOpenRegisterModal, openRegisterModal, handleCloseRegister }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector((store) => store.errors);
+  const todo = useSelector(store => store.todoListResourcesReducer)
   const dispatch = useDispatch();
+  // import use history
+  const history = useHistory();
 
   const registerUser = (event) => {
     event.preventDefault();
 
+    console.log({
+      user: {username: username,
+      password: password},
+      todo
+    })
+
     dispatch({
       type: 'REGISTER',
       payload: {
-        username: username,
-        password: password,
+        user: {username: username,
+        password: password},
+        todo
       },
     });
+    handleCloseRegister();
+    handleClose();
+    history.push('/#/home')
   }; // end registerUser
 
   return (
-    <form className="formPanel" onSubmit={registerUser}>
-      <h2>Register User</h2>
-      {errors.registrationMessage && (
-        <h3 className="alert" role="alert">
-          {errors.registrationMessage}
-        </h3>
-      )}
       <div>
-        <label htmlFor="username">
-          Username:
-          <input
-            type="text"
-            name="username"
-            value={username}
-            required
-            onChange={(event) => setUsername(event.target.value)}
-          />
-        </label>
+        <Dialog onClose={handleCloseRegister} open={openRegisterModal}>
+          <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            Register
+            <IconButton onClick={handleCloseRegister} aria-label={'delete'}>
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent>
+            {errors.registrationMessage && (
+              <Typography className="alert" role="alert">
+                {errors.registrationMessage}
+              </Typography>
+            )}
+            <TextField
+              variant='standard'
+              type="text"
+              label="username"
+              required
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+            />
+            <TextField
+              variant='standard'
+              type="password"
+              label="password"
+              required
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+          <Button
+          onClick={() => {
+            history.push('/login');
+          }}
+        >
+          Login
+        </Button>
+          <Button onClick={registerUser} type="submit" name="submit" value="Register">Register</Button>
+          </DialogActions>
+        </Dialog>
       </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={password}
-            required
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <input className="btn" type="submit" name="submit" value="Register" />
-      </div>
-    </form>
   );
 }
 

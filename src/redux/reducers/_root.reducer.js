@@ -11,6 +11,7 @@ import tableListReducer from './tablelist.reducer';
 import CategoriesReducer from './categories.reducer';
 import StagesReducer from './stages.reducer';
 import adminReducer from './admin.reducer';
+import { EP_Loading_Reducer, FU_Loading_Reducer, chamber_Loading_Reducer } from './loading.reducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -30,6 +31,11 @@ const rootReducer = combineReducers({
   tableListReducer, // will have an id and username if someone is logged in
   categories: CategoriesReducer, //sets the categories for the project
   stages: StagesReducer, // sets the stages for the project
+  EP_Loading_Reducer,
+  FU_Loading_Reducer,
+  chamber_Loading_Reducer
+ // will have an id and username if someone is logged in
+
 });
 
 export default rootReducer;
