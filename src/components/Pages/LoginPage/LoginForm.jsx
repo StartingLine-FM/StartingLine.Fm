@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 // import register page
 import RegisterPage from '../RegisterPage/RegisterPage';
 function LoginForm({ handleClose, openLoginModal, handleOpen,
-   openRegisterModal, setOpenRegisterModal, handleCloseRegister, handleOpenRegister }) {
+  openRegisterModal, setOpenRegisterModal, handleCloseRegister, handleOpenRegister }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   // set state for dialog modal
@@ -38,56 +38,60 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
 
 
   return (
-    <div>
-      <Dialog onClose={handleClose} open={openLoginModal}>
-        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          Login
-          <IconButton onClick={handleClose} aria-label={'delete'}>
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-
-        <DialogContent>
-          {errors.loginMessage && (
-            <Typography className="alert" role="alert">
-              {errors.loginMessage}
-            </Typography>
-          )}
-          <TextField
-            variant='standard'
-            type="text"
-            label="username"
-            required
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-          />
-          <TextField
-            variant='standard'
-            type="password"
-            label="password"
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            type="button"
-            onClick={handleOpenRegister}
-          >
-            Register
-          </Button>
-          <Button onClick={login} type="submit" name="submit" value="Log In">Log In</Button>
-        </DialogActions>
-      </Dialog>
+    <>
       {openRegisterModal ? (
-        <RegisterPage
+        <RegisterPage handleClose={handleClose}
           openRegisterModal={openRegisterModal}
           setOpenRegisterModal={setOpenRegisterModal}
           handleCloseRegister={() => setOpenRegisterModal(false)}
         />
-      ) : null}
-    </div>
+      ) :
+
+        <div>
+          <Dialog onClose={handleClose} open={openLoginModal}>
+            <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              Login
+              <IconButton onClick={handleClose} aria-label={'delete'}>
+                <CloseIcon />
+              </IconButton>
+            </DialogTitle>
+
+            <DialogContent>
+              {errors.loginMessage && (
+                <Typography className="alert" role="alert">
+                  {errors.loginMessage}
+                </Typography>
+              )}
+              <TextField
+                variant='standard'
+                type="text"
+                label="username"
+                required
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+              />
+              <TextField
+                variant='standard'
+                type="password"
+                label="password"
+                required
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button
+                type="button"
+                onClick={handleOpenRegister}
+              >
+                Register
+              </Button>
+              <Button onClick={login} type="submit" name="submit" value="Log In">Log In</Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      }
+    </>
   );
 }
 

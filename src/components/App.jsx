@@ -184,7 +184,7 @@ function App() {
                 <Redirect to="/user" />
                 :
                 // Otherwise, show the registration page
-                <RegisterPage openRegisterModal={openRegisterModal} 
+                <RegisterPage handleClose={handleClose} openRegisterModal={openRegisterModal} 
                 setOpenRegisterModal={setOpenRegisterModal} 
                 handleCloseRegister={handleCloseRegister} 
                 handleOpenRegister={handleOpenRegister}  />

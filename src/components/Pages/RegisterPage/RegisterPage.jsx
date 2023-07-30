@@ -5,12 +5,12 @@ import RegisterForm from './RegisterForm';
 // mui imports
 import { Container, Paper, Button } from '@mui/material';
 
-function RegisterPage({ handleOpenRegister, setOpenRegisterModal, openRegisterModal, handleCloseRegister}) {
+function RegisterPage({ handleClose, handleOpenRegister, setOpenRegisterModal, openRegisterModal, handleCloseRegister}) {
   const history = useHistory();
 
   return (
     <Container>
-      <RegisterForm handleOpenRegister={handleOpenRegister} openRegisterModal={openRegisterModal} handleCloseRegister={handleCloseRegister} setOpenRegisterModal={setOpenRegisterModal} />
+      <RegisterForm handleClose={handleClose} handleOpenRegister={handleOpenRegister} openRegisterModal={openRegisterModal} handleCloseRegister={handleCloseRegister} setOpenRegisterModal={setOpenRegisterModal} />
     </Container>
   );
 }
