@@ -179,11 +179,9 @@ export default function AnonToDo({ setOpenLoginModal, openLoginModal, handleOpen
                                         handleClose={handleClose} />
                                 )}
                             </AnimatePresence>
-                            <Box textAlign={'center'}>
-                                <Button align="center" variant='text' m={2} onClick={handleOpen}>Click Here to login or register</Button>
-                            </Box>
                         </>
                     ))
+
                     :
                     <Box textAlign={'center'}>
                         <Typography paragraph align="center" variant="body2" m={2} >
@@ -191,10 +189,11 @@ export default function AnonToDo({ setOpenLoginModal, openLoginModal, handleOpen
                             Once you've added resources, you will be able to add notes, mark entries as complete, or remove them. Need to take your to-do list with you? You can copy
                             the entire list to your clipboard, or create an account to save multiple to-do lists to your profile.
                         </Typography>
-                        <Button align="center" variant='text' onClick={handleOpen}>Click Here to login or register</Button>
                     </Box>
-
                 }
+                <Box textAlign={'center'}>
+                    <Button align="center" variant='text' m={2} onClick={handleOpen}>Click Here to login or register</Button>
+                </Box>
             </Paper>
         </Container>
     )

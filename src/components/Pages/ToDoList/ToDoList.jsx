@@ -149,9 +149,9 @@ export default function ToDoList() {
             <Grid container>
                 {/* Sidebar */}
                 <Grid item md={4} xs={12}>
-                    <Container sx={{ paddingBottom: 4 }}>
-                        <Typography variant='h4' gutterBottom align='center' paddingBottom={4}>Todo Lists</Typography>
+                    <Container sx={{ padding: 4 }}>
                         <Paper sx={{ flexDirection: 'column', width: '100%', paddingRight: 2, display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
+                        <Typography variant='h4' gutterBottom align='center'>Todo Lists</Typography>
                             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                                 {list_titles.map((list, i) => (
                                     <ListItem key={i} secondaryAction={
@@ -181,24 +181,23 @@ export default function ToDoList() {
 
                 {/* Center Content */}
                 <Grid item md={8} xs={12}>
-                    <Container sx={{ paddingBottom: 4 }}>
-                        <Typography variant='h4' gutterBottom align='center' paddingBottom={4}>Resources</Typography>
+                    <Container sx={{ padding: 4 }}>
                         <Paper sx={{ flexDirection: 'column', width: '100%', paddingRight: 2, display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
-                            {title_resources.length > 0 && <ListItem  sx={{ justifyContent: 'right' }}><IconButton onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
+                        <Typography variant='h4' gutterBottom align='center'>Resources</Typography>
+                            {title_resources.length > 0 && <ListItem  sx={{ justifyContent: 'right' }}><IconButton color='primary' onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
                                 <FileCopyIcon />
                             </IconButton></ListItem>}
                             {title_resources.map((resource, i) => (
                                 <Container key={resource.id}>
                                     <List sx={listStyle(resource)}>
                                         <ListItem key={resource.id} secondaryAction={
-                                            <IconButton onClick={() => dispatch({ type: "DELETE_TODO_LIST_RESOURCE", payload: { id: resource.id, title_table_id: resource.title_table_id } })} edge={'end'} aria-label={'delete'}>
+                                            <IconButton color='secondary' onClick={() => dispatch({ type: "DELETE_TODO_LIST_RESOURCE", payload: { id: resource.id, title_table_id: resource.title_table_id } })} edge={'end'} aria-label={'delete'}>
                                                 <DeleteIcon />
                                             </IconButton>}>
-
                                             <ListItem>
                                                 <ListItemText onClick={() => { setSelectedResource(resource.id); handleOpen(); }}>{resource.resource_name}</ListItemText>
                                             </ListItem>
-                                            {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)} variant='filled' placeholder={resource.notes ? resource.notes : <em>Click edit button to add notess</em>}>{resource.notes ? resource.notes : <em>Click edit button to add notes</em>}</TextField></ListItem> :
+                                            {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)} variant='filled' placeholder={resource.notes}>{resource.notes ? resource.notes : <em>Click edit button to add notes</em>}</TextField></ListItem> :
                                                 <ListItem>
                                                     <ListItemText>{resource.notes ? resource.notes : <em>Click edit to add notes</em>}</ListItemText>
                                                 </ListItem>}
@@ -213,12 +212,12 @@ export default function ToDoList() {
                                                 </ListItemButton>}
 
 
-                                            {editMode && selectedResource === resource.id ? <ListItemButton onClick={() => { putResource(resource); setEditMode(false) }}>
+                                            {editMode && selectedResource === resource.id ? <IconButton color='primary' onClick={() => { putResource(resource); setEditMode(false) }}>
                                                 <SaveIcon />
-                                            </ListItemButton> :
-                                                <ListItemButton onClick={() => { setEditMode(true); setSelectedResource(resource.id); }} aria-label={'delete'}>
+                                            </IconButton> :
+                                                <IconButton color='primary'  onClick={() => { setEditMode(true); setSelectedResource(resource.id); }} aria-label={'delete'}>
                                                     <ModeEditIcon />
-                                                </ListItemButton>}
+                                                </IconButton>}
 
                                         </ListItem>
                                     </List>
