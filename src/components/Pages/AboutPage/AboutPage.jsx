@@ -15,7 +15,7 @@ function AboutPage() {
   return (
     <Container style={{ marginBottom: '50px' }}>
       <Paper style={{ marginTop: '20px', padding: '20px' }}>
-        <Typography variant="h6" style={titleStyle}>
+        <Typography variant="h6" style={titleStyle} align="center">
           Research and Client Information:
         </Typography>
         <Typography variant="body1" style={listItemStyle}>
@@ -33,7 +33,7 @@ function AboutPage() {
       </Paper>
 
       <Paper style={{ marginTop: '20px', padding: '20px' }}>
-        <Typography variant="h6" style={titleStyle}>
+        <Typography variant="h6" style={titleStyle} align="center">
           Project and Team Information:
         </Typography>
         <Typography variant="body1">
@@ -54,66 +54,66 @@ function AboutPage() {
           </ListItem>
         </List>
         <Typography variant="body1" style={listItemStyle}>
-          The foundation built by this first-time team sets the stage for an effective resource platform that could revolutionize the startup ecosystem in the Fargo-Moorhead area. 
+          The foundation built by this first-time team sets the stage for an effective resource platform that could revolutionize the startup ecosystem in the Fargo-Moorhead area.
         </Typography>
       </Paper>
 
       <Paper style={{ marginTop: '20px', padding: '20px' }}>
-  <Typography variant="h6" style={titleStyle}>
-    Coding and Technology Details:
-  </Typography>
-  <Typography variant="body1">
-    The project was built using a wide range of technologies:
+        <Typography variant="h6" style={titleStyle} align="center">
+          Coding and Technology Details:
+        </Typography>
+        <Typography variant="body1">
+          The project was built using a wide range of technologies:
 
-    <Typography variant="body1" style={{ fontWeight: 'bold', marginTop: '10px' }}>
-      Frontend:
-    </Typography>
-    <ul>
-      <li>React (^18.0.1)</li>
-      <li>React-DOM (^18.0.1)</li>
-      <li>React-Redux (^7.2.6)</li>
-      <li>React-Router-DOM (^5.2.0)</li>
-      <li>Redux (^4.1.2)</li>
-      <li>Redux-Saga (^1.1.3)</li>
-      <li>Redux-Logger (^3.0.6)</li>
-      <li>@mui/material (^5.14.0)</li>
-      <li>@mui/icons-material (^5.14.1)</li>
-      <li>@mui/styles (^5.14.1)</li>
-      <li>@emotion/react (^11.11.1)</li>
-      <li>@emotion/styled (^11.11.0)</li>
-      <li>@fullcalendar/react (^6.1.8)</li>
-      <li>@fullcalendar/daygrid (^6.1.8)</li>
-      <li>@fullcalendar/interaction (^6.1.8)</li>
-      <li>@fullcalendar/list (^6.1.8)</li>
-      <li>Bootstrap (^5.3.0)</li>
-      <li>Framer-Motion (^10.13.1)</li>
-      <li>Axios (^0.21.1)</li>
-      <li>Query-string (^8.1.0)</li>
-      <li>React-scripts (^5.0.1)</li>
-      <li>Prop-types (^15.7.2)</li>
-      <li>Date-fns (^2.30.0)</li>
-    </ul>
+          <Typography variant="body1" style={{ fontWeight: 'bold', marginTop: '10px' }}>
+            Frontend:
+          </Typography>
+          <ul>
+            <li>React (^18.0.1)</li>
+            <li>React-DOM (^18.0.1)</li>
+            <li>React-Redux (^7.2.6)</li>
+            <li>React-Router-DOM (^5.2.0)</li>
+            <li>Redux (^4.1.2)</li>
+            <li>Redux-Saga (^1.1.3)</li>
+            <li>Redux-Logger (^3.0.6)</li>
+            <li>@mui/material (^5.14.0)</li>
+            <li>@mui/icons-material (^5.14.1)</li>
+            <li>@mui/styles (^5.14.1)</li>
+            <li>@emotion/react (^11.11.1)</li>
+            <li>@emotion/styled (^11.11.0)</li>
+            <li>@fullcalendar/react (^6.1.8)</li>
+            <li>@fullcalendar/daygrid (^6.1.8)</li>
+            <li>@fullcalendar/interaction (^6.1.8)</li>
+            <li>@fullcalendar/list (^6.1.8)</li>
+            <li>Bootstrap (^5.3.0)</li>
+            <li>Framer-Motion (^10.13.1)</li>
+            <li>Axios (^0.21.1)</li>
+            <li>Query-string (^8.1.0)</li>
+            <li>React-scripts (^5.0.1)</li>
+            <li>Prop-types (^15.7.2)</li>
+            <li>Date-fns (^2.30.0)</li>
+          </ul>
 
-    <Typography variant="body1" style={{ fontWeight: 'bold', marginTop: '10px' }}>
-      Backend:
-    </Typography>
-    <ul>
-      <li>Express (^4.17.1)</li>
-      <li>PG (^8.5.1)</li>
-      <li>Passport (^0.4.1)</li>
-      <li>Passport-local (^1.0.0)</li>
-      <li>Cookie-session (^2.0.0)</li>
-      <li>Bcryptjs (^2.4.3)</li>
-      <li>Request (^2.88.2)</li>
-      <li>Cheerio (^1.0.0-rc.12)</li>
-      <li>Chrono-node (^2.6.4)</li>
-      <li>Dotenv (^8.6.0)</li>
-    </ul>
+          <Typography variant="body1" style={{ fontWeight: 'bold', marginTop: '10px' }}>
+            Backend:
+          </Typography>
+          <ul>
+            <li>Express (^4.17.1)</li>
+            <li>PG (^8.5.1)</li>
+            <li>Passport (^0.4.1)</li>
+            <li>Passport-local (^1.0.0)</li>
+            <li>Cookie-session (^2.0.0)</li>
+            <li>Bcryptjs (^2.4.3)</li>
+            <li>Request (^2.88.2)</li>
+            <li>Cheerio (^1.0.0-rc.12)</li>
+            <li>Chrono-node (^2.6.4)</li>
+            <li>Dotenv (^8.6.0)</li>
+          </ul>
 
-    The application runs on Node.js (version 16.x). The project also uses Nodemon (^2.0.4) in the development environment.
-    Some of these technologies were used for both frontend and backend.
-  </Typography>
-</Paper>
+          The application runs on Node.js (version 16.x). The project also uses Nodemon (^2.0.4) in the development environment.
+          Some of these technologies were used for both frontend and backend.
+        </Typography>
+      </Paper>
     </Container>
   );
 };
