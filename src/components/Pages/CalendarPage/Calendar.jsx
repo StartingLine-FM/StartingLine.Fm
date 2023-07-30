@@ -78,21 +78,21 @@ const Calendar = () => {
       }}
     >
       
-      <Card sx={{padding:4}}>
+      <Card sx={{paddingleft:2, paddingRight:2, paddingBottom:2}}>
         <CardHeader
-        title='Test Header'
+        title='Local Events'
+        className='calendar-title'
         />
       <FullCalendar
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         contentHeight={'65vh'}
         
-      
         
         events={filteredEvents}
 
         headerToolbar={{
-          left: 'prev,next today',
+          left: 'prev,next,today',
           center: 'title',
           right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek',
         }}

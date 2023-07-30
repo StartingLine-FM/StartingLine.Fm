@@ -6,7 +6,7 @@ import { Grid, Box, Container, Typography, Paper,  } from '@mui/material';
 
 const CalendarPage = () => {
   return (
-    <Container>
+    <Container style={{marginBottom: '50px'}}>
       <Grid container spacing={3}> 
         <Grid item xs={3}> 
           <Paper elevation={3}>
