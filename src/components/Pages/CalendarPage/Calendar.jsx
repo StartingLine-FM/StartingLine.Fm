@@ -10,7 +10,7 @@ import { format, parseISO } from 'date-fns';
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper, Card, CardHeader } from '@mui/material';
 
 const Calendar = () => {
   const EP_Events = useSelector((store) => store.EP_Reducer);
@@ -78,18 +78,21 @@ const Calendar = () => {
       }}
     >
       
-      <Paper>
+      <Card sx={{paddingleft:2, paddingRight:2, paddingBottom:2}}>
+        <CardHeader
+        title='Local Events'
+        className='calendar-title'
+        />
       <FullCalendar
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         contentHeight={'65vh'}
         
-      
         
         events={filteredEvents}
 
         headerToolbar={{
-          left: 'prev,next today',
+          left: 'prev,next,today',
           center: 'title',
           right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek',
         }}
@@ -112,7 +115,7 @@ const Calendar = () => {
           },
         }}
       />
-      </Paper>
+      </Card>
     </Box>
   );
 };
