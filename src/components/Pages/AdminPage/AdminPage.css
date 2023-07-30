@@ -1,7 +1,9 @@
 .admin-container {
-    align-content: center;
-    /* background-color: hsla(54, 33%, 88%, 0.7); */
-    padding: 30px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 30px;
     margin: 100px 0;
 }
 
@@ -12,13 +14,17 @@
     display: flex;
     flex-direction: column;
     border-radius: 3px;
-    border-width: 2px;
-    border-color: gold;
-    border-style: double;
+    border: 2px double gold;
+    padding: 20px;
+}
+
+/* Add some spacing for the forms */
+.admin-form>* {
+    margin-bottom: 15px;
 }
 
 .style-box {
-    background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.2)), url("/public/images/Fargo-Theatre_Downtown-Night-6_home.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)), url("/public/images/Fargo-Theatre_Downtown-Night-6_home.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -27,4 +33,26 @@
     height: 100vh;
     width: 100%;
     padding: 30px;
+}
+
+/* Style the categories and stages lists */
+.admin-list {
+    background-color: hsla(54, 33%, 88%, 0.7);
+    width: 300px;
+    margin: 0 auto;
+    border-radius: 3px;
+    border: 2px double gold;
+    padding: 20px;
+    list-style: none;
+}
+
+.admin-list>li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.admin-list>li>button {
+    margin-left: 10px;
 }
