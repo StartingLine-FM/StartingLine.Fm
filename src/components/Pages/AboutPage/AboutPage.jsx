@@ -32,6 +32,8 @@ function AboutPage() {
         </Typography>
       </Paper>
 
+      
+
       <Paper style={{ marginTop: '20px', padding: '20px' }}>
         <Typography variant="h6" style={titleStyle} align="center">
           Project and Team Information:
@@ -60,6 +62,36 @@ function AboutPage() {
 
       <Paper style={{ marginTop: '20px', padding: '20px' }}>
         <Typography variant="h6" style={titleStyle} align="center">
+          Category and Stage Definitions:
+        </Typography>
+
+        <Typography variant="body1" style={{ fontWeight: 'bold', marginTop: '10px' }}>
+          Categories:
+        </Typography>
+        <ul>
+          <li>Government: Resources from federal, state, and local governments that can assist startups in various ways.</li>
+          <li>Funding: Sources of financial support for startups, including venture capitalists, angel investors, and grant programs.</li>
+          <li>University: University-affiliated programs, incubators, or resources that can assist startups.</li>
+          <li>Support: Organizations or platforms that offer support to startups, such as mentorship programs, networking organizations, coworking spaces, and incubators.</li>
+          <li>Service Provider: Businesses that provide services that startups may need, such as legal services, marketing, business consulting, etc.</li>
+          <li>Big Company: Large corporations that might provide partnerships, sponsorships, or resources for startups.</li>
+          <li>Research: Research institutions or platforms that can provide startups with market, industry, or technological research.</li>
+        </ul>
+
+        <Typography variant="body1" style={{ fontWeight: 'bold', marginTop: '10px' }}>
+          Stages:
+        </Typography>
+        <ul>
+          <li>All Stages: Resources that are applicable to startups at any stage in their life cycle.</li>
+          <li>Nascent: Resources targeted towards ideas or businesses in the very early stages of development.</li>
+          <li>Early: Resources for startups that have begun operations but are still in the early stages of their business life cycle.</li>
+          <li>Startup/Seed: Resources for startups that are in the process of developing their product or service and likely looking for seed funding.</li>
+          <li>Growth: Resources for startups that have a finished product or service and are looking to scale up their operations.</li>
+        </ul>
+      </Paper>
+
+      <Paper style={{ marginTop: '20px', padding: '20px' }}>
+        <Typography variant="h6" style={titleStyle} align="center">
           Coding and Technology Details:
         </Typography>
         <Typography variant="body1">
@@ -69,49 +101,28 @@ function AboutPage() {
             Frontend:
           </Typography>
           <ul>
-            <li>React (^18.0.1)</li>
-            <li>React-DOM (^18.0.1)</li>
-            <li>React-Redux (^7.2.6)</li>
-            <li>React-Router-DOM (^5.2.0)</li>
-            <li>Redux (^4.1.2)</li>
-            <li>Redux-Saga (^1.1.3)</li>
-            <li>Redux-Logger (^3.0.6)</li>
-            <li>@mui/material (^5.14.0)</li>
-            <li>@mui/icons-material (^5.14.1)</li>
-            <li>@mui/styles (^5.14.1)</li>
-            <li>@emotion/react (^11.11.1)</li>
-            <li>@emotion/styled (^11.11.0)</li>
-            <li>@fullcalendar/react (^6.1.8)</li>
-            <li>@fullcalendar/daygrid (^6.1.8)</li>
-            <li>@fullcalendar/interaction (^6.1.8)</li>
-            <li>@fullcalendar/list (^6.1.8)</li>
-            <li>Bootstrap (^5.3.0)</li>
-            <li>Framer-Motion (^10.13.1)</li>
-            <li>Axios (^0.21.1)</li>
-            <li>Query-string (^8.1.0)</li>
-            <li>React-scripts (^5.0.1)</li>
-            <li>Prop-types (^15.7.2)</li>
-            <li>Date-fns (^2.30.0)</li>
+            <li>React</li>
+            <li>Redux</li>
+            <li>Material UI</li>
+            <li>Fullcalendar.io</li>
+            <li>Framer-Motion</li>
+            <li>Axios</li>
+            <li>Date-fns</li>
+            <li>Moment</li>
           </ul>
 
           <Typography variant="body1" style={{ fontWeight: 'bold', marginTop: '10px' }}>
             Backend:
           </Typography>
           <ul>
-            <li>Express (^4.17.1)</li>
-            <li>PG (^8.5.1)</li>
-            <li>Passport (^0.4.1)</li>
-            <li>Passport-local (^1.0.0)</li>
-            <li>Cookie-session (^2.0.0)</li>
-            <li>Bcryptjs (^2.4.3)</li>
-            <li>Request (^2.88.2)</li>
-            <li>Cheerio (^1.0.0-rc.12)</li>
-            <li>Chrono-node (^2.6.4)</li>
-            <li>Dotenv (^8.6.0)</li>
+            <li>Express</li>
+            <li>PG</li>
+            <li>Passport</li>
+            <li>Cheerio</li>
+            <li>Chrono-node</li>
+            <li>Dotenv</li>
+            <li>Node.js</li>
           </ul>
-
-          The application runs on Node.js (version 16.x). The project also uses Nodemon (^2.0.4) in the development environment.
-          Some of these technologies were used for both frontend and backend.
         </Typography>
       </Paper>
     </Container>
