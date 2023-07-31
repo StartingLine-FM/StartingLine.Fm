@@ -1,8 +1,9 @@
 import React from 'react';
 import "./CalendarPage.css";
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, IconButton, Typography, CircularProgress } from '@mui/material';
-import { Business, BrightnessLow, HorizontalSplit, Clear } from '@mui/icons-material';
+import { Box, IconButton, Typography, CircularProgress, Tooltip } from '@mui/material';
+import { Business, BrightnessLow, HorizontalSplit, Clear} from '@mui/icons-material';
+import InfoIcon from '@mui/icons-material/Info';
 
 
 const MenuSidebar = () => {
@@ -30,7 +31,7 @@ const MenuSidebar = () => {
   };
 
   return (
-    <Box className='sidebar-contents'>
+    <Box>
 
       <IconButton
       className='EP-button'
@@ -38,7 +39,7 @@ const MenuSidebar = () => {
       onClick={handleEP_Click} 
       disabled={loadingEP}>
       {loadingEP ? <CircularProgress size={20} /> : <BrightnessLow />}
-      <Typography marginLeft={2}>Emerging Prairie</Typography>
+      <Typography marginLeft={1}>Emerging Prairie</Typography>
       </IconButton>
 
       <IconButton 
@@ -47,7 +48,7 @@ const MenuSidebar = () => {
       onClick={handleFU_Click} 
       disabled={loadingFU}>
       {loadingFU ? <CircularProgress size={20} /> : <HorizontalSplit />}
-      <Typography marginLeft={2}>Fargo Underground</Typography>
+      <Typography marginLeft={1}>Fargo Underground</Typography>
       </IconButton>
 
       <IconButton
@@ -56,7 +57,7 @@ const MenuSidebar = () => {
       onClick={handleChamber_Click} 
       disabled={loadingChamber}>
       {loadingChamber ? <CircularProgress size={20} /> : <Business />}
-      <Typography marginLeft={2}>Chamber of Commerce</Typography>
+      <Typography marginLeft={1}>Chamber of Commerce</Typography>
       </IconButton>
       
       <IconButton onClick={handleClearClick }
@@ -64,7 +65,7 @@ const MenuSidebar = () => {
       color='inherit'
       >
       <Clear />
-      <Typography marginLeft={2}>Clear Calendars</Typography>
+      <Typography marginLeft={1}>Clear Calendars</Typography>
       </IconButton>
 
     </Box>

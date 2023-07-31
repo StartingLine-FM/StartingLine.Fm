@@ -1,4 +1,3 @@
-
 .the-calendar {
     margin-top: 20px;
 }
@@ -8,15 +7,14 @@
     text-align: center;
     font-size: larger;
     font-weight: bolder;
-    /* color: #55c6f0; */
+    color: #55c6f0;
 }
 
 .the-sidebar {
     margin-top: 20px;
 }
 
-.sidebar-contents {
-    width: 400px;
+.sidebar-title {
     color: #55c6f0;
 }
 
@@ -29,6 +27,25 @@
     overflow-x: none;
 }
 
+.fc-daygrid-day-number, .fc-col-header-cell-cushion {
+color:black;
+}
+
+.fc-header-toolbar {
+    color: #55c6f0;
+}
+
+*, ::after, ::before  {
+    box-sizing: border-box;
+    color: #55c6f0;
+}
+
+.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
+    color:#55c6f0
+}
+
+/* Unused code below
+
 /* .fc * {
     color: red;
 } */
@@ -37,19 +54,6 @@
     color: red;
 } */
 
-/* .fc-header-toolbar {
-    color:red;
-} */
-
 /* .fc-toolbar {
     color: red;
 } */
-
-/* .fc-scrollgrid {
-    color: red;
-} */
-
-*, ::after, ::before {
-    box-sizing: border-box;
-    color: #55c6f0;
-}
