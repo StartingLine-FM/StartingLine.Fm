@@ -46,6 +46,7 @@ export default function Result({ result, currentList, categories, stages }) {
     // click handler for closing ResultModal
     const handleClose = () => {
         setOpen(false);
+        setSnackOpen(false);
     }
 
     const anonPostTodo = (e) => {
@@ -122,13 +123,14 @@ export default function Result({ result, currentList, categories, stages }) {
 
         if (user.id && currentList) {
             const list = tableList.find(title => title.id === currentList);
-            console.log(tableList, result)
             setMessage(`Successfully added to ${list.title}!`);
+            setColor("success");
         } else if ((user.id && !currentList)) {
             setMessage("Please select a To-Do list before adding a resource");
             setColor("error");
         } else if (!user.id) {
             setMessage("Successfully added to your todo list!");
+            setColor("success");
         }
     }
 
