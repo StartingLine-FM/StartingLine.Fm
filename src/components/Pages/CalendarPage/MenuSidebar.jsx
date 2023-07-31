@@ -1,4 +1,5 @@
 import React from 'react';
+import "./CalendarPage.css";
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, IconButton, Typography, CircularProgress } from '@mui/material';
 import { Business, BrightnessLow, HorizontalSplit, Clear } from '@mui/icons-material';
@@ -29,23 +30,39 @@ const MenuSidebar = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <IconButton onClick={handleEP_Click} disabled={loadingEP}>
-        {loadingEP ? <CircularProgress size={20} /> : <BrightnessLow />}
-        <Typography>Emerging Prairie</Typography>
+    <Box className='sidebar-contents'>
+
+      <IconButton
+      className='EP-button' 
+      onClick={handleEP_Click} 
+      disabled={loadingEP}>
+      {loadingEP ? <CircularProgress size={20} /> : <BrightnessLow />}
+      <Typography marginLeft={2}>Emerging Prairie</Typography>
       </IconButton>
-      <IconButton onClick={handleFU_Click} disabled={loadingFU}>
-        {loadingFU ? <CircularProgress size={20} /> : <HorizontalSplit />}
-        <Typography>Fargo Underground</Typography>
+
+      <IconButton 
+      className='FU-button'
+      onClick={handleFU_Click} 
+      disabled={loadingFU}>
+      {loadingFU ? <CircularProgress size={20} /> : <HorizontalSplit />}
+      <Typography marginLeft={2}>Fargo Underground</Typography>
       </IconButton>
-      <IconButton onClick={handleChamber_Click} disabled={loadingChamber}>
-        {loadingChamber ? <CircularProgress size={20} /> : <Business />}
-        <Typography>Chamber of Commerce</Typography>
+
+      <IconButton
+      className='chamber-button' 
+      onClick={handleChamber_Click} 
+      disabled={loadingChamber}>
+      {loadingChamber ? <CircularProgress size={20} /> : <Business />}
+      <Typography marginLeft={2}>Chamber of Commerce</Typography>
       </IconButton>
-      <IconButton onClick={handleClearClick}>
-        <Clear />
-        <Typography>Clear Calendars</Typography>
+      
+      <IconButton onClick={handleClearClick }
+      className='clear-button'
+      >
+      <Clear />
+      <Typography marginLeft={2}>Clear Calendars</Typography>
       </IconButton>
+
     </Box>
   );
 };

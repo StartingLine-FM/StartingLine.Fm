@@ -22,6 +22,7 @@ function* loginUser(action) {
     if (action.payload.todo){
     yield put({ type: 'FETCH_USER', payload: action.payload.todo })
   } else yield put({ type: 'FETCH_USER' })
+  
   } catch (error) {
     console.log('Error with user login:', error);
     if (error.response.status === 401) {

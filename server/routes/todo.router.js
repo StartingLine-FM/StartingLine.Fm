@@ -20,6 +20,7 @@ router.post(`/:resource_id/:title_table_id`, async (req, res) => {
     res.status(201).send(response.rows);
   } catch (error) {
     console.log('there was an error POSTING to the todo list', error);
+    res.sendStatus(500);
   }
 });
 
@@ -46,6 +47,7 @@ router.put('/:resource_id/:title_table_id', rejectUnauthenticated, async (req, r
     res.status(204).send(response.rows)
   } catch (error) {
     console.log('there was an error PUTTING to the todo list', error)
+    res.sendStatus(500);
   }
 })
 
@@ -64,6 +66,7 @@ router.delete('/resource/:id/:title_table_id', rejectUnauthenticated, async (req
     res.status(204).send(response.rows);
   } catch (error) {
     console.log('there was an error DELETING from the todo list', error);
+    res.sendStatus(500);
   }
 })
 
@@ -109,8 +112,8 @@ AND todo.title_table_id = $2;`;
       res.status(200).send(response.rows);
       console.log(response.rows)
     }).catch((err) => {
-
       console.log('there was an error getting the resource', err)
+      res.sendStatus(500);
     })
   })
 
@@ -127,6 +130,8 @@ router.get('/titles',async (req, res) => {
       res.status(200).send(response.rows) // send the response
     } catch (error) {
       console.log('error getting the titles', error)
+      res.sendStatus(500);
+      // TODO add res send status
     }
 })
 
@@ -144,6 +149,7 @@ router.post('/title',rejectUnauthenticated, async (req, res) => {
     res.status(201).send(response.rows)
   } catch (error) {
     console.log('there was an error posting a title', error)
+    res.sendStatus(500);
   }
 })
 

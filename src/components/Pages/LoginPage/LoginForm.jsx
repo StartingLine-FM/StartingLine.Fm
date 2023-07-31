@@ -17,24 +17,30 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
   const dispatch = useDispatch();
   const history = useHistory();
 
+
   const login = (event) => {
     event.preventDefault();
-
+    
     if (username && password) {
       dispatch({
         type: 'LOGIN',
         payload: {
-          username: username,
-          password: password,
+          user: {
+            username: username,
+            password: password
+          }
         },
       });
-
+      
+      dispatch({ type: "FETCH_USER" })
+      dispatch({ type: "FETCH_TABLE_LISTS"})
       handleClose();
       history.push('/#/home')
     } else {
       dispatch({ type: 'LOGIN_INPUT_ERROR' });
     }
   }; // end login
+
 
 
   return (

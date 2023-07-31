@@ -1,6 +1,7 @@
 // import use selector and use dispatch
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import moment from "moment";
 
 import ResultModal from "./ResultModal";
@@ -14,30 +15,29 @@ import {
     CardActionArea,
     IconButton,
     Chip,
-    Box
+    Snackbar,
+    Alert
 } from '@mui/material'
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import StarIcon from '@mui/icons-material/Star';
+import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
-export default function Result({ result, currentList, setCurrentList }) {
-
-    useEffect(() => {
-        if (user.id) {
-            dispatch({
-                type: "FETCH_TABLE_LISTS"
-            });
-        }
-    }, []);
+export default function Result({ result, currentList, categories, stages }) {
 
 
     // local state
     const [open, setOpen] = useState(false);
+    const [snackOpen, setSnackOpen] = useState(false);
+    const [message, setMessage] = useState("");
+    const [action, setAction] = useState(null);
+    const [color, setColor] = useState("success");
 
     // Redux
     const user = useSelector(store => store.user)
     const todoResources = useSelector(store => store.todoListResourcesReducer);
     const tableList = useSelector(store => store.tableListReducer);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     // click handler for opening ResultModal
     const handleClickOpen = () => {
@@ -46,59 +46,26 @@ export default function Result({ result, currentList, setCurrentList }) {
     // click handler for closing ResultModal
     const handleClose = () => {
         setOpen(false);
+        setSnackOpen(false);
     }
 
-    const categoryTag = (id) => {
-        if (result) {
-            switch (id) {
-                case 1:
-                    return "Government";
-                case 2:
-                    return "Funding";
-                case 3:
-                    return "University";
-                case 4:
-                    return "Support";
-                case 5:
-                    return "Service Provider";
-                case 6:
-                    return "Big Company";
-                case 7:
-                    return "Research";
-                default:
-                    break;
-            }
-        }
-    }
+    const anonPostTodo = (e) => {
 
-    const stageTag = (id) => {
-        if (result) {
-            switch (id) {
-                case 1:
-                    return "All Stages";
-                case 2:
-                    return "Nascent";
-                case 3:
-                    return "Early";
-                case 4:
-                    return "Startup/Seed";
-                case 5:
-                    return "Growth";
-                default:
-                    break;
-            }
-        }
-    }
+        snackbarConditionals(e)
+        console.log(action, message)
 
-    const anonPostTodo = () => {
         console.log(result, user)
         dispatch({
             type: "POST_ANON_TODO_LIST",
             payload: result
         })
+
+        setSnackOpen(true);
     }
 
-    const userPostTodo = () => {
+    const userPostTodo = (e) => {
+
+        snackbarConditionals(e);
 
         if (tableList.length === 0) {
             console.log(moment().format("MM/DD/YYYY"));
@@ -112,8 +79,6 @@ export default function Result({ result, currentList, setCurrentList }) {
             });
         }
 
-        console.log(currentList);
-
         currentList &&
             dispatch({
                 type: "POST_TODO_LIST",
@@ -123,42 +88,104 @@ export default function Result({ result, currentList, setCurrentList }) {
                 }
             })
 
+        setSnackOpen(true);
+    }
+
+    const snackbarConditionals = (e) => {
+        if (todoResources.some(e => e.id === result.id || e.resource_id === result.id)) {
+            setAction(
+                <>
+                    <Button color="secondary" size="small" onClick={history.push('/#/todolist')}>
+                        View Lists
+                    </Button>
+                    <IconButton
+                        size="small"
+                        aria-label="close"
+                        onClick={() => setSnackOpen(false)}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </>
+            );
+        } else {
+            setAction(
+                <>
+                    <IconButton
+                        size="small"
+                        aria-label="close"
+                        onClick={() => setSnackOpen(false)}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </>
+            );
+        }
+
+        if (user.id && currentList) {
+            const list = tableList.find(title => title.id === currentList);
+            setMessage(`Successfully added to ${list.title}!`);
+            setColor("success");
+        } else if ((user.id && !currentList)) {
+            setMessage("Please select a To-Do list before adding a resource");
+            setColor("error");
+        } else if (!user.id) {
+            setMessage("Successfully added to your todo list!");
+            setColor("success");
+        }
     }
 
     return (
         <>
             {result &&
-                <ResultModal
-                    open={open}
-                    handleClose={handleClose}
-                    result={result} categoryTag={categoryTag}
-                    stageTag={stageTag}
-                    userPostTodo={userPostTodo}
-                    anonPostTodo={anonPostTodo}
-                />}
+                <>
+                    <ResultModal
+                        open={open}
+                        handleClose={handleClose}
+                        result={result}
+                        categories={categories}
+                        stages={stages}
+                        userPostTodo={userPostTodo}
+                        anonPostTodo={anonPostTodo}
+                    />
+                    <Snackbar
+                        open={snackOpen}
+                        anchorOrigin={{vertical: '', horizontal: 'left'}}
+                        autoHideDuration={5000}
+                        onClose={() => setSnackOpen(false)}
+                        action={action}
+                    >
+                        <Alert onClose={() => setSnackOpen(false)} severity={color}>
+                            {message}
+                        </Alert>
+                    </Snackbar>
+                </>
+            }
             <Card raised sx={{ height: 250, maxWidth: 250, pb: 1 }}>
                 {
                     todoResources.some(e => e.id === result.id || e.resource_id === result.id)
                         ? <IconButton>
-                            <StarIcon color="primary" />
+                            <CheckIcon color="primary" />
                         </IconButton>
                         : user.id
-                            ? <IconButton onClick={() => userPostTodo()} >
-                                <StarBorderIcon />
+                            ? <IconButton onClick={(e) => userPostTodo(e.target)} >
+                                <AddIcon />
                             </IconButton>
-                            : <IconButton onClick={() => anonPostTodo()}>
-                                <StarBorderIcon />
+                            : <IconButton onClick={(e) => anonPostTodo(e.target)}>
+                                <AddIcon />
                             </IconButton>
                 }
                 <CardActionArea onClick={handleClickOpen} >
-                    <CardMedia
-                        sx={{height: 100 }}
-                        image={result.image_url}
-                        title='Resource Image' />
+                    {result.image_url &&
+                        <CardMedia
+                            sx={{ height: 100 }}
+                            image={result.image_url}
+                            title='Resource Image' />
+                    }
                     <CardContent sx={{ py: 1 }}>
                         <Typography
                             sx={{
-                                fontSize: "14px",
+                                width: "95%",
+                                fontSize: "1rem",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
                                 display: "-webkit-box",
@@ -171,7 +198,7 @@ export default function Result({ result, currentList, setCurrentList }) {
                             paragraph
                             variant="caption"
                             sx={{
-                                fontSize: "10px",
+                                fontSize: ".7em",
                                 lineHeight: "normal",
                                 mb: 1,
                                 pb: 0,
@@ -184,10 +211,10 @@ export default function Result({ result, currentList, setCurrentList }) {
                             {result.description}
                         </Typography>
                         {result.category_id &&
-                            <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={categoryTag(result.category_id)} />
+                            <Chip color="primary" size="small" sx={{ fontSize: "10px", mb: 1 }} label={result.category_name} />
                         }
                         {result.stage_id &&
-                            <Chip color="secondary" size="small" sx={{ fontSize: "10px", mx:1 }} label={stageTag(result.stage_id)} />
+                            <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1, mb: 1 }} label={result.stage_name} />
                         }
                     </CardContent>
                 </CardActionArea>

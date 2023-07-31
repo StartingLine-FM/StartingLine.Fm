@@ -23,14 +23,7 @@ import SendIcon from '@mui/icons-material/Send';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
 
-export default function SearchFilter({ currentList, setCurrentList }) {
-
-    useEffect(() => {
-        dispatch({
-            type: "FETCH_TODO_LIST_RESOURCES",
-            payload: currentList
-        })
-    }, [currentList])
+export default function SearchFilter({ currentList, setCurrentList, categories, stages, todo }) {
 
     // local state:
     // Category
@@ -126,6 +119,8 @@ export default function SearchFilter({ currentList, setCurrentList }) {
             }
         }
 
+        console.log(query);
+
         // Send off our dispatch with our selected query
         dispatch({
             type: "FETCH_SEARCH",
@@ -138,8 +133,8 @@ export default function SearchFilter({ currentList, setCurrentList }) {
     }
 
     return (
-        <Grid container flexDirection={"column"} width={"25%"}>
-            <Paper sx={{ mr: 2, px: 2, pt: 2, pb: 100 }}>
+        <Grid container sx={{maxWidth:"25%", flexDirection:"column", width:"25%"}}>
+            <Paper sx={{ mr: 2, px: 2, pt: 2 }}>
                 {/* Text search input */}
                 <Grid item sx={{ mb: 1 }}>
                     <TextField
@@ -154,13 +149,12 @@ export default function SearchFilter({ currentList, setCurrentList }) {
                             ? <IconButton color='primary' onClick={fetchSearch}><SendIcon /></IconButton>
                             : <IconButton ><SendOutlinedIcon /></IconButton>
                     }
-                    <Divider />
                 </Grid>
                 {/* Category and Stage filter dropdowns */}
                 <Grid item>
                     <ButtonGroup sx={{ mb: 1 }}>
                         {/* Apply filters button */}
-                        {changes 
+                        {changes
                             ? <Button variant="contained" onClick={fetchSearch} >Apply</Button>
                             : <Button variant="outlined" onClick={fetchSearch} >Apply</Button>
                         }
@@ -181,38 +175,19 @@ export default function SearchFilter({ currentList, setCurrentList }) {
                         {/* Category list */}
                         <Collapse in={categoryOpen} timeout="auto" unmountOnExit>
                             <List>
-                                <ListItemButton onClick={() => { setSelectedCategory("Government"); !changes && setChanges(true); }} >
-                                    {/* We're using MUI Icons to fake Radio Button functionality here lol
-                                        If the selectedCategory matches this line, we're showing a Checked Radio Button icon,
-                                        if not, it's unchecked. */}
-                                    {selectedCategory === "Government" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
-                                    {/* Clicking on this list item sets the selectedCategory to the correct string to send to the backend */}
-                                    <ListItemText sx={{ ml: 1 }} primary="Government" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => { setSelectedCategory("Funding Organization"); !changes && setChanges(true); }} >
-                                    {selectedCategory === "Funding Organization" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
-                                    <ListItemText sx={{ ml: 1 }} primary="Funding Organization" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => { setSelectedCategory("University"); !changes && setChanges(true); }} >
-                                    {selectedCategory === "University" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
-                                    <ListItemText sx={{ ml: 1 }} primary="University" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => { setSelectedCategory("Support Organization"); !changes && setChanges(true); }} >
-                                    {selectedCategory === "Support Organization" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
-                                    <ListItemText sx={{ ml: 1 }} primary="Support Organization" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => { setSelectedCategory("Service Provider"); !changes && setChanges(true); }}>
-                                    {selectedCategory === "Service Provider" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
-                                    <ListItemText sx={{ ml: 1 }} primary="Service Provider"  />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => { setSelectedCategory("Big Company"); !changes && setChanges(true); }} >
-                                    {selectedCategory === "Big Company" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
-                                    <ListItemText sx={{ ml: 1 }} primary="Big Company" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => { setSelectedCategory("Research Organization"); !changes && setChanges(true); }}>
-                                    {selectedCategory === "Research Organization" ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
-                                    <ListItemText sx={{ ml: 1 }} primary="Research Organization"  />
-                                </ListItemButton>
+                                {/* We're using MUI Icons to fake Radio Button functionality here lol
+                                    If the selectedCategory matches this line, we're showing a Checked Radio Button icon,
+                                    if not, it's unchecked. 
+                                Clicking on this list item sets the selectedCategory to the correct string to send to the backend */}
+                                {categories &&
+                                    categories.map(cat => {
+                                        return (
+                                            <ListItemButton key={cat.id} onClick={() => { setSelectedCategory(cat.id); !changes && setChanges(true); }} >
+                                                {selectedCategory === cat.id ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
+                                                <ListItemText sx={{ ml: 1 }} primary={cat.name} />
+                                            </ListItemButton>
+                                        )
+                                    })}
                             </List>
                         </Collapse>
                         {/* Business Stage dropdown */}
@@ -223,49 +198,46 @@ export default function SearchFilter({ currentList, setCurrentList }) {
                         {/* Business Stage list */}
                         <Collapse in={stageOpen} timeout="auto" unmountOnExit>
                             <List>
-                                <ListItemButton onClick={() => { setSelectedStage("Nascent"); !changes && setChanges(true); }}>
-                                    {/* Same idea as shown in the Category list above of faking the Radio Buttons
-                                        and sending the correct string */}
-                                    {selectedStage === "Nascent" ? <RadioButtonCheckedIcon color="secondary" /> : <RadioButtonUncheckedIcon />}
-                                    <ListItemText sx={{ ml: 1 }} primary="Nascent" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => { setSelectedStage("Early Stage"); !changes && setChanges(true); }} >
-                                    {selectedStage === "Early Stage" ? <RadioButtonCheckedIcon color="secondary" /> : <RadioButtonUncheckedIcon />}
-                                    <ListItemText sx={{ ml: 1 }} primary="Early Stage"/>
-                                </ListItemButton>
-                                <ListItemButton onClick={() => { setSelectedStage("Startup/Seed"); !changes && setChanges(true); }} >
-                                    {selectedStage === "Startup/Seed" ? <RadioButtonCheckedIcon color="secondary" /> : <RadioButtonUncheckedIcon />}
-                                    <ListItemText sx={{ ml: 1 }} primary="Startup/Seed" />
-                                </ListItemButton>
-                                <ListItemButton onClick={() => { setSelectedStage("Growth"); !changes && setChanges(true); }} >
-                                    {selectedStage === "Growth" ? <RadioButtonCheckedIcon color="secondary" /> : <RadioButtonUncheckedIcon />}
-                                    <ListItemText sx={{ ml: 1 }} primary="Growth" />
-                                </ListItemButton>
+                                {stages &&
+                                    stages.map(stage => {
+                                        return (
+                                            <ListItemButton key={stage.id} onClick={() => { setSelectedStage(stage.id); !changes && setChanges(true); }}>
+                                                {/* Same idea as shown in the Category list above of faking the Radio Buttons
+                                                and sending the correct string */}
+                                                {selectedStage === stage.id ? <RadioButtonCheckedIcon color="secondary" /> : <RadioButtonUncheckedIcon />}
+                                                <ListItemText sx={{ ml: 1 }} primary={stage.name} />
+                                            </ListItemButton>
+                                        )
+                                    })}
                             </List>
                         </Collapse>
                     </List>
-                    {user.id && titles &&
-                        <>
-                            <Typography variant="caption">Select To-Do List</Typography>
-                            <ListItemButton onClick={handleTitleClick}>
-                                <ListItemText primary={`${user.username}'s Lists`} />
-                                {stageOpen ? <ExpandLess /> : <ExpandMore />}
-                            </ListItemButton>
-                            <Collapse in={titleOpen} timeout="auto" unmountOnExit>
-                            {titles &&
-                                titles.map(list => {
-                                    return (
-                                        <ListItemButton key={list.id} onClick={() => {setCurrentList(list.id)}}>
-                                            {currentList === list.id ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
-                                            <ListItemText sx={{ ml: 1 }} primary={list.title} />
-                                        </ListItemButton>
-                                    
-                                )})}
-                            </Collapse>
-                        </>
-                    }
                 </Grid>
             </Paper >
-        </Grid >
+
+            {user.id && titles.length > 0 &&
+                <Paper sx={{ mr: 2, px: 2, py: 2, mt:2 }}>
+                    <Grid item>
+                    <Typography variant="caption">Select To-Do List</Typography>
+                    <ListItemButton onClick={handleTitleClick}>
+                        <ListItemText primary={`${user.username}'s Lists`} />
+                        {titleOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={titleOpen} timeout="auto" unmountOnExit>
+                        {titles &&
+                            titles.map(list => {
+                                return (
+                                    <ListItemButton key={list.id} onClick={() => { setCurrentList(list.id) }}>
+                                        {currentList === list.id ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                        <ListItemText sx={{ ml: 1 }} primary={list.title} />
+                                    </ListItemButton>
+
+                                )
+                            })}
+                    </Collapse>
+                    </Grid>
+                </Paper>
+            }
+        </Grid>
     )
 }

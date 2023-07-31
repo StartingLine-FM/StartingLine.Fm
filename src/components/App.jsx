@@ -13,7 +13,6 @@ import Footer from './Shared/Footer/Footer';
 import ProtectedRoute from './Shared/ProtectedRoute/ProtectedRoute';
 import AboutPage from './Pages/AboutPage/AboutPage';
 import UserPage from './Pages/UserPage/UserPage';
-import InfoPage from './Pages/InfoPage/InfoPage';
 import LandingPage from './Pages/LandingPage/LandingPage';
 import LoginPage from './Pages/LoginPage/LoginPage';
 import RegisterPage from './Pages/RegisterPage/RegisterPage';
@@ -23,7 +22,7 @@ import AnonToDo from './Pages/ToDoList/AnonToDo';
 import AdminPage from './Pages/AdminPage/AdminPage';
 import './App.css';
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
@@ -136,14 +135,6 @@ function App() {
               path="/user"
             >
               <UserPage />
-            </ProtectedRoute>
-
-            <ProtectedRoute
-              // logged in shows InfoPage else shows LoginPage
-              exact
-              path="/info"
-            >
-              <InfoPage />
             </ProtectedRoute>
 
             <ProtectedRoute
