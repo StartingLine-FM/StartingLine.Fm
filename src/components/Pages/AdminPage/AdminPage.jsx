@@ -137,10 +137,10 @@ function AdminPage() {
   return (
     <Box display="flex" flexDirection="column" className='style-box'>
       <Typography variant="h2" component="h2" style={{ marginBottom: '50px', textAlign: 'center', color: '#55c6f0' }}>
-        Admin Page
+        Admin
       </Typography>
 
-      <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '33%' }} className="admin-container">
+      <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '0' }} className="admin-container">
         <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
           Contribute Resource
           <Tooltip title="This form allows the addition of new resources. Complete all required fields with accurate information. After confirming details, click 'Submit' for user availability.">
@@ -237,7 +237,7 @@ function AdminPage() {
       </Paper>
 
       {/* Form to add a new category */}
-      <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '33%' }} className="admin-container">
+      <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '0' }} className="admin-container">
         <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
          Categories
           <Tooltip title="These are broad sectors that classify resources based on the source or nature of the assistance. Categories include government bodies, financial contributors, academic institutions, general support services, service providers, large corporations, and research entities. Please fill in all required fields and click submit.">
@@ -247,7 +247,7 @@ function AdminPage() {
         </Typography>
         {/* Display existing categories */}
         <div style={{ width: '100%' }}>
-          <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
+          <ul className="admin-list" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
             {categories.map((category) => (
               <li key={category.id}>
                 {editedCategoryName && category.id === editedCategoryName.id ? (
@@ -315,7 +315,7 @@ function AdminPage() {
       </Paper>
 
       {/* Form to add a new stage */}
-      <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '33%' }} className="admin-container">
+      <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '0' }} className="admin-container">
         <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
          Stages
           <Tooltip title="These signify the different phases in a business's life cycle. They range from the nascent or concept phase, through early development, startup or seed stage, and to the growth and expansion phase. Resources are categorized to match the relevant needs at each business stage. Please fill in all required fields and click submit.">
@@ -324,7 +324,7 @@ function AdminPage() {
         </Typography>
         {/* Display existing stages */}
         <div style={{ width: '100%' }}>
-          <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
+          <ul className="admin-list" style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
             {stages.map((stage) => (
               <li key={stage.id}>
                 {editedStageName && stage.id === editedStageName.id ? (
