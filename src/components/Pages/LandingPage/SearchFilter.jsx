@@ -132,6 +132,14 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
         setChanges(false);
     }
 
+    const fetchTodo = (id) => {
+        setCurrentList(id)
+        dispatch({
+            type: "FETCH_TODO_LIST_RESOURCES",
+            payload: id
+        });
+    }
+
     return (
         <Grid container sx={{maxWidth:"25%", flexDirection:"column", width:"25%"}}>
             <Paper sx={{ mr: 2, px: 2, pt: 2 }}>
@@ -227,7 +235,7 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                         {titles &&
                             titles.map(list => {
                                 return (
-                                    <ListItemButton key={list.id} onClick={() => { setCurrentList(list.id) }}>
+                                    <ListItemButton key={list.id} onClick={() => {fetchTodo(list.id)}}>
                                         {currentList === list.id ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
                                         <ListItemText sx={{ ml: 1 }} primary={list.title} />
                                     </ListItemButton>
