@@ -4,11 +4,14 @@ import { AppBar, Typography, Link, Button, ButtonGroup, Grid } from '@mui/materi
 import LogOutButton from '../LogOutButton/LogOutButton';
 import { useSelector } from 'react-redux';
 import LoginPage from '../../Pages/LoginPage/LoginPage';
-
+// import history
+import { useHistory } from 'react-router-dom';
 
 
 function Nav({ handleOpen}) {
   const user = useSelector((store) => store.user);
+
+  const history = useHistory();
 
   return (
     <AppBar color="background" position="sticky" >
@@ -35,10 +38,8 @@ function Nav({ handleOpen}) {
             {/* If a user is logged in, show these links */}
             {user.id && (
               <>
-                <Button variant="contained">
-                  <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/home">
+                <Button onClick={() => history.push("/#/home")} variant="contained">
                     Home
-                  </Link>
                 </Button>
 
                 {user.admin && (
@@ -51,23 +52,19 @@ function Nav({ handleOpen}) {
                 <LogOutButton />
               </>
             )}
-            <Button variant="contained">
-              <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/about">
+            <Button onClick={() => history.push('/about')} variant="contained">
+
                 About
-              </Link>
+  
             </Button>
-            <Button variant="contained">
-              <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/calendar">
+            <Button onClick={() => history.push('/calendar')} variant="contained">
                 Calendar
-              </Link>
             </Button>
             {user.id
-              ? <Button variant="contained">
-                <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/todolist">
+              ? <Button onClick={() => history.push('/todolist')} variant="contained">
                   Todo List
-                </Link>
               </Button >
-              : <Button  variant="contained">
+              : <Button onClick={() => history.push('/anonlist')} variant="contained">
                 <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/anonlist">
                   Todo List
                 </Link>
