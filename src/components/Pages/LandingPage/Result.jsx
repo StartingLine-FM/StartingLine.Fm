@@ -149,6 +149,7 @@ export default function Result({ result, currentList, categories, stages }) {
                     />
                     <Snackbar
                         open={snackOpen}
+                        anchorOrigin={{vertical: '', horizontal: 'left'}}
                         autoHideDuration={5000}
                         onClose={() => setSnackOpen(false)}
                         action={action}
