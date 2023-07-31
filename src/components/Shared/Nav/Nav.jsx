@@ -18,7 +18,7 @@ function Nav({ handleOpen}) {
       }}>
         <Grid item>
           <Link underline='none' href="/#/home">
-            <Typography sx={{ my: 2, mx: 4 }} variant="h3" variantMapping={"h1"}>StartingLine.FM</Typography>
+            <Typography sx={{ my: 2, mx: 4 }} variant="h3" variantMapping={{h3:'h1'}}>StartingLine.FM</Typography>
           </Link>
         </Grid>
         <Grid item sx={{ m: 3 }}>
