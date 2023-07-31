@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Box, IconButton, Paper } from '@mui/material';
+import { TextField, Button, Box, IconButton, Paper, Typography } from '@mui/material';
 import "./AdminPage.css"
 import DeleteIcon from '@mui/icons-material/Delete'; //Added DeleteIcon
 import EditIcon from '@mui/icons-material/Edit'; //Added EditIcon
@@ -135,7 +135,14 @@ function AdminPage() {
 
   return (
     <Box display="flex" flexDirection="column" className='style-box'>
-          <Paper style={{ marginBottom: '50px', flexGrow: 1 }} className="admin-container">
+        <Typography variant="h2" component="h2" style={{ marginBottom: '50px', textAlign: 'center', color: '#55c6f0' }}>
+            Admin Page
+        </Typography>
+
+        <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '33%' }} className="admin-container">
+        <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
+                Add New Resource
+            </Typography>
         {/* Form to add a new resource */}
         <form className='admin-form' onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
           <TextField
@@ -225,8 +232,10 @@ function AdminPage() {
       </Paper>
 
       {/* Form to add a new category */}
-      <Paper style={{ marginBottom: '50px', flexGrow: 1 }} className="admin-container">
-
+      <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '33%' }} className="admin-container">
+      <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
+                Add New Category
+            </Typography>
           {/* Display existing categories */}
           <div style={{ width: '100%' }}>
             <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
@@ -297,8 +306,10 @@ function AdminPage() {
         </Paper>
 
       {/* Form to add a new stage */}
-      <Paper style={{ marginBottom: '50px', flexGrow: 1 }} className="admin-container">
-
+      <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '33%' }} className="admin-container">
+      <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
+                Add New Stage
+            </Typography>
         {/* Display existing stages */}
         <div style={{ width: '100%' }}>
           <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
