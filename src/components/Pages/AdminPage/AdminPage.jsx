@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Box, IconButton, Paper, Typography } from '@mui/material';
+import { TextField, Button, Box, IconButton, Paper, Typography, Tooltip } from '@mui/material';
 import "./AdminPage.css"
 import DeleteIcon from '@mui/icons-material/Delete'; //Added DeleteIcon
 import EditIcon from '@mui/icons-material/Edit'; //Added EditIcon
 import SaveIcon from '@mui/icons-material/Save'; // Added SaveIcon
 import CancelIcon from '@mui/icons-material/Cancel'; // Added CancelIcon
+import InfoIcon from '@mui/icons-material/Info';
 
 
 function AdminPage() {
@@ -135,14 +136,18 @@ function AdminPage() {
 
   return (
     <Box display="flex" flexDirection="column" className='style-box'>
-        <Typography variant="h2" component="h2" style={{ marginBottom: '50px', textAlign: 'center', color: '#55c6f0' }}>
-            Admin Page
+      <Typography variant="h2" component="h2" style={{ marginBottom: '50px', textAlign: 'center', color: '#55c6f0' }}>
+        Admin Page
+      </Typography>
+
+      <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '33%' }} className="admin-container">
+        <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
+          Contribute Resource
+          <Tooltip title="This form allows the addition of new resources. Complete all required fields with accurate information. After confirming details, click 'Submit' for user availability.">
+            <InfoIcon style={{ marginLeft: '10px' }} color="action" />
+          </Tooltip>
         </Typography>
 
-        <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '33%' }} className="admin-container">
-        <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
-                Add New Resource
-            </Typography>
         {/* Form to add a new resource */}
         <form className='admin-form' onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
           <TextField
@@ -233,83 +238,90 @@ function AdminPage() {
 
       {/* Form to add a new category */}
       <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '33%' }} className="admin-container">
-      <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
-                Add New Category
-            </Typography>
-          {/* Display existing categories */}
-          <div style={{ width: '100%' }}>
-            <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
-              {categories.map((category) => (
-                <li key={category.id}>
-                  {editedCategoryName && category.id === editedCategoryName.id ? (
-                    // Show the input field for editing the category name
-                    <TextField
-                      value={editedCategoryName.name}
-                      onChange={(event) =>
-                        setEditedCategoryName({ ...editedCategoryName, name: event.target.value })
-                      }
-                    />
-                  ) : (
-                    // Display the category name
-                    <span>{category.name}</span>
-                  )}
+        <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
+         Categories
+          <Tooltip title="These are broad sectors that classify resources based on the source or nature of the assistance. Categories include government bodies, financial contributors, academic institutions, general support services, service providers, large corporations, and research entities. Please fill in all required fields and click submit.">
+            <InfoIcon style={{ marginLeft: '10px' }} color="action" />
+          </Tooltip>
 
-                  <div>
-                    {editedCategoryName && category.id === editedCategoryName.id ? (
-                      <>
-                        <IconButton
-                          color="primary"
-                          aria-label="Save category"
-                          onClick={() => handleSaveEditedCategory(category.id)}
-                        >
-                          <SaveIcon />
-                        </IconButton>
-                        <IconButton
-                          color="secondary"
-                          aria-label="Cancel edit category"
-                          onClick={handleCancelEditCategory}
-                        >
-                          <CancelIcon />
-                        </IconButton>
-                      </>
-                    ) : (
+        </Typography>
+        {/* Display existing categories */}
+        <div style={{ width: '100%' }}>
+          <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
+            {categories.map((category) => (
+              <li key={category.id}>
+                {editedCategoryName && category.id === editedCategoryName.id ? (
+                  // Show the input field for editing the category name
+                  <TextField
+                    value={editedCategoryName.name}
+                    onChange={(event) =>
+                      setEditedCategoryName({ ...editedCategoryName, name: event.target.value })
+                    }
+                  />
+                ) : (
+                  // Display the category name
+                  <span>{category.name}</span>
+                )}
+
+                <div>
+                  {editedCategoryName && category.id === editedCategoryName.id ? (
+                    <>
                       <IconButton
                         color="primary"
-                        aria-label="Edit category"
-                        onClick={() => handleEditCategory(category.id, category.name)}
+                        aria-label="Save category"
+                        onClick={() => handleSaveEditedCategory(category.id)}
                       >
-                        <EditIcon />
+                        <SaveIcon />
                       </IconButton>
-                    )}
+                      <IconButton
+                        color="secondary"
+                        aria-label="Cancel edit category"
+                        onClick={handleCancelEditCategory}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </>
+                  ) : (
                     <IconButton
-                      color="secondary"
-                      aria-label="Delete category"
-                      onClick={() => handleDeleteCategory(category.id)}
+                      color="primary"
+                      aria-label="Edit category"
+                      onClick={() => handleEditCategory(category.id, category.name)}
                     >
-                      <DeleteIcon />
+                      <EditIcon />
                     </IconButton>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            <form className="admin-form" onSubmit={handleAddCategory}>
-              <TextField
-                label="New Category"
-                value={newCategory}
-                onChange={(event) => setNewCategory(event.target.value)}
-              />
-              <Button variant="contained" color="primary" type="submit">
-                Add Category
-              </Button>
-            </form>
-          </div>
-        </Paper>
+                  )}
+                  <IconButton
+                    color="secondary"
+                    aria-label="Delete category"
+                    onClick={() => handleDeleteCategory(category.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <form className="admin-form" onSubmit={handleAddCategory}>
+            <TextField
+              label="New Category"
+              value={newCategory}
+              onChange={(event) => setNewCategory(event.target.value)}
+            />
+            <Button variant="contained" color="primary" type="submit">
+              Add Category
+            </Button>
+          </form>
+        </div>
+      </Paper>
 
       {/* Form to add a new stage */}
       <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '33%' }} className="admin-container">
-      <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
-                Add New Stage
-            </Typography>
+        <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
+         Stages
+          <Tooltip title="These signify the different phases in a business's life cycle. They range from the nascent or concept phase, through early development, startup or seed stage, and to the growth and expansion phase. Resources are categorized to match the relevant needs at each business stage. Please fill in all required fields and click submit.">
+            <InfoIcon style={{ marginLeft: '10px' }} color="action" />
+          </Tooltip>
+        </Typography>
         {/* Display existing stages */}
         <div style={{ width: '100%' }}>
           <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
