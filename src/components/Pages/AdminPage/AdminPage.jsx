@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import "./AdminPage.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Container, Box, IconButton, Paper } from '@mui/material';
+import { TextField, Button, Box, IconButton, Paper } from '@mui/material';
+import "./AdminPage.css"
 import DeleteIcon from '@mui/icons-material/Delete'; //Added DeleteIcon
 import EditIcon from '@mui/icons-material/Edit'; //Added EditIcon
 import SaveIcon from '@mui/icons-material/Save'; // Added SaveIcon
@@ -134,8 +134,8 @@ function AdminPage() {
   };
 
   return (
-    <Box display="flex" className='style-box'>
-        <Paper style={{ marginBottom: '50px', flex: 1 }} className="admin-container">
+    <Box display="flex" flexDirection="column" className='style-box'>
+          <Paper style={{ marginBottom: '50px', flexGrow: 1 }} className="admin-container">
         {/* Form to add a new resource */}
         <form className='admin-form' onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
           <TextField
@@ -225,8 +225,7 @@ function AdminPage() {
       </Paper>
 
       {/* Form to add a new category */}
-      <Box display="flex" flexDirection="column" alignItems="center">
-      <Paper style={{ marginBottom: '50px', flex: 1 }} className="admin-container">
+      <Paper style={{ marginBottom: '50px', flexGrow: 1 }} className="admin-container">
 
           {/* Display existing categories */}
           <div style={{ width: '100%' }}>
@@ -296,11 +295,9 @@ function AdminPage() {
             </form>
           </div>
         </Paper>
-      </Box>
 
       {/* Form to add a new stage */}
-      <Box display="flex" flexDirection="column" alignItems="center"></Box>
-      <Paper style={{ marginBottom: '50px', flex: 1 }} className="admin-container">
+      <Paper style={{ marginBottom: '50px', flexGrow: 1 }} className="admin-container">
 
         {/* Display existing stages */}
         <div style={{ width: '100%' }}>
