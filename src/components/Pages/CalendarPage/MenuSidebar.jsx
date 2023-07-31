@@ -33,7 +33,8 @@ const MenuSidebar = () => {
     <Box className='sidebar-contents'>
 
       <IconButton
-      className='EP-button' 
+      className='EP-button'
+      color='inherit' 
       onClick={handleEP_Click} 
       disabled={loadingEP}>
       {loadingEP ? <CircularProgress size={20} /> : <BrightnessLow />}
@@ -42,6 +43,7 @@ const MenuSidebar = () => {
 
       <IconButton 
       className='FU-button'
+      color='inherit'
       onClick={handleFU_Click} 
       disabled={loadingFU}>
       {loadingFU ? <CircularProgress size={20} /> : <HorizontalSplit />}
@@ -50,6 +52,7 @@ const MenuSidebar = () => {
 
       <IconButton
       className='chamber-button' 
+      color='inherit'
       onClick={handleChamber_Click} 
       disabled={loadingChamber}>
       {loadingChamber ? <CircularProgress size={20} /> : <Business />}
@@ -58,6 +61,7 @@ const MenuSidebar = () => {
       
       <IconButton onClick={handleClearClick }
       className='clear-button'
+      color='inherit'
       >
       <Clear />
       <Typography marginLeft={2}>Clear Calendars</Typography>

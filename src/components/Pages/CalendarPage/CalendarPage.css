@@ -8,7 +8,7 @@
     text-align: center;
     font-size: larger;
     font-weight: bolder;
-    /* color: blue; */
+    /* color: #55c6f0; */
 }
 
 .the-sidebar {
@@ -17,11 +17,11 @@
 
 .sidebar-contents {
     width: 400px;
+    color: #55c6f0;
 }
 
 .fc {
     /* the calendar root */
-    /* color: red; */
     width: 800px;
     min-height: 400px;
     margin: 0 auto;
@@ -29,11 +29,27 @@
     overflow-x: none;
 }
 
-.EP-button {
-margin: 0 auto;
-}
+/* .fc * {
+    color: red;
+} */
 
+/* .fc-toolbar-chunk {
+    color: red;
+} */
 
-/* * {
+/* .fc-header-toolbar {
     color:red;
 } */
+
+/* .fc-toolbar {
+    color: red;
+} */
+
+/* .fc-scrollgrid {
+    color: red;
+} */
+
+*, ::after, ::before {
+    box-sizing: border-box;
+    color: #55c6f0;
+}
