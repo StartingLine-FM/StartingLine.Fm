@@ -16,8 +16,8 @@ import {
     Chip,
     Box
 } from '@mui/material'
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import StarIcon from '@mui/icons-material/Star';
+import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
 
 export default function Result({ result, currentList, categories, stages }) {
 
@@ -62,8 +62,6 @@ export default function Result({ result, currentList, categories, stages }) {
             });
         }
 
-        console.log(currentList);
-
         currentList &&
             dispatch({
                 type: "POST_TODO_LIST",
@@ -91,14 +89,14 @@ export default function Result({ result, currentList, categories, stages }) {
                 {
                     todoResources.some(e => e.id === result.id || e.resource_id === result.id)
                         ? <IconButton>
-                            <StarIcon color="primary" />
+                            <CheckIcon color="primary" />
                         </IconButton>
                         : user.id
                             ? <IconButton onClick={() => userPostTodo()} >
-                                <StarBorderIcon />
+                                <AddIcon />
                             </IconButton>
                             : <IconButton onClick={() => anonPostTodo()}>
-                                <StarBorderIcon />
+                                <AddIcon />
                             </IconButton>
                 }
                 <CardActionArea onClick={handleClickOpen} >

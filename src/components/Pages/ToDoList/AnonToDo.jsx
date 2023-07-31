@@ -8,7 +8,6 @@ import {
     List,
     ListItemButton,
     ListItemText,
-    ListItemIcon,
     ListItem,
     IconButton,
     TextField,
@@ -18,20 +17,17 @@ import {
 // MUI Icons
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 // framer
 import { AnimatePresence, motion } from 'framer-motion';
 // components
 import './ToDoList.css'
 import AnonToDoModal from './AnonToDoModal';
-import LoginPage from '../LoginPage/LoginPage';
-import RegisterPage from '../RegisterPage/RegisterPage';
 
 
-export default function AnonToDo({ setOpenLoginModal, openLoginModal, handleOpen }) {
+export default function AnonToDo({ handleOpen }) {
 
     // set state for edit mode
     const [editMode, setEditMode] = useState(false)
@@ -46,10 +42,6 @@ export default function AnonToDo({ setOpenLoginModal, openLoginModal, handleOpen
     // handler for opening register modal
     const handleRegisterModalOpen = () => {
         setRegisterModal(true);
-    }
-    // handler for closing register modal
-    const handleRegisterModalClose = () => {
-        setRegisterModal(false)
     }
 
     // update a resource
@@ -85,6 +77,30 @@ export default function AnonToDo({ setOpenLoginModal, openLoginModal, handleOpen
         })
     }
 
+    // copy to clipboard functionality
+    const copyResourcesToClipboard = () => {
+        // Find all resources with the specified title_table_id
+
+        // Format the resources as a string
+        const resourcesString = title_resources.map(resource => {
+            return (
+            resource.notes
+            ? `${resource.name}: ${resource.notes}`
+            : `${resource.name}`
+            )
+        }).join('\n');
+
+        // Write the formatted string to the clipboard
+        navigator.clipboard.writeText(resourcesString)
+            .then(() => {
+                alert('Resources copied to clipboard!');
+            })
+            .catch((error) => {
+                alert('Failed to copy resources to clipboard.');
+                console.error('Clipboard writeText error:', error);
+            });
+    };
+
     // changes the background color of a list item based on the resource's "completed" key
     const listStyle = (resource) => {
         if (resource.completed) {
@@ -112,6 +128,9 @@ export default function AnonToDo({ setOpenLoginModal, openLoginModal, handleOpen
         <Container registerModal={registerModal} open={handleRegisterModalOpen} sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
             <Typography variant='h4' gutterBottom align='center' py={4}>TO-DO</Typography>
             <Paper sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
+                {title_resources.length > 0 && <ListItem sx={{ justifyContent: 'right' }}><IconButton onClick={() => copyResourcesToClipboard()} aria-label={'copy'}>
+                    <FileCopyIcon />
+                </IconButton></ListItem>}
                 {title_resources.length > 0
                     ? title_resources.map((resource, i) => (
                         <>

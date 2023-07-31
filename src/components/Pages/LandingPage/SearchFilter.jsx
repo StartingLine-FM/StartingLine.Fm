@@ -23,7 +23,7 @@ import SendIcon from '@mui/icons-material/Send';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
 
-export default function SearchFilter({ currentList, setCurrentList, categories, stages }) {
+export default function SearchFilter({ currentList, setCurrentList, categories, stages, todo }) {
 
     // local state:
     // Category
@@ -133,7 +133,7 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
     }
 
     return (
-        <Grid container flexDirection={"column"} width={"25%"}>
+        <Grid container maxWidth={"25%"} flexDirection={"column"} width={"25%"}>
             <Paper sx={{ mr: 2, px: 2, pt: 2, pb: 100 }}>
                 {/* Text search input */}
                 <Grid item sx={{ mb: 1 }}>
@@ -149,7 +149,6 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                             ? <IconButton color='primary' onClick={fetchSearch}><SendIcon /></IconButton>
                             : <IconButton ><SendOutlinedIcon /></IconButton>
                     }
-                    <Divider />
                 </Grid>
                 {/* Category and Stage filter dropdowns */}
                 <Grid item>
@@ -202,7 +201,7 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                                 {stages &&
                                     stages.map(stage => {
                                         return (
-                                            <ListItemButton onClick={() => { setSelectedStage(stage.id); !changes && setChanges(true); }}>
+                                            <ListItemButton key={stage.id} onClick={() => { setSelectedStage(stage.id); !changes && setChanges(true); }}>
                                                 {/* Same idea as shown in the Category list above of faking the Radio Buttons
                                                 and sending the correct string */}
                                                 {selectedStage === stage.id ? <RadioButtonCheckedIcon color="secondary" /> : <RadioButtonUncheckedIcon />}
@@ -213,8 +212,10 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                             </List>
                         </Collapse>
                     </List>
+
                     {user.id && titles.length > 0 &&
                         <>
+                            <Divider sx={{ my: 1 }} color="primary"  />
                             <Typography variant="caption">Select To-Do List</Typography>
                             <ListItemButton onClick={handleTitleClick}>
                                 <ListItemText primary={`${user.username}'s Lists`} />

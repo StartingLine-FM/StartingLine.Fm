@@ -19,6 +19,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
+import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 
@@ -228,14 +230,14 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                         </>
                         : todoResources.some(e => e.id === result.id || e.resource_id === result.id)
                             ? <IconButton>
-                                <StarIcon color="primary" />
+                                <CheckIcon color="primary" />
                             </IconButton>
                             : user.id
                                 ? <IconButton onClick={() => userPostTodo()} >
-                                    <StarBorderIcon />
+                                    <AddIcon />
                                 </IconButton>
                                 : <IconButton onClick={() => anonPostTodo()}>
-                                    <StarBorderIcon />
+                                    <AddIcon />
                                 </IconButton>
 
                     }

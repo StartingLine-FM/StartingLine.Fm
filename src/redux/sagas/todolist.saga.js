@@ -24,8 +24,6 @@ function* clearTodoResources() {
     }
 }
 
-
-
 // function to add a resource to a todo list
 function* postTodoList(action) {
     try {
