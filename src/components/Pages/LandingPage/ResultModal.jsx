@@ -1,5 +1,5 @@
 // hook imports
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // MUI
@@ -19,10 +19,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
+import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 
-export default function ResultModal({ open, handleClose, result, categoryTag, stageTag, userPostTodo, anonPostTodo }) {
+export default function ResultModal({ open, handleClose, result, userPostTodo, anonPostTodo, stages, categories }) {
 
     // local state
     const [editMode, setEditMode] = useState(false);
@@ -39,7 +41,6 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
     // Redux
     const user = useSelector(store => store.user);
     const todoResources = useSelector(store => store.todoListResourcesReducer);
-    const todoList = useSelector(store => store.todoListReducer);
     const dispatch = useDispatch();
 
     // click handler for saving our admin edit changes
@@ -186,13 +187,13 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                         onChange={e => setNewCategory(e.target.value)}
                     >
                         <option value={0}>Add Category</option>
-                        <option value={1}>Government</option>
-                        <option value={2}>Funding Organization</option>
-                        <option value={3}>University</option>
-                        <option value={4}>Support Organization</option>
-                        <option value={5}>Service Provider</option>
-                        <option value={6}>Big Company</option>
-                        <option value={7}>Research Organization</option>
+                        {categories && 
+                        categories.map(cat => {
+                            return (
+                                <option value={cat.id}>{cat.name}</option>
+                            );
+                        })}
+
                     </TextField>
                     <br />
                     <TextField
@@ -205,11 +206,12 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                         label="Edit Business Stage"
                         onChange={e => setNewStage(e.target.value)}
                     >   <option value={0}>Add Business Stage</option>
-                        <option value={1}>All</option>
-                        <option value={2}>Nascent</option>
-                        <option value={3}>Early Stage</option>
-                        <option value={4}>Startup/Seed</option>
-                        <option value={5}>Growth</option>
+                        {stages && 
+                        stages.map(s => {
+                            return (
+                                <option value={s.id}>{s.name}</option>
+                            );
+                        })}
                     </TextField>
                 </DialogContent>
             </Dialog>
@@ -228,14 +230,14 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                         </>
                         : todoResources.some(e => e.id === result.id || e.resource_id === result.id)
                             ? <IconButton>
-                                <StarIcon color="primary" />
+                                <CheckIcon color="primary" />
                             </IconButton>
                             : user.id
                                 ? <IconButton onClick={() => userPostTodo()} >
-                                    <StarBorderIcon />
+                                    <AddIcon />
                                 </IconButton>
                                 : <IconButton onClick={() => anonPostTodo()}>
-                                    <StarBorderIcon />
+                                    <AddIcon />
                                 </IconButton>
 
                     }
@@ -251,8 +253,8 @@ export default function ResultModal({ open, handleClose, result, categoryTag, st
                     <Link target="_blank" rel="noopener noreferrer" href={result.linkedin}>{result.linkedin && result.linkedin}</Link>
                     <Typography variant="body1">{result.address && result.address}</Typography>
                     <DialogContentText>
-                        <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={categoryTag(result.category_id)} />
-                        <Chip color="secondary" sx={{ mt: 2 }} label={stageTag(result.stage_id)} />
+                        <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={result.category_name} />
+                        <Chip color="secondary" sx={{ mt: 2 }} label={result.stage_name} />
                     </DialogContentText>
                 </DialogContent>
             </Dialog>

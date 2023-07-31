@@ -1,10 +1,39 @@
 
 .the-calendar {
-    margin-top: 40px;
+    margin-top: 20px;
+}
 
+.calendar-title {
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: larger;
+    font-weight: bolder;
+    /* color: blue; */
 }
 
 .the-sidebar {
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
+.sidebar-contents {
+    width: 400px;
+}
+
+.fc {
+    /* the calendar root */
+    /* color: red; */
+    width: 800px;
+    min-height: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    overflow-x: none;
+}
+
+.EP-button {
+margin: 0 auto;
+}
+
+
+/* * {
+    color:red;
+} */

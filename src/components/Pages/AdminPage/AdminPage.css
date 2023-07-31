@@ -1,27 +1,24 @@
 .admin-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: 30px;
-    margin: 100px 0;
-}
+    padding: 20px;
+    margin: 10px;
+    flex: 1;
+  }
 
 .admin-form {
-    background-color: hsla(54, 33%, 88%, 0.7);
-    width: 300px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    border-radius: 3px;
-    border: 2px double gold;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 10px;
+  margin: 10px;
+  flex: 1; /* Give more space for the Add resource form */
 }
+
 
 /* Add some spacing for the forms */
 .admin-form>* {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
+
 
 .style-box {
     background-repeat: no-repeat;
@@ -32,26 +29,44 @@
     height: 100vh;
     width: 100%;
     padding: 30px;
+    admin-form >* :last-child {
+    margin-bottom: 70px; /* 90px at the bottom to make room for the footer */
 }
+
+
+.style-box {
+    display: flex;
+    justify-content: space-between; /* Add some space between your main components */
+    flex-wrap: wrap;
+    padding: 0; /* Remove padding to get rid of excess white space */
+    margin: 0; /* Remove margin to get rid of excess white space */
+  }
 
 /* Style the categories and stages lists */
 .admin-list {
-    background-color: hsla(54, 33%, 88%, 0.7);
-    width: 300px;
-    margin: 0 auto;
-    border-radius: 3px;
-    border: 2px double gold;
-    padding: 20px;
-    list-style: none;
-}
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 0; /* Remove padding to get rid of excess white space */
+    margin: 0; /* Remove margin to get rid of excess white space */
+  }
+  
 
 .admin-list>li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    opacity: 0.8;
 }
 
 .admin-list>li>button {
-    margin-left: 10px;
+    margin-left: 20px;
+}
+
+/* Added new class .admin-form-container to make each form take equal space */
+.admin-form-container {
+    flex: 1;
+    margin: 10px;
+    padding: 10px;
 }

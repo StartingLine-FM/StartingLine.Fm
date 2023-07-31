@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import "./AdminPage.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Container, Box, IconButton, } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { TextField, Button, Container, Box, IconButton, Paper } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete'; //Added DeleteIcon
+import EditIcon from '@mui/icons-material/Edit'; //Added EditIcon
 import SaveIcon from '@mui/icons-material/Save'; // Added SaveIcon
 import CancelIcon from '@mui/icons-material/Cancel'; // Added CancelIcon
 
@@ -134,12 +134,10 @@ function AdminPage() {
   };
 
   return (
-    <Box className='style-box'>
-      <Container className='admin-container'>
-        {/* Title for the whole page */}
-        <h1 style={{ textAlign: 'center' }}>Admin</h1>
+    <Box display="flex" className='style-box'>
+        <Paper style={{ marginBottom: '50px', flex: 1 }} className="admin-container">
         {/* Form to add a new resource */}
-        <form className='admin-form' onSubmit={handleSubmit}>
+        <form className='admin-form' onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
           <TextField
             label="Name"
             value={newResource.name}
@@ -224,95 +222,89 @@ function AdminPage() {
             Add Resource
           </Button>
         </form>
+      </Paper>
 
-        {/* Form to add a new category */}
-        <form className="admin-form" onSubmit={handleAddCategory}>
-          <TextField
-            label="New Category"
-            value={newCategory}
-            onChange={(event) => setNewCategory(event.target.value)}
-          />
-          <Button variant="contained" color="primary" type="submit">
-            Add Category
-          </Button>
-        </form>
+      {/* Form to add a new category */}
+      <Box display="flex" flexDirection="column" alignItems="center">
+      <Paper style={{ marginBottom: '50px', flex: 1 }} className="admin-container">
 
-        {/* Form to add a new stage */}
-        <form className="admin-form" onSubmit={handleAddStage}>
-          <TextField
-            label="New Stage"
-            value={newStage}
-            onChange={(event) => setNewStage(event.target.value)}
-          />
-          <Button variant="contained" color="primary" type="submit">
-            Add Stage
-          </Button>
-        </form>
-        {/* Display existing categories */}
-        <div>
-          {/* Title for categories */}
-          <h2 style={{ textAlign: 'center' }}>Categories</h2>
-          <ul className="admin-list">
-            {categories.map((category) => (
-              <li key={category.id}>
-                {editedCategoryName && category.id === editedCategoryName.id ? (
-                  // Show the input field for editing the category name
-                  <TextField
-                    value={editedCategoryName.name}
-                    onChange={(event) =>
-                      setEditedCategoryName({ ...editedCategoryName, name: event.target.value })
-                    }
-                  />
-                ) : (
-                  // Display the category name
-                  <span>{category.name}</span>
-                )}
-
-                <div>
+          {/* Display existing categories */}
+          <div style={{ width: '100%' }}>
+            <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
+              {categories.map((category) => (
+                <li key={category.id}>
                   {editedCategoryName && category.id === editedCategoryName.id ? (
-                    <>
+                    // Show the input field for editing the category name
+                    <TextField
+                      value={editedCategoryName.name}
+                      onChange={(event) =>
+                        setEditedCategoryName({ ...editedCategoryName, name: event.target.value })
+                      }
+                    />
+                  ) : (
+                    // Display the category name
+                    <span>{category.name}</span>
+                  )}
+
+                  <div>
+                    {editedCategoryName && category.id === editedCategoryName.id ? (
+                      <>
+                        <IconButton
+                          color="primary"
+                          aria-label="Save category"
+                          onClick={() => handleSaveEditedCategory(category.id)}
+                        >
+                          <SaveIcon />
+                        </IconButton>
+                        <IconButton
+                          color="secondary"
+                          aria-label="Cancel edit category"
+                          onClick={handleCancelEditCategory}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                      </>
+                    ) : (
                       <IconButton
                         color="primary"
-                        aria-label="Save category"
-                        onClick={() => handleSaveEditedCategory(category.id)}
+                        aria-label="Edit category"
+                        onClick={() => handleEditCategory(category.id, category.name)}
                       >
-                        <SaveIcon />
+                        <EditIcon />
                       </IconButton>
-                      <IconButton
-                        color="secondary"
-                        aria-label="Cancel edit category"
-                        onClick={handleCancelEditCategory}
-                      >
-                        <CancelIcon />
-                      </IconButton>
-                    </>
-                  ) : (
+                    )}
                     <IconButton
-                      color="primary"
-                      aria-label="Edit category"
-                      onClick={() => handleEditCategory(category.id, category.name)}
+                      color="secondary"
+                      aria-label="Delete category"
+                      onClick={() => handleDeleteCategory(category.id)}
                     >
-                      <EditIcon />
+                      <DeleteIcon />
                     </IconButton>
-                  )}
-                  <IconButton
-                    color="secondary"
-                    aria-label="Delete category"
-                    onClick={() => handleDeleteCategory(category.id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <form className="admin-form" onSubmit={handleAddCategory}>
+              <TextField
+                label="New Category"
+                value={newCategory}
+                onChange={(event) => setNewCategory(event.target.value)}
+              />
+              <Button variant="contained" color="primary" type="submit">
+                Add Category
+              </Button>
+            </form>
+          </div>
+        </Paper>
+      </Box>
+
+      {/* Form to add a new stage */}
+      <Box display="flex" flexDirection="column" alignItems="center"></Box>
+      <Paper style={{ marginBottom: '50px', flex: 1 }} className="admin-container">
 
         {/* Display existing stages */}
-        <div>
-          {/* Title for stages */}
-          <h2 style={{ textAlign: 'center' }}>Stages</h2>
-          <ul className="admin-list">
+        <div style={{ width: '100%' }}>
+          <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
             {stages.map((stage) => (
               <li key={stage.id}>
                 {editedStageName && stage.id === editedStageName.id ? (
@@ -366,8 +358,18 @@ function AdminPage() {
               </li>
             ))}
           </ul>
+          <form className="admin-form" onSubmit={handleAddStage}>
+            <TextField
+              label="New Stage"
+              value={newStage}
+              onChange={(event) => setNewStage(event.target.value)}
+            />
+            <Button variant="contained" color="primary" type="submit">
+              Add Stage
+            </Button>
+          </form>
         </div>
-      </Container>
+      </Paper>
     </Box>
   );
 }

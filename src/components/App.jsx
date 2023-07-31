@@ -23,7 +23,7 @@ import AnonToDo from './Pages/ToDoList/AnonToDo';
 import AdminPage from './Pages/AdminPage/AdminPage';
 import './App.css';
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
