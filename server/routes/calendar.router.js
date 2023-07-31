@@ -11,59 +11,46 @@ const FU_url =
 const CHAMBER_url = "https://www.fmwfchamber.com/events/catgid/6?";
 
 
+
 const parseEventDate = (displayStart) => {
   displayStart.includes("@") && (displayStart = displayStart.replace("@", ""));
-  // Check if the date is in range format like "November 8 - November 10"
+  // Check if the date is in range format like "August 1 - August 2"
   const dateRangeMatch = displayStart.match(/^(.+) - (.+)$/);
   if (dateRangeMatch) {
     const start = chrono.parseDate(dateRangeMatch[1]);
     const end = chrono.parseDate(dateRangeMatch[2]);
     if (start && end) {
+      // Get the time from the "displayStart" and "displayEnd" fields
+      const startTimeMatch = dateRangeMatch[1].match(/(\d{1,2}):(\d{2}) (AM|PM)/i);
+      const endTimeMatch = dateRangeMatch[2].match(/(\d{1,2}):(\d{2}) (AM|PM)/i);
+      let startHours = 8;
+      let startMinutes = 0;
+      if (startTimeMatch) {
+        startHours = parseInt(startTimeMatch[1]);
+        startMinutes = parseInt(startTimeMatch[2]);
+        if (startTimeMatch[3].toLowerCase() === "pm") {
+          startHours += 12;
+        }
+      }
+      let endHours = 17;
+      let endMinutes = 0;
+      if (endTimeMatch) {
+        endHours = parseInt(endTimeMatch[1]);
+        endMinutes = parseInt(endTimeMatch[2]);
+        if (endTimeMatch[3].toLowerCase() === "pm") {
+          endHours += 12;
+        }
+      }
+      const startSeconds = "00";
+      const endSeconds = "00";
+      const formattedStartTime = `${startHours.toString().padStart(2, "0")}:${startMinutes.toString().padStart(2, "0")}:${startSeconds}`;
+      const formattedEndTime = `${endHours.toString().padStart(2, "0")}:${endMinutes.toString().padStart(2, "0")}:${endSeconds}`;
       return {
-        start: moment(start).utcOffset(-5).format(),
-        end: moment(end).utcOffset(-5).format(),
+        start: moment(start).utcOffset(-5).format(`YYYY-MM-DDT${formattedStartTime}.000`),
+        end: moment(end).utcOffset(-5).format(`YYYY-MM-DDT${formattedEndTime}.000`),
       };
     }
-  }
-  const parsedDate = chrono.parse(displayStart);
-  if (parsedDate && parsedDate.length > 0) {
-    const startTime = parsedDate[0].start;
-    const startYear = startTime.impliedValues.year.toString().padStart(4, "0");
-    const startMonth = startTime.knownValues.month.toString().padStart(2, "0");
-    const startDay = startTime.knownValues.day.toString().padStart(2, "0");
-    const startHours = startTime.knownValues.hour
-      ? startTime.knownValues.hour.toString().padStart(2, "0")
-      : "8";
-    const startMinutes = startTime.knownValues.minute
-      ? startTime.knownValues.minute.toString().padStart(2, "0")
-      : "00";
-    const startSeconds = startTime.impliedValues.second
-      ? startTime.impliedValues.second.toString().padStart(2, "0")
-      : "00";
-    const formattedStartTime = `${startHours}:${startMinutes}:${startSeconds}`;
-    const endTime = parsedDate[0].end;
-    const endYear = endTime.impliedValues.year
-      ? endTime.impliedValues.year.toString().padStart(4, "0")
-      : endTime.knownValues.year.toString().padStart(4, "0");
-    const endMonth = endTime.knownValues.month.toString().padStart(2, "0");
-    const endDay = endTime.knownValues.day.toString().padStart(2, "0");
-    const endHours = endTime.knownValues.hour
-      ? endTime.knownValues.hour.toString().padStart(2, "0")
-      : "17";
-    const endMinutes = endTime.knownValues.minute
-      ? endTime.knownValues.minute.toString().padStart(2, "0")
-      : "00";
-    const endSeconds = endTime.impliedValues.second
-      ? endTime.impliedValues.second.toString().padStart(2, "0")
-      : "00";
-    const formattedEndTime = `${endHours}:${endMinutes}:${endSeconds}`;
-    return {
-      start: moment(`${startYear}-${startMonth}-${startDay}T${formattedStartTime}.000`).utcOffset(-5).format(),
-      end: moment(`${endYear}-${endMonth}-${endDay}T${formattedEndTime}.000`).utcOffset(-5).format(),
-    };
-  }
-  return null;
-};
+  }}
 
 
 router.get("/emerging-prairie", (req, res) => {
@@ -121,6 +108,8 @@ router.get("/emerging-prairie", (req, res) => {
             title: eventHeader,
             start: formattedDate.start,
             end: formattedDate.end,
+            // start: displayStart,
+            // end: date,
             location: eventLocation,
             description: eventDescription,
           };
