@@ -24,8 +24,8 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
       dispatch({
         type: 'LOGIN',
         payload: {
-          username: username,
-          password: password,
+          user: {username: username,
+            password: password}
         },
       });
 
