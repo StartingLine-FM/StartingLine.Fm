@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import "./AdminPage.css"
 import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Button, Container, Box, IconButton, Paper } from '@mui/material';
+import { TextField, Button, Box, IconButton, Paper, Typography, Tooltip, Container } from '@mui/material';
+import "./AdminPage.css"
 import DeleteIcon from '@mui/icons-material/Delete'; //Added DeleteIcon
 import EditIcon from '@mui/icons-material/Edit'; //Added EditIcon
 import SaveIcon from '@mui/icons-material/Save'; // Added SaveIcon
 import CancelIcon from '@mui/icons-material/Cancel'; // Added CancelIcon
+import InfoIcon from '@mui/icons-material/Info';
 
 
 function AdminPage() {
@@ -134,100 +135,122 @@ function AdminPage() {
   };
 
   return (
-    <Box display="flex" className='style-box'>
-        <Paper style={{ marginBottom: '50px', flex: 1 }} className="admin-container">
-        {/* Form to add a new resource */}
-        <form className='admin-form' onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-          <TextField
-            label="Name"
-            value={newResource.name}
-            onChange={(event) => setNewResource({ ...newResource, name: event.target.value })}
-            required // This makes the field mandatory
-          />
-          <TextField
-            label="Image URL"
-            value={newResource.image_url}
-            onChange={(event) => setNewResource({ ...newResource, image_url: event.target.value })}
-          />
-          <TextField
-            label="Description"
-            value={newResource.description}
-            onChange={(event) => setNewResource({ ...newResource, description: event.target.value })}
-            required // This makes the field mandatory
-          />
-          <TextField
-            label="LinkedIn"
-            value={newResource.linkedin}
-            onChange={(event) => setNewResource({ ...newResource, linkedin: event.target.value })}
-            // Validate the LinkedIn URL using the regex
-            // A valid LinkedIn URL starts with "https://www.linkedin.com/"
-            error={!urlRegex.test(newResource.linkedin) && newResource.linkedin !== ''}
-            helperText={newResource.linkedin !== '' && !urlRegex.test(newResource.linkedin) ? 'Invalid LinkedIn URL' : ''}
-          />
+    <Container>
+       <Paper sx={{ mt: 3}}>
+      <div style={{display: 'flex', justifyContent: 'center', marginTop: '20px'}}>
+        {/* <Paper style={{ display: 'inline-block', padding: '10px' }}> */}
+          <Typography variant="h4" component="h4" sx={{ color: '#55c6f0', paddingTop: 3 }}>
+            Admin
+          </Typography>
+        {/* </Paper> */}
+      </div>
 
-          <TextField
-            label="Website"
-            value={newResource.website}
-            onChange={(event) => setNewResource({ ...newResource, website: event.target.value })}
-            // Validate the Website URL using the regex
-            // A valid Website URL starts with "http://" or "https://"
-            error={!urlRegex.test(newResource.website) && newResource.website !== ''}
-            helperText={newResource.website !== '' && !urlRegex.test(newResource.website) ? 'Invalid Website URL' : ''}
-          />
-          <TextField
-            label="Email"
-            type="email"
-            value={newResource.email}
-            onChange={(event) => setNewResource({ ...newResource, email: event.target.value })}
-            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" // Regular expression for email validation
-          />
-          <TextField
-            label="Address"
-            value={newResource.address}
-            onChange={(event) => setNewResource({ ...newResource, address: event.target.value })}
-          />
-          <TextField
-            select
-            value={newResource.category_id}
-            SelectProps={{
-              native: true,
-            }}
-            onChange={(event) => setNewResource({ ...newResource, category_id: event.target.value })}
-            required // This makes the field mandatory
-          >
-            <option value={0}>Pick Category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </TextField>
-          <TextField
-            select
-            value={newResource.stage_id}
-            SelectProps={{
-              native: true,
-            }}
-            onChange={(event) => setNewResource({ ...newResource, stage_id: event.target.value })}
-            required // This makes the field mandatory
-          >
-            <option value={0}>Pick Stage</option>
-            {stages.map((stage) => (
-              <option key={stage.id} value={stage.id}>
-                {stage.name}
-              </option>
-            ))}
-          </TextField>
-          <Button variant="contained" color="primary" type="submit">
-            Add Resource
-          </Button>
-        </form>
-      </Paper>
+      <Box display="flex" flexDirection="row" className='style-box'>
+        <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '0' }} className="admin-container">
+          <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
+            Contribute Resource
+            <Tooltip title="This form allows the addition of new resources. Complete all required fields with accurate information. After confirming details, click 'Submit' for user availability.">
+              <InfoIcon style={{ marginLeft: '10px' }} color="action" />
+            </Tooltip>
+          </Typography>
 
-      {/* Form to add a new category */}
-      <Box display="flex" flexDirection="column" alignItems="center">
-      <Paper style={{ marginBottom: '50px', flex: 1 }} className="admin-container">
+          {/* Form to add a new resource */}
+          <form className='admin-form' onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
+            <TextField
+              label="Name"
+              value={newResource.name}
+              onChange={(event) => setNewResource({ ...newResource, name: event.target.value })}
+              required // This makes the field mandatory
+            />
+            <TextField
+              label="Image URL"
+              value={newResource.image_url}
+              onChange={(event) => setNewResource({ ...newResource, image_url: event.target.value })}
+            />
+            <TextField
+              label="Description"
+              value={newResource.description}
+              onChange={(event) => setNewResource({ ...newResource, description: event.target.value })}
+              required // This makes the field mandatory
+            />
+            <TextField
+              label="LinkedIn"
+              value={newResource.linkedin}
+              onChange={(event) => setNewResource({ ...newResource, linkedin: event.target.value })}
+              // Validate the LinkedIn URL using the regex
+              // A valid LinkedIn URL starts with "https://www.linkedin.com/"
+              error={!urlRegex.test(newResource.linkedin) && newResource.linkedin !== ''}
+              helperText={newResource.linkedin !== '' && !urlRegex.test(newResource.linkedin) ? 'Invalid LinkedIn URL' : ''}
+            />
 
+            <TextField
+              label="Website"
+              value={newResource.website}
+              onChange={(event) => setNewResource({ ...newResource, website: event.target.value })}
+              // Validate the Website URL using the regex
+              // A valid Website URL starts with "http://" or "https://"
+              error={!urlRegex.test(newResource.website) && newResource.website !== ''}
+              helperText={newResource.website !== '' && !urlRegex.test(newResource.website) ? 'Invalid Website URL' : ''}
+            />
+            <TextField
+              label="Email"
+              type="email"
+              value={newResource.email}
+              onChange={(event) => setNewResource({ ...newResource, email: event.target.value })}
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" // Regular expression for email validation
+            />
+            <TextField
+              label="Address"
+              value={newResource.address}
+              onChange={(event) => setNewResource({ ...newResource, address: event.target.value })}
+            />
+            <TextField
+              select
+              value={newResource.category_id}
+              SelectProps={{
+                native: true,
+              }}
+              onChange={(event) => setNewResource({ ...newResource, category_id: event.target.value })}
+              required // This makes the field mandatory
+            >
+              <option value={0}>Pick Category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </TextField>
+            <TextField
+              select
+              value={newResource.stage_id}
+              SelectProps={{
+                native: true,
+              }}
+              onChange={(event) => setNewResource({ ...newResource, stage_id: event.target.value })}
+              required // This makes the field mandatory
+            >
+              <option value={0}>Pick Stage</option>
+              {stages.map((stage) => (
+                <option key={stage.id} value={stage.id}>
+                  {stage.name}
+                </option>
+              ))}
+            </TextField>
+            <Button variant="contained" color="primary" type="submit">
+              Add Resource
+            </Button>
+          </form>
+        </Paper>
+
+        {/* Form to add a new category */}
+        <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '0' }} className="admin-container">
+          <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
+            Categories
+            <Tooltip title="These are broad sectors that classify resources based on the source or nature of the assistance. Categories include government bodies, financial contributors, academic institutions, general support services, service providers, large corporations, and research entities. Please fill in all required fields and click submit.">
+              <InfoIcon style={{ marginLeft: '10px' }} color="action" />
+            </Tooltip>
+
+          </Typography>
           {/* Display existing categories */}
           <div style={{ width: '100%' }}>
             <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
@@ -296,81 +319,86 @@ function AdminPage() {
             </form>
           </div>
         </Paper>
-      </Box>
 
-      {/* Form to add a new stage */}
-      <Box display="flex" flexDirection="column" alignItems="center"></Box>
-      <Paper style={{ marginBottom: '50px', flex: 1 }} className="admin-container">
-
-        {/* Display existing stages */}
-        <div style={{ width: '100%' }}>
-          <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
-            {stages.map((stage) => (
-              <li key={stage.id}>
-                {editedStageName && stage.id === editedStageName.id ? (
-                  // Show the input field for editing the stage name
-                  <TextField
-                    value={editedStageName.name}
-                    onChange={(event) =>
-                      setEditedStageName({ ...editedStageName, name: event.target.value })
-                    }
-                  />
-                ) : (
-                  // Display the stage name
-                  <span>{stage.name}</span>
-                )}
-
-                <div>
+        {/* Form to add a new stage */}
+        <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '0' }} className="admin-container">
+          <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
+            Stages
+            <Tooltip title="These signify the different phases in a business's life cycle. They range from the nascent or concept phase, through early development, startup or seed stage, and to the growth and expansion phase. Resources are categorized to match the relevant needs at each business stage. Please fill in all required fields and click submit.">
+              <InfoIcon style={{ marginLeft: '10px' }} color="action" />
+            </Tooltip>
+          </Typography>
+          {/* Display existing stages */}
+          <div style={{ width: '100%' }}>
+            <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
+              {stages.map((stage) => (
+                <li key={stage.id}>
                   {editedStageName && stage.id === editedStageName.id ? (
-                    <>
+                    // Show the input field for editing the stage name
+                    <TextField
+                      value={editedStageName.name}
+                      onChange={(event) =>
+                        setEditedStageName({ ...editedStageName, name: event.target.value })
+                      }
+                    />
+                  ) : (
+                    // Display the stage name
+                    <span>{stage.name}</span>
+                  )}
+
+                  <div>
+                    {editedStageName && stage.id === editedStageName.id ? (
+                      <>
+                        <IconButton
+                          color="primary"
+                          aria-label="Save stage"
+                          onClick={() => handleSaveEditedStage(stage.id)}
+                        >
+                          <SaveIcon />
+                        </IconButton>
+                        <IconButton
+                          color="secondary"
+                          aria-label="Cancel edit stage"
+                          onClick={handleCancelEditStage}
+                        >
+                          <CancelIcon />
+                        </IconButton>
+                      </>
+                    ) : (
                       <IconButton
                         color="primary"
-                        aria-label="Save stage"
-                        onClick={() => handleSaveEditedStage(stage.id)}
+                        aria-label="Edit stage"
+                        onClick={() => handleEditStage(stage.id, stage.name)}
                       >
-                        <SaveIcon />
+                        <EditIcon />
                       </IconButton>
-                      <IconButton
-                        color="secondary"
-                        aria-label="Cancel edit stage"
-                        onClick={handleCancelEditStage}
-                      >
-                        <CancelIcon />
-                      </IconButton>
-                    </>
-                  ) : (
+                    )}
                     <IconButton
-                      color="primary"
-                      aria-label="Edit stage"
-                      onClick={() => handleEditStage(stage.id, stage.name)}
+                      color="secondary"
+                      aria-label="Delete stage"
+                      onClick={() => handleDeleteStage(stage.id)}
                     >
-                      <EditIcon />
+                      <DeleteIcon />
                     </IconButton>
-                  )}
-                  <IconButton
-                    color="secondary"
-                    aria-label="Delete stage"
-                    onClick={() => handleDeleteStage(stage.id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <form className="admin-form" onSubmit={handleAddStage}>
-            <TextField
-              label="New Stage"
-              value={newStage}
-              onChange={(event) => setNewStage(event.target.value)}
-            />
-            <Button variant="contained" color="primary" type="submit">
-              Add Stage
-            </Button>
-          </form>
-        </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <form className="admin-form" onSubmit={handleAddStage}>
+              <TextField
+                label="New Stage"
+                value={newStage}
+                onChange={(event) => setNewStage(event.target.value)}
+              />
+              <Button variant="contained" color="primary" type="submit">
+                Add Stage
+              </Button>
+            </form>
+          </div>
+        </Paper>
+      </Box>
       </Paper>
-    </Box>
+    </Container>
   );
 }
 
