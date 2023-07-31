@@ -34,6 +34,7 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
       
       dispatch({ type: "FETCH_USER" })
       dispatch({ type: "FETCH_TABLE_LISTS"})
+      dispatch({ type: "CLEAR_TODO_RESOURCES" })
       handleClose();
       history.push('/#/home')
     } else {
