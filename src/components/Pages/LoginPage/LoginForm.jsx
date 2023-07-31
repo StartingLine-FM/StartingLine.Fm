@@ -21,6 +21,7 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
     event.preventDefault();
 
     if (username && password) {
+      dispatch({ type: 'CLEAR_TODO_RESOURCES' })
       dispatch({
         type: 'LOGIN',
         payload: {

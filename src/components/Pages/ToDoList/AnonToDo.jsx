@@ -211,7 +211,7 @@ export default function AnonToDo({ handleOpen }) {
                     </Box>
                 }
                 <Box textAlign={'center'}>
-                    <Button align="center" variant='text' m={2} onClick={handleOpen}>Click Here to login or register</Button>
+                    <Button align="center" variant='text' m={2} onClick={handleOpen}>Login or register to save your list</Button>
                 </Box>
             </Paper>
         </Container>
