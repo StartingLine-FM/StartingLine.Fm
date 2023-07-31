@@ -187,12 +187,12 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                         onChange={e => setNewCategory(e.target.value)}
                     >
                         <option value={0}>Add Category</option>
-                        {categories && 
-                        categories.map(cat => {
-                            return (
-                                <option value={cat.id}>{cat.name}</option>
-                            );
-                        })}
+                        {categories &&
+                            categories.map(cat => {
+                                return (
+                                    <option value={cat.id}>{cat.name}</option>
+                                );
+                            })}
 
                     </TextField>
                     <br />
@@ -206,57 +206,58 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                         label="Edit Business Stage"
                         onChange={e => setNewStage(e.target.value)}
                     >   <option value={0}>Add Business Stage</option>
-                        {stages && 
-                        stages.map(s => {
-                            return (
-                                <option value={s.id}>{s.name}</option>
-                            );
-                        })}
+                        {stages &&
+                            stages.map(s => {
+                                return (
+                                    <option value={s.id}>{s.name}</option>
+                                );
+                            })}
                     </TextField>
                 </DialogContent>
             </Dialog>
             // if NOT in edit mode, show as normal
-            : <Dialog open={open} onClose={handleClose}  >
-                <DialogActions>
-                    {/* render Edit and Delete buttons if the user is logged in as admin */}
-                    {user && user.admin
-                        ? <>
-                            <IconButton onClick={() => setEditMode(true)} >
-                                <EditIcon />
-                            </IconButton>
-                            <IconButton onClick={deleteResource} >
-                                <DeleteIcon />
-                            </IconButton>
-                        </>
-                        : todoResources.some(e => e.id === result.id || e.resource_id === result.id)
-                            ? <IconButton>
-                                <CheckIcon color="primary" />
-                            </IconButton>
-                            : user.id
-                                ? <IconButton onClick={() => userPostTodo()} >
-                                    <AddIcon />
+            :
+                <Dialog open={open} onClose={handleClose}  >
+                    <DialogActions>
+                        {/* render Edit and Delete buttons if the user is logged in as admin */}
+                        {user && user.admin
+                            ? <>
+                                <IconButton onClick={() => setEditMode(true)} >
+                                    <EditIcon />
                                 </IconButton>
-                                : <IconButton onClick={() => anonPostTodo()}>
-                                    <AddIcon />
+                                <IconButton onClick={deleteResource} >
+                                    <DeleteIcon />
                                 </IconButton>
+                            </>
+                            : todoResources.some(e => e.id === result.id || e.resource_id === result.id)
+                                ? <IconButton>
+                                    <CheckIcon color="primary" />
+                                </IconButton>
+                                : user.id
+                                    ? <IconButton onClick={() => userPostTodo()} >
+                                        <AddIcon />
+                                    </IconButton>
+                                    : <IconButton onClick={() => anonPostTodo()}>
+                                        <AddIcon />
+                                    </IconButton>
 
-                    }
-                    <IconButton onClick={handleClose} >
-                        <CloseIcon />
-                    </IconButton>
-                </DialogActions>
-                <DialogTitle>{result.name}</DialogTitle>
-                <DialogContent sx={{ gap: 2, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                    <Typography variant="body1">{result.description}</Typography>
-                    <Link target="_blank" rel="noopener noreferrer" href={result.website}>{result.website && result.website}</Link>
-                    <Link href={`mailto:${result.email}`}>{result.email && result.email}</Link>
-                    <Link target="_blank" rel="noopener noreferrer" href={result.linkedin}>{result.linkedin && result.linkedin}</Link>
-                    <Typography variant="body1">{result.address && result.address}</Typography>
-                    <DialogContentText>
-                        <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={result.category_name} />
-                        <Chip color="secondary" sx={{ mt: 2 }} label={result.stage_name} />
-                    </DialogContentText>
-                </DialogContent>
-            </Dialog>
+                        }
+                        <IconButton onClick={handleClose} >
+                            <CloseIcon />
+                        </IconButton>
+                    </DialogActions>
+                    <DialogTitle>{result.name}</DialogTitle>
+                    <DialogContent sx={{ gap: 2, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
+                        <Typography variant="body1">{result.description}</Typography>
+                        <Link target="_blank" rel="noopener noreferrer" href={result.website}>{result.website && result.website}</Link>
+                        <Link href={`mailto:${result.email}`}>{result.email && result.email}</Link>
+                        <Link target="_blank" rel="noopener noreferrer" href={result.linkedin}>{result.linkedin && result.linkedin}</Link>
+                        <Typography variant="body1">{result.address && result.address}</Typography>
+                        <DialogContentText>
+                            <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={result.category_name} />
+                            <Chip color="secondary" sx={{ mt: 2 }} label={result.stage_name} />
+                        </DialogContentText>
+                    </DialogContent>
+                </Dialog>
     )
 }

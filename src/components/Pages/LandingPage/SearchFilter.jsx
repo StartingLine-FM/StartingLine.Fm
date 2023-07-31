@@ -133,8 +133,8 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
     }
 
     return (
-        <Grid container maxWidth={"25%"} flexDirection={"column"} width={"25%"}>
-            <Paper sx={{ mr: 2, px: 2, pt: 2, pb: 100 }}>
+        <Grid container sx={{maxWidth:"25%", flexDirection:"column", width:"25%"}}>
+            <Paper sx={{ mr: 2, px: 2, pt: 2 }}>
                 {/* Text search input */}
                 <Grid item sx={{ mb: 1 }}>
                     <TextField
@@ -212,31 +212,32 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                             </List>
                         </Collapse>
                     </List>
-
-                    {user.id && titles.length > 0 &&
-                        <>
-                            <Divider sx={{ my: 1 }} color="primary"  />
-                            <Typography variant="caption">Select To-Do List</Typography>
-                            <ListItemButton onClick={handleTitleClick}>
-                                <ListItemText primary={`${user.username}'s Lists`} />
-                                {titleOpen ? <ExpandLess /> : <ExpandMore />}
-                            </ListItemButton>
-                            <Collapse in={titleOpen} timeout="auto" unmountOnExit>
-                                {titles &&
-                                    titles.map(list => {
-                                        return (
-                                            <ListItemButton key={list.id} onClick={() => { setCurrentList(list.id) }}>
-                                                {currentList === list.id ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
-                                                <ListItemText sx={{ ml: 1 }} primary={list.title} />
-                                            </ListItemButton>
-
-                                        )
-                                    })}
-                            </Collapse>
-                        </>
-                    }
                 </Grid>
             </Paper >
-        </Grid >
+
+            {user.id && titles.length > 0 &&
+                <Paper sx={{ mr: 2, px: 2, py: 2, mt:2 }}>
+                    <Grid item>
+                    <Typography variant="caption">Select To-Do List</Typography>
+                    <ListItemButton onClick={handleTitleClick}>
+                        <ListItemText primary={`${user.username}'s Lists`} />
+                        {titleOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={titleOpen} timeout="auto" unmountOnExit>
+                        {titles &&
+                            titles.map(list => {
+                                return (
+                                    <ListItemButton key={list.id} onClick={() => { setCurrentList(list.id) }}>
+                                        {currentList === list.id ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                        <ListItemText sx={{ ml: 1 }} primary={list.title} />
+                                    </ListItemButton>
+
+                                )
+                            })}
+                    </Collapse>
+                    </Grid>
+                </Paper>
+            }
+        </Grid>
     )
 }
