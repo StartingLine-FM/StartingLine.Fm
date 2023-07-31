@@ -152,6 +152,7 @@ export default function ToDoList() {
                     <Container sx={{ padding: 4 }}>
                         <Paper sx={{ flexDirection: 'column', width: '100%', paddingRight: 2, display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
                             <Typography variant='h4' gutterBottom paddingLeft={3} align='left'>To-Do Lists</Typography>
+                            <Typography variant='text' gutterBottom paddingLeft={3} align='left'>Click on a list to see the items</Typography>
                             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                                 {list_titles.map((list, i) => (
                                     <ListItem key={i} secondaryAction={
