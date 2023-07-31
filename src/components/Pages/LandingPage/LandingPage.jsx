@@ -25,13 +25,13 @@ function LandingPage() {
   }, [dispatch]);
 
   useEffect(() => {
-      dispatch({ type: 'FETCH_TABLE_LISTS' });
+    dispatch({ type: 'FETCH_TABLE_LISTS' });
   }, [user.id])
 
   useEffect(() => {
-    if(lists.length === 1){
+    if (lists.length === 1) {
       setCurrentList(lists[0].id);
-      dispatch({ type: 'FETCH_TODO_LIST_RESOURCES', payload: {title_table_id: lists[0].id }})
+      dispatch({ type: 'FETCH_TODO_LIST_RESOURCES', payload: { title_table_id: lists[0].id } })
     }
   }, [lists])
 
@@ -51,7 +51,11 @@ function LandingPage() {
                 )
               })
               :
-              <Typography>Your search returned 0 results.</Typography>
+              <Grid item xs={12}>
+                <Paper sx={{p:3}}>
+                  <Typography>Your search returned 0 results.</Typography>
+                </Paper>
+              </Grid>
             }
           </Grid>
         </div>

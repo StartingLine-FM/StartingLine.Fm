@@ -16,7 +16,8 @@ import {
     IconButton,
     Chip,
     Snackbar,
-    Alert
+    Alert,
+    Tooltip
 } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
@@ -149,7 +150,7 @@ export default function Result({ result, currentList, categories, stages }) {
                     />
                     <Snackbar
                         open={snackOpen}
-                        anchorOrigin={{vertical: '', horizontal: 'left'}}
+                        anchorOrigin={{ vertical: '', horizontal: 'left' }}
                         autoHideDuration={5000}
                         onClose={() => setSnackOpen(false)}
                         action={action}
@@ -163,16 +164,22 @@ export default function Result({ result, currentList, categories, stages }) {
             <Card raised sx={{ height: 250, maxWidth: 250, pb: 1 }}>
                 {
                     todoResources.some(e => e.id === result.id || e.resource_id === result.id)
-                        ? <IconButton>
+                        ? <Tooltip placement="right" title="Added to your current list">
+                        <IconButton>
                             <CheckIcon color="primary" />
                         </IconButton>
+                        </Tooltip>
                         : user.id
-                            ? <IconButton onClick={(e) => userPostTodo(e.target)} >
-                                <AddIcon />
-                            </IconButton>
-                            : <IconButton onClick={(e) => anonPostTodo(e.target)}>
-                                <AddIcon />
-                            </IconButton>
+                            ? <Tooltip placement="right" title="Adds this resource to your currently selected to-do list.">
+                                <IconButton onClick={(e) => userPostTodo(e.target)} >
+                                    <AddIcon />
+                                </IconButton>
+                            </Tooltip>
+                            : <Tooltip placement="right" title="Adds this resource to your temporary to-do list, which can be found in the TODO LIST tab above.">
+                                <IconButton onClick={(e) => anonPostTodo(e.target)}>
+                                    <AddIcon />
+                                </IconButton>
+                            </Tooltip>
                 }
                 <CardActionArea onClick={handleClickOpen} >
                     {result.image_url &&

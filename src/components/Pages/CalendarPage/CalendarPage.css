@@ -1,4 +1,3 @@
-
 .the-calendar {
     margin-top: 20px;
 }
@@ -8,20 +7,19 @@
     text-align: center;
     font-size: larger;
     font-weight: bolder;
-    /* color: blue; */
+    color: #55c6f0;
 }
 
 .the-sidebar {
     margin-top: 20px;
 }
 
-.sidebar-contents {
-    width: 400px;
+.sidebar-title {
+    color: #55c6f0;
 }
 
 .fc {
     /* the calendar root */
-    /* color: red; */
     width: 800px;
     min-height: 400px;
     margin: 0 auto;
@@ -29,11 +27,33 @@
     overflow-x: none;
 }
 
-.EP-button {
-margin: 0 auto;
+.fc-daygrid-day-number, .fc-col-header-cell-cushion {
+color:black;
 }
 
+.fc-header-toolbar {
+    color: #55c6f0;
+}
 
-/* * {
-    color:red;
+*, ::after, ::before  {
+    box-sizing: border-box;
+    color: #55c6f0;
+}
+
+.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
+    color:#55c6f0
+}
+
+/* Unused code below
+
+/* .fc * {
+    color: red;
+} */
+
+/* .fc-toolbar-chunk {
+    color: red;
+} */
+
+/* .fc-toolbar {
+    color: red;
 } */
