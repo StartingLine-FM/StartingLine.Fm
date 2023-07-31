@@ -12,7 +12,8 @@ import {
     IconButton,
     TextField,
     Button,
-    Box
+    Box,
+    Tooltip
 } from '@mui/material';
 // MUI Icons
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
@@ -84,9 +85,9 @@ export default function AnonToDo({ handleOpen }) {
         // Format the resources as a string
         const resourcesString = title_resources.map(resource => {
             return (
-            resource.notes
-            ? `${resource.name}: ${resource.notes}`
-            : `${resource.name}`
+                resource.notes
+                    ? `${resource.name}: ${resource.notes}`
+                    : `${resource.name}`
             )
         }).join('\n');
 
@@ -126,17 +127,32 @@ export default function AnonToDo({ handleOpen }) {
 
     return (
         <Container registerModal={registerModal} open={handleRegisterModalOpen} sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
-            <Typography variant='h4' gutterBottom align='center' py={4}>TO-DO</Typography>
-            <Paper sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
-                {title_resources.length > 0 && <ListItem sx={{ justifyContent: 'right' }}><IconButton onClick={() => copyResourcesToClipboard()} aria-label={'copy'}>
-                    <FileCopyIcon />
-                </IconButton></ListItem>}
+            <Paper sx={{ mt: 3, flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
+                <Typography variant='h4' align='center' pt={3} color="primary">TO-DO</Typography>
+                <Typography paragraph align="center" variant="body2" m={2} >
+                    Welcome to the To-Do page! You can add resources to this page by clicking on the plus icon for any entry you're interested in on the search page.
+                    Once you've added resources, you will be able to add notes, mark entries as complete, or remove them. Need to take your to-do list with you? You can copy
+                    the entire list to your clipboard, or create an account to save multiple to-do lists to your profile.
+                </Typography>
+                    <Typography color="error" align="center" variant="caption">
+                        Note: If you don't create an account to save your todo list OR copy and paste to your own records, <u>your list will not be saved and will be lost when you refresh / close this page.</u>
+                    </Typography>
+                {title_resources.length > 0 &&
+                    <ListItem sx={{ justifyContent: 'right' }}>
+                        <Tooltip placement="left" title="Copy to Clipboard">
+                            <IconButton onClick={() => copyResourcesToClipboard()} aria-label={'copy'}>
+                                <FileCopyIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </ListItem>}
                 {title_resources.length > 0
-                    ? title_resources.map((resource, i) => (
+                    && title_resources.map((resource, i) => (
                         <>
                             <List key={resource.id} sx={listStyle(resource)}>
                                 <ListItem >
-                                    <ListItemButton onClick={() => { setSelectedResource(resource.id); setOpen(true); }} >{resource.name}</ListItemButton>
+                                    <Tooltip title="Click to view more details">
+                                        <ListItemButton onClick={() => { setSelectedResource(resource.id); setOpen(true); }} >{resource.name}</ListItemButton>
+                                    </Tooltip>
                                 </ListItem>
                                 {editMode && selectedResource === resource.id
                                     ? <ListItem>
@@ -157,34 +173,45 @@ export default function AnonToDo({ handleOpen }) {
                                         </ListItemText>
                                     </ListItem>
                                     : <ListItem>
-                                        <ListItemText component={motion.h4}>
-                                            {resource.notes ? resource.notes : <em>Click edit button to add notes</em>}
+                                        <ListItemText>
+                                            <Typography variant="body2">
+                                                {resource.notes ? resource.notes : <em>Click edit button to add notes</em>}
+                                            </Typography>
                                         </ListItemText>
                                     </ListItem>
                                 }
                                 {editMode && selectedResource === resource.id
                                     ? <>
                                         <ListItem sx={{ width: 100 }}>
-                                            <IconButton onClick={() => putResource(resource)}>
-                                                <SaveIcon />
-                                            </IconButton>
+                                            <Tooltip title="Save Changes">
+                                                <IconButton onClick={() => putResource(resource)}>
+                                                    <SaveIcon color="primary" />
+                                                </IconButton>
+                                            </Tooltip>
                                         </ListItem>
                                         <ListItem sx={{ width: 100 }}>
-                                            <IconButton onClick={() => setEditMode(false)}>
-                                                <CloseIcon />
-                                            </IconButton>
+                                            <Tooltip title="Cancel Edit">
+                                                <IconButton onClick={() => setEditMode(false)}>
+                                                    <CloseIcon color="secondary" />
+                                                </IconButton>
+                                            </Tooltip>
                                         </ListItem>
                                     </>
                                     : <>
+                                        <Tooltip title="Edit Notes">
+                                            <ListItem sx={{ width: 100 }}>
+                                                <IconButton onClick={() => { setSelectedResource(resource.id); setEditMode(true) }}>
+                                                    <ModeEditIcon color="primary" />
+                                                </IconButton>
+                                            </ListItem>
+                                        </Tooltip>
+
                                         <ListItem sx={{ width: 100 }}>
-                                            <IconButton onClick={() => { setSelectedResource(resource.id); setEditMode(true) }}>
-                                                <ModeEditIcon />
-                                            </IconButton>
-                                        </ListItem>
-                                        <ListItem sx={{ width: 100 }}>
-                                            <IconButton onClick={() => deleteResource(resource.id)}>
-                                                <DeleteIcon />
-                                            </IconButton>
+                                            <Tooltip title="Delete Item">
+                                                <IconButton onClick={() => deleteResource(resource.id)}>
+                                                    <DeleteIcon color="secondary" />
+                                                </IconButton>
+                                            </Tooltip>
                                         </ListItem>
                                     </>
                                 }
@@ -200,18 +227,9 @@ export default function AnonToDo({ handleOpen }) {
                             </AnimatePresence>
                         </>
                     ))
-
-                    :
-                    <Box textAlign={'center'}>
-                        <Typography paragraph align="center" variant="body2" m={2} >
-                            Welcome to the To-Do page! You can add resources to this page by clicking on the star icon for any entry you're interested in on the search page.
-                            Once you've added resources, you will be able to add notes, mark entries as complete, or remove them. Need to take your to-do list with you? You can copy
-                            the entire list to your clipboard, or create an account to save multiple to-do lists to your profile.
-                        </Typography>
-                    </Box>
                 }
-                <Box textAlign={'center'}>
-                    <Button align="center" variant='text' m={2} onClick={handleOpen}>Login or register to save your list</Button>
+                <Box textAlign={'center'} m={3}>
+                    <Button align="center" variant='text' onClick={handleOpen}>Login or register to save your list</Button>
                 </Box>
             </Paper>
         </Container>

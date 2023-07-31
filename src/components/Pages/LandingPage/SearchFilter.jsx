@@ -12,7 +12,7 @@ import {
     ListItemButton,
     ListItemText,
     Collapse,
-    Divider
+    Tooltip
 } from '@mui/material';
 // MUI Icons
 import ExpandLess from '@mui/icons-material/ExpandLess';
@@ -21,6 +21,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import SendIcon from '@mui/icons-material/Send';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import InfoIcon from '@mui/icons-material/Info';
 
 
 export default function SearchFilter({ currentList, setCurrentList, categories, stages, todo }) {
@@ -132,8 +133,16 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
         setChanges(false);
     }
 
+    const fetchTodo = (id) => {
+        setCurrentList(id)
+        dispatch({
+            type: "FETCH_TODO_LIST_RESOURCES",
+            payload: id
+        });
+    }
+
     return (
-        <Grid container sx={{maxWidth:"25%", flexDirection:"column", width:"25%"}}>
+        <Grid container sx={{ maxWidth: "25%", flexDirection: "column", width: "25%" }}>
             <Paper sx={{ mr: 2, px: 2, pt: 2 }}>
                 {/* Text search input */}
                 <Grid item sx={{ mb: 1 }}>
@@ -165,12 +174,17 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                         }
                     </ButtonGroup>
                     <br />
-                    <Typography variant="caption">Filter by</Typography>
+                    <div style={{display:"flex", justifyContent:"space-between"}}>
+                        <Typography variant="caption">Filter by</Typography>
+                        <Tooltip title='See the "Category and Stage Definitions" section of the About page for more details'>
+                            <InfoIcon fontSize="small" color="primary" />
+                        </Tooltip>
+                    </div>
                     <List>
                         {/* Category 'header' dropdown */}
                         <ListItemButton onClick={handleCategoryClick}>
                             <ListItemText primary="Category" />
-                            {categoryOpen ? <ExpandLess color="primary" /> : <ExpandMore color="primary" />}
+                            {categoryOpen ? <ExpandLess /> : <ExpandMore />}
                         </ListItemButton>
                         {/* Category list */}
                         <Collapse in={categoryOpen} timeout="auto" unmountOnExit>
@@ -193,7 +207,7 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                         {/* Business Stage dropdown */}
                         <ListItemButton onClick={handleStageClick}>
                             <ListItemText primary="Business Stage" />
-                            {stageOpen ? <ExpandLess color="secondary" /> : <ExpandMore color="secondary" />}
+                            {stageOpen ? <ExpandLess /> : <ExpandMore />}
                         </ListItemButton>
                         {/* Business Stage list */}
                         <Collapse in={stageOpen} timeout="auto" unmountOnExit>
@@ -216,25 +230,25 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
             </Paper >
 
             {user.id && titles.length > 0 &&
-                <Paper sx={{ mr: 2, px: 2, py: 2, mt:2 }}>
+                <Paper sx={{ mr: 2, px: 2, py: 2, mt: 2 }}>
                     <Grid item>
-                    <Typography variant="caption">Select To-Do List</Typography>
-                    <ListItemButton onClick={handleTitleClick}>
-                        <ListItemText primary={`${user.username}'s Lists`} />
-                        {titleOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={titleOpen} timeout="auto" unmountOnExit>
-                        {titles &&
-                            titles.map(list => {
-                                return (
-                                    <ListItemButton key={list.id} onClick={() => { setCurrentList(list.id) }}>
-                                        {currentList === list.id ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
-                                        <ListItemText sx={{ ml: 1 }} primary={list.title} />
-                                    </ListItemButton>
+                        <Typography variant="caption">Select To-Do List</Typography>
+                        <ListItemButton onClick={handleTitleClick}>
+                            <ListItemText primary={`${user.username}'s Lists`} />
+                            {titleOpen ? <ExpandLess /> : <ExpandMore />}
+                        </ListItemButton>
+                        <Collapse in={titleOpen} timeout="auto" unmountOnExit>
+                            {titles &&
+                                titles.map(list => {
+                                    return (
+                                        <ListItemButton key={list.id} onClick={() => { fetchTodo(list.id) }}>
+                                            {currentList === list.id ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
+                                            <ListItemText sx={{ ml: 1 }} primary={list.title} />
+                                        </ListItemButton>
 
-                                )
-                            })}
-                    </Collapse>
+                                    )
+                                })}
+                        </Collapse>
                     </Grid>
                 </Paper>
             }
