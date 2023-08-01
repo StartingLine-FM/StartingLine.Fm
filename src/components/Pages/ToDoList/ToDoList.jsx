@@ -5,7 +5,8 @@ import {
     ListItemText, ListItemIcon, ListItem, IconButton, Modal, Box, Dialog, DialogContent, DialogTitle,
     Grid,
     TextField,
-    Tooltip
+    Tooltip,
+    AlertTitle
 } from '@mui/material';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -17,6 +18,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close'
+import Alert from '@mui/material/Alert';
 
 
 export default function ToDoList() {
@@ -40,7 +42,11 @@ export default function ToDoList() {
     const list_titles = useSelector(store => store.tableListReducer);
     // grab reesources from the store
     const title_resources = useSelector(store => store.todoListResourcesReducer);
-    // state for checkboxes
+    const list = list_titles.find(title => title.id === selectedResource)
+    console.log(list)
+    
+    
+    
 
     // toggle modals
     const handleOpen = () => {
@@ -152,7 +158,7 @@ export default function ToDoList() {
                     <Container sx={{ padding: 4 }}>
                         <Paper sx={{ flexDirection: 'column', width: '100%', paddingRight: 2, display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
                             <Typography variant='h4' gutterBottom paddingLeft={3} align='left'>To-Do Lists</Typography>
-                            <Typography variant='text' gutterBottom paddingLeft={3} align='left'>Click on a list to see the items</Typography>
+                            <Typography variant='text' gutterBottom paddingLeft={3} align='left'><em>Click on a list to see the items</em></Typography>
                             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                                 {list_titles.map((list, i) => (
                                     <ListItem key={i} secondaryAction={
@@ -180,8 +186,8 @@ export default function ToDoList() {
                                     <ListItem secondaryAction={<IconButton color='primary' edge='end' onClick={() => { setNewTitleEditMode(true) }} aria-label={'copy'}>
                                         <AddIcon />
                                     </IconButton>}>
-                                        <ListItemButton><ListItemText variant='h4'>Add A New To Do List</ListItemText>
-                                        </ListItemButton>
+                                        <ListItem><ListItemText variant='h4'>Click the plus icon to add a list</ListItemText>
+                                        </ListItem>
                                     </ListItem>}
                             </List>
                         </Paper>
@@ -193,13 +199,13 @@ export default function ToDoList() {
                     <Container sx={{ padding: 4 }}>
                         <Paper sx={{ flexDirection: 'column', width: '100%', display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
 
-                            {title_resources.length > 0 && <Typography paddingRight={3.5} secondaryAction variant='h4' gutterBottom align='center' justifyContent={'left'}>
+                            {title_resources.length > 0 && ( <Typography paddingRight={3.5} secondaryAction variant='h4' gutterBottom align='center' justifyContent={'left'}>
                                 <span style={{ display: 'flex', alignContent: 'center', paddingLeft: 65, paddingTop: 20, justifyContent: 'space-between' }}>
                                     Resources<IconButton color='primary' onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
                                         <Tooltip title='Copy to clipboard' placement='top' arrow>
                                             <FileCopyIcon />
                                         </Tooltip>
-                                    </IconButton></span></Typography>}
+                                    </IconButton></span></Typography>)}
                             {title_resources.map((resource, i) => (
                                 <Container sx={listStyle(resource)} key={resource.id} >
                                     <List sx={listStyle(resource)} >
@@ -235,7 +241,7 @@ export default function ToDoList() {
                                                 <Button sx={{ color: 'black' }} onClick={() => putResource(resource, true)}>
                                                     <ListItemText >{resource.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}</ListItemText>
                                                 </Button>}
-                                            {editMode && selectedResource === resource.id ? <IconButton color='primary' onClick={() => { putResource(resource); setEditMode(false) }}>
+                                            {editMode && selectedResource === resource.id ? <IconButton color='primary' onClick={() => { putResource(resource); setEditMode(false); }}>
                                                 <SaveIcon />
                                             </IconButton> :
                                                 <IconButton color='primary' onClick={() => { setEditMode(true); setSelectedResource(resource.id); }} aria-label={'delete'}>

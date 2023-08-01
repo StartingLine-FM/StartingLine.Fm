@@ -35,14 +35,10 @@ color:black;
     color: #55c6f0;
 }
 
-*, ::after, ::before  {
-    box-sizing: border-box;
-    color: #55c6f0;
+.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
+    color:#55c6f0;
 }
 
-.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
-    color:#55c6f0
-}
 
 /* Unused code below
 

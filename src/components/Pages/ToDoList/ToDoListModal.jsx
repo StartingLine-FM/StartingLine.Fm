@@ -67,7 +67,7 @@ export default function ToDoListModal({ isModalOpen, handleClose, resource, setS
         <>
             <Dialog  open={isModalOpen} onClose={handleClose} >
                 <DialogActions>
-                    <IconButton onClick={() => { handleClose; setSelectedResource(null); setEditMode(false); clearInputs(); }} edge={'start'} aria-label={'delete'}>
+                    <IconButton onClick={() => { handleClose(); setEditMode(false); clearInputs(); }} edge={'start'} aria-label={'delete'}>
                         <CloseIcon />
                     </IconButton>
                 </DialogActions>
