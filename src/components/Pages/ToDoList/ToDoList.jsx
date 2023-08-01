@@ -44,9 +44,9 @@ export default function ToDoList() {
     const title_resources = useSelector(store => store.todoListResourcesReducer);
     const list = list_titles.find(title => title.id === selectedResource)
     console.log(list)
-    
-    
-    
+
+
+
 
     // toggle modals
     const handleOpen = () => {
@@ -155,9 +155,9 @@ export default function ToDoList() {
             <Grid container >
                 {/* Sidebar */}
                 <Grid item md={4} xs={12}>
-                    <Container sx={{ padding: 4 }}>
+                    <Container sx={{ padding: 3 }}>
                         <Paper sx={{ flexDirection: 'column', width: '100%', paddingRight: 2, display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
-                            <Typography variant='h4' gutterBottom paddingLeft={3} align='left'>To-Do Lists</Typography>
+                            <Typography variant='h4' color="primary" gutterBottom paddingLeft={3} pt={3} align='left'>To-Do Lists</Typography>
                             <Typography variant='text' gutterBottom paddingLeft={3} align='left'><em>Click on a list to see the items</em></Typography>
                             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                                 {list_titles.map((list, i) => (
@@ -196,12 +196,13 @@ export default function ToDoList() {
 
                 {/* Center Content */}
                 <Grid item md={8} xs={12}>
-                    <Container sx={{ padding: 4 }}>
+                    <Container sx={{ padding: 3 }}>
                         <Paper sx={{ flexDirection: 'column', width: '100%', display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
 
-                            {title_resources.length > 0 && ( <Typography paddingRight={3.5} secondaryAction variant='h4' gutterBottom align='center' justifyContent={'left'}>
+                            {title_resources.length > 0 && (<Typography paddingRight={3.5} secondaryAction variant='h4' gutterBottom align='center' justifyContent={'left'}>
                                 <span style={{ display: 'flex', alignContent: 'center', paddingLeft: 65, paddingTop: 20, justifyContent: 'space-between' }}>
-                                    Resources<IconButton color='primary' onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
+                                    <Typography variant="h4" color="primary">Resources</Typography>
+                                    <IconButton color='primary' onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
                                         <Tooltip title='Copy to clipboard' placement='top' arrow>
                                             <FileCopyIcon />
                                         </Tooltip>
@@ -238,9 +239,11 @@ export default function ToDoList() {
                                                         </Tooltip>
                                                     </IconButton>
                                                 </> :
-                                                <Button sx={{ color: 'black' }} onClick={() => putResource(resource, true)}>
-                                                    <ListItemText >{resource.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}</ListItemText>
-                                                </Button>}
+                                                <Tooltip title="Mark as completed">
+                                                    <Button sx={{ color: 'black' }} onClick={() => putResource(resource, true)}>
+                                                        <ListItemText >{resource.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}</ListItemText>
+                                                    </Button>
+                                                </Tooltip>}
                                             {editMode && selectedResource === resource.id ? <IconButton color='primary' onClick={() => { putResource(resource); setEditMode(false); }}>
                                                 <SaveIcon />
                                             </IconButton> :

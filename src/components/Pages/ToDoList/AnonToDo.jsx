@@ -28,7 +28,7 @@ import './ToDoList.css'
 import AnonToDoModal from './AnonToDoModal';
 
 
-export default function AnonToDo({ handleOpen }) {
+export default function AnonToDo({ handleOpenRegister, handleOpen }) {
 
     // set state for edit mode
     const [editMode, setEditMode] = useState(false)
@@ -134,13 +134,13 @@ export default function AnonToDo({ handleOpen }) {
                     Once you've added resources, you will be able to add notes, mark entries as complete, or remove them. Need to take your to-do list with you? You can copy
                     the entire list to your clipboard, or create an account to save multiple to-do lists to your profile.
                 </Typography>
-                    <Typography color="error" align="center" variant="caption">
+                    <Typography sx={{px:3}} color="error" align="center" variant="body2">
                         Note: If you don't create an account to save your todo list OR copy and paste to your own records, <u>your list will not be saved and will be lost when you refresh / close this page.</u>
                     </Typography>
                 {title_resources.length > 0 &&
                     <ListItem sx={{ justifyContent: 'right' }}>
                         <Tooltip placement="left" title="Copy to Clipboard">
-                            <IconButton onClick={() => copyResourcesToClipboard()} aria-label={'copy'}>
+                            <IconButton color="primary" onClick={() => copyResourcesToClipboard()} aria-label={'copy'}>
                                 <FileCopyIcon />
                             </IconButton>
                         </Tooltip>
@@ -229,7 +229,7 @@ export default function AnonToDo({ handleOpen }) {
                     ))
                 }
                 <Box textAlign={'center'} m={3}>
-                    <Button align="center" variant='text' onClick={handleOpen}>Login or register to save your list</Button>
+                    <Button align="center" variant='text' onClick={handleOpenRegister}>Register to save your list</Button>
                 </Box>
             </Paper>
         </Container>

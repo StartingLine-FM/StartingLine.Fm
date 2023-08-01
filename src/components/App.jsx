@@ -176,7 +176,8 @@ function App() {
                 :
                 // Otherwise, show the registration page
                 <RegisterPage handleClose={handleClose} openRegisterModal={openRegisterModal} 
-                setOpenRegisterModal={setOpenRegisterModal} 
+                setOpenRegisterModal={setOpenRegisterModal}
+                setOpenLoginModal={setOpenLoginModal} 
                 handleCloseRegister={handleCloseRegister} 
                 handleOpenRegister={handleOpenRegister}  />
               }
