@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 
 
-function RegisterForm({ handleClose, handleOpenRegister, setOpenRegisterModal, openRegisterModal, handleCloseRegister }) {
+function RegisterForm({ handleClose, handleOpenRegister, setOpenRegisterModal, openRegisterModal, handleCloseRegister, setOpenLoginModal }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector((store) => store.errors);

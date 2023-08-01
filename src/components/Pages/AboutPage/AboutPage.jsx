@@ -14,7 +14,7 @@ function AboutPage() {
 
   return (
     <Container style={{ marginBottom: '50px' }}>
-      <Paper style={{ marginTop: '20px', padding: '20px' }}>
+      <Paper sx={{mt:3, p:3}}>
         <Typography variant="h6" style={titleStyle} align="center">
           Research and Client Information:
         </Typography>
