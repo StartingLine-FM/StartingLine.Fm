@@ -47,7 +47,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
     const putResource = () => {
         // instantiate payload keys
         let name;
-        let image;
+        let image_url;
         let description;
         let website;
         let email;
@@ -58,7 +58,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
 
         // if there's a change made, send the changed data, else send existing data
         newName ? name = newName : name = result.name;
-        newImage ? image = newImage : image = result.image;
+        newImage ? image_url = newImage : image_url = result.image_url;
         newDescription ? description = newDescription : description = result.description;
         newWebsite ? website = newWebsite : website = result.website;
         newLinkedIn ? linkedin = newLinkedIn : linkedin = result.linkedin;
@@ -73,7 +73,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
             payload: {
                 id: result.id,
                 name,
-                image,
+                image_url,
                 description,
                 website,
                 email,
@@ -172,7 +172,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                     />
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.image ? result.image : 'Add image url'}
+                        label={result.image_url ? result.image_url : 'Add image url'}
                         value={newImage}
                         onChange={(e) => setNewImage(e.target.value)}
                     />
