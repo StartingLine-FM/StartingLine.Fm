@@ -31,11 +31,13 @@ const Calendar = () => {
     // Format the start date using date-fns
     const startDate = format(new Date(info.event.start), 'MMMM d @ h:mm a');
     const endDate = format(new Date(info.event.end), 'MMMM d @ h:mm a');
+    // const date = format(new Date(info.event.date), 'MMMM d @ h:mm a - h:mm a');
     const { description, location } = info.event.extendedProps;
   
     let eventDetails = `<div>
                             <span>Start: ${startDate}</span>
                             <span>End: ${endDate}</span>
+                            
                             <p>${description}</p>`;
     
     // Only include location if it is not an empty string or undefined
