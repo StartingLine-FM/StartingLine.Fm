@@ -44,7 +44,25 @@ function AdminPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
+    // Validate the LinkedIn URL
+    if (newResource.linkedin !== '' && !urlRegex.test(newResource.linkedin)) {
+      alert('Invalid LinkedIn URL');
+      return;
+    }
+  
+    // Validate the Website URL
+    if (newResource.website !== '' && !urlRegex.test(newResource.website)) {
+      alert('Invalid Website URL');
+      return;
+    }
+  
+   // Validate the Image URL
+   if (newResource.image_url && !isValidImageUrl(newResource.image_url)) {
+    alert('Invalid Image URL');
+    return;
+  }
+  
     // Validation before dispatching the action
     if (newResource.name && newResource.description && newResource.stage_id && newResource.category_id) {
       dispatch({ type: 'POST_RESOURCE', payload: newResource });
@@ -63,6 +81,12 @@ function AdminPage() {
       // Display a validation error message or take appropriate action
       alert('Please provide all mandatory fields (name, description, stage, and category).');
     }
+  };
+  
+  const isValidImageUrl = (url) => {
+    // A simple check to see if the URL ends with common image file extensions
+    // Note: This is not a foolproof check
+    return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
   };
 
   const handleAddCategory = (event) => {

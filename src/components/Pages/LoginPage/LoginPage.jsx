@@ -9,7 +9,7 @@ function LoginPage({ handleOpen, openRegisterModal, setOpenRegisterModal, handle
 
   return (
     <Container>
-      <LoginForm openRegisterModal={openRegisterModal} setOpenRegisterModal={setOpenRegisterModal} 
+      <LoginForm handleOpen={handleOpen} openRegisterModal={openRegisterModal} setOpenRegisterModal={setOpenRegisterModal} 
       handleCloseRegister={handleCloseRegister} handleOpenRegister={handleOpenRegister} openLoginModal={openLoginModal} handleClose={handleClose} setOpenLoginModal={setOpenLoginModal}  />
     </Container>
   );
