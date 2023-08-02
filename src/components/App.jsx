@@ -55,6 +55,8 @@ function App() {
   const dispatch = useDispatch();
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
+  const [currentList, setCurrentList] = useState(null);
+
   const handleCloseRegister = () => {
     setOpenRegisterModal(false);
   }
@@ -122,7 +124,7 @@ function App() {
 
             <ProtectedRoute exact path="/todolist"
             >
-              <ToDoList />
+              <ToDoList currentList={currentList} setCurrentList={setCurrentList} />
             </ProtectedRoute>
 
             {/* For protected routes, the view could show one of several things on the same route.
@@ -193,7 +195,7 @@ function App() {
               <Redirect to="/user" />
               :
               // Otherwise, show the Landing page */}
-              <LandingPage />
+              <LandingPage currentList={currentList} setCurrentList={setCurrentList} />
               {/* } */}
             </Route>
 
