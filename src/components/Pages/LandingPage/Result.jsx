@@ -161,7 +161,7 @@ export default function Result({ result, currentList, categories, stages }) {
                     </Snackbar>
                 </>
             }
-            <Card raised sx={{ height: 250, maxWidth: 250, pb: 1 }}>
+            <Card raised sx={{ height: 250, maxWidth: 250 }}>
                 {
                     todoResources.some(e => e.id === result.id || e.resource_id === result.id)
                         ? <Tooltip placement="right" title="Added to your current list">
@@ -218,10 +218,10 @@ export default function Result({ result, currentList, categories, stages }) {
                             {result.description}
                         </Typography>
                         {result.category_id &&
-                            <Chip color="primary" size="small" sx={{ fontSize: "10px", mb: 1 }} label={result.category_name} />
+                            <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={result.category_name} />
                         }
                         {result.stage_id &&
-                            <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1, mb: 1 }} label={result.stage_name} />
+                            <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1 }} label={result.stage_name} />
                         }
                     </CardContent>
                 </CardActionArea>

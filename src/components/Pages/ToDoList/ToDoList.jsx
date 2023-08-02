@@ -23,7 +23,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close'
 
 
-export default function ToDoList() {
+export default function ToDoList({currentList, setCurrentList}) {
     // set state for edit mode
     const [editMode, setEditMode] = useState(false);
     // set state for selected resource
@@ -165,7 +165,7 @@ export default function ToDoList() {
                                             <DeleteIcon />
                                         </IconButton>
                                     }>
-                                        <ListItemButton onClick={() => { setSelectedResource(list.id); dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id }); }} key={i}>
+                                        <ListItemButton onClick={() => { setCurrentList(list.id); dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id }); }} key={i}>
                                             <ListItemText variant='h4' >{list.title}</ListItemText>
                                         </ListItemButton>
                                     </ListItem>
