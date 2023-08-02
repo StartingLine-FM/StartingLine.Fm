@@ -48,6 +48,7 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
     <>
       {openRegisterModal ? (
         <RegisterPage handleClose={handleClose}
+          handleOpen={handleOpen}
           openRegisterModal={openRegisterModal}
           setOpenRegisterModal={setOpenRegisterModal}
           handleCloseRegister={() => setOpenRegisterModal(false)}
@@ -88,8 +89,7 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
             </DialogContent>
             <DialogActions>
               <Button
-                type="button"
-                onClick={handleOpenRegister}
+                onClick={() => {handleClose(); handleOpenRegister();}}
               >
                 Register
               </Button>

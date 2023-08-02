@@ -21,6 +21,7 @@ import ToDoList from './Pages/ToDoList/ToDoList';
 import AnonToDo from './Pages/ToDoList/AnonToDo';
 import AdminPage from './Pages/AdminPage/AdminPage';
 import './App.css';
+import { useHistory } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
@@ -56,6 +57,7 @@ function App() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
   const [currentList, setCurrentList] = useState(null);
+
 
   const handleCloseRegister = () => {
     setOpenRegisterModal(false);
@@ -177,7 +179,7 @@ function App() {
                 <Redirect to="/user" />
                 :
                 // Otherwise, show the registration page
-                <RegisterPage handleClose={handleClose} openRegisterModal={openRegisterModal} 
+                <RegisterPage openLoginModal={openLoginModal} handleClose={handleClose} handleOpen={handleOpen} openRegisterModal={openRegisterModal} 
                 setOpenRegisterModal={setOpenRegisterModal}
                 setOpenLoginModal={setOpenLoginModal} 
                 handleCloseRegister={handleCloseRegister} 

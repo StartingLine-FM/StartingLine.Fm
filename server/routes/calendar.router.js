@@ -18,17 +18,29 @@ const parseEventDate = (displayStart) => {
   const dateRangeMatch = displayStart.match(/^(.+) - (.+)$/);
   if (dateRangeMatch) {
     const start = chrono.parseDate(dateRangeMatch[1]);
-    const end = chrono.parseDate(dateRangeMatch[2]);
+    let end = chrono.parseDate(dateRangeMatch[2]);
+    const now = new Date;
+    const today = new Date(now.toDateString())
+    if (end.toDateString() === today.toDateString()) {
+      end = start
+    }
+    console.log('today is coming in as', today);
+    console.log("Start:", start);
+    console.log("End:", end);
+
     if (start && end) {
       // Get the time from the "displayStart" and "displayEnd" fields
-      const startTimeMatch = dateRangeMatch[1].match(/(\d{1,2}):(\d{2}) (AM|PM)/i);
-      const endTimeMatch = dateRangeMatch[2].match(/(\d{1,2}):(\d{2}) (AM|PM)/i);
+      const startTimeMatch = dateRangeMatch[1].match(/(\d{1,2}):(\d{2}) (am|pm)/i);
+      const endTimeMatch = dateRangeMatch[2].match(/(\d{1,2}):(\d{2}) (am|pm)/i);
+      console.log("startTimeMatch:", startTimeMatch);
+      console.log("endTimeMatch:", endTimeMatch);
+
       let startHours = 8;
       let startMinutes = 0;
       if (startTimeMatch) {
         startHours = parseInt(startTimeMatch[1]);
         startMinutes = parseInt(startTimeMatch[2]);
-        if (startTimeMatch[3].toLowerCase() === "pm") {
+        if (startTimeMatch[3].toLowerCase() === "pm" && startHours < 12) {
           startHours += 12;
         }
       }
@@ -37,7 +49,7 @@ const parseEventDate = (displayStart) => {
       if (endTimeMatch) {
         endHours = parseInt(endTimeMatch[1]);
         endMinutes = parseInt(endTimeMatch[2]);
-        if (endTimeMatch[3].toLowerCase() === "pm") {
+        if (endTimeMatch[3].toLowerCase() === "pm" && endHours < 12) {
           endHours += 12;
         }
       }
@@ -45,12 +57,17 @@ const parseEventDate = (displayStart) => {
       const endSeconds = "00";
       const formattedStartTime = `${startHours.toString().padStart(2, "0")}:${startMinutes.toString().padStart(2, "0")}:${startSeconds}`;
       const formattedEndTime = `${endHours.toString().padStart(2, "0")}:${endMinutes.toString().padStart(2, "0")}:${endSeconds}`;
+      console.log("formattedStartTime:", formattedStartTime);
+      console.log("formattedEndTime:", formattedEndTime);
+
       return {
         start: moment(start).utcOffset(-5).format(`YYYY-MM-DDT${formattedStartTime}.000`),
         end: moment(end).utcOffset(-5).format(`YYYY-MM-DDT${formattedEndTime}.000`),
       };
     }
-  }}
+  }
+};
+
 
 
 router.get("/emerging-prairie", (req, res) => {
@@ -108,7 +125,8 @@ router.get("/emerging-prairie", (req, res) => {
             title: eventHeader,
             start: formattedDate.start,
             end: formattedDate.end,
-            // start: displayStart,
+            date: date,
+            // start: date,
             // end: date,
             location: eventLocation,
             description: eventDescription,
