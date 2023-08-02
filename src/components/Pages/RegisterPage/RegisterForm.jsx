@@ -8,18 +8,23 @@ import CloseIcon from '@mui/icons-material/Close';
 
 
 function RegisterForm({ handleOpen, handleClose, openLoginModal, handleOpenRegister, setOpenRegisterModal, openRegisterModal, handleCloseRegister, setOpenLoginModal }) {
+  // state for username and password in the form
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector((store) => store.errors);
+  // grab the list in the store so that on register a user gets 
+  // a list with their todo list resources attached
   const todo = useSelector(store => store.todoListResourcesReducer)
+  // initalize use dispatch
   const dispatch = useDispatch();
   // import use history
   const history = useHistory();
 
+  // register user funciton
   const registerUser = (event) => {
     event.preventDefault();
 
-    console.log({
+    console.log({ // show the user and their associated list and resources in the log
       user: {
         username: username,
         password: password
@@ -27,7 +32,7 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, handleOpenRegis
       todo
     })
 
-    dispatch({
+    dispatch({ // dispatch to register a user and the todo list
       type: 'REGISTER',
       payload: {
         user: {
@@ -44,6 +49,7 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, handleOpenRegis
 
   return (
     <>
+    
       {openLoginModal ? (
         <LoginPage handleClose={handleClose}
           handleOpen={handleOpen}
