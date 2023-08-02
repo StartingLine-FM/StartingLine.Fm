@@ -67,9 +67,10 @@ export default function ToDoList() {
     const copyResourcesToClipboard = (title_table_id) => {
         // Find all resources with the specified title_table_id
         const resourcesToCopy = title_resources.filter(resource => resource.title_table_id === title_table_id);
+        console.log(resourcesToCopy)
 
         // Format the resources as a string
-        const resourcesString = resourcesToCopy.map(resource => `${resource.resource_name}: ${resource.notes}`).join('\n');
+        const resourcesString = resourcesToCopy.map(resource => resource.notes ? `${resource.resource_name}: ${resource.notes}` : `${resource.resource_name}`).join('\n');
 
         // Write the formatted string to the clipboard
         navigator.clipboard.writeText(resourcesString)
