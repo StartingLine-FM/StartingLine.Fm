@@ -19,13 +19,13 @@ function AboutPage() {
           Research and Client Information:
         </Typography>
         <Typography variant="body1" style={listItemStyle}>
-          Leading the charge at North Dakota State University is Onnolee Nordstrom, the distinguished Ozbun Chair of Entrepreneurship. Nordstrom, with her profound knowledge and dedicated research in entrepreneurship ecosystems, is shaping the future of startups in the Fargo-Moorhead area.
+          Leading the charge at North Dakota State University is Dr. Onnolee Nordstrom, the distinguished Ozbun Chair of Entrepreneurship. Nordstrom, with her profound knowledge and dedicated research in entrepreneurship ecosystems, is shaping the future of startups in the Fargo-Moorhead area.
         </Typography>
         <Typography variant="body1" style={listItemStyle}>
           Working closely with Nordstrom is Dr. Joshua Marineau, an Associate Professor with a keen interest in organizational behavior, social networks, and interpersonal conflict. Marineau's unique blend of theoretical approaches has made significant contributions to the field.
         </Typography>
         <Typography variant="body1" style={listItemStyle}>
-          The team also includes Omkar, a research intern at the University. Omkar has been instrumental in building collaborations with local entrepreneurs and CEOs, helping to establish a valuable resource platform for the startup ecosystem.
+          The team also includes Omkar Jarajapu, a research intern at the University. Omkar has been instrumental in building collaborations with local entrepreneurs and CEOs, helping to establish a valuable resource platform for the startup ecosystem.
         </Typography>
         <Typography variant="body1" style={listItemStyle}>
           This dynamic team's work at North Dakota State University is opening new avenues in entrepreneurship and organizational behavior, contributing greatly to the Fargo-Moorhead business realm.
@@ -39,7 +39,7 @@ function AboutPage() {
           Project and Team Information:
         </Typography>
         <Typography variant="body1">
-          The project was the result of the first-time collaboration of a team comprising Kord Maurer, Eyan Anderson, Sawyer Jensen, and Jack Blonigen. Their collective expertise and shared commitment paved the way for the creation of a startup business ecosystem for North Dakota State University.
+          The project was the result of the first-time collaboration of a team comprising of Kord Maurer, Eyan Anderson, Sawyer Jensen, and Jack Blonigen. Their collective expertise and shared commitment paved the way for the creation of a web app to serve the startup business ecosystem for North Dakota State University.
         </Typography>
         <List>
           <ListItem>
@@ -105,9 +105,7 @@ function AboutPage() {
             <li>Redux</li>
             <li>Material UI</li>
             <li>Fullcalendar.io</li>
-            <li>Framer-Motion</li>
             <li>Axios</li>
-            <li>Date-fns</li>
             <li>Moment</li>
           </ul>
 
@@ -120,7 +118,6 @@ function AboutPage() {
             <li>Passport</li>
             <li>Cheerio</li>
             <li>Chrono-node</li>
-            <li>Dotenv</li>
             <li>Node.js</li>
           </ul>
         </Typography>
