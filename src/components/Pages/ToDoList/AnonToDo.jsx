@@ -131,12 +131,14 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
                 <Typography variant='h4' align='center' pt={3} color="primary">TO-DO</Typography>
                 <Typography paragraph align="center" variant="body2" m={2} >
                     Welcome to the To-Do page! You can add resources to this page by clicking on the plus icon for any entry you're interested in on the search page.
-                    Once you've added resources, you will be able to add notes, mark entries as complete, or remove them. Need to take your to-do list with you? You can copy
+                    Once you've added resources, you will be able to add notes or remove resources. Need to take your to-do list with you? You can copy
                     the entire list to your clipboard, or create an account to save multiple to-do lists to your profile.
                 </Typography>
-                    <Typography sx={{px:3}} color="error" align="center" variant="body2">
-                        Note: If you don't create an account to save your todo list OR copy and paste to your own records, <u>your list will not be saved and will be lost when you refresh / close this page.</u>
-                    </Typography>
+                <Typography sx={{ px: 3, pb: 3 }} color="error" align="center" variant="body2">
+                    Note: If you don't create an account to save your to-do list OR copy and paste to your own records,
+                    <br />
+                    <u>your list will not be saved and will be lost when you refresh / close this page.</u>
+                </Typography>
                 {title_resources.length > 0 &&
                     <ListItem sx={{ justifyContent: 'right' }}>
                         <Tooltip placement="left" title="Copy to Clipboard">
@@ -227,11 +229,15 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
                             </AnimatePresence>
                         </>
                     ))
+
                 }
-                <Box textAlign={'center'} m={3}>
-                    <Button align="center" variant='text' onClick={handleOpenRegister}>Register to save your list</Button>
-                </Box>
+                {title_resources.length > 0 &&
+                    <Box textAlign={'center'} m={3}>
+                        <Button align="center" variant='text' onClick={handleOpenRegister}>Register to save your list</Button>
+                    </Box>
+                }
+
             </Paper>
-        </Container>
+        </Container >
     )
 }

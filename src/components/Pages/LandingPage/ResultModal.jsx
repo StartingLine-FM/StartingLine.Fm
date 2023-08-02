@@ -132,15 +132,15 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                 <DialogTitle>Edit entry for {result.name}</DialogTitle>
                 <DialogContent sx={{ pt: 1, mt: 1 }}>
                     <TextField
+                        label="Edit Name"
                         sx={{ m: 1 }}
-                        label={result.name}
-                        value={newName}
+                        value={newName || result.name}
                         onChange={(e) => setNewName(e.target.value)}
                     />
                     <TextField
                         sx={{ m: 1, width: "50%" }}
-                        label={result.description ? result.description : 'Add description'}
-                        value={newDescription}
+                        label={result.description ? "Edit Description" : 'Add description'}
+                        value={newDescription || result.description}
                         onChange={(e) => setNewDescription(e.target.value)}
                         multiline
                         rows={3}
@@ -148,31 +148,31 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                     />
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.website ? result.website : 'Add website url'}
-                        value={newWebsite}
+                        label={result.website ? "Edit Website" : 'Add website url'}
+                        value={newWebsite || result.website}
                         onChange={(e) => setNewWebsite(e.target.value)}
                     />
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.email ? result.email : 'Add email'}
-                        value={newEmail}
+                        label={result.email ? "Edit Email" : 'Add email'}
+                        value={newEmail || result.email}
                         onChange={(e) => setNewEmail(e.target.value)}
                     />
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.linkedin ? result.linkedin : 'Add LinkedIn url'}
-                        value={newLinkedIn}
+                        label={result.linkedin ? "Edit LinkedIn" : 'Add LinkedIn url'}
+                        value={newLinkedIn || result.linkedin}
                         onChange={(e) => setNewLinkedIn(e.target.value)}
                     />
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.address ? result.address : 'Add address'}
-                        value={newAddress}
+                        label={result.address ? "Edit Address" : 'Add address'}
+                        value={newAddress || result.address}
                         onChange={(e) => setNewAddress(e.target.value)}
                     />
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.image_url ? result.image_url : 'Add image url'}
+                        label={result.image_url ? "Edit Image URL" : 'Add Image URL'}
                         value={newImage}
                         onChange={(e) => setNewImage(e.target.value)}
                     />

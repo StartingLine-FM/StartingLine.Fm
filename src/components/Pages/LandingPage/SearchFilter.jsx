@@ -177,7 +177,7 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                     <div style={{display:"flex", justifyContent:"space-between"}}>
                         <Typography variant="caption">Filter by</Typography>
                         <Tooltip title='See the "Category and Stage Definitions" section of the About page for more details'>
-                            <InfoIcon fontSize="small" color="primary" />
+                            <InfoIcon fontSize="small" />
                         </Tooltip>
                     </div>
                     <List>
