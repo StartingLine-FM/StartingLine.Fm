@@ -1,16 +1,19 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState, React } from 'react';
 import {
-    Typography, Container, Paper, ListSubheader, Button, List, ListItemButton,
-    ListItemText, ListItemIcon, ListItem, IconButton, Modal, Box, Dialog, DialogContent, DialogTitle,
+    Typography, Container, Paper, Button, List, ListItemButton,
+    ListItemText, ListItem, IconButton, Modal, Box, 
     Grid,
     TextField,
     Tooltip,
-    AlertTitle
 } from '@mui/material';
+
+// animate presence
+import { AnimatePresence, motion } from 'framer-motion';
+
+// material icons
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { AnimatePresence, motion } from 'framer-motion';
 import ToDoListModal from './ToDoListModal';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -18,7 +21,6 @@ import SaveIcon from '@mui/icons-material/Save';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close'
-import Alert from '@mui/material/Alert';
 
 
 export default function ToDoList() {
@@ -84,19 +86,14 @@ export default function ToDoList() {
     const putResource = (resource, check) => {
         let name;
         let notes;
-        let completed = false;
+        let completed;
         let title_table_id = resource.title_table_id;
         let id = resource.resource_id;
         let todo_id = resource.id;
 
         newName ? name = newName : name = resource.resource_name;
         newNotes ? notes = newNotes : notes = resource.notes;
-        // logic for completed
-        if (newCompleted === false) {
-            completed = false;
-        } else {
-            completed = newCompleted;
-        }
+        newCompleted ? completed = newCompleted : completed = resource.completed;
 
         // check
         if (check) {
@@ -113,7 +110,7 @@ export default function ToDoList() {
                 id,
                 name,
                 notes,
-                completed,
+                completed: newCompleted ? newCompleted : completed,
                 todo_id
             }
         })
@@ -128,6 +125,7 @@ export default function ToDoList() {
         setNewNotes('');
         setNewName('');
         setNewCompleted(false);
+
     }
 
 
@@ -230,7 +228,7 @@ export default function ToDoList() {
                                                 <>
                                                     <Button
                                                         sx={{ color: 'black' }}
-                                                        onClick={() => setNewCompleted((prevCompleted) => !prevCompleted)}>
+                                                        onClick={() => setNewCompleted(!newCompleted)}>
                                                         {newCompleted ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
                                                     </Button>
                                                     <IconButton onClick={() => { handleClose; setSelectedResource(null); setEditMode(false); clearInputs(); }} edge={'start'} aria-label={'delete'}>
@@ -240,11 +238,11 @@ export default function ToDoList() {
                                                     </IconButton>
                                                 </> :
                                                 <Tooltip title="Mark as completed">
-                                                    <Button sx={{ color: 'black' }} onClick={() => putResource(resource, true)}>
+                                                    <Button sx={{ color: 'black' }} onClick={() =>  putResource(resource, true)}>
                                                         <ListItemText >{resource.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}</ListItemText>
                                                     </Button>
                                                 </Tooltip>}
-                                            {editMode && selectedResource === resource.id ? <IconButton color='primary' onClick={() => { putResource(resource); setEditMode(false); }}>
+                                            {editMode && selectedResource === resource.id ? <IconButton color='primary' onClick={() => { putResource(resource, true); setEditMode(false); }}>
                                                 <SaveIcon />
                                             </IconButton> :
                                                 <IconButton color='primary' onClick={() => { setEditMode(true); setSelectedResource(resource.id); }} aria-label={'delete'}>
