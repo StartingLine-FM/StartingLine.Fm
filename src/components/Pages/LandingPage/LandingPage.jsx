@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 // MUI
 import { Container, Paper, Grid, Typography } from '@mui/material';
@@ -8,6 +8,7 @@ import SearchFilter from './SearchFilter';
 import Result from './Result';
 
 function LandingPage({ currentList, setCurrentList }) {
+  // Redux
   const dispatch = useDispatch();
   const search = useSelector(store => store.search);
   const categories = useSelector(store => store.categories);
@@ -16,16 +17,19 @@ function LandingPage({ currentList, setCurrentList }) {
   const lists = useSelector(store => store.tableListReducer);
   const user = useSelector(store => store.user);
 
+  // fetches default search as well as all categories and stages on page load
   useEffect(() => {
     dispatch({ type: 'FETCH_SEARCH' });
     dispatch({ type: 'FETCH_CATEGORIES' });
     dispatch({ type: 'FETCH_STAGES' });
   }, [dispatch]);
 
+  // fetches list of To-Do List titles for a logged-in user
   useEffect(() => {
     dispatch({ type: 'FETCH_TABLE_LISTS' });
   }, [user.id])
 
+  // sets current list as the first item of the lists array if user only has 1 list
   useEffect(() => {
     if (lists.length === 1) {
       setCurrentList(lists[0].id);
@@ -35,20 +39,23 @@ function LandingPage({ currentList, setCurrentList }) {
 
   return (
     <Container maxWidth="lg" spacing={2} sx={{ p: 3, flexDirection: "row" }}>
+      {/* this div ensures that SearchFilter and the Result components display side-by side */}
       <div style={{ display: "flex", flexDirection: "row" }}>
         <SearchFilter currentList={currentList} setCurrentList={setCurrentList} categories={categories} stages={stages} todo={todo} />
+        {/* this div allows SearchFilter to take up the appropriate amount of space */}
         <div style={{ flex: 1 }}>
           <Grid container spacing={2} rowSpacing={2}>
             {/* maps over store.search to return result cards */}
             {search.length > 0
               ? search.map(result => {
                 return (
-                  <Grid item xs={4} key={result.id}>
+                  <Grid item  key={result.id}>
                     <Result result={result} currentList={currentList} setCurrentList={setCurrentList} categories={categories} stages={stages} />
                   </Grid>
                 )
               })
               :
+              // displays this as default if search array is not populated
               <Grid item xs={12}>
                 <Paper sx={{p:3}}>
                   <Typography>Your search returned 0 results.</Typography>
