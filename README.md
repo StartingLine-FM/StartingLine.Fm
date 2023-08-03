@@ -1,110 +1,103 @@
+## Welcome to StartingLine.FM!
 
-# Prime Solo Project Starting Repo
-This version uses React, Redux, Express, Passport, and PostgreSQL (a full list of dependencies can be found in `package.json`).
+StartingLine.FM is a web app with the budding entrepreneur in mind!
+It's an online hub for entrepreneurial growth for those in the Fargo, Moorhead, West Fargo North Dakota (FMWF) area.
+This appllication was built as a client project for NDSU's department of business and entrepreneurship.
+The application aims to provide a centralized location for local resources. 
 
-We **STRONGLY** recommend following these instructions carefully. It's a lot, and will take some time to set up, but your life will be much easier this way in the long run.
+The application has four primary components.
 
-## Use the Template for This Repository (Don't Clone)
+1. The landing page where you search out resources that come in as cards, which can then be saved to a to-do list.
+2. The to-do list where all saved resources will appear. Users can edit notes, mark done, and remove them. 
+3. A three in one calendar that scrapes three different institutions web calendars to see local events. They are...
+  -Emerging Prairie
+  -Fargo Underground
+  -FMWF Chamber of Commerce
+4. Finally, an admin mode to add, edit, and delete resources as well as business categories and stages. 
 
-- Don't Fork or Clone. Instead, click the `Use this Template` button, and make a copy to your personal account. Make the project `PUBLIC`!
 
 
-## Prerequisites
+## Landing and Search Page
 
-Before you get started, make sure you have the following software installed on your computer:
+![Alt text](public/images/landing-page-screenshot.png)
 
-- [Node.js](https://nodejs.org/en/)
-- [PostrgeSQL](https://www.postgresql.org/)
-- [Nodemon](https://nodemon.io/)
+The Landing Page presents the user with a list of all resources available in alphabetical order upon arrival to the application.
+Users may narrow down their results using any combination of the Search bar, Category filters, and Business Stage filters on the left-hand side of the page.
+The result cards provide users with an at-a-glance view of the most relevant information for a resource: name, description, category, and applicable business stage. 
+By clicking on the card itself, users will see a pop-up modal containing more details, including contact information. The full set of possible information fields in the result modal are as follows: name, description, website, linkedin, email, address, category, and business stage. 
 
-## Create database and table
+There are additional functionalities depending on the type of user as well:
 
-Create a new database called `prime_app` and create a `user` table:
+### Anonymous (unregistered) user:
+Ability to add a resource to a temporary to-do list via the `+ icon` button
 
-```SQL
-CREATE TABLE "user" (
-    "id" SERIAL PRIMARY KEY,
-    "username" VARCHAR (80) UNIQUE NOT NULL,
-    "password" VARCHAR (1000) NOT NULL
-);
-```
+### Logged-in 
+- Ability to select from all available user to-do lists via the "Select a To-Do List" sidebar
+- Ability to add a resource to a selected to-do list via the `+ icon` button
+- If a user does not have any to-do lists to select, one will be automatically added with a generic "TO-DO (current date)" title and set as the currently selected list upon clicking the `+ icon` button on a resource
 
-If you would like to name your database something else, you will need to change `prime_app` to the name of your new database name in `server/modules/pool.js`
+### Admin
+Ability to edit resource details via the `edit icon` button in the Result modal
 
-## Development Setup Instructions
+## To-do List Page
 
-- Run `npm install`
-- Create a `.env` file at the root of the project and paste this line into the file:
-  ```
-  SERVER_SESSION_SECRET=superDuperSecret
-  ```
-  While you're in your new `.env` file, take the time to replace `superDuperSecret` with some long random string like `25POUbVtx6RKVNWszd9ERB9Bb6` to keep your application secure. Here's a site that can help you: [https://passwordsgenerator.net/](https://passwordsgenerator.net/). If you don't do this step, create a secret with less than eight characters, or leave it as `superDuperSecret`, you will get a warning.
-- Start postgres if not running already by using `brew services start postgresql`
-- Run `npm run server`
-- Run `npm run client`
-- Navigate to `localhost:3000`
+![Alt text](public/images/to-do-list-screenshot.png)
 
-## Debugging
+ *** EYAN INSERTS HIS DESCRIPTION HERE ***
+ This to-do list page allows for users to create actionable steps to move toward their business goals. It provides a space for them to keep their resources that they thought would be a good fit for their business. 
 
-To debug, you will need to run the client-side separately from the server. Start the client by running the command `npm run client`. Start the debugging server by selecting the Debug button.
+ This page works for two types of users. 
 
-![VSCode Toolbar](documentation/images/vscode-toolbar.png)
+ ### Anonymous User
+ 1. An anonymous user arrives to their to-do list tab and sees a list of their resources 
+ - Click the `edit icon` to edit resources by adding notes to particular resources.
+ - Click the `delete icon` to delete resources off of their todo list if they want to remove a resource.
+ - Click the `copy icon` to copy their list of resources and their notes(if there are any) to their clipboard to paste into a workflow of their choice.
+ - Click `Click here to register an account` to keep their current to-do list and associated titles. 
+ - 
+ 
+ ### Logged In User
+ 1. A logged in user arrives on their to-do list tab and is met with two tables one with ther todo lists and one with the associated resources. 
+ - View their lists on the landing page and choose which list to add resources to. 
+ - Make multiple lists by clicking the `+` to add a list title and clicking the save icon to save it. 
+ - Edit particular resources using the `edit icon`. 
+ - Delete particular resources using the `delete icon`.
+ - check a resource when completed by checking the `box icon`.
 
-Then make sure `Launch Program` is selected from the dropdown, then click the green play arrow.
+## Calendar Page
 
-![VSCode Debug Bar](documentation/images/vscode-debug-bar.png)
+![Alt text](public/images/Calendar-page-screenshot.png)
 
-## Testing Routes with Postman
 
-To use Postman with this repo, you will need to set up requests in Postman to register a user and login a user at a minimum.
+The motivation behind this calendar was that of the rest of this project, an eventual one-stop shop for the entrepreneur. Scheduling and managing a calendar is key for any business professional. We wanted a single calendar that can pull in relevant business events from other institution calendars. This helps save a potential researcher time from navigating multiple internet browser tabs and calendars. 
 
-Keep in mind that once you using the login route, Postman will manage your session cookie for you just like a browser, ensuring it is sent with each subsequent request. If you delete the `localhost` cookie in Postman, it will effectively log you out.
+The calendar uses the Cheerio.js technology to scrape the relevant institutions web calendar. When you push one of the three institution buttons it launches an HTTP GET request to the relevant internet URL, Cheerio uses JQuery to scrape the relevant divs and spans,which are all consolidated into calendar block objects which are then put into an events array. The events array is the response to the client, they are placed into the relevant reducer which supplies data to the Fullcalendar.
 
-1. Start the server - `npm run server`
-2. Import the sample routes JSON file [v2](./PostmanPrimeSoloRoutesv2.json) by clicking `Import` in Postman. Select the file.
-3. Click `Collections` and `Send` the following three calls in order:
-   1. `POST /api/user/register` registers a new user, see body to change username/password
-   2. `POST /api/user/login` will login a user, see body to change username/password
-   3. `GET /api/user` will get user information, by default it's not very much
+Multiple institutions can populate the calendar at once; Emerging Prairie is Red, Fargo Underground orange, and the chamber is purple. The Clear button will wipe all events off allowing better clarity and curating. If you mouse over a calendar event you will see more details on that event. Clicking the event will open your own google calendar and pre-populate the fields with what you saw when mousing over the event. You can use the upper buttons to toggle a month, week, day, or list view. The arrow buttons navigate through time windows. The today button will take you back to the current day.
 
-After running the login route above, you can try any other route you've created that requires a logged in user!
+There are some significant vulnerabilities in this calendar to be aware of. Since the button press is what directly pulls the information, it will fail or break if that institution's calendar or webpage is down or reworked in the future (StartlingLine.FM was launched August 2023). 
 
-## Production Build
+## Admin Page
 
-Before pushing to Heroku, run `npm run build` in terminal. This will create a build folder that contains the code Heroku will be pointed at. You can test this build by typing `npm start`. Keep in mind that `npm start` will let you preview the production build but will **not** auto update.
+![Alt text](public/images/admin-page-screenshot.png)
 
-- Start postgres if not running already by using `brew services start postgresql`
-- Run `npm start`
-- Navigate to `localhost:5000`
 
-## Lay of the Land
+This Node.js Admin Router package is designed to streamline the management of administrative tasks related to three key data entities: Resources, Categories, and Stages. Encapsulating a series of RESTful API endpoints, the package provides the ability to execute CRUD (Create, Read, Update, Delete) operations for these entities, with each operation gated behind authentication and authorization middleware for secure and reliable administrative access control.
 
-There are a few videos linked below that show a walkthrough the client and sever setup to help acclimatize to the boilerplate. Please take some time to watch the videos in order to get a better understanding of what the boilerplate is like.
+Key Features:
+Resource Management: Leverage the API to create, read, update, and delete resource records. Each resource holds specific details such as stage_id, category_id, name, image_url, description, website, email, address, and LinkedIn URL.
 
-- [Initial Set](https://vimeo.com/453297271)
-- [Server Walkthrough](https://vimeo.com/453297212)
-- [Client Walkthrough](https://vimeo.com/453297124)
+Category Management: Manage categories through the dedicated endpoints that allow you to create, read, update, and delete category records. Each category consists of a unique name.
 
-Directory Structure:
+Stage Management: Utilize the API endpoints to create, read, update, and delete stage records. Each stage has a unique name and description.
 
-- `src/` contains the React application
-- `public/` contains static assets for the client-side
-- `build/` after you build the project, contains the transpiled code from `src/` and `public/` that will be viewed on the production site
-- `server/` contains the Express App
+Secure Access Control: With a two-tier middleware layer, access to administrative functions is tightly controlled. The rejectUnauthenticated middleware rejects non-authenticated users, while the isAdmin middleware checks the authenticated user's admin privileges, offering another layer of access control.
 
-This code is also heavily commented. We recommend reading through the comments, getting a lay of the land, and becoming comfortable with how the code works before you start making too many changes. If you're wondering where to start, consider reading through component file comments in the following order:
+The Admin Router package ensures that all these operations are securely accessible to authenticated users who have been granted admin privileges, ensuring your sensitive operations remain secure and your data integrity uncompromised.
 
-- src/components
-  - App/App
-  - Footer/Footer
-  - Nav/Nav
-  - AboutPage/AboutPage
-  - InfoPage/InfoPage
-  - UserPage/UserPage
-  - LoginPage/LoginPage
-  - RegisterPage/RegisterPage
-  - LogOutButton/LogOutButton
-  - ProtectedRoute/ProtectedRoute
+
+
+
 
 ## Deployment
 
