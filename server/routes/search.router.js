@@ -1,23 +1,39 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
+// fuzzy search module
 const specificSearch = require('../modules/specific-text.module');
 
 router.get('/', (req, res) => {
+    // instantiate query text variable
     let queryText = '';
+    // query keys
     let categoryQuery = req.query.category;
     let stageQuery = req.query.stage;
     let textQuery = req.query.text;
 
-    // conditional to return queryText based on what's searched for using req.query
+    // conditional to execute query based on req.query contents
     if (categoryQuery && !stageQuery && !textQuery) {
 
         // only category
-        queryText = `SELECT "resource"."id", "resource"."name", "resource"."description", "image_url", "category_id", "category"."name" AS "category_name", "stage_id", "stage"."name" AS "stage_name", "website",
-"email", "linkedin", "address" FROM "resource"
-JOIN "category" ON "category"."id" = "resource"."category_id"
-JOIN "stage" ON "stage"."id" = "resource"."stage_id" WHERE "category_id"=$1 
-ORDER BY LOWER("resource"."name");`; 
+        queryText = `SELECT 
+        "resource"."id", 
+        "resource"."name",
+        "resource"."description",
+        "image_url",
+        "category_id",
+        "category"."name" AS "category_name", 
+        "stage_id", 
+        "stage"."name" AS "stage_name", 
+        "website",
+        "email", 
+        "linkedin", 
+        "address" 
+        FROM "resource"
+        JOIN "category" ON "category"."id" = "resource"."category_id"
+        JOIN "stage" ON "stage"."id" = "resource"."stage_id" 
+        WHERE "category_id"=$1 
+        ORDER BY LOWER("resource"."name");`; 
         pool.query(queryText, [categoryQuery])
             .then(result => {
                 res.send(result.rows);
@@ -30,12 +46,24 @@ ORDER BY LOWER("resource"."name");`;
     } else if (!categoryQuery && stageQuery && !textQuery) {
 
         // only stage
-        queryText = `SELECT "resource"."id", "resource"."name", "resource"."description", "image_url", "category_id", "category"."name" AS "category_name", "stage_id", "stage"."name" AS "stage_name", "website",
-"email", "linkedin", "address" FROM "resource"
-JOIN "category" ON "category"."id" = "resource"."category_id"
-JOIN "stage" ON "stage"."id" = "resource"."stage_id"
- WHERE "stage_id"=$1 OR "stage_id"=1
- ORDER BY LOWER("resource"."name");`;
+        queryText = `SELECT 
+        "resource"."id", 
+        "resource"."name",
+        "resource"."description",
+        "image_url",
+        "category_id",
+        "category"."name" AS "category_name", 
+        "stage_id", 
+        "stage"."name" AS "stage_name", 
+        "website",
+        "email", 
+        "linkedin", 
+        "address" 
+        FROM "resource"
+        JOIN "category" ON "category"."id" = "resource"."category_id"
+        JOIN "stage" ON "stage"."id" = "resource"."stage_id"
+        WHERE "stage_id"=$1 OR "stage_id"=1
+        ORDER BY LOWER("resource"."name");`;
 
         pool.query(queryText, [stageQuery])
             .then(result => {
@@ -49,8 +77,20 @@ JOIN "stage" ON "stage"."id" = "resource"."stage_id"
     } else if (!categoryQuery && !stageQuery && textQuery) {
 
         // only text
-        queryText = `SELECT "resource"."id", "resource"."name", "resource"."description", "image_url", "category_id", "category"."name" AS "category_name", "stage_id", "stage"."name" AS "stage_name", "website",
-        "email", "linkedin", "address" FROM "resource"
+        queryText = `SELECT 
+        "resource"."id", 
+        "resource"."name",
+        "resource"."description",
+        "image_url",
+        "category_id",
+        "category"."name" AS "category_name", 
+        "stage_id", 
+        "stage"."name" AS "stage_name", 
+        "website",
+        "email", 
+        "linkedin", 
+        "address" 
+        FROM "resource"
         JOIN "category" ON "category"."id" = "resource"."category_id"
         JOIN "stage" ON "stage"."id" = "resource"."stage_id" 
         WHERE ${specificSearch("text only", '$1')} 
@@ -68,13 +108,25 @@ JOIN "stage" ON "stage"."id" = "resource"."stage_id"
     } else if (categoryQuery && stageQuery && !textQuery) {
 
         // category and stage
-        queryText = `SELECT "resource"."id", "resource"."name", "resource"."description", "image_url", "category_id", "category"."name" AS "category_name", "stage_id", "stage"."name" AS "stage_name", "website",
-        "email", "linkedin", "address" FROM "resource"
+        queryText = `SELECT 
+        "resource"."id", 
+        "resource"."name",
+        "resource"."description",
+        "image_url",
+        "category_id",
+        "category"."name" AS "category_name", 
+        "stage_id", 
+        "stage"."name" AS "stage_name", 
+        "website",
+        "email", 
+        "linkedin", 
+        "address" 
+        FROM "resource"
         JOIN "category" ON "category"."id" = "resource"."category_id"
         JOIN "stage" ON "stage"."id" = "resource"."stage_id" 
-                WHERE "category_id"=$1 
-                AND ("stage_id"=$2 OR "stage_id"=1)
-                ORDER BY LOWER("resource"."name");`;
+        WHERE "category_id"=$1 
+        AND ("stage_id"=$2 OR "stage_id"=1)
+        ORDER BY LOWER("resource"."name");`;
 
         pool.query(queryText, [categoryQuery, stageQuery])
             .then(result => {
@@ -88,10 +140,22 @@ JOIN "stage" ON "stage"."id" = "resource"."stage_id"
     } else if (categoryQuery && !stageQuery && textQuery) {
 
         // category and text
-        queryText = `SELECT "resource"."id", "resource"."name", "resource"."description", "image_url", "category_id", "category"."name" AS "category_name", "stage_id", "stage"."name" AS "stage_name", "website",
-        "email", "linkedin", "address" FROM "resource"
-JOIN "category" ON "category"."id" = "resource"."category_id"
-JOIN "stage" ON "stage"."id" = "resource"."stage_id"
+        queryText = `SELECT 
+        "resource"."id", 
+        "resource"."name",
+        "resource"."description",
+        "image_url",
+        "category_id",
+        "category"."name" AS "category_name", 
+        "stage_id", 
+        "stage"."name" AS "stage_name", 
+        "website",
+        "email", 
+        "linkedin", 
+        "address" 
+        FROM "resource"
+        JOIN "category" ON "category"."id" = "resource"."category_id"
+        JOIN "stage" ON "stage"."id" = "resource"."stage_id"
         WHERE "category_id"=$1 
         AND (${specificSearch("combined", '$2')})
         ORDER BY LOWER("resource"."name");`;
@@ -108,10 +172,22 @@ JOIN "stage" ON "stage"."id" = "resource"."stage_id"
     } else if (!categoryQuery && stageQuery && textQuery) {
 
         // stage and text
-        queryText = `SELECT "resource"."id", "resource"."name", "resource"."description", "image_url", "category_id", "category"."name" AS "category_name", "stage_id", "stage"."name" AS "stage_name", "website",
-        "email", "linkedin", "address" FROM "resource"
-JOIN "category" ON "category"."id" = "resource"."category_id"
-JOIN "stage" ON "stage"."id" = "resource"."stage_id" 
+        queryText = `SELECT 
+        "resource"."id", 
+        "resource"."name",
+        "resource"."description",
+        "image_url",
+        "category_id",
+        "category"."name" AS "category_name", 
+        "stage_id", 
+        "stage"."name" AS "stage_name", 
+        "website",
+        "email", 
+        "linkedin", 
+        "address" 
+        FROM "resource"
+        JOIN "category" ON "category"."id" = "resource"."category_id"
+        JOIN "stage" ON "stage"."id" = "resource"."stage_id" 
         WHERE (${specificSearch("combined", '$1')})
         AND ("stage_id"=$2 OR "stage_id"=1) 
         ORDER BY LOWER("resource"."name");`;
@@ -128,10 +204,22 @@ JOIN "stage" ON "stage"."id" = "resource"."stage_id"
     } else if (categoryQuery && stageQuery && textQuery) {
 
         // category, stage, and text all specified
-        queryText = `SELECT "resource"."id", "resource"."name", "resource"."description", "image_url", "category_id", "category"."name" AS "category_name", "stage_id", "stage"."name" AS "stage_name", "website",
-        "email", "linkedin", "address" FROM "resource"
-JOIN "category" ON "category"."id" = "resource"."category_id"
-JOIN "stage" ON "stage"."id" = "resource"."stage_id"
+        queryText = `SELECT 
+        "resource"."id", 
+        "resource"."name",
+        "resource"."description",
+        "image_url",
+        "category_id",
+        "category"."name" AS "category_name", 
+        "stage_id", 
+        "stage"."name" AS "stage_name", 
+        "website",
+        "email", 
+        "linkedin", 
+        "address" 
+        FROM "resource"
+        JOIN "category" ON "category"."id" = "resource"."category_id"
+        JOIN "stage" ON "stage"."id" = "resource"."stage_id"
         WHERE "category_id"=$1 
         AND ("stage_id"=$2 OR "stage_id"=1) 
         AND (${specificSearch("combined", '$3')})
@@ -149,11 +237,23 @@ JOIN "stage" ON "stage"."id" = "resource"."stage_id"
     } else {
 
         // default
-        queryText = `SELECT "resource"."id", "resource"."name", "resource"."description", "image_url", "category_id", "category"."name" AS "category_name", "stage_id", "stage"."name" AS "stage_name", "website",
-        "email", "linkedin", "address" FROM "resource"
-JOIN "category" ON "category"."id" = "resource"."category_id"
-JOIN "stage" ON "stage"."id" = "resource"."stage_id" 
-ORDER BY LOWER("resource"."name");`;
+        queryText = `SELECT 
+        "resource"."id", 
+        "resource"."name",
+        "resource"."description",
+        "image_url",
+        "category_id",
+        "category"."name" AS "category_name", 
+        "stage_id", 
+        "stage"."name" AS "stage_name", 
+        "website",
+        "email", 
+        "linkedin", 
+        "address" 
+        FROM "resource"
+        JOIN "category" ON "category"."id" = "resource"."category_id"
+        JOIN "stage" ON "stage"."id" = "resource"."stage_id" 
+        ORDER BY LOWER("resource"."name");`;
 
         pool.query(queryText)
             .then(result => {

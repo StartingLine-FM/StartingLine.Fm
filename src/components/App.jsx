@@ -63,7 +63,6 @@ function App() {
   // toggle functions
   const handleCloseRegister = () => { // close toggle for register modal
 
-
   const [currentList, setCurrentList] = useState(null);
 
 

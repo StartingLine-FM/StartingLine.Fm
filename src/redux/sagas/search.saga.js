@@ -8,16 +8,20 @@ export default function* searchSaga() {
 
 function* fetchSearch(action) {
     try {
+        // instantiate response variable
         let response;
 
+        // sends default search if no action.payload
         if (action.payload) {
+            // converts action.payload object into a query string
             const queryParams = queryString.stringify(action.payload.query);
             response = yield axios.get(`/api/search/?${queryParams}`, action.payload)
         } else {
             response = yield axios.get('/api/search/')
         }
 
-        console.log(response.data);
+        // console.log(response.data);
+        // send data to search.reducer
         yield put({ type: "SET_SEARCH", payload: response.data });
     } catch (error) {
         console.log("Error on fetchSearch saga", error);

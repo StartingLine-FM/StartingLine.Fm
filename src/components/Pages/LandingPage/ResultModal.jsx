@@ -1,5 +1,5 @@
 // hook imports
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // MUI
@@ -15,19 +15,20 @@ import {
     Link,
     Chip,
 } from '@mui/material';
+// MUI Icons
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import StarIcon from '@mui/icons-material/Star';
 
 export default function ResultModal({ open, handleClose, result, userPostTodo, anonPostTodo, stages, categories }) {
 
     // local state
+    // admin edit state
     const [editMode, setEditMode] = useState(false);
+    // resource keys for admin edit
     const [newName, setNewName] = useState('')
     const [newImage, setNewImage] = useState('')
     const [newDescription, setNewDescription] = useState('')
@@ -121,6 +122,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
         editMode
             // If in Edit Mode, show the following:
             ? <Dialog open={open} onClose={handleClose} >
+                {/* Save and Close buttons */}
                 <DialogActions>
                     <IconButton onClick={putResource} >
                         <SaveIcon />
@@ -129,14 +131,17 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                         <CloseIcon />
                     </IconButton>
                 </DialogActions>
+                {/* Text fields for edit mode */}
                 <DialogTitle>Edit entry for {result.name}</DialogTitle>
                 <DialogContent sx={{ pt: 1, mt: 1 }}>
+                    {/* Name edit: set to populate current Name to be edited */}
                     <TextField
                         label="Edit Name"
                         sx={{ m: 1 }}
                         value={newName || result.name}
                         onChange={(e) => setNewName(e.target.value)}
                     />
+                    {/* Description edit: set to populate current Description to be edited */}
                     <TextField
                         sx={{ m: 1, width: "50%" }}
                         label={result.description ? "Edit Description" : 'Add description'}
@@ -170,12 +175,16 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                         value={newAddress || result.address}
                         onChange={(e) => setNewAddress(e.target.value)}
                     />
+                    {/* Image URL is the only field that doesn't populate the current value by default,
+                    mostly because this is the only text input where the user would more likely to be replacing
+                    the whole input instead of just editing parts of it */}
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.image_url ? "Edit Image URL" : 'Add Image URL'}
+                        label={result.image_url ? result.image_url : 'Add Image URL'}
                         value={newImage}
                         onChange={(e) => setNewImage(e.target.value)}
                     />
+                    {/* Category edit dropdown */}
                     <TextField
                         sx={{ m: 1 }}
                         select
@@ -186,7 +195,6 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                         label="Edit Category"
                         onChange={e => setNewCategory(e.target.value)}
                     >
-                        <option value={0}>Add Category</option>
                         {categories &&
                             categories.map(cat => {
                                 return (
@@ -196,6 +204,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
 
                     </TextField>
                     <br />
+                    {/* Stage edit dropdown */}
                     <TextField
                         sx={{ m: 1 }}
                         select
@@ -204,8 +213,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                             native: true,
                         }}
                         label="Edit Business Stage"
-                        onChange={e => setNewStage(e.target.value)}
-                    >   <option value={0}>Add Business Stage</option>
+                        onChange={e => setNewStage(e.target.value)}>
                         {stages &&
                             stages.map(s => {
                                 return (
@@ -229,11 +237,14 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                                     <DeleteIcon />
                                 </IconButton>
                             </>
+                            // checks if current to-do list contains this resource
                             : todoResources.some(e => e.id === result.id || e.resource_id === result.id)
+                            // if on the current list, renders a checkmark
                                 ? <IconButton>
                                     <CheckIcon color="primary" />
                                 </IconButton>
                                 : user.id
+                                // else if not on todo list, onClick for Add Button changes depending on user's logged-in status
                                     ? <IconButton onClick={() => userPostTodo()} >
                                         <AddIcon />
                                     </IconButton>
@@ -242,10 +253,12 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                                     </IconButton>
 
                         }
+                        {/* Closes modal */}
                         <IconButton onClick={handleClose} >
                             <CloseIcon />
                         </IconButton>
                     </DialogActions>
+                    {/* Title and content display */}
                     <DialogTitle>{result.name}</DialogTitle>
                     <DialogContent sx={{ gap: 2, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
                         <Typography variant="body1">{result.description}</Typography>

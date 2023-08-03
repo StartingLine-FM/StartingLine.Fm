@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+// MUI
 import {
     Grid,
     Paper,
@@ -24,7 +25,7 @@ import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import InfoIcon from '@mui/icons-material/Info';
 
 
-export default function SearchFilter({ currentList, setCurrentList, categories, stages, todo }) {
+export default function SearchFilter({ currentList, setCurrentList, categories, stages }) {
 
     // local state:
     // Category
@@ -120,8 +121,6 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
             }
         }
 
-        console.log(query);
-
         // Send off our dispatch with our selected query
         dispatch({
             type: "FETCH_SEARCH",
@@ -133,6 +132,7 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
         setChanges(false);
     }
 
+    // fetch function for user todo lists based on title_table_id
     const fetchTodo = (id) => {
         setCurrentList(id)
         dispatch({
@@ -153,6 +153,7 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                         value={textSearch}
                         onChange={(e) => setTextSearch(e.target.value)}
                     />
+                    {/* Button is disabled and default color unless text has been entered into search bar */}
                     {
                         textSearch
                             ? <IconButton color='primary' onClick={fetchSearch}><SendIcon /></IconButton>
@@ -162,12 +163,12 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                 {/* Category and Stage filter dropdowns */}
                 <Grid item>
                     <ButtonGroup sx={{ mb: 1 }}>
-                        {/* Apply filters button */}
+                        {/* Apply filters button, rendered differently depending on if user has set new filters */}
                         {changes
                             ? <Button variant="contained" onClick={fetchSearch} >Apply</Button>
                             : <Button variant="outlined" onClick={fetchSearch} >Apply</Button>
                         }
-                        {/* Clear filters button */}
+                        {/* Clear filters button, rendered differently depending on whether or not filters / search have been entered */}
                         {selectedCategory || selectedStage || textSearch
                             ? <Button color="secondary" variant="contained" onClick={clearFilters} >Clear</Button>
                             : <Button color="secondary" variant="outlined" onClick={clearFilters} >Clear</Button>
@@ -228,9 +229,10 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                     </List>
                 </Grid>
             </Paper >
-
+            
+            {/* This second Grid item renders if a user is logged in and has a to-do list created on their account */}
             {user.id && titles.length > 0 &&
-                <Paper sx={{ mr: 2, px: 2, py: 2, mt: 2 }}>
+                <Paper sx={{mr: 2, px: 2, py: 2, mt: 2 }}>
                     <Grid item>
                         <Typography variant="caption">Select To-Do List</Typography>
                         <ListItemButton onClick={handleTitleClick}>
@@ -242,6 +244,7 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                                 titles.map(list => {
                                     return (
                                         <ListItemButton key={list.id} onClick={() => { fetchTodo(list.id) }}>
+                                            {/* Once again faking radio button functionality to show which list is selected */}
                                             {currentList === list.id ? <RadioButtonCheckedIcon /> : <RadioButtonUncheckedIcon />}
                                             <ListItemText sx={{ ml: 1 }} primary={list.title} />
                                         </ListItemButton>

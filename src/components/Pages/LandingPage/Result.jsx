@@ -1,12 +1,11 @@
 // import use selector and use dispatch
 import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useState } from "react";
 import moment from "moment";
 
 import ResultModal from "./ResultModal";
 
-// material ui imports
+// MUI
 import {
     Card,
     CardMedia,
@@ -19,6 +18,7 @@ import {
     Alert,
     Tooltip
 } from '@mui/material'
+// MUI Icons
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
@@ -27,10 +27,11 @@ export default function Result({ result, currentList, categories, stages }) {
 
 
     // local state
+    // open variables for ResultModal and Snackbar
     const [open, setOpen] = useState(false);
     const [snackOpen, setSnackOpen] = useState(false);
+    // state variables for snackbar message, color, and actions
     const [message, setMessage] = useState("");
-    const [action, setAction] = useState(null);
     const [color, setColor] = useState("success");
 
     // Redux
@@ -38,38 +39,42 @@ export default function Result({ result, currentList, categories, stages }) {
     const todoResources = useSelector(store => store.todoListResourcesReducer);
     const tableList = useSelector(store => store.tableListReducer);
     const dispatch = useDispatch();
-    const history = useHistory();
 
     // click handler for opening ResultModal
     const handleClickOpen = () => {
         setOpen(true);
     }
+
     // click handler for closing ResultModal
     const handleClose = () => {
         setOpen(false);
         setSnackOpen(false);
     }
 
+    // adds a to-do list item for a user that's not currently registered or logged in
     const anonPostTodo = (e) => {
 
+        // set message and color for snackbar
         snackbarConditionals(e)
-        console.log(action, message)
 
-        console.log(result, user)
+        // post selected search result 
         dispatch({
             type: "POST_ANON_TODO_LIST",
             payload: result
         })
 
+        // triggers success snackbar
         setSnackOpen(true);
     }
 
+    // adds a to-do list item for a logged-in user
     const userPostTodo = (e) => {
 
+        // set message and color for snackbar
         snackbarConditionals(e);
 
+        // if this is the user's first list, post a new one with a default title
         if (tableList.length === 0) {
-            console.log(moment().format("MM/DD/YYYY"));
             let currentDate = moment().format("MM/DD/YYYY");
 
             dispatch({
@@ -80,6 +85,7 @@ export default function Result({ result, currentList, categories, stages }) {
             });
         }
 
+        // only dispatch if a user has selected a todo list to add to
         currentList &&
             dispatch({
                 type: "POST_TODO_LIST",
@@ -89,38 +95,12 @@ export default function Result({ result, currentList, categories, stages }) {
                 }
             })
 
+        // open snackbar, dude!
         setSnackOpen(true);
     }
 
+    // conditionally renders message and color settings for snackbar
     const snackbarConditionals = (e) => {
-        if (todoResources.some(e => e.id === result.id || e.resource_id === result.id)) {
-            setAction(
-                <>
-                    <Button color="secondary" size="small" onClick={history.push('/#/todolist')}>
-                        View Lists
-                    </Button>
-                    <IconButton
-                        size="small"
-                        aria-label="close"
-                        onClick={() => setSnackOpen(false)}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                </>
-            );
-        } else {
-            setAction(
-                <>
-                    <IconButton
-                        size="small"
-                        aria-label="close"
-                        onClick={() => setSnackOpen(false)}
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                </>
-            );
-        }
 
         if (user.id && currentList) {
             const list = tableList.find(title => title.id === currentList);
@@ -134,6 +114,16 @@ export default function Result({ result, currentList, categories, stages }) {
             setColor("success");
         }
     }
+
+    // snackbar action component
+    const action =
+        <IconButton
+            size="small"
+            aria-label="close"
+            onClick={() => setSnackOpen(false)}
+        >
+            <CloseIcon />
+        </IconButton>
 
     return (
         <>
@@ -163,24 +153,30 @@ export default function Result({ result, currentList, categories, stages }) {
             }
             <Card raised sx={{ height: 250, maxWidth: 250 }}>
                 {
+                    // checks if current to-do list contains this resource
                     todoResources.some(e => e.id === result.id || e.resource_id === result.id)
+                        // if on the current list, renders a checkmark
                         ? <Tooltip placement="right" title="Added to your current list">
-                        <IconButton>
-                            <CheckIcon color="primary" />
-                        </IconButton>
+                            <IconButton>
+                                <CheckIcon color="primary" />
+                            </IconButton>
                         </Tooltip>
                         : user.id
+                            // else if not on todo list, it checks if the user is logged in
+                            // less information-heavy tooltip for registered user
                             ? <Tooltip placement="right" title="Adds this resource to your currently selected to-do list.">
                                 <IconButton onClick={(e) => userPostTodo(e.target)} >
                                     <AddIcon />
                                 </IconButton>
                             </Tooltip>
+                            // more informative tooltip for anonymous user
                             : <Tooltip placement="right" title="Adds this resource to your temporary to-do list, which can be found in the TODO LIST tab above.">
                                 <IconButton onClick={(e) => anonPostTodo(e.target)}>
                                     <AddIcon />
                                 </IconButton>
                             </Tooltip>
                 }
+                {/* this whole action area will open the result modal onclick */}
                 <CardActionArea onClick={handleClickOpen} >
                     {result.image_url &&
                         <CardMedia
@@ -189,6 +185,7 @@ export default function Result({ result, currentList, categories, stages }) {
                             title='Resource Image' />
                     }
                     <CardContent sx={{ py: 1 }}>
+                        {/* incoming text is formatted to trail off instead of influencing the size of the card */}
                         <Typography
                             sx={{
                                 width: "95%",
@@ -217,12 +214,8 @@ export default function Result({ result, currentList, categories, stages }) {
                             }}>
                             {result.description}
                         </Typography>
-                        {result.category_id &&
                             <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={result.category_name} />
-                        }
-                        {result.stage_id &&
                             <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1 }} label={result.stage_name} />
-                        }
                     </CardContent>
                 </CardActionArea>
             </Card>

@@ -21,14 +21,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
-// framer
-import { AnimatePresence, motion } from 'framer-motion';
 // components
 import './ToDoList.css'
 import AnonToDoModal from './AnonToDoModal';
 
 
-export default function AnonToDo({ handleOpenRegister, handleOpen }) {
+export default function AnonToDo({ handleOpenRegister }) {
 
     // set state for edit mode
     const [editMode, setEditMode] = useState(false)
@@ -38,12 +36,7 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
     const [open, setOpen] = useState(false);
     // new values to update
     const [newNotes, setNewNotes] = useState('');
-    // set register modal state
-    const [registerModal, setRegisterModal] = useState(false);
-    // handler for opening register modal
-    const handleRegisterModalOpen = () => {
-        setRegisterModal(true);
-    }
+
 
     // update a resource
     const putResource = (resource) => {
@@ -66,11 +59,13 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
         setEditMode(false);
     }
 
+    // closes AnonToDoModal
     const handleClose = () => {
         setOpen(false);
         setSelectedResource(null);
     }
 
+    // deletes a resource from to-do list
     const deleteResource = (id) => {
         dispatch({
             type: 'DELETE_ANON_TODO_LIST',
@@ -102,31 +97,12 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
             });
     };
 
-    // changes the background color of a list item based on the resource's "completed" key
-    const listStyle = (resource) => {
-        if (resource.completed) {
-            return {
-                display: 'flex',
-                flexDirection: 'row',
-                width: '100%',
-                maxWidth: '100%',
-                bgcolor: 'lightgray'
-            }
-        } else return {
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            maxWidth: '100%',
-            bgcolor: 'background.paper'
-        }
-    }
-
     // Redux    
     const title_resources = useSelector(store => store.todoListResourcesReducer);
     const dispatch = useDispatch();
 
     return (
-        <Container registerModal={registerModal} open={handleRegisterModalOpen} sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
+        <Container sx={{ flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', maxWidth: '100%' }}>
             <Paper sx={{ mt: 3, flexDirection: 'column', display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%' }} elevation={2}>
                 <Typography variant='h4' align='center' pt={3} color="primary">TO-DO</Typography>
                 <Typography paragraph align="center" variant="body2" m={2} >
@@ -134,12 +110,14 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
                     Once you've added resources, you will be able to add notes or remove resources. Need to take your to-do list with you? You can copy
                     the entire list to your clipboard, or create an account to save multiple to-do lists to your profile.
                 </Typography>
+                {/* Warning about temporary list */}
                 <Typography sx={{ px: 3, pb: 3 }} color="error" align="center" variant="body2">
                     Note: If you don't create an account to save your to-do list OR copy and paste to your own records,
                     <br />
                     <u>your list will not be saved and will be lost when you refresh / close this page.</u>
                 </Typography>
                 {title_resources.length > 0 &&
+                // Copy button
                     <ListItem sx={{ justifyContent: 'right' }}>
                         <Tooltip placement="left" title="Copy to Clipboard">
                             <IconButton color="primary" onClick={() => copyResourcesToClipboard()} aria-label={'copy'}>
@@ -147,18 +125,28 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
                             </IconButton>
                         </Tooltip>
                     </ListItem>}
+                {/* To-do list resources */}
                 {title_resources.length > 0
                     && title_resources.map((resource, i) => (
                         <>
-                            <List key={resource.id} sx={listStyle(resource)}>
+                            <List key={resource.id} sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                width: '100%',
+                                maxWidth: '100%',
+                                bgcolor: 'background.paper'
+                            }}>
+                                {/* Opens AnonToDoModal */}
                                 <ListItem >
                                     <Tooltip title="Click to view more details">
                                         <ListItemButton onClick={() => { setSelectedResource(resource.id); setOpen(true); }} >{resource.name}</ListItemButton>
                                     </Tooltip>
                                 </ListItem>
                                 {editMode && selectedResource === resource.id
+                                // if in Edit Mode, show text fields
                                     ? <ListItem>
-                                        <ListItemText component={motion.h4}>
+                                        <ListItemText>
+                                            {/* Show current notes as placeholder text if populated */}
                                             {resource.notes
                                                 ? <TextField
                                                     placeholder={resource.notes}
@@ -176,6 +164,7 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
                                     </ListItem>
                                     : <ListItem>
                                         <ListItemText>
+                                            {/* Generic message displays if list item has no notes */}
                                             <Typography variant="body2">
                                                 {resource.notes ? resource.notes : <em>Click edit button to add notes</em>}
                                             </Typography>
@@ -183,6 +172,7 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
                                     </ListItem>
                                 }
                                 {editMode && selectedResource === resource.id
+                                // if this resource is in Edit Mode, show Save and Close buttons
                                     ? <>
                                         <ListItem sx={{ width: 100 }}>
                                             <Tooltip title="Save Changes">
@@ -199,6 +189,7 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
                                             </Tooltip>
                                         </ListItem>
                                     </>
+                                    // if not in Edit Mode, show Edit and Delete buttons
                                     : <>
                                         <Tooltip title="Edit Notes">
                                             <ListItem sx={{ width: 100 }}>
@@ -218,7 +209,6 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
                                     </>
                                 }
                             </List>
-                            <AnimatePresence>
                                 {selectedResource === resource.id && (
                                     <AnonToDoModal
                                         open={open}
@@ -226,17 +216,16 @@ export default function AnonToDo({ handleOpenRegister, handleOpen }) {
                                         resource={resource}
                                         handleClose={handleClose} />
                                 )}
-                            </AnimatePresence>
                         </>
                     ))
 
                 }
+                {/* Only render register button if a list item has been added */}
                 {title_resources.length > 0 &&
                     <Box textAlign={'center'} m={3}>
                         <Button align="center" variant='text' onClick={handleOpenRegister}>Register to save your list</Button>
                     </Box>
                 }
-
             </Paper>
         </Container >
     )
