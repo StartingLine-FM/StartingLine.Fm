@@ -13,9 +13,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Box, Typography, Paper, Card, CardHeader } from '@mui/material';
 
 const Calendar = () => {
-  const EP_Events = useSelector((store) => store.EP_Reducer);
-  const FU_Events = useSelector((store) => store.FU_Reducer);
-  const CHAMBER_Events = useSelector((store) => store.chamber_Reducer);
+  //These reducers hold the response arrays from the calendar.router.js
+  const EP_Events = useSelector((store) => store.EP_Reducer); //Emerging Praire events
+  const FU_Events = useSelector((store) => store.FU_Reducer); //Fargo Underground events
+  const CHAMBER_Events = useSelector((store) => store.chamber_Reducer); //Chamber of Commerce Events
  
 
 
@@ -34,10 +35,9 @@ const Calendar = () => {
     // const date = format(new Date(info.event.date), 'MMMM d @ h:mm a - h:mm a');
     const { description, location } = info.event.extendedProps;
   
-    let eventDetails = `<div>
+    let eventDetails = `<div> 
                             <span>Start: ${startDate}</span>
                             <span>End: ${endDate}</span>
-                            
                             <p>${description}</p>`;
     
     // Only include location if it is not an empty string or undefined
@@ -47,7 +47,7 @@ const Calendar = () => {
   
     eventDetails += `</div>`;
   
-    new bootstrap.Popover(info.el, {
+    new bootstrap.Popover(info.el, { //The mouse over hover information for calendar entries
       title: info.event.title,
       placement: 'auto',
       trigger: 'hover',
@@ -92,10 +92,10 @@ const Calendar = () => {
         initialView="dayGridMonth"
         contentHeight={'65vh'}
         
-        
+        //Below is where the reducer data is added to the calendar
         events={filteredEvents}
 
-        headerToolbar={{
+        headerToolbar={{ //This designates the upper toolbar buttons that render
           left: 'prev,next,today',
           center: 'title',
           right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek',

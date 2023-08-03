@@ -7,7 +7,7 @@ import { Container, Paper, Grid, Typography } from '@mui/material';
 import SearchFilter from './SearchFilter';
 import Result from './Result';
 
-function LandingPage() {
+function LandingPage({ currentList, setCurrentList }) {
   const dispatch = useDispatch();
   const search = useSelector(store => store.search);
   const categories = useSelector(store => store.categories);
@@ -15,8 +15,6 @@ function LandingPage() {
   const todo = useSelector(store => store.todoListResourcesReducer);
   const lists = useSelector(store => store.tableListReducer);
   const user = useSelector(store => store.user);
-
-  const [currentList, setCurrentList] = useState(null);
 
   useEffect(() => {
     dispatch({ type: 'FETCH_SEARCH' });
@@ -36,7 +34,7 @@ function LandingPage() {
   }, [lists])
 
   return (
-    <Container maxWidth="xl" spacing={2} sx={{ p: 3, flexDirection: "row" }}>
+    <Container maxWidth="lg" spacing={2} sx={{ p: 3, flexDirection: "row" }}>
       <div style={{ display: "flex", flexDirection: "row" }}>
         <SearchFilter currentList={currentList} setCurrentList={setCurrentList} categories={categories} stages={stages} todo={todo} />
         <div style={{ flex: 1 }}>
