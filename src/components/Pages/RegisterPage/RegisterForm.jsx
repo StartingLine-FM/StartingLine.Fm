@@ -42,21 +42,21 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, handleOpenRegis
         todo
       },
     });
-    handleCloseRegister();
-    handleClose();
-    history.push('/#/home')
+    handleCloseRegister(); // close the register modal if it is open
+    handleClose(); // close the login modal if it is open
+    history.push('/#/home') // push them home.
   }; // end registerUser
 
   return (
     <>
-    
+      {/* if open modal is true, show this compoenent */}
       {openLoginModal ? (
         <LoginPage handleClose={handleClose}
           handleOpen={handleOpen}
           setOpenLoginModal={setOpenLoginModal}
         />
       ) :
-
+        // otherwise show this component
         <div>
           <Dialog onClose={handleCloseRegister} open={openRegisterModal}>
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -90,6 +90,7 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, handleOpenRegis
             </DialogContent>
             <DialogActions>
               <Button
+              // on click close the register modal and open the login modal
                 onClick={() => {
                   handleCloseRegister();
                   handleOpen();
@@ -97,6 +98,7 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, handleOpenRegis
               >
                 Login
               </Button>
+              {/* on click register the user */}
               <Button onClick={registerUser} type="submit" name="submit" value="Register">Register</Button>
             </DialogActions>
           </Dialog>

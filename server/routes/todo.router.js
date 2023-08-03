@@ -16,11 +16,11 @@ router.post(`/:resource_id/:title_table_id`, async (req, res) => {
     const queryText = `INSERT INTO "todo" ("user_id", "resource_id", "notes", "completed", "title_table_id") VALUES ($1, $2, $3, $4, $5);`;
     // send off query text and get a response
     const response = await pool.query(queryText, [user_id, resource_id, req.body.notes, req.body.completed, title_table_id]);
-    console.log(response.data);
     res.status(201).send(response.rows);
   } catch (error) {
+    // log the error
     console.log('there was an error POSTING to the todo list', error);
-    res.sendStatus(500);
+    res.sendStatus(500); // send status
   }
 });
 
@@ -38,16 +38,16 @@ router.put('/:resource_id/:title_table_id', rejectUnauthenticated, async (req, r
        "notes" = $1,
        "completed" = $2
        WHERE "id"= $3;`;
-
+    // create response for the pool
     const response = await pool.query(queryText,
       [req.body.notes,
       req.body.completed,
         req.body.todo_id])
-    console.log(response.rows)
-    res.status(204).send(response.rows)
+    res.status(204).send(response.rows) // send the rows
   } catch (error) {
+    // log the error 
     console.log('there was an error PUTTING to the todo list', error)
-    res.sendStatus(500);
+    res.sendStatus(500); // send status
   }
 })
 
@@ -62,11 +62,11 @@ router.delete('/resource/:id/:title_table_id', rejectUnauthenticated, async (req
     const queryText = `DELETE FROM "todo" WHERE "id" = $1;`;
     // send off query text
     const response = await pool.query(queryText, [id]);
-    console.log(response.data);
-    res.status(204).send(response.rows);
+    res.status(204).send(response.rows); // send the rows
   } catch (error) {
+    // log the error
     console.log('there was an error DELETING from the todo list', error);
-    res.sendStatus(500);
+    res.sendStatus(500); // send response
   }
 })
 
@@ -82,11 +82,11 @@ router.delete('/:title_table_id', rejectUnauthenticated, async (req, res) => {
     // Delete the title from the title_table
     const deleteTitleQuery = `DELETE FROM "title_table" WHERE "id" = $1;`;
     await pool.query(deleteTitleQuery, [title_table_id]);
-
-    res.sendStatus(204); 
+    res.sendStatus(204);  // send the status for nothing found
   } catch (error) {
+    // log error if there is one
     console.log('there was an error DELETING from the todo list', error);
-    res.sendStatus(500); 
+    res.sendStatus(500); // send status 
   }
 });
 
@@ -107,13 +107,12 @@ JOIN stage ON stage.id = resource.stage_id
 JOIN category ON category.id = resource.category_id
 WHERE todo.user_id = $1
 AND todo.title_table_id = $2;`;
-    pool.query(queryText, [id, title_table_id]).then(response => {
+    pool.query(queryText, [id, title_table_id]).then(result => {
 
-      res.status(200).send(response.rows);
-      console.log(response.rows)
+      res.status(200).send(result.rows); // send the status and the response
     }).catch((err) => {
-      console.log('there was an error getting the resource', err)
-      res.sendStatus(500);
+      console.log('there was an error getting the resource', err) // log error
+      res.sendStatus(500); // send status
     })
   })
 
@@ -126,12 +125,10 @@ router.get('/titles',async (req, res) => {
       const queryText = `SELECT * FROM "title_table" WHERE user_id = $1;`;
       // send back response
       const response = await pool.query(queryText, [user_id]);
-      console.log(response.data); // check the data
       res.status(200).send(response.rows) // send the response
     } catch (error) {
-      console.log('error getting the titles', error)
-      res.sendStatus(500);
-      // TODO add res send status
+      console.log('error getting the titles', error) // log error
+      res.sendStatus(500); // send status
     }
 })
 
@@ -145,11 +142,10 @@ router.post('/title',rejectUnauthenticated, async (req, res) => {
     const queryText= `INSERT INTO "title_table" ("title", "user_id") VALUES ($1, $2);`;
     // make response to send back
     const response = await pool.query(queryText, [title, user_id]);
-    console.log(response.data);
-    res.status(201).send(response.rows)
+    res.status(201).send(response.rows) // send response rows and a status of created
   } catch (error) {
-    console.log('there was an error posting a title', error)
-    res.sendStatus(500);
+    console.log('there was an error posting a title', error) // log the error
+    res.sendStatus(500); // send the status
   }
 })
 
