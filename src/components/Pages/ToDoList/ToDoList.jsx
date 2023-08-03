@@ -1,14 +1,15 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState, React } from 'react';
+import { useSelector, useDispatch } from 'react-redux'; // imports for redux
+import { useEffect, useState, React } from 'react'; // imports for react
+// import for material ui icons
 import {
     Typography, Container, Paper, Button, List, ListItemButton,
-    ListItemText, ListItem, IconButton, Modal, Box, 
+    ListItemText, ListItem, IconButton, Modal, Box,
     Grid,
     TextField,
     Tooltip,
 } from '@mui/material';
 
-// animate presence
+// framer motion imports
 import { AnimatePresence, motion } from 'framer-motion';
 
 // material icons
@@ -42,13 +43,8 @@ export default function ToDoList({currentList, setCurrentList}) {
 
     // grab titles from the title reducer
     const list_titles = useSelector(store => store.tableListReducer);
-    // grab reesources from the store
+    // grab resources from the store
     const title_resources = useSelector(store => store.todoListResourcesReducer);
-    const list = list_titles.find(title => title.id === selectedResource)
-    console.log(list)
-
-
-
 
     // toggle modals
     const handleOpen = () => {
@@ -58,7 +54,7 @@ export default function ToDoList({currentList, setCurrentList}) {
     const handleClose = () => {
         setIsModalOpen(false);
     }
-
+    // use effect to dispatch the table lists on load
     useEffect(() => {
         dispatch({ type: "FETCH_TABLE_LISTS" })
     }, [])
@@ -83,7 +79,7 @@ export default function ToDoList({currentList, setCurrentList}) {
             });
     };
 
-
+    // function to update a resource on click
     const putResource = (resource, check) => {
         let name;
         let notes;
@@ -152,7 +148,7 @@ export default function ToDoList({currentList, setCurrentList}) {
     return (
         <>
             <Grid container >
-                {/* Sidebar */}
+                {/* to-do list title table */}
                 <Grid item md={4} xs={12}>
                     <Container sx={{ padding: 3 }}>
                         <Paper sx={{ flexDirection: 'column', width: '100%', paddingRight: 2, display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
@@ -170,6 +166,7 @@ export default function ToDoList({currentList, setCurrentList}) {
                                         </ListItemButton>
                                     </ListItem>
                                 ))}
+                                {/* if new title edit mode is true show these components */}
                                 {newTitleEditMode ? <ListItem
                                     secondaryAction={<Box>
                                         <IconButton onClick={() => { handleClose; setSelectedResource(null); setNewTitleEditMode(false); clearInputs(); }} edge={'start'} aria-label={'delete'}>
@@ -181,7 +178,9 @@ export default function ToDoList({currentList, setCurrentList}) {
                                             <SaveIcon />
                                         </IconButton>
                                     </Box>}>
-                                    <TextField variant='filled' placeholder={newTitle} value={newTitle} onChange={(e) => setNewTitle(e.target.value)}>Add A New To Do List</TextField></ListItem> :
+                                    <TextField variant='filled' placeholder={newTitle} value={newTitle}
+                                     onChange={(e) => setNewTitle(e.target.value)}>Add A New To Do List</TextField></ListItem> :
+                                    // if not display these componenets
                                     <ListItem secondaryAction={<IconButton color='primary' edge='end' onClick={() => { setNewTitleEditMode(true) }} aria-label={'copy'}>
                                         <AddIcon />
                                     </IconButton>}>
@@ -193,11 +192,11 @@ export default function ToDoList({currentList, setCurrentList}) {
                     </Container>
                 </Grid>
 
-                {/* Center Content */}
+                {/* resources table */}
                 <Grid item md={8} xs={12}>
                     <Container sx={{ padding: 3 }}>
                         <Paper sx={{ flexDirection: 'column', width: '100%', display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
-
+                            {/* show if there are resources related to the title clicked on */}
                             {title_resources.length > 0 && (<Typography paddingRight={3.5} secondaryAction variant='h4' gutterBottom align='center' justifyContent={'left'}>
                                 <span style={{ display: 'flex', alignContent: 'center', paddingLeft: 65, paddingTop: 20, justifyContent: 'space-between' }}>
                                     <Typography variant="h4" color="primary">Resources</Typography>
@@ -206,6 +205,7 @@ export default function ToDoList({currentList, setCurrentList}) {
                                             <FileCopyIcon />
                                         </Tooltip>
                                     </IconButton></span></Typography>)}
+                            {/* loop over the title resources */}
                             {title_resources.map((resource, i) => (
                                 <Container sx={listStyle(resource)} key={resource.id} >
                                     <List sx={listStyle(resource)} >
@@ -221,10 +221,14 @@ export default function ToDoList({currentList, setCurrentList}) {
                                                 </ListItem>
 
                                             </Tooltip>
-                                            {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)} variant='filled' placeholder={resource.notes}>{resource.notes ? resource.notes : <em>Click the edit icon to add notes</em>}</TextField></ListItem> :
+                                            {/* if edit mode is on and the selected resource state is the same as the id clicked on */}
+                                            {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)}
+                                             variant='filled' placeholder={resource.notes}>{resource.notes ? resource.notes : <em>Click the edit icon to add notes</em>}</TextField></ListItem> :
+                                            //  if not show these components
                                                 <ListItem>
                                                     <ListItemText>{resource.notes ? resource.notes : <em>Click the edit icon to add notes</em>}</ListItemText>
                                                 </ListItem>}
+                                            {/* if edit mode is on and the selected resource state is the same as the id clicked on */}
                                             {editMode && selectedResource === resource.id ?
                                                 <>
                                                     <Button
@@ -238,8 +242,9 @@ export default function ToDoList({currentList, setCurrentList}) {
                                                         </Tooltip>
                                                     </IconButton>
                                                 </> :
+                                                // if not show this
                                                 <Tooltip title="Mark as completed">
-                                                    <Button sx={{ color: 'black' }} onClick={() =>  putResource(resource, true)}>
+                                                    <Button sx={{ color: 'black' }} onClick={() => putResource(resource, true)}>
                                                         <ListItemText >{resource.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}</ListItemText>
                                                     </Button>
                                                 </Tooltip>}
@@ -253,6 +258,7 @@ export default function ToDoList({currentList, setCurrentList}) {
                                         </ListItem>
                                     </List>
                                     <AnimatePresence>
+                                        {/* if edit mode is on and the selected resource state is the same as the id clicked on */}
                                         {selectedResource === resource.id && (
                                             <ToDoListModal
                                                 isModalOpen={isModalOpen}

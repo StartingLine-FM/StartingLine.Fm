@@ -6,9 +6,10 @@ import RegisterForm from './RegisterForm';
 import { Container, } from '@mui/material';
 
 function RegisterPage({ handleClose, handleOpen, handleOpenRegister, setOpenRegisterModal, openRegisterModal, handleCloseRegister, openLoginModal }) {
-
+  
   return (
     <Container>
+      {/* pass in the form component and the props for the form */}
       <RegisterForm
         handleClose={handleClose}
         handleOpen={handleOpen} 

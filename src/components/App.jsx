@@ -53,28 +53,34 @@ const theme = createTheme({
 });
 
 function App() {
-  const dispatch = useDispatch();
+  // set state for login and register modals
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
+
+  const user = useSelector(store => store.user);  // user store 
+  const dispatch = useDispatch(); // use dispatch
+  
+  // toggle functions
+  const handleCloseRegister = () => { // close toggle for register modal
+
 
   const [currentList, setCurrentList] = useState(null);
 
 
-  const handleCloseRegister = () => {
+ 
     setOpenRegisterModal(false);
   }
-  const handleOpenRegister = () => {
+  const handleOpenRegister = () => { // open toggle for register modal
     setOpenRegisterModal(true);
   }
 
-  const handleOpen = () => {
+  const handleOpen = () => { // open toggle for the login modal
     setOpenLoginModal(true)
   }
 
-  const handleClose = () => {
+  const handleClose = () => { // close toggle gor the close modal
     setOpenLoginModal(false)
   }
-  const user = useSelector(store => store.user);
 
   useEffect(() => {
     dispatch({ type: 'FETCH_USER' });
@@ -85,12 +91,14 @@ function App() {
       <Router>
         <div>
           <Nav openLoginModal={openLoginModal} setOpenLoginModal={setOpenLoginModal} handleOpen={handleOpen} />
-          <LoginPage openLoginModal={openLoginModal}
+          {/* login page modal to be available at anytime like the nav bar above */}
+          <LoginPage openLoginModal={openLoginModal} 
                   setOpenLoginModal={setOpenLoginModal}
                   handleOpen={handleOpen} handleClose={handleClose} openRegisterModal={openRegisterModal} 
                   setOpenRegisterModal={setOpenRegisterModal} 
                   handleCloseRegister={handleCloseRegister} 
-                  handleOpenRegister={handleOpenRegister} />
+                  handleOpenRegister={handleOpenRegister} /> 
+                  {/* end login page with passed in props and functions for usage */}
                   
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
@@ -160,7 +168,9 @@ function App() {
                 <Redirect to="/user" />
                 :
                 // Otherwise, show the login page
-                <LoginPage openLoginModal={openLoginModal}
+                // login page props for the modal as well as the 
+                // register for loggin between the two
+                <LoginPage openLoginModal={openLoginModal} 
                   setOpenLoginModal={setOpenLoginModal}
                   handleOpen={handleOpen} handleClose={handleClose} 
                   openRegisterModal={openRegisterModal} 
@@ -180,6 +190,8 @@ function App() {
                 <Redirect to="/user" />
                 :
                 // Otherwise, show the registration page
+                // register page props for the modal as well as 
+                // login for toggling between the two
                 <RegisterPage openLoginModal={openLoginModal} handleClose={handleClose} handleOpen={handleOpen} openRegisterModal={openRegisterModal} 
                 setOpenRegisterModal={setOpenRegisterModal}
                 setOpenLoginModal={setOpenLoginModal} 
