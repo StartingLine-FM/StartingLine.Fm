@@ -21,6 +21,6 @@ export default function* rootSaga() {
     todolistSaga(), // calls the todolist saga
     watchCalendars(), //calls the calendar sagas
     searchSaga(),
-    adminSaga(),
+    adminSaga(), //calls the admin sagas
   ]);
 }

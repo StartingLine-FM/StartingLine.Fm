@@ -369,7 +369,7 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm;
 --     "category_id" = 1,
 --     "stage_id" = 1,
 --     "image_url" = 'https://www.ndda.nd.gov/sites/www/files/styles/facebook_share/public/documents/theme/Capitol_Social_Share.jpg',
---     "description" = 'Creates new wealth and employment opportunities through the development of new and expanded uses of North Dakota's agricultural products via a grant program.',
+--     "description" = 'Creates new wealth and employment opportunities through the development of new and expanded uses of North Dakotas agricultural products via a grant program.',
 --     "website" = 'https://www.ndda.nd.gov/divisions/business-marketing-information/ag-products-utilization-commission-apuc',
 --     "email" = 'ndda@nd.gov',
 --     "address" = '600 E Boulevard Ave Dept 602 Bismarck, ND 58505-0020'

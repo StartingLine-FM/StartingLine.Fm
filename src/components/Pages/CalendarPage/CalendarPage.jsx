@@ -5,14 +5,16 @@ import MenuSidebar from './MenuSidebar';
 import { Grid, Box, Container, Typography, Paper, Tooltip } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 
+// The CalendarPage component organizes the overall layout of the calendar page in a grid format
 const CalendarPage = () => {
   return (
+    // The outermost Container component adds a margin at the bottom of the page for spacing
     <Container style={{marginBottom: '50px'}}>
       <Grid container spacing={3}> 
         <Grid item xs={3}> 
           <Paper elevation={3}>
             <Box sx={{ p: 2 }} className='the-sidebar'>
-            
+            {/* // Typography component with a Tooltip and InfoIcon provides user guidance */}
               <Typography 
               className='sidebar-title' 
               variant="h5" 
@@ -23,7 +25,7 @@ const CalendarPage = () => {
               color="action" />
               </Tooltip>
               </Typography>
-              
+              {/* // MenuSidebar is a custom component that likely displays a list of menu options */}
               <MenuSidebar />
 
             </Box>
