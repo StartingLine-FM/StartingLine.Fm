@@ -10,30 +10,31 @@ const MenuSidebar = () => {
 
   const dispatch = useDispatch();
   
+  //These reducers manage the load spinners when a calendar is called. 
   const loadingEP = useSelector((state) => state.EP_Loading_Reducer);
   const loadingFU = useSelector((state) => state.FU_Loading_Reducer);
   const loadingChamber = useSelector((state) => state.chamber_Loading_Reducer);
 
-  const handleEP_Click = () => {
+  const handleEP_Click = () => { //Call the emerging praire GET request which scrapes their calendar.
     dispatch({ type: 'FETCH_EP' });
   };
 
-  const handleFU_Click = () => {
+  const handleFU_Click = () => { //Call the Fargo Undergroun GET request which scrapes their calendar.
     dispatch({ type: 'FETCH_FU' });
   };
 
-  const handleChamber_Click = () => {
+  const handleChamber_Click = () => { //Call the Chamber of Commerce GET request which scrapes their calendar.
     dispatch({ type: 'FETCH_CHAMBER' });
   };
 
-  const handleClearClick = () => {
+  const handleClearClick = () => { //Clears all data from all three calendar reducers.
     dispatch({ type: 'CLEAR_CALENDARS' });
   };
 
   return (
     <Box>
 
-      <IconButton
+      <IconButton //The Emerging Prairie Button
       className='EP-button'
       color='inherit' 
       onClick={handleEP_Click} 
@@ -42,7 +43,7 @@ const MenuSidebar = () => {
       <Typography marginLeft={1}>Emerging Prairie</Typography>
       </IconButton>
 
-      <IconButton 
+      <IconButton //The Fargo Underground Button
       className='FU-button'
       color='inherit'
       onClick={handleFU_Click} 
@@ -51,7 +52,7 @@ const MenuSidebar = () => {
       <Typography marginLeft={1}>Fargo Underground</Typography>
       </IconButton>
 
-      <IconButton
+      <IconButton //The Chamber of Commerce Button
       className='chamber-button' 
       color='inherit'
       onClick={handleChamber_Click} 
@@ -60,7 +61,7 @@ const MenuSidebar = () => {
       <Typography marginLeft={1}>Chamber of Commerce</Typography>
       </IconButton>
       
-      <IconButton onClick={handleClearClick }
+      <IconButton onClick={handleClearClick } //The Clear Button
       className='clear-button'
       color='inherit'
       >
