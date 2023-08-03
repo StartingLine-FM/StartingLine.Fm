@@ -82,6 +82,19 @@ There are some significant vulnerabilities in this calendar to be aware of. Sinc
 ![Alt text](public/images/admin-page-screenshot.png)
 
 
+This Node.js Admin Router package is designed to streamline the management of administrative tasks related to three key data entities: Resources, Categories, and Stages. Encapsulating a series of RESTful API endpoints, the package provides the ability to execute CRUD (Create, Read, Update, Delete) operations for these entities, with each operation gated behind authentication and authorization middleware for secure and reliable administrative access control.
+
+Key Features:
+Resource Management: Leverage the API to create, read, update, and delete resource records. Each resource holds specific details such as stage_id, category_id, name, image_url, description, website, email, address, and LinkedIn URL.
+
+Category Management: Manage categories through the dedicated endpoints that allow you to create, read, update, and delete category records. Each category consists of a unique name.
+
+Stage Management: Utilize the API endpoints to create, read, update, and delete stage records. Each stage has a unique name and description.
+
+Secure Access Control: With a two-tier middleware layer, access to administrative functions is tightly controlled. The rejectUnauthenticated middleware rejects non-authenticated users, while the isAdmin middleware checks the authenticated user's admin privileges, offering another layer of access control.
+
+The Admin Router package ensures that all these operations are securely accessible to authenticated users who have been granted admin privileges, ensuring your sensitive operations remain secure and your data integrity uncompromised.
+
 
 
 
