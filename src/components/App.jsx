@@ -21,7 +21,6 @@ import ToDoList from './Pages/ToDoList/ToDoList';
 import AnonToDo from './Pages/ToDoList/AnonToDo';
 import AdminPage from './Pages/AdminPage/AdminPage';
 import './App.css';
-import { useHistory } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
