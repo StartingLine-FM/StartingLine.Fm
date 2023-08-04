@@ -21,7 +21,6 @@ import ToDoList from './Pages/ToDoList/ToDoList';
 import AnonToDo from './Pages/ToDoList/AnonToDo';
 import AdminPage from './Pages/AdminPage/AdminPage';
 import './App.css';
-import { useHistory } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
@@ -56,17 +55,13 @@ function App() {
   // set state for login and register modals
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openRegisterModal, setOpenRegisterModal] = useState(false);
+  const [currentList, setCurrentList] = useState(null);
 
   const user = useSelector(store => store.user);  // user store 
   const dispatch = useDispatch(); // use dispatch
   
   // toggle functions
-  const handleCloseRegister = () => { // close toggle for register modal
-
-  const [currentList, setCurrentList] = useState(null);
-
-
- 
+  const handleCloseRegister = () => { // close toggle for register modal 
     setOpenRegisterModal(false);
   }
   const handleOpenRegister = () => { // open toggle for register modal

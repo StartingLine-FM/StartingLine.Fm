@@ -200,7 +200,7 @@ export default function ToDoList({currentList, setCurrentList}) {
                             {title_resources.length > 0 && (<Typography paddingRight={3.5} secondaryAction variant='h4' gutterBottom align='center' justifyContent={'left'}>
                                 <span style={{ display: 'flex', alignContent: 'center', paddingLeft: 65, paddingTop: 20, justifyContent: 'space-between' }}>
                                     <Typography variant="h4" color="primary">Resources</Typography>
-                                    <IconButton color='primary' onClick={() => copyResourcesToClipboard(selectedResource)} aria-label={'copy'}>
+                                    <IconButton color='primary' onClick={() => copyResourcesToClipboard(currentList)} aria-label={'copy'}>
                                         <Tooltip title='Copy to clipboard' placement='top' arrow>
                                             <FileCopyIcon />
                                         </Tooltip>
