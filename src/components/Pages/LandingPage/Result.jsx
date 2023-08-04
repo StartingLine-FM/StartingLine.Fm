@@ -103,7 +103,7 @@ export default function Result({ result, currentList, categories, stages }) {
     const snackbarConditionals = (e) => {
 
         if (user.id && currentList) {
-            const list = tableList.find(title => title.id === currentList);
+            const list = (tableList.length > 0 && tableList.find(title => title.id === currentList));
             setMessage(`Successfully added to ${list.title}!`);
             setColor("success");
         } else if ((user.id && !currentList)) {
