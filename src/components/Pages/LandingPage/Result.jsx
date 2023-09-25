@@ -22,6 +22,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
+import fallbackImage from './resource-fallback-image.jpg'; // Import the fallback image
 
 export default function Result({ result, currentList, categories, stages }) {
 
@@ -178,12 +179,15 @@ export default function Result({ result, currentList, categories, stages }) {
                 }
                 {/* this whole action area will open the result modal onclick */}
                 <CardActionArea onClick={handleClickOpen} >
-                    {result.image_url &&
-                        <CardMedia
-                            sx={{ height: 100 }}
-                            image={result.image_url}
-                            title='Resource Image' />
-                    }
+                    {result.image_url ? (
+                        <div style={{ padding: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px', overflow: 'hidden' }}>
+                            <img style={{ display: 'block', maxWidth: '100%', maxHeight: '100px' }} src={result.image_url} alt={result.name} />
+                        </div>
+                    ) : (
+                        <div style={{ padding: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px', overflow: 'hidden' }}>
+                            <img style={{ display: 'block', maxWidth: '100%', maxHeight: '100px' }} src={fallbackImage} alt="Fallback" />
+                        </div>
+                    )}
                     <CardContent sx={{ py: 1 }}>
                         {/* incoming text is formatted to trail off instead of influencing the size of the card */}
                         <Typography
@@ -214,8 +218,8 @@ export default function Result({ result, currentList, categories, stages }) {
                             }}>
                             {result.description}
                         </Typography>
-                            <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={result.category_name} />
-                            <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1 }} label={result.stage_name} />
+                        <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={result.category_name} />
+                        <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1 }} label={result.stage_name} />
                     </CardContent>
                 </CardActionArea>
             </Card>
