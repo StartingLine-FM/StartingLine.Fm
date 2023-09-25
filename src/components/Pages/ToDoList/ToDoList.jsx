@@ -24,7 +24,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close'
 
 
-export default function ToDoList({currentList, setCurrentList}) {
+export default function ToDoList({ currentList, setCurrentList }) {
     // set state for edit mode
     const [editMode, setEditMode] = useState(false);
     // set state for selected resource
@@ -179,7 +179,7 @@ export default function ToDoList({currentList, setCurrentList}) {
                                         </IconButton>
                                     </Box>}>
                                     <TextField variant='filled' placeholder={newTitle} value={newTitle}
-                                     onChange={(e) => setNewTitle(e.target.value)}>Add A New To Do List</TextField></ListItem> :
+                                        onChange={(e) => setNewTitle(e.target.value)}>Add A New To Do List</TextField></ListItem> :
                                     // if not display these componenets
                                     <ListItem secondaryAction={<IconButton color='primary' edge='end' onClick={() => { setNewTitleEditMode(true) }} aria-label={'copy'}>
                                         <AddIcon />
@@ -223,8 +223,8 @@ export default function ToDoList({currentList, setCurrentList}) {
                                             </Tooltip>
                                             {/* if edit mode is on and the selected resource state is the same as the id clicked on */}
                                             {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)}
-                                             variant='filled' placeholder={resource.notes}>{resource.notes ? resource.notes : <em>Click the edit icon to add notes</em>}</TextField></ListItem> :
-                                            //  if not show these components
+                                                variant='filled' placeholder={resource.notes}>{resource.notes ? resource.notes : <em>Click the edit icon to add notes</em>}</TextField></ListItem> :
+                                                //  if not show these components
                                                 <ListItem>
                                                     <ListItemText>{resource.notes ? resource.notes : <em>Click the edit icon to add notes</em>}</ListItemText>
                                                 </ListItem>}
@@ -248,9 +248,10 @@ export default function ToDoList({currentList, setCurrentList}) {
                                                         <ListItemText >{resource.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}</ListItemText>
                                                     </Button>
                                                 </Tooltip>}
-                                            {editMode && selectedResource === resource.id ? <IconButton color='primary' onClick={() => { putResource(resource, true); setEditMode(false); }}>
-                                                <SaveIcon />
-                                            </IconButton> :
+                                            {editMode && selectedResource === resource.id ?
+                                                <IconButton color='primary' onClick={() => { putResource(resource, false); setEditMode(false); }}>
+                                                    <SaveIcon />
+                                                </IconButton> :
                                                 <IconButton color='primary' onClick={() => { setEditMode(true); setSelectedResource(resource.id); }} aria-label={'delete'}>
                                                     <ModeEditIcon />
                                                 </IconButton>}
