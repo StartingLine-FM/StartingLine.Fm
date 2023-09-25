@@ -3,23 +3,25 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 // material ui imports
-import { Paper, IconButton, Typography, Dialog, Button, DialogTitle, DialogContent, DialogActions, DialogContentText, TextField } from '@mui/material';
+import { IconButton, Typography, Dialog, Button, DialogTitle, DialogContent, DialogActions, TextField, Link } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 // import register page
 import RegisterPage from '../RegisterPage/RegisterPage';
+
 function LoginForm({ handleClose, openLoginModal, handleOpen,
-  openRegisterModal, setOpenRegisterModal, handleCloseRegister, handleOpenRegister }) {
-    // set state for the user and the password
+  openRegisterModal, setOpenRegisterModal, handleOpenRegister }) {
+  // set state for the user and the password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const errors = useSelector(store => store.errors);
+  const user = useSelector(store => store.user);
   const dispatch = useDispatch(); // initialize use dispatch
   const history = useHistory(); // initialize use history
 
 
   const login = (event) => {
     event.preventDefault();
-    
+
     if (username && password) {
       dispatch({
         type: 'LOGIN',
@@ -33,21 +35,22 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
       // dispatches for when a user logs in
       dispatch({ type: "FETCH_USER" })
       // clear to-do list titles
-      dispatch({ type: "FETCH_TABLE_LISTS"})
+      dispatch({ type: "FETCH_TABLE_LISTS" })
       // clear thier todo list resources
       dispatch({ type: "CLEAR_TODO_RESOURCES" })
+      history.push('/#/login') // push them to the home screen
       handleClose(); // close the modal
-      history.push('/#/home') // push them to the home screen
     } else {
       dispatch({ type: 'LOGIN_INPUT_ERROR' });
     }
+
   }; // end login
 
 
 
   return (
     <>
-    {/* if the register modal is open show this component */}
+      {/* if the register modal is open show this component */}
       {openRegisterModal ? (
         <RegisterPage handleClose={handleClose}
           handleOpen={handleOpen}
@@ -91,8 +94,8 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
             </DialogContent>
             <DialogActions>
               <Button
-              // on click close the login modal and open the register modal
-                onClick={() => {handleClose(); handleOpenRegister();}}
+                // on click close the login modal and open the register modal
+                onClick={() => { handleClose(); handleOpenRegister(); }}
               >
                 Register
               </Button>
