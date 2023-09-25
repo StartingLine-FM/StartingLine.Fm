@@ -178,12 +178,11 @@ export default function Result({ result, currentList, categories, stages }) {
                 }
                 {/* this whole action area will open the result modal onclick */}
                 <CardActionArea onClick={handleClickOpen} >
-                    {result.image_url &&
-                        <CardMedia
-                            sx={{ height: 100 }}
-                            image={result.image_url}
-                            title='Resource Image' />
-                    }
+                    {result.image_url && (
+                        <div style={{ padding: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px', overflow: 'hidden' }}>
+                            <img style={{ display: 'block', maxWidth: '100%', maxHeight: '100px'}} src={result.image_url} alt={result.name} />
+                        </div>
+                    )}
                     <CardContent sx={{ py: 1 }}>
                         {/* incoming text is formatted to trail off instead of influencing the size of the card */}
                         <Typography
