@@ -225,52 +225,57 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
             </Dialog>
             // if NOT in edit mode, show as normal
             :
-                <Dialog open={open} onClose={handleClose}  >
-                    <DialogActions>
-                        {/* render Edit and Delete buttons if the user is logged in as admin */}
-                        {user && user.admin
-                            ? <>
-                                <IconButton onClick={() => setEditMode(true)} >
-                                    <EditIcon />
-                                </IconButton>
-                                <IconButton onClick={deleteResource} >
-                                    <DeleteIcon />
-                                </IconButton>
-                            </>
-                            // checks if current to-do list contains this resource
-                            : todoResources.some(e => e.id === result.id || e.resource_id === result.id)
+            <Dialog open={open} onClose={handleClose}  >
+                <DialogActions>
+                    {/* render Edit and Delete buttons if the user is logged in as admin */}
+                    {user && user.admin
+                        ? <>
+                            <IconButton onClick={() => setEditMode(true)} >
+                                <EditIcon />
+                            </IconButton>
+                            <IconButton onClick={deleteResource} >
+                                <DeleteIcon />
+                            </IconButton>
+                        </>
+                        // checks if current to-do list contains this resource
+                        : todoResources.some(e => e.id === result.id || e.resource_id === result.id)
                             // if on the current list, renders a checkmark
-                                ? <IconButton>
-                                    <CheckIcon color="primary" />
-                                </IconButton>
-                                : user.id
+                            ? <IconButton>
+                                <CheckIcon color="primary" />
+                            </IconButton>
+                            : user.id
                                 // else if not on todo list, onClick for Add Button changes depending on user's logged-in status
-                                    ? <IconButton onClick={() => userPostTodo()} >
-                                        <AddIcon />
-                                    </IconButton>
-                                    : <IconButton onClick={() => anonPostTodo()}>
-                                        <AddIcon />
-                                    </IconButton>
+                                ? <IconButton onClick={() => userPostTodo()} >
+                                    <AddIcon />
+                                </IconButton>
+                                : <IconButton onClick={() => anonPostTodo()}>
+                                    <AddIcon />
+                                </IconButton>
 
-                        }
-                        {/* Closes modal */}
-                        <IconButton onClick={handleClose} >
-                            <CloseIcon />
-                        </IconButton>
-                    </DialogActions>
-                    {/* Title and content display */}
-                    <DialogTitle>{result.name}</DialogTitle>
-                    <DialogContent sx={{ gap: 2, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                        <Typography variant="body1">{result.description}</Typography>
-                        <Link target="_blank" rel="noopener noreferrer" href={result.website}>{result.website && result.website}</Link>
-                        <Link href={`mailto:${result.email}`}>{result.email && result.email}</Link>
-                        <Link target="_blank" rel="noopener noreferrer" href={result.linkedin}>{result.linkedin && result.linkedin}</Link>
-                        <Typography variant="body1">{result.address && result.address}</Typography>
-                        <DialogContentText>
-                            <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={result.category_name} />
-                            <Chip color="secondary" sx={{ mt: 2 }} label={result.stage_name} />
-                        </DialogContentText>
-                    </DialogContent>
-                </Dialog>
+                    }
+                    {/* Closes modal */}
+                    <IconButton onClick={handleClose} >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogActions>
+                {/* Title and content display */}
+                <DialogTitle>{result.name}</DialogTitle>
+                {result.image_url &&
+                    <div style={{ padding: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '250px', overflow: 'hidden' }}>
+                        <img style={{ display: 'block', maxWidth: '100%', maxHeight: '250px' }} src={result.image_url} alt={result.name} />
+                    </div>
+                }
+                <DialogContent sx={{ gap: 2, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
+                    <Typography variant="body1">{result.description}</Typography>
+                    <Link target="_blank" rel="noopener noreferrer" href={result.website}>{result.website && result.website}</Link>
+                    <Link href={`mailto:${result.email}`}>{result.email && result.email}</Link>
+                    <Link target="_blank" rel="noopener noreferrer" href={result.linkedin}>{result.linkedin && result.linkedin}</Link>
+                    <Typography variant="body1">{result.address && result.address}</Typography>
+                    <DialogContentText>
+                        <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={result.category_name} />
+                        <Chip color="secondary" sx={{ mt: 2 }} label={result.stage_name} />
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
     )
 }
