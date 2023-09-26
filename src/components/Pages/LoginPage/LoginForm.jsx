@@ -64,7 +64,7 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
           <Dialog onClose={handleClose} open={openLoginModal}>
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               Login
-              <IconButton onClick={handleClose} aria-label={'delete'}>
+              <IconButton onClick={() => { dispatch({ type: 'CLEAR_LOGIN_ERROR' }); handleClose(); }} aria-label={'delete'}>
                 <CloseIcon />
               </IconButton>
             </DialogTitle>

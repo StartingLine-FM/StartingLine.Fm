@@ -6,13 +6,16 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 
-function Nav({ handleOpen }) {
+function Nav({ handleOpen, setOpenRegisterModal }) {
   const user = useSelector((store) => store.user);
+  const errors = useSelector((store) => store.errors);
 
   const history = useHistory();
 
   return (
     <AppBar color="background" position="sticky" >
+      {errors.registrationMessage && setOpenRegisterModal(true)}
+      {errors.loginMessage && handleOpen()}
       <Grid container sx={{
         display: "flex",
         justifyContent: "space-between",

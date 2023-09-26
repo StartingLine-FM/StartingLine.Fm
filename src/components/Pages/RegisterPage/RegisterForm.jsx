@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dialog, DialogContent, TextField, DialogActions, Button, DialogTitle, IconButton } from '@mui/material';
+import { Dialog, DialogContent, TextField, DialogActions, Button, DialogTitle, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import LoginPage from '../LoginPage/LoginPage';
 
 
 
-
-function RegisterForm({ handleOpen, handleClose, openLoginModal, handleOpenRegister, setOpenRegisterModal, openRegisterModal, handleCloseRegister, setOpenLoginModal }) {
+function RegisterForm({ handleOpen, handleClose, openLoginModal, openRegisterModal, handleCloseRegister, setOpenLoginModal }) {
   // state for username and password in the form
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -32,19 +32,36 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, handleOpenRegis
       todo
     })
 
-    dispatch({ // dispatch to register a user and the todo list
-      type: 'REGISTER',
-      payload: {
+    if (!username || !password) {
+      return dispatch({
+        type: 'REGISTRATION_INPUT_ERROR'
+      });
+    }
+
+    let payload = {
+      user:
+      {
+        username,
+        password
+      }
+    }
+
+    if (todo.length > 0) {
+      payload = {
         user: {
-          username: username,
-          password: password
+          username,
+          password
         },
         todo
-      },
+      }
+    }
+
+    dispatch({ // dispatch to register a user and the todo list
+      type: 'REGISTER',
+      payload
     });
     handleCloseRegister(); // close the register modal if it is open
     handleClose(); // close the login modal if it is open
-    history.push('/#/home') // push them home.
   }; // end registerUser
 
   return (
@@ -61,7 +78,7 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, handleOpenRegis
           <Dialog onClose={handleCloseRegister} open={openRegisterModal}>
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               Register
-              <IconButton onClick={handleCloseRegister} aria-label={'delete'}>
+              <IconButton onClick={() => { dispatch({ type: "CLEAR_REGISTRATION_ERROR" }); handleCloseRegister(); }} aria-label={'delete'}>
                 <CloseIcon />
               </IconButton>
             </DialogTitle>
@@ -90,7 +107,7 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, handleOpenRegis
             </DialogContent>
             <DialogActions>
               <Button
-              // on click close the register modal and open the login modal
+                // on click close the register modal and open the login modal
                 onClick={() => {
                   handleCloseRegister();
                   handleOpen();
