@@ -24,6 +24,8 @@ import SendIcon from '@mui/icons-material/Send';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import InfoIcon from '@mui/icons-material/Info';
 
+import InfoModal from "./InfoModal";
+
 
 export default function SearchFilter({ currentList, setCurrentList, categories, stages }) {
 
@@ -40,6 +42,8 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
     const [changes, setChanges] = useState(false);
     // User To-Do list titles
     const [titleOpen, setTitleOpen] = useState(false);
+    // Filter info modal
+    const [infoOpen, setInfoOpen] = useState(false);
 
     // Redux
     const dispatch = useDispatch();
@@ -59,6 +63,16 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
     // click handler for todo list title filter dropdown
     const handleTitleClick = () => {
         setTitleOpen(!titleOpen);
+    }
+
+    // click handler to open InfoModal 
+    const handleInfoOpen = () => {
+        setInfoOpen(true);
+    }
+
+    // click handler to close InfoModal
+    const handleInfoClose = () => {
+        setInfoOpen(false);
     }
 
     // clears all selected filters / text search, reset to showing all results
@@ -144,8 +158,9 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
     return (
         <Grid container sx={{ maxWidth: "25%", flexDirection: "column", width: "25%" }}>
             <Paper sx={{ mr: 2, px: 2, pt: 2 }}>
+                <InfoModal infoOpen={infoOpen} handleInfoClose={handleInfoClose} />
                 {/* Text search input */}
-                <Grid item sx={{ mb: 1 }}>
+                <Grid item sx={{ mb: 1, ml: 1 }}>
                     <TextField
                         placeholder="Search"
                         size="small"
@@ -162,23 +177,23 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                 </Grid>
                 {/* Category and Stage filter dropdowns */}
                 <Grid item>
-                    <ButtonGroup sx={{ mb: 1 }}>
-                        {/* Apply filters button, rendered differently depending on if user has set new filters */}
-                        {changes
-                            ? <Button variant="contained" onClick={fetchSearch} >Apply</Button>
-                            : <Button variant="outlined" onClick={fetchSearch} >Apply</Button>
-                        }
-                        {/* Clear filters button, rendered differently depending on whether or not filters / search have been entered */}
-                        {selectedCategory || selectedStage || textSearch
-                            ? <Button color="secondary" variant="contained" onClick={clearFilters} >Clear</Button>
-                            : <Button color="secondary" variant="outlined" onClick={clearFilters} >Clear</Button>
-                        }
-                    </ButtonGroup>
+                    {/* Apply filters button, rendered differently depending on if user has set new filters */}
+                    {changes
+                        ? <Button variant="contained" sx={{ mx: 1, mb: 2, mt: 1 }} onClick={fetchSearch} >Apply</Button>
+                        : <Button variant="outlined" sx={{ mx: 1, mb: 2, mt: 1 }} onClick={fetchSearch} >Apply</Button>
+                    }
+                    {/* Clear filters button, rendered differently depending on whether or not filters / search have been entered */}
+                    {selectedCategory || selectedStage || textSearch
+                        ? <Button color="secondary" variant="contained" sx={{ mb: 2, mt: 1 }} onClick={clearFilters} >Clear</Button>
+                        : <Button color="secondary" variant="outlined" sx={{ mb: 2, mt: 1 }} onClick={clearFilters} >Clear</Button>
+                    }
                     <br />
-                    <div style={{display:"flex", justifyContent:"space-between"}}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
                         <Typography variant="caption">Filter by</Typography>
-                        <Tooltip title='See the "Category and Stage Definitions" section of the About page for more details'>
-                            <InfoIcon fontSize="small" />
+                        <Tooltip title='Click to see Category and Business Stage details'>
+                            <IconButton onClick={handleInfoOpen}>
+                                <InfoIcon fontSize="small" />
+                            </IconButton>
                         </Tooltip>
                     </div>
                     <List>
@@ -229,10 +244,10 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                     </List>
                 </Grid>
             </Paper >
-            
+
             {/* This second Grid item renders if a user is logged in and has a to-do list created on their account */}
             {user.id && titles.length > 0 &&
-                <Paper sx={{mr: 2, px: 2, py: 2, mt: 2 }}>
+                <Paper sx={{ mr: 2, px: 2, py: 2, mt: 2 }}>
                     <Grid item>
                         <Typography variant="caption">Select To-Do List</Typography>
                         <ListItemButton onClick={handleTitleClick}>
