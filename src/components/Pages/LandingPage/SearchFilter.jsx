@@ -156,15 +156,15 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
     }
 
     return (
-        <Grid container sx={{ maxWidth: "25%", flexDirection: "column", width: "25%" }}>
-            <Paper sx={{ mr: 2, px: 2, pt: 2 }}>
+        <Grid item xs={12} sm={10} md={3}>
+            <Paper sx={{ width: { xs: "100%" }, mr: { sm: 2 }, px: 2, pt: 2 }}>
                 <InfoModal infoOpen={infoOpen} handleInfoClose={handleInfoClose} />
                 {/* Text search input */}
                 <Grid item sx={{ mb: 1, ml: 1 }}>
                     <TextField
                         placeholder="Search"
                         size="small"
-                        sx={{ width: "70%" }}
+                        sx={{ width: { xs: 0.85, sm: 0.7 } }}
                         value={textSearch}
                         onChange={(e) => setTextSearch(e.target.value)}
                     />
@@ -179,8 +179,8 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                 <Grid item>
                     {/* Apply filters button, rendered differently depending on if user has set new filters */}
                     {changes
-                        ? <Button variant="contained" sx={{ mx: 1, mb: 2, mt: 1 }} onClick={fetchSearch} >Apply</Button>
-                        : <Button variant="outlined" sx={{ mx: 1, mb: 2, mt: 1 }} onClick={fetchSearch} >Apply</Button>
+                        ? <Button variant="contained" sx={{ mx: { xs: 5, sm: 1 }, mb: 2, mt: 1 }} onClick={fetchSearch} >Apply</Button>
+                        : <Button variant="outlined" sx={{ mx: { xs: 5, sm: 1 }, mb: 2, mt: 1 }} onClick={fetchSearch} >Apply</Button>
                     }
                     {/* Clear filters button, rendered differently depending on whether or not filters / search have been entered */}
                     {selectedCategory || selectedStage || textSearch

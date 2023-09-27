@@ -26,7 +26,7 @@ function LandingPage({ currentList, setCurrentList }) {
 
   // fetches list of To-Do List titles for a logged-in user
   useEffect(() => {
-    dispatch({ type: 'FETCH_TABLE_LISTS' });
+    if (user.id) { dispatch({ type: 'FETCH_TABLE_LISTS' }); }
   }, [user.id])
 
   // sets current list as the first item of the lists array if user only has 1 list
@@ -38,34 +38,30 @@ function LandingPage({ currentList, setCurrentList }) {
   }, [lists])
 
   return (
-    <Container maxWidth="lg" spacing={2} sx={{ p: 3, flexDirection: "row" }}>
-      {/* this div ensures that SearchFilter and the Result components display side-by side */}
-      <div style={{ display: "flex", flexDirection: "row" }}>
+    <Container maxWidth="lg" spacing={1} sx={{ pt: 3 }}>
+      <Grid container spacing={2}>
         <SearchFilter currentList={currentList} setCurrentList={setCurrentList} categories={categories} stages={stages} todo={todo} />
-        {/* this div allows SearchFilter to take up the appropriate amount of space */}
-        <div style={{ flex: 1 }}>
-          <Grid container spacing={2} rowSpacing={2}>
-            {/* maps over store.search to return result cards */}
-            {search.length > 0
-              ? search.map(result => {
-                return (
-                  <Grid item  key={result.id}>
-                    <Result result={result} currentList={currentList} setCurrentList={setCurrentList} categories={categories} stages={stages} />
-                  </Grid>
-                )
-              })
-              :
-              // displays this as default if search array is not populated
-              <Grid item xs={12}>
-                <Paper sx={{p:3}}>
-                  <Typography>Your search returned 0 results.</Typography>
-                </Paper>
-              </Grid>
-            }
-          </Grid>
-        </div>
-      </div>
-    </Container>
+        <Grid item sm={8} xs={12} container spacing={2}>
+          {/* maps over store.search to return result cards */}
+          {search.length > 0
+            ? search.map(result => {
+              return (
+                <Grid item xs={12} sm={6} md={4} key={result.id}>
+                  <Result result={result} currentList={currentList} setCurrentList={setCurrentList} categories={categories} stages={stages} />
+                </Grid>
+              )
+            })
+            :
+            // displays this as default if search array is not populated
+            <Grid item xs={12}>
+              <Paper sx={{ p: 3 }}>
+                <Typography>Your search returned 0 results.</Typography>
+              </Paper>
+            </Grid>
+          }
+        </Grid>
+      </Grid>
+    </Container >
   );
 }
 
