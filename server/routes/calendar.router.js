@@ -329,33 +329,33 @@ router.get("/cefb", (req, res) => {
     });
 });
 
-router.get("/test-cefb", (req, res) => {
-  axios
-    .get(CEFB_url)
-    .then((response) => {
-      const $ = cheerio.load(response.data);
+// router.get("/test-cefb", (req, res) => {
+//   axios
+//     .get(CEFB_url)
+//     .then((response) => {
+//       const $ = cheerio.load(response.data);
 
-      // Define the CSS selector for the element you want to scrape
-      const selector = ".tribe-events-calendar-list__event-details.tribe-common-g-col";
+//       // Define the CSS selector for the element you want to scrape
+//       const selector = ".tribe-events-calendar-list__event-details.tribe-common-g-col";
 
-      // Scrape data from a single element
-      const firstElement = $(selector).first();
-      const eventHeader = firstElement
-        .find(".tribe-event-time")
-        .text()
-        .replace(/\s+/g, " ");
+//       // Scrape data from a single element
+//       const firstElement = $(selector).first();
+//       const eventHeader = firstElement
+//         .find(".tribe-event-time")
+//         .text()
+//         .replace(/\s+/g, " ");
 
-      // Log the extracted data for testing
-      console.log("Event Header:", eventHeader);
+//       // Log the extracted data for testing
+//       console.log("Event Header:", eventHeader);
 
-      res.send({ eventHeader }); // Send the scraped data as a response
-    })
-    .catch((error) => {
-      // Log and handle errors
-      console.error("Error scraping CEFB for testing:", error);
-      res.sendStatus(500);
-    });
-});
+//       res.send({ eventHeader }); // Send the scraped data as a response
+//     })
+//     .catch((error) => {
+//       // Log and handle errors
+//       console.error("Error scraping CEFB for testing:", error);
+//       res.sendStatus(500);
+//     });
+// });
 
 
 module.exports = router;
