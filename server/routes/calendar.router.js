@@ -7,9 +7,9 @@ const chrono = require("chrono-node");
 
 //These are the urls of the public calendars being scraped.
 const EP_url = "https://www.emergingprairie.com/calendar/"; //Emerging Praire 
-const FU_url =
-  "https://fargounderground.com/events/category/community/business/list/"; //Fargo Underground
+const FU_url = "https://fargounderground.com/events/category/community/business/list/"; //Fargo Underground
 const CHAMBER_url = "https://www.fmwfchamber.com/events/catgid/6?";  //Fargo Moorhead West Fargo Chamber of Commerce
+const CEFB_url = "https://ndsu-cefb.com/events/list/"; //NDSU Center for Entrepreneurship and Famiy Business
 
 
 
@@ -19,7 +19,7 @@ const parseEventDate = (displayStart) => { //This parses the inconsistent start 
   const dateRangeMatch = displayStart.match(/^(.+) - (.+)$/);
   if (dateRangeMatch) { //It does this by attempting to date match first.
     //Parse the start and end dates using chrono node library.
-    const start = chrono.parseDate(dateRangeMatch[1]); 
+    const start = chrono.parseDate(dateRangeMatch[1]);
     let end = chrono.parseDate(dateRangeMatch[2]);
     //Get the current date without the time part for comparison
     const now = new Date;
@@ -118,7 +118,7 @@ router.get("/emerging-prairie", (req, res) => {
             .text()
             .replace(/\n|\t/g, "");
 
-          let date; 
+          let date;
 
           if (Boolean(displayTime)) {//This boolean checks for all day events, setting them to 8am - 5pm.
             date = `${displayStart} - ${displayTime}`;
@@ -167,7 +167,7 @@ router.get("/fargo-underground", (req, res) => {
             )
             .text()
             .replace(/\n|\t/g, "");
-            const displayStart = $(element)
+          const displayStart = $(element)
             .find(".tribe-event-date-start")
             .text()
             .replace(/\n|\t/g, "");
@@ -190,17 +190,17 @@ router.get("/fargo-underground", (req, res) => {
             .text()
             .replace(/\n|\t/g, "");
 
-            let date;
+          let date;
 
-            if (Boolean(displayTime)) { //This boolean checks for all day events, setting them to 8am - 5pm.
-              date = `${displayStart} - ${displayTime}`;
-            } else if (Boolean(displayEnd)) {
-              date = `${displayStart} - ${displayEnd}`;
-            } else {
-              date = `${displayStart} 8:00 - 5:00`;
-            }
-  
-            const formattedDate = parseEventDate(date); //here the date is ran through the parse function
+          if (Boolean(displayTime)) { //This boolean checks for all day events, setting them to 8am - 5pm.
+            date = `${displayStart} - ${displayTime}`;
+          } else if (Boolean(displayEnd)) {
+            date = `${displayStart} - ${displayEnd}`;
+          } else {
+            date = `${displayStart} 8:00 - 5:00`;
+          }
+
+          const formattedDate = parseEventDate(date); //here the date is ran through the parse function
 
           const FU_CalendarBlock = { //All calendar scrapes are consolidated into individual objects
             title: eventHeader,
@@ -246,7 +246,7 @@ router.get("/chamber", (req, res) => {
           .text()
           .replace(/\s+/g, " ");
 
-          //This is the only calendar not run through the parse function
+        //This is the only calendar not run through the parse function
 
         const CHAMBER_CalendarBlock = { //Elements consolidate into a series of objects.
           title: eventHeader,
@@ -261,6 +261,98 @@ router.get("/chamber", (req, res) => {
     })
     .catch((error) => {
       console.log("Error pulling CHAMBER calendar", error);
+      res.sendStatus(500);
+    });
+});
+
+router.get("/cefb", (req, res) => {
+  axios
+    .get(CEFB_url)
+    .then((response) => {
+      const $ = cheerio.load(response.data);
+      const CEFB_events = [];
+
+      $(".tribe-events-calendar-list__event-details.tribe-common-g-col").each(
+        (index, element) => {
+          // Logging to check if each element is being processed
+          console.log("Processing element #" + index);
+
+          // Scrape data from the CEFB website
+          const eventHeader = $(element)
+            .find(".tribe-events-calendar-list__event-title.tribe-common-h6.tribe-common-h4--min-medium")
+            .text()
+            .replace(/\s+/g, " ");
+
+          const eventStart = $(element)
+            .find(".tribe-event-date-start")
+            .text()
+            .replace(/\s+/g, " ");
+
+          const eventEnd = $(element)
+            .find(".tribe-event-time")
+            .text()
+            .replace(/\s+/g, " ");
+
+          const eventDescription = $(element)
+            .find("p")
+            .text()
+            .replace(/\s+/g, " ");
+
+          // Logging to check extracted data
+          console.log("Event Header:", eventHeader);
+          console.log("Event Start:", eventStart);
+          console.log("Event End:", eventEnd);
+          console.log("Event Description:", eventDescription);
+
+          // Create an object for the event
+          const CEFB_CalendarBlock = {
+            title: eventHeader,
+            start: eventStart,
+            end: eventEnd,
+            description: eventDescription,
+          };
+
+          // Add the event object to the array
+          CEFB_events.push(CEFB_CalendarBlock);
+        }
+      );
+
+      // Logging to check the scraped events
+      console.log("CEFB Events:", CEFB_events);
+
+      res.send(CEFB_events); // Send the scraped events as a response
+    })
+    .catch((error) => {
+      // Logging the error
+      console.error("Error pulling CEFB calendar:", error);
+      res.sendStatus(500);
+    });
+});
+
+router.get("/test-cefb", (req, res) => {
+  axios
+    .get(CEFB_url)
+    .then((response) => {
+      const $ = cheerio.load(response.data);
+
+      // Define the CSS selector for the element you want to scrape
+      const selector = ".tribe-events-calendar-list__event-details.tribe-common-g-col";
+
+      // Scrape data from a single element
+      const firstElement = $(selector).first();
+      const eventHeader = firstElement
+        .find(".tribe-event-time")
+        .text()
+        .replace(/\s+/g, " ");
+
+      // Log the extracted data for testing
+      console.log("Event Header:", eventHeader);
+
+      res.send({ eventHeader }); // Send the scraped data as a response
+    })
+    .catch((error) => {
+      // Log and handle errors
+      console.error("Error scraping CEFB for testing:", error);
       res.sendStatus(500);
     });
 });
