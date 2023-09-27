@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from 'axios';
 
-// Fetch Emerging Prairie calendar saga
+// Fetch Emerging Prairie events
 function* fetchEmergingPrairieCalendarSaga() {
   try {
     yield put({ type: 'SET_LOADING_EP'});// set load to true
@@ -12,6 +12,11 @@ function* fetchEmergingPrairieCalendarSaga() {
     console.log('Error fetching Emerging Prairie calendar:', error);
     yield put({ type: 'CLEAR_LOADING_EP'}); // set load to false, even if an error occurs
   }
+}
+
+// Clear Emerging Prairie events
+function* clearEmergingPrairieCalendarsSaga() {
+  yield put({ type: 'SET_EP', payload: [] });
 }
 
 // Fetch Fargo Underground calendar saga
@@ -27,6 +32,11 @@ function* fetchFargoUndergroundCalendarSaga() {
   }
 }
 
+// Clear Fargo Underground events
+function* clearFargoUndergroundCalendarSaga() {
+  yield put({ type: 'SET_FU', payload: [] });
+}
+
 // Fetch Chamber of Commerce calendar saga
 function* fetchChamberCalendarSaga() {
   try {
@@ -40,6 +50,11 @@ function* fetchChamberCalendarSaga() {
   }
 }
 
+// Clear Chamber of Commerce events
+function* clearChamberCalendarSaga() {
+  yield put({ type: 'SET_CHAMBER', payload: [] });
+}
+
 // Clear all calendars saga
 function* clearCalendarsSaga() {
   yield put({ type: 'SET_EP', payload: [] });
@@ -50,8 +65,11 @@ function* clearCalendarsSaga() {
 // Watcher saga for calendars
 function* watchCalendars() {
   yield takeLatest('FETCH_EP', fetchEmergingPrairieCalendarSaga);
+  yield takeLatest('CLEAR_EP', clearEmergingPrairieCalendarsSaga);
   yield takeLatest('FETCH_FU', fetchFargoUndergroundCalendarSaga);
+  yield takeLatest('CLEAR_FU', clearFargoUndergroundCalendarSaga);
   yield takeLatest('FETCH_CHAMBER', fetchChamberCalendarSaga);
+  yield takeLatest('CLEAR_CHAMBER', clearChamberCalendarSaga);
   yield takeLatest('CLEAR_CALENDARS', clearCalendarsSaga);
 }
 
