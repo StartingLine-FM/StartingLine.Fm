@@ -55,11 +55,30 @@ function* clearChamberCalendarSaga() {
   yield put({ type: 'SET_CHAMBER', payload: [] });
 }
 
+// Fetch NDSU CEFB calendar saga
+function* fetchCEFBSaga() {
+  try {
+    yield put({ type: 'SET_LOADING_CEFB'});// set load to true
+    const calendarData = yield call(axios.get, '/api/calendar/cefb');
+    yield put({ type: 'SET_CEFB', payload: calendarData.data }); //Set the CEFB reducer
+    yield put({ type: 'CLEAR_LOADING_CEFB'}); // set load to false
+  } catch (error) {
+    console.log('Error fetching NDSU CEFB calendar:', error);
+    yield put({ type: 'CLEAR_LOADING_CEFB'}); // set load to false, even if an error occurs
+  }
+}
+
+// Clear NDSU CEFB events
+function* clearCEFBCalendarSaga() {
+  yield put({ type: 'SET_CEFB', payload: [] });
+}
+
 // Clear all calendars saga
 function* clearCalendarsSaga() {
   yield put({ type: 'SET_EP', payload: [] });
   yield put({ type: 'SET_FU', payload: [] });
   yield put({ type: 'SET_CHAMBER', payload: [] });
+  yield put({ type: 'SET_CEFB', payload: [] });
 }
 
 // Watcher saga for calendars
@@ -70,6 +89,8 @@ function* watchCalendars() {
   yield takeLatest('CLEAR_FU', clearFargoUndergroundCalendarSaga);
   yield takeLatest('FETCH_CHAMBER', fetchChamberCalendarSaga);
   yield takeLatest('CLEAR_CHAMBER', clearChamberCalendarSaga);
+  yield takeLatest('FETCH_CEFB', fetchCEFBSaga);
+  yield takeLatest('CLEAR_CEFB', clearCEFBCalendarSaga);
   yield takeLatest('CLEAR_CALENDARS', clearCalendarsSaga);
 }
 

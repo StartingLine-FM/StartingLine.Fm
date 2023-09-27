@@ -17,11 +17,12 @@ const Calendar = () => {
   const EP_Events = useSelector((store) => store.EP_Reducer); //Emerging Praire events
   const FU_Events = useSelector((store) => store.FU_Reducer); //Fargo Underground events
   const CHAMBER_Events = useSelector((store) => store.chamber_Reducer); //Chamber of Commerce Events
+  const CEFB_Events = useSelector((store) => store.CEFB_Reducer); //NDSU CEFB Events
  
 
 
   // Combine events from all three reducers into a single array
-  const allEvents = [...EP_Events, ...FU_Events, ...CHAMBER_Events];
+  const allEvents = [...EP_Events, ...FU_Events, ...CHAMBER_Events, ...CEFB_Events];
 
   // Filter out null, undefined, or empty events from the array
   const filteredEvents = allEvents.filter((event) => event);

@@ -14,11 +14,13 @@ const MenuSidebar = () => {
   const EP_Events = useSelector((store) => store.EP_Reducer); //Emerging Praire events
   const FU_Events = useSelector((store) => store.FU_Reducer); //Fargo Underground events
   const CHAMBER_Events = useSelector((store) => store.chamber_Reducer); //Chamber of Commerce Events
+  const CEFB_Events = useSelector((store) => store.CEFB_Reducer); //NDSU CEFB Events
 
   //These reducers manage the load spinners when a calendar is called. 
   const loadingEP = useSelector((state) => state.EP_Loading_Reducer);
   const loadingFU = useSelector((state) => state.FU_Loading_Reducer);
   const loadingChamber = useSelector((state) => state.chamber_Loading_Reducer);
+  const loadingCEFB = useSelector((state) => state.CEFB_Loading_Reducer);
 
   const handleEP_Click = () => {
     if (EP_Events.length === 0) {
@@ -49,6 +51,16 @@ const MenuSidebar = () => {
       dispatch({ type: 'CLEAR_CHAMBER' });
     }
   };
+
+  const handleCEFB_Click = () => {
+    if (CEFB_Events.length === 0) {
+      // If CEFB calendar data is empty, fetch it
+      dispatch({ type: 'FETCH_CEFB' });
+    } else {
+      // If CEFB calendar data is not empty, clear it
+      dispatch({ type: 'CLEAR_CEFB' });
+    }
+  };
   
 
   const handleClearClick = () => { //Clears all data from every calendar reducers.
@@ -57,6 +69,15 @@ const MenuSidebar = () => {
 
   return (
     <Box>
+
+      <IconButton //The NDSU CEFB Button
+        className='CEFB-button'
+        color='inherit'
+        onClick={handleCEFB_Click}
+        disabled={loadingCEFB}>
+        {loadingCEFB ? <CircularProgress size={20} /> : <BrightnessLow />}
+        <Typography marginLeft={1}>NDSU CEFB</Typography>
+      </IconButton>
 
       <IconButton //The Emerging Prairie Button
         className='EP-button'
