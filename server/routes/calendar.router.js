@@ -283,15 +283,22 @@ router.get("/cefb", (req, res) => {
             .text()
             .replace(/\s+/g, " ");
 
-          const eventStart = $(element)
-            .find(".tribe-event-date-start")
-            .text()
-            .replace(/\s+/g, " ");
+          // Get the "<time />" element that is always there
+          const startingTimeElement = $(element)
+            .find("time.tribe-events-calendar-list__event-datetime");
+          // Read the date from the datetime attribute
+          const startingDate = startingTimeElement.attr("datetime");
+          // The starting time always comes afer an "@" symbol, as the text in the element looks like "October 20 @ 4:00 pm - 6:00 pm", but isn't always there
+          let startingTimeString = startingTimeElement.text().split("@")[1];
+          const startingTime = startingTimeString ? startingTimeString.split('-')[0].trim() : "8:00 am";
+          // get the ending time if there is one
+          const endingTimeExists = startingTimeString ? startingTimeString.split('-')[1] : false;
+          const endingTime = endingTimeExists ? startingTimeString.split('-')[1].trim() : "5:00 pm";
 
-          const eventEnd = $(element)
-            .find(".tribe-event-time")
-            .text()
-            .replace(/\s+/g, " ");
+          // Combine the date and time into a single string
+          const eventStartMoment = moment(`${startingDate} - ${startingTime}`, "YYYY-MM-DD - h:mm a");
+          const eventStart = eventStartMoment.format("YYYY-MM-DDTHH:mm:ss");
+          const eventEnd = moment(`${startingDate} - ${endingTime}`, "YYYY-MM-DD - h:mm a").format("YYYY-MM-DDTHH:mm:ss");
 
           const eventDescription = $(element)
             .find("p")
@@ -306,9 +313,10 @@ router.get("/cefb", (req, res) => {
 
           // Create an object for the event
           const CEFB_CalendarBlock = {
+            date: 'some date',
             title: eventHeader,
             start: eventStart,
-            end: eventEnd,
+            end: eventStartMoment.add(1, "hours").format("YYYY-MM-DDTHH:mm:ss.000"),
             description: eventDescription,
           };
 
