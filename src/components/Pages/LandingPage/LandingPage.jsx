@@ -39,14 +39,14 @@ function LandingPage({ currentList, setCurrentList }) {
 
   return (
     <Container maxWidth="lg" spacing={1} sx={{ pt: 3 }}>
-      <Grid container spacing={2}>
+      <Grid container justifyContent="center" spacing={2}>
         <SearchFilter currentList={currentList} setCurrentList={setCurrentList} categories={categories} stages={stages} todo={todo} />
-        <Grid item sm={8} xs={12} container spacing={2}>
+        <Grid item xs={12} md={8} container spacing={2}>
           {/* maps over store.search to return result cards */}
           {search.length > 0
             ? search.map(result => {
               return (
-                <Grid item xs={12} sm={6} md={4} key={result.id}>
+                <Grid item xs={12} sm={6} lg={4} key={result.id}>
                   <Result result={result} currentList={currentList} setCurrentList={setCurrentList} categories={categories} stages={stages} />
                 </Grid>
               )

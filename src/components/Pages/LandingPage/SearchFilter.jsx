@@ -156,7 +156,7 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
     }
 
     return (
-        <Grid item xs={12} sm={10} md={3}>
+        <Grid item xs={12} md={3}>
             <Paper sx={{ width: { xs: "100%" }, mr: { sm: 2 }, px: 2, pt: 2 }}>
                 <InfoModal infoOpen={infoOpen} handleInfoClose={handleInfoClose} />
                 {/* Text search input */}
@@ -179,13 +179,13 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                 <Grid item>
                     {/* Apply filters button, rendered differently depending on if user has set new filters */}
                     {changes
-                        ? <Button variant="contained" sx={{ mx: { xs: 5, sm: 1 }, mb: 2, mt: 1 }} onClick={fetchSearch} >Apply</Button>
-                        : <Button variant="outlined" sx={{ mx: { xs: 5, sm: 1 }, mb: 2, mt: 1 }} onClick={fetchSearch} >Apply</Button>
+                        ? <Button variant="contained" sx={{ mx: { xs: 1, sm: 1 }, mb: 2, mt: 1, px: { xs: 5, md: 3 } }} onClick={fetchSearch} >Apply</Button>
+                        : <Button variant="outlined" sx={{ mx: { xs: 1, sm: 1 }, mb: 2, mt: 1, px: { xs: 5, md: 3 } }} onClick={fetchSearch} >Apply</Button>
                     }
                     {/* Clear filters button, rendered differently depending on whether or not filters / search have been entered */}
                     {selectedCategory || selectedStage || textSearch
-                        ? <Button color="secondary" variant="contained" sx={{ mb: 2, mt: 1 }} onClick={clearFilters} >Clear</Button>
-                        : <Button color="secondary" variant="outlined" sx={{ mb: 2, mt: 1 }} onClick={clearFilters} >Clear</Button>
+                        ? <Button color="secondary" variant="contained" sx={{ mx: { xs: 3, md: 0 }, mb: 2, mt: 1, px: { xs: 5, md: 3 } }} onClick={clearFilters} >Clear</Button>
+                        : <Button color="secondary" variant="outlined" sx={{ mx: { xs: 3, md: 0 }, mb: 2, mt: 1, px: { xs: 5, md: 3 } }} onClick={clearFilters} >Clear</Button>
                     }
                     <br />
                     <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -247,8 +247,8 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
 
             {/* This second Grid item renders if a user is logged in and has a to-do list created on their account */}
             {user.id && titles.length > 0 &&
-                <Paper sx={{ mr: 2, px: 2, py: 2, mt: 2 }}>
-                    <Grid item>
+                <Paper sx={{ width: { xs: "100%" }, mr: { sm: 2 }, px: 2, py: 2, mt: 2 }}>
+                    <Grid item xs={12}>
                         <Typography variant="caption">Select To-Do List</Typography>
                         <ListItemButton onClick={handleTitleClick}>
                             <ListItemText primary={`${user.username}'s Lists`} />
