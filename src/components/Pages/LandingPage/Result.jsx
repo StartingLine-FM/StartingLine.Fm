@@ -152,7 +152,7 @@ export default function Result({ result, currentList, categories, stages }) {
                     </Snackbar>
                 </>
             }
-            <Card raised sx={{ height: 250, maxWidth: 250 }}>
+            <Card raised sx={{ height: 250, width: "100%" }}>
                 {
                     // checks if current to-do list contains this resource
                     todoResources.some(e => e.id === result.id || e.resource_id === result.id)
