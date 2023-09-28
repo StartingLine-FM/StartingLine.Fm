@@ -58,8 +58,9 @@ function App() {
   const [currentList, setCurrentList] = useState(null);
 
   const user = useSelector(store => store.user);  // user store 
+  const errors = useSelector(store => store.errors);
   const dispatch = useDispatch(); // use dispatch
-  
+
   // toggle functions
   const handleCloseRegister = () => { // close toggle for register modal 
     setOpenRegisterModal(false);
@@ -84,16 +85,16 @@ function App() {
     <ThemeProvider theme={theme}>
       <Router>
         <div>
-          <Nav openLoginModal={openLoginModal} setOpenLoginModal={setOpenLoginModal} handleOpen={handleOpen} />
+          <Nav handleOpen={handleOpen} setOpenRegisterModal={setOpenRegisterModal} />
           {/* login page modal to be available at anytime like the nav bar above */}
-          <LoginPage openLoginModal={openLoginModal} 
-                  setOpenLoginModal={setOpenLoginModal}
-                  handleOpen={handleOpen} handleClose={handleClose} openRegisterModal={openRegisterModal} 
-                  setOpenRegisterModal={setOpenRegisterModal} 
-                  handleCloseRegister={handleCloseRegister} 
-                  handleOpenRegister={handleOpenRegister} /> 
-                  {/* end login page with passed in props and functions for usage */}
-                  
+          <LoginPage openLoginModal={openLoginModal}
+            setOpenLoginModal={setOpenLoginModal}
+            handleOpen={handleOpen} handleClose={handleClose} openRegisterModal={openRegisterModal}
+            setOpenRegisterModal={setOpenRegisterModal}
+            handleCloseRegister={handleCloseRegister}
+            handleOpenRegister={handleOpenRegister} />
+          {/* end login page with passed in props and functions for usage */}
+
           <Switch>
             {/* Visiting localhost:3000 will redirect to localhost:3000/home */}
             <Redirect exact from="/" to="/home" />
@@ -118,13 +119,13 @@ function App() {
               exact
               path="/anonlist"
             >
-              <AnonToDo  openLoginModal={openLoginModal}
-                  setOpenLoginModal={setOpenLoginModal}
-                  handleOpen={handleOpen} handleClose={handleClose} 
-                  openRegisterModal={openRegisterModal} 
-                  setOpenRegisterModal={setOpenRegisterModal} 
-                  handleCloseRegister={handleCloseRegister} 
-                  handleOpenRegister={handleOpenRegister} />
+              <AnonToDo openLoginModal={openLoginModal}
+                setOpenLoginModal={setOpenLoginModal}
+                handleOpen={handleOpen} handleClose={handleClose}
+                openRegisterModal={openRegisterModal}
+                setOpenRegisterModal={setOpenRegisterModal}
+                handleCloseRegister={handleCloseRegister}
+                handleOpenRegister={handleOpenRegister} />
             </Route>
 
             <ProtectedRoute exact path="/todolist"
@@ -164,12 +165,12 @@ function App() {
                 // Otherwise, show the login page
                 // login page props for the modal as well as the 
                 // register for loggin between the two
-                <LoginPage openLoginModal={openLoginModal} 
+                <LoginPage openLoginModal={openLoginModal}
                   setOpenLoginModal={setOpenLoginModal}
-                  handleOpen={handleOpen} handleClose={handleClose} 
-                  openRegisterModal={openRegisterModal} 
-                  setOpenRegisterModal={setOpenRegisterModal} 
-                  handleCloseRegister={handleCloseRegister} 
+                  handleOpen={handleOpen} handleClose={handleClose}
+                  openRegisterModal={openRegisterModal}
+                  setOpenRegisterModal={setOpenRegisterModal}
+                  handleCloseRegister={handleCloseRegister}
                   handleOpenRegister={handleOpenRegister} />
               }
             </Route>
@@ -186,11 +187,11 @@ function App() {
                 // Otherwise, show the registration page
                 // register page props for the modal as well as 
                 // login for toggling between the two
-                <RegisterPage openLoginModal={openLoginModal} handleClose={handleClose} handleOpen={handleOpen} openRegisterModal={openRegisterModal} 
-                setOpenRegisterModal={setOpenRegisterModal}
-                setOpenLoginModal={setOpenLoginModal} 
-                handleCloseRegister={handleCloseRegister} 
-                handleOpenRegister={handleOpenRegister}  />
+                <RegisterPage openLoginModal={openLoginModal} handleClose={handleClose} handleOpen={handleOpen} openRegisterModal={openRegisterModal}
+                  setOpenRegisterModal={setOpenRegisterModal}
+                  setOpenLoginModal={setOpenLoginModal}
+                  handleCloseRegister={handleCloseRegister}
+                  handleOpenRegister={handleOpenRegister} />
               }
             </Route>
 

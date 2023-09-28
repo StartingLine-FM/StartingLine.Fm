@@ -64,7 +64,7 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
           <Dialog onClose={handleClose} open={openLoginModal}>
             <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               Login
-              <IconButton onClick={handleClose} aria-label={'delete'}>
+              <IconButton onClick={() => { dispatch({ type: 'CLEAR_LOGIN_ERROR' }); handleClose(); }} aria-label={'delete'}>
                 <CloseIcon />
               </IconButton>
             </DialogTitle>
@@ -79,6 +79,7 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
                 variant='standard'
                 type="text"
                 label="username"
+                sx={{ mr: 1 }}
                 required
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
@@ -93,15 +94,23 @@ function LoginForm({ handleClose, openLoginModal, handleOpen,
               />
             </DialogContent>
             <DialogActions>
-              <Button
+              <Typography variant="body2"> Don't have an account? </Typography>
+              <Link
                 // on click close the login modal and open the register modal
                 onClick={() => { handleClose(); handleOpenRegister(); }}
+                sx={{ px: 1 }}
               >
-                Register
-              </Button>
+                Sign up.
+              </Link>
               {/* on click login the user */}
-              <Button onClick={login} type="submit" name="submit" value="Log In">Log In</Button>
+              <Button
+                onClick={login}
+                variant="contained"
+                type="submit"
+                name="submit"
+                value="Log In">Log In</Button>
             </DialogActions>
+
           </Dialog>
         </div>
       }
