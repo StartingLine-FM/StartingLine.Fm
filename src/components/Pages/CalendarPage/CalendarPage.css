@@ -10,6 +10,14 @@
     color: #55c6f0;
 }
 
+.calendar-empty {
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: larger;
+    font-weight: bolder;
+    font-style: italic;
+}
+
 .the-sidebar {
     margin-top: 20px;
 }
