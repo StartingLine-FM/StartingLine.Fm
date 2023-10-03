@@ -48,4 +48,26 @@ router.post('/', (req, res) => {
         })
 });
 
+// DELETE req for admin to delete article
+router.delete('/:id', (req, res) => {
+    let queryText = `DELETE FROM "article" WHERE "id" = $1;`
+    pool.query(queryText, [req.params.id])
+        .then(result => res.sendStatus(204))
+        .catch(err => {
+            console.log("Error on article DELETE", err);
+            res.sendStatus(500);
+        })
+});
+
+// POST req for admin to post new article
+router.put('/:id', (req, res) => {
+    let queryText = `UPDATE "article" SET "title"=$1,"author"=$2,"body"=$3,"image_url"=$4 WHERE "id" = $5`
+    pool.query(queryText, [req.body.title, req.body.author, req.body.body, req.body.image_url, req.params.id])
+        .then(result => res.sendStatus(200))
+        .catch(err => {
+            console.log("Error posting new article", err);
+            res.sendStatus(500);
+        })
+});
+
 module.exports = router;
