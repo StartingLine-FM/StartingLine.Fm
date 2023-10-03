@@ -117,7 +117,7 @@ export default function AnonToDo({ handleOpenRegister }) {
                     <u>your list will not be saved and will be lost when you refresh / close this page.</u>
                 </Typography>
                 {title_resources.length > 0 &&
-                // Copy button
+                    // Copy button
                     <ListItem sx={{ justifyContent: 'right' }}>
                         <Tooltip placement="left" title="Copy to Clipboard">
                             <IconButton color="primary" onClick={() => copyResourcesToClipboard()} aria-label={'copy'}>
@@ -137,14 +137,14 @@ export default function AnonToDo({ handleOpenRegister }) {
                                 bgcolor: 'background.paper'
                             }}>
                                 {/* Opens AnonToDoModal */}
-                                <ListItem >
+                                <ListItem sx={{ fontSize: { xs: 12, md: 16 } }} >
                                     <Tooltip title="Click to view more details">
                                         <ListItemButton onClick={() => { setSelectedResource(resource.id); setOpen(true); }} >{resource.name}</ListItemButton>
                                     </Tooltip>
                                 </ListItem>
                                 {editMode && selectedResource === resource.id
-                                // if in Edit Mode, show text fields
-                                    ? <ListItem>
+                                    // if in Edit Mode, show text fields
+                                    ? <ListItem sx={{ width: { xs: "100%" } }}>
                                         <ListItemText>
                                             {/* Show current notes as placeholder text if populated */}
                                             {resource.notes
@@ -155,6 +155,7 @@ export default function AnonToDo({ handleOpenRegister }) {
                                                     onChange={e => setNewNotes(e.target.value)}
                                                 />
                                                 : <TextField
+                                                    sx={{ maxWidth: 1000 }}
                                                     label="Edit Notes"
                                                     size='small'
                                                     value={newNotes}
@@ -165,23 +166,23 @@ export default function AnonToDo({ handleOpenRegister }) {
                                     : <ListItem>
                                         <ListItemText>
                                             {/* Generic message displays if list item has no notes */}
-                                            <Typography variant="body2">
+                                            <Typography sx={{ fontSize: { xs: 12, md: 16 } }}>
                                                 {resource.notes ? resource.notes : <em>Click edit button to add notes</em>}
                                             </Typography>
                                         </ListItemText>
                                     </ListItem>
                                 }
                                 {editMode && selectedResource === resource.id
-                                // if this resource is in Edit Mode, show Save and Close buttons
+                                    // if this resource is in Edit Mode, show Save and Close buttons
                                     ? <>
-                                        <ListItem sx={{ width: 100 }}>
+                                        <ListItem sx={{ width: { xs: 50, md: 100 } }}>
                                             <Tooltip title="Save Changes">
                                                 <IconButton onClick={() => putResource(resource)}>
                                                     <SaveIcon color="primary" />
                                                 </IconButton>
                                             </Tooltip>
                                         </ListItem>
-                                        <ListItem sx={{ width: 100 }}>
+                                        <ListItem sx={{ width: { xs: 65, md: 100 } }}>
                                             <Tooltip title="Cancel Edit">
                                                 <IconButton onClick={() => setEditMode(false)}>
                                                     <CloseIcon color="secondary" />
@@ -192,14 +193,14 @@ export default function AnonToDo({ handleOpenRegister }) {
                                     // if not in Edit Mode, show Edit and Delete buttons
                                     : <>
                                         <Tooltip title="Edit Notes">
-                                            <ListItem sx={{ width: 100 }}>
+                                            <ListItem sx={{ width: { xs: 50, md: 100 } }}>
                                                 <IconButton onClick={() => { setSelectedResource(resource.id); setEditMode(true) }}>
                                                     <ModeEditIcon color="primary" />
                                                 </IconButton>
                                             </ListItem>
                                         </Tooltip>
 
-                                        <ListItem sx={{ width: 100 }}>
+                                        <ListItem sx={{ width: { xs: 65, md: 100 } }}>
                                             <Tooltip title="Delete Item">
                                                 <IconButton onClick={() => deleteResource(resource.id)}>
                                                     <DeleteIcon color="secondary" />
@@ -209,13 +210,13 @@ export default function AnonToDo({ handleOpenRegister }) {
                                     </>
                                 }
                             </List>
-                                {selectedResource === resource.id && (
-                                    <AnonToDoModal
-                                        open={open}
-                                        setSelectedResource={setSelectedResource}
-                                        resource={resource}
-                                        handleClose={handleClose} />
-                                )}
+                            {selectedResource === resource.id && (
+                                <AnonToDoModal
+                                    open={open}
+                                    setSelectedResource={setSelectedResource}
+                                    resource={resource}
+                                    handleClose={handleClose} />
+                            )}
                         </>
                     ))
 

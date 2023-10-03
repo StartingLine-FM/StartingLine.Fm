@@ -214,7 +214,7 @@ export default function ToDoList({ currentList, setCurrentList }) {
                                                 <DeleteIcon />
                                             </IconButton>}>
                                             <Tooltip title="Click to see description" placement='left-start' arrow>
-                                                <ListItem>
+                                                <ListItem sx={{ fontSize: { xs: 12, md: 16 } }}>
                                                     <Box>
                                                         <ListItemButton onClick={() => { setSelectedResource(resource.id); handleOpen(); }}>{resource.resource_name}</ListItemButton>
                                                     </Box>
@@ -222,15 +222,25 @@ export default function ToDoList({ currentList, setCurrentList }) {
 
                                             </Tooltip>
                                             {/* if edit mode is on and the selected resource state is the same as the id clicked on */}
-                                            {editMode && selectedResource === resource.id ? <ListItem><TextField value={newNotes} onChange={(e) => setNewNotes(e.target.value)}
-                                                variant='filled' placeholder={resource.notes}>{resource.notes ? resource.notes : <em>Click the edit icon to add notes</em>}</TextField></ListItem> :
-                                                //  if not show these components
-                                                <ListItem>
+                                            {editMode && selectedResource === resource.id
+                                                ? <ListItem>
+                                                    <TextField
+                                                        value={newNotes}
+                                                        onChange={(e) => setNewNotes(e.target.value)}
+                                                        variant='filled'
+                                                        placeholder={resource.notes}>
+                                                        {resource.notes
+                                                            ? resource.notes
+                                                            : <em>Click the edit icon to add notes</em>}
+                                                    </TextField>
+                                                </ListItem>
+                                                : //  if not show these components
+                                                <ListItem sx={{ fontSize: { xs: 12, md: 16 } }}>
                                                     <ListItemText>{resource.notes ? resource.notes : <em>Click the edit icon to add notes</em>}</ListItemText>
                                                 </ListItem>}
                                             {/* if edit mode is on and the selected resource state is the same as the id clicked on */}
-                                            {editMode && selectedResource === resource.id ?
-                                                <>
+                                            {editMode && selectedResource === resource.id
+                                                ? <>
                                                     <Button
                                                         sx={{ color: 'black' }}
                                                         onClick={() => setNewCompleted(!newCompleted)}>
@@ -241,8 +251,8 @@ export default function ToDoList({ currentList, setCurrentList }) {
                                                             <CloseIcon />
                                                         </Tooltip>
                                                     </IconButton>
-                                                </> :
-                                                // if not show this
+                                                </>
+                                                : // if not show this
                                                 <Tooltip title="Mark as completed">
                                                     <Button sx={{ color: 'black' }} onClick={() => putResource(resource, true)}>
                                                         <ListItemText >{resource.completed ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}</ListItemText>
