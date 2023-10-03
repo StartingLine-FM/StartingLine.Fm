@@ -84,10 +84,19 @@ const Calendar = () => {
     >
       
       <Card sx={{paddingleft:2, paddingRight:2, paddingBottom:2}}>
-        <CardHeader
-        title='Local Events'
-        className='calendar-title'
-        />
+      {filteredEvents.length > 0 ? (
+  <CardHeader
+    title='Local Events'
+    className='calendar-title'
+  />
+) : (
+  <Typography variant="h6" className="calendar-empty">
+    To begin: click institution buttons on the left to see their events
+  </Typography>
+)}
+
+
+
       <FullCalendar
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         initialView="dayGridMonth"
