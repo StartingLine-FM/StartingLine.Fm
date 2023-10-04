@@ -13,6 +13,7 @@ const calendarRouter = require('./routes/calendar.router');
 const searchRouter = require('./routes/search.router')
 const todoRouter = require('./routes/todo.router');
 const adminRouter = require('./routes/admin.router');
+const articleRouter = require('./routes/article.router');
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -31,6 +32,7 @@ app.use('/api/calendar', calendarRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/todo', todoRouter)
 app.use('/api/admin', adminRouter);
+app.use('/api/article', articleRouter);
 
 // Serve static files
 app.use(express.static('build'));

@@ -50,6 +50,14 @@ CREATE TABLE "todo" (
     "completed" BOOLEAN DEFAULT FALSE
 );
 
+CREATE TABLE "article" (
+	"id" SERIAL PRIMARY KEY,
+	"title" VARCHAR(1000) NOT NULL,
+	"author" VARCHAR(1000) NOT NULL,
+	"body" VARCHAR(8000) NOT NULL,
+	"image_url" VARCHAR(1000)
+);
+
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 -- After executing these CREATE and INSERT statements in order,
