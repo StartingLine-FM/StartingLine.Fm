@@ -12,6 +12,7 @@ import tableListReducer from './tablelist.reducer';
 import CategoriesReducer from './categories.reducer';
 import StagesReducer from './stages.reducer';
 import adminReducer from './admin.reducer';
+import articleReducer from './article.reducer';
 import { EP_Loading_Reducer, FU_Loading_Reducer, chamber_Loading_Reducer, CEFB_Loading_Reducer } from './loading.reducer';
 
 // rootReducer is the primary reducer for our entire project
@@ -36,6 +37,9 @@ const rootReducer = combineReducers({
   EP_Loading_Reducer,
   FU_Loading_Reducer,
   chamber_Loading_Reducer,
+  article: articleReducer.article, // individual article page
+  articleList: articleReducer.articleList, // list of articles
+
   CEFB_Loading_Reducer,
  // will have an id and username if someone is logged in
 
