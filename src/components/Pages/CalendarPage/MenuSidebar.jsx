@@ -67,17 +67,17 @@ const MenuSidebar = () => {
     <Box>
       <IconButton // The NDSU CEFB Button
         className={`calendar-button`}
-        color='inherit'
+        sx={{color: 'black' }}
         onClick={handleCEFB_Click}
         disabled={loadingCEFB}
       >
-        {loadingCEFB ? <CircularProgress size={20} /> : <School color='green'/>}
+        {loadingCEFB ? <CircularProgress size={20} /> : <School />}
         <Typography className={CEFB_Events.length > 0 ? 'active-cefb' : 'passive'} paddingLeft={1} paddingRight={1}>NDSU CEFB</Typography>
       </IconButton>
 
       <IconButton // The Emerging Prairie Button
         className={`calendar-button`}
-        color='inherit'
+        sx={{color: 'black' }}
         onClick={handleEP_Click}
         disabled={loadingEP}
       >
@@ -87,7 +87,7 @@ const MenuSidebar = () => {
 
       <IconButton // The Fargo Underground Button
         className={`calendar-button`}
-        color='inherit'
+        sx={{color: 'black' }}
         onClick={handleFU_Click}
         disabled={loadingFU}
       >
@@ -97,7 +97,7 @@ const MenuSidebar = () => {
 
       <IconButton // The Chamber of Commerce Button
         className={`calendar-button`}
-        color='inherit'
+        sx={{color: 'black' }}
         onClick={handleChamber_Click}
         disabled={loadingChamber}
       >
