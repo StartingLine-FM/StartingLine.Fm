@@ -20,6 +20,7 @@ import CalendarPage from './Pages/CalendarPage/CalendarPage';
 import ToDoList from './Pages/ToDoList/ToDoList';
 import AnonToDo from './Pages/ToDoList/AnonToDo';
 import AdminPage from './Pages/AdminPage/AdminPage';
+import ArticleList from './Pages/ArticlePage/ArticleList';
 import './App.css';
 
 const theme = createTheme({
@@ -106,6 +107,9 @@ function App() {
               path="/about"
             >
               <AboutPage />
+            </Route>
+            <Route exact path="/articles">
+              <ArticleList />
             </Route>
             <Route
               // shows CalendarPage at all times (logged in or not)
