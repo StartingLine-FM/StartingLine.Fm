@@ -63,11 +63,19 @@ const MenuSidebar = () => {
     dispatch({ type: 'CLEAR_CALENDARS' });
   };
 
+    // Define a color mapping for each button
+    const colorMap = {
+      CEFB: 'green',
+      EP: 'red',
+      FU: 'orange',
+      Chamber: 'purple',
+    };
+
   return (
     <Box>
       <IconButton // The NDSU CEFB Button
         className={`calendar-button`}
-        sx={{color: 'black' }}
+        sx={{ color: CEFB_Events.length > 0 ? colorMap.CEFB : 'black' }} // Change color based on CEFB_Events length
         onClick={handleCEFB_Click}
         disabled={loadingCEFB}
       >
@@ -77,7 +85,7 @@ const MenuSidebar = () => {
 
       <IconButton // The Emerging Prairie Button
         className={`calendar-button`}
-        sx={{color: 'black' }}
+        sx={{ color: EP_Events.length > 0 ? colorMap.EP : 'black' }} // Change color based on EP_Events length
         onClick={handleEP_Click}
         disabled={loadingEP}
       >
@@ -87,7 +95,7 @@ const MenuSidebar = () => {
 
       <IconButton // The Fargo Underground Button
         className={`calendar-button`}
-        sx={{color: 'black' }}
+        sx={{ color: FU_Events.length > 0 ? colorMap.FU : 'black' }} // Change color based on FU_Events length
         onClick={handleFU_Click}
         disabled={loadingFU}
       >
@@ -97,7 +105,7 @@ const MenuSidebar = () => {
 
       <IconButton // The Chamber of Commerce Button
         className={`calendar-button`}
-        sx={{color: 'black' }}
+        sx={{ color: CHAMBER_Events.length > 0 ? colorMap.Chamber : 'black' }} // Change color based on Chamber_Events length
         onClick={handleChamber_Click}
         disabled={loadingChamber}
       >
