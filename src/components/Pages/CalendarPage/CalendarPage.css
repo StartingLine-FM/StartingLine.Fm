@@ -2,12 +2,41 @@
     margin-top: 20px;
 }
 
+.active-cefb {
+    background-color: green;
+    color:#55c6f0;
+}
+
+.active-ep {
+    background-color: red;
+    color:#55c6f0;
+}
+
+.active-fu {
+    background-color: orange;
+    color:#55c6f0;
+}
+
+.active-chamber {
+    background-color: purple;
+    color:#55c6f0;
+}
+
+
 .calendar-title {
     padding-bottom: 5px;
     text-align: center;
     font-size: larger;
     font-weight: bolder;
     color: #55c6f0;
+}
+
+.calendar-empty {
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: larger;
+    font-weight: bolder;
+    font-style: italic;
 }
 
 .the-sidebar {
@@ -39,17 +68,3 @@ color:black;
     color:#55c6f0;
 }
 
-
-/* Unused code below
-
-/* .fc * {
-    color: red;
-} */
-
-/* .fc-toolbar-chunk {
-    color: red;
-} */
-
-/* .fc-toolbar {
-    color: red;
-} */
