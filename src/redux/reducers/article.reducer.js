@@ -9,9 +9,9 @@ const articleList = (state = [], action) => {
     }
 };
 
-const article = (state = {}, action) => {
+const articleDetail = (state = {}, action) => {
     switch (action.type) {
-        case 'SET_ARTICLE':
+        case 'SET_ARTICLE_DETAIL':
             return action.payload || state;
         default:
             return state;
@@ -19,6 +19,6 @@ const article = (state = {}, action) => {
 };
 
 export default combineReducers({
-    article,
+    articleDetail,
     articleList,
 });

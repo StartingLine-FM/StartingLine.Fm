@@ -3,7 +3,7 @@ import { takeEvery, put } from "@redux-saga/core/effects";
 
 export default function* articleSaga() {
     yield takeEvery("FETCH_ARTICLES_LIST", fetchArticlesList);
-    yield takeEvery("FETCH_ARTICLE", fetchArticle);
+    yield takeEvery("FETCH_ARTICLE_DETAIL", fetchArticleDetail);
     yield takeEvery("POST_ARTICLE", postArticle);
     yield takeEvery("PUT_ARTICLE", putArticle);
     yield takeEvery("DELETE_ARTICLE", deleteArticle);
@@ -20,10 +20,11 @@ function* fetchArticlesList() {
 };
 
 // Fetches individual article for detail view
-function* fetchArticle(action) {
+function* fetchArticleDetail(action) {
     try {
-        let response = yield axios.get(`/api/article/${action.payload.id}`);
-        yield put({ type: "SET_ARTICLE", payload: response.data })
+        console.log(action.payload)
+        let response = yield axios.get(`/api/article/${action.payload.title}`);
+        yield put({ type: "SET_ARTICLE_DETAIL", payload: response.data })
     } catch (error) {
         console.log("Error on fetchArticle saga", error);
     }
@@ -58,4 +59,3 @@ function* deleteArticle(action) {
         console.log("Error on deleteArticle saga", error);
     }
 };
-
