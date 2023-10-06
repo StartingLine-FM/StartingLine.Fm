@@ -84,19 +84,19 @@ axios
     console.log("CEFB Events:", CEFB_events);
 
     // Delete all old CEFB events from the database
-    const deleteSourceEventsQuery = `
-  DELETE FROM "calendar"
-  WHERE "source" = $1;
-`;
+//     const deleteSourceEventsQuery = `
+//   DELETE FROM "calendar"
+//   WHERE "source" = $1;
+// `;
 
-    try {
-      await pool.query(deleteSourceEventsQuery, ["cefb"]);
-      console.log(`Deleted old CEFB events from the database.`);
-    } catch (error) {
-      console.error(`Error deleting old CEFB events: ${error}`);
-      res.sendStatus(500);
-      return;
-    }
+//     try {
+//       await pool.query(deleteSourceEventsQuery, ["cefb"]);
+//       console.log(`Deleted old CEFB events from the database.`);
+//     } catch (error) {
+//       console.error(`Error deleting old CEFB events: ${error}`);
+//       res.sendStatus(500);
+//       return;
+//     }
 
 
     // Insert all events into the database
