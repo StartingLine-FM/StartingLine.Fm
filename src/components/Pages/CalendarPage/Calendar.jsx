@@ -17,11 +17,12 @@ const Calendar = () => {
   const EP_Events = useSelector((store) => store.EP_Reducer); //Emerging Praire events
   const FU_Events = useSelector((store) => store.FU_Reducer); //Fargo Underground events
   const CHAMBER_Events = useSelector((store) => store.chamber_Reducer); //Chamber of Commerce Events
+  const CEFB_Events = useSelector((store) => store.CEFB_Reducer); //NDSU CEFB Events
  
 
 
   // Combine events from all three reducers into a single array
-  const allEvents = [...EP_Events, ...FU_Events, ...CHAMBER_Events];
+  const allEvents = [...EP_Events, ...FU_Events, ...CHAMBER_Events, ...CEFB_Events];
 
   // Filter out null, undefined, or empty events from the array
   const filteredEvents = allEvents.filter((event) => event);
@@ -83,10 +84,19 @@ const Calendar = () => {
     >
       
       <Card sx={{paddingleft:2, paddingRight:2, paddingBottom:2}}>
-        <CardHeader
-        title='Local Events'
-        className='calendar-title'
-        />
+      {filteredEvents.length > 0 ? (
+  <CardHeader
+    title='Local Events'
+    className='calendar-title'
+  />
+) : (
+  <Typography variant="h6" className="calendar-empty">
+    To begin: click institution buttons on the left to see their events
+  </Typography>
+)}
+
+
+
       <FullCalendar
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         initialView="dayGridMonth"

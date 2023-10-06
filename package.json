@@ -14,7 +14,7 @@
     "@fullcalendar/interaction": "^6.1.8",
     "@fullcalendar/list": "^6.1.8",
     "@fullcalendar/react": "^6.1.8",
-    "@mui/icons-material": "^5.14.3",
+    "@mui/icons-material": "^5.14.12",
     "@mui/material": "^5.14.3",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",

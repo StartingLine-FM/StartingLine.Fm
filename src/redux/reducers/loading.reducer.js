@@ -4,6 +4,7 @@ const initialState = {
     loadingEP: false,
     loadingFU: false,
     loadingChamber: false,
+    loadingCEFB: false,
   };
   
   export const EP_Loading_Reducer = (state = initialState.loadingEP, action) => {
@@ -34,6 +35,17 @@ const initialState = {
         return true; // Set loadingChamber to true
       case 'CLEAR_LOADING_CHAMBER':
         return false; // Set loadingChamber to false
+      default:
+        return state;
+    }
+  };
+
+  export const CEFB_Loading_Reducer = (state = initialState.loadingCEFB, action) => {
+    switch (action.type) {
+      case 'SET_LOADING_CEFB':
+        return true; // Set loadingCEFB to true
+      case 'CLEAR_LOADING_CEFB':
+        return false; // Set loadingCEFB to false
       default:
         return state;
     }
