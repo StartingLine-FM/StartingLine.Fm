@@ -20,12 +20,12 @@ const CalendarPage = () => {
               variant="h5" 
               align="center" 
               gutterBottom>Menu 
-              <Tooltip title="Choose an institution to pull their calendar. Clicking a calendar event will preload it into your own google calendar.">
+              <Tooltip title="Choose an institution to pull their calendar. Clicking it again will toggle it off. Clicking a calendar event will preload it into your own google calendar. The button and events are color coordinated.">
               <InfoIcon style={{ marginLeft: '10px' }} 
               color="action" />
               </Tooltip>
               </Typography>
-              {/* // MenuSidebar is a custom component that likely displays a list of menu options */}
+              {/* // MenuSidebar Component */}
               <MenuSidebar />
 
             </Box>
