@@ -26,9 +26,9 @@ router.get('/', (req, res) => {
 });
 
 // GET req for individual article
-router.get('/:id', (req, res) => {
-    let queryText = `SELECT * FROM "article" WHERE "id" = $1;`
-    pool.query(queryText, [req.params.id])
+router.get('/:title', (req, res) => {
+    let queryText = `SELECT * FROM "article" WHERE "title" = $1;`
+    pool.query(queryText, [req.params.title])
         .then(result => res.send(result.rows))
         .catch(err => {
             console.log("Error on individual article GET", err);
