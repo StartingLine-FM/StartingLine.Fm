@@ -9,7 +9,7 @@ const articleList = (state = [], action) => {
     }
 };
 
-const articleDetail = (state = {}, action) => {
+const articleDetail = (state = [], action) => {
     switch (action.type) {
         case 'SET_ARTICLE_DETAIL':
             return action.payload || state;
