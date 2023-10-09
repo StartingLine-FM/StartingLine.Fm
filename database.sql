@@ -58,6 +58,24 @@ CREATE TABLE "article" (
 	"image_url" VARCHAR(1000)
 );
 
+CREATE TABLE "calendar" (
+    "id" SERIAL PRIMARY KEY,
+    "source" varchar(1000) NOT NULL,
+	"title" varchar(1000) NOT NULL,
+	"start" varchar(1000) NOT NULL,
+	"end" varchar(1000),
+	"description" varchar(1000),
+	"location" varchar(8000),
+	"expiration" varchar(1000)
+);
+
+ALTER TABLE "calendar"
+ADD CONSTRAINT unique_event
+UNIQUE ("source", "title", "start", "end");
+
+ALTER TABLE "calendar"
+ALTER COLUMN "expiration" TYPE TIMESTAMP WITH TIME ZONE USING expiration::timestamp with time zone;
+
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 -- After executing these CREATE and INSERT statements in order,

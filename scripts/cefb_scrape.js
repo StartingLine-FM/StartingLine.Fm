@@ -73,6 +73,7 @@ axios
           start: eventStart,
           end: eventEnd,
           description: eventDescription,
+          expiration: moment().add(12, "months").format("YYYY-MM-DDTHH:mm:ss")
         };
 
         // Add the event object to an array
@@ -83,31 +84,21 @@ axios
     // Logging to check the scraped events
     console.log("CEFB Events:", CEFB_events);
 
-    // Delete all old CEFB events from the database
-//     const deleteSourceEventsQuery = `
-//   DELETE FROM "calendar"
-//   WHERE "source" = $1;
-// `;
+    // Delete old CEFB events based on expiration date
+    await pool.query(
+      `DELETE FROM "calendar" WHERE "source" = 'cefb' AND "expiration" < NOW();`
+    );
 
-//     try {
-//       await pool.query(deleteSourceEventsQuery, ["cefb"]);
-//       console.log(`Deleted old CEFB events from the database.`);
-//     } catch (error) {
-//       console.error(`Error deleting old CEFB events: ${error}`);
-//       res.sendStatus(500);
-//       return;
-//     }
-
-
-    // Insert all events into the database
+    // Insert new CEFB events into the database
     for (const event of CEFB_events) {
       await pool.query(
-        `INSERT INTO "calendar" ("source", "title", "start", "end", "description")
-            VALUES ($1, $2, $3, $4, $5);`,
-        [event.source, event.title, event.start, event.end, event.description]
+        `INSERT INTO "calendar" ("source", "title", "start", "end", "description", "expiration")
+            VALUES ($1, $2, $3, $4, $5, $6);`,
+        [event.source, event.title, event.start, event.end, event.description, event.expiration]
       );
     }
-    console.log("Successfully inserted CEFB events into database");
+
+    console.log("Successfully updated CEFB events in the database");
   })
   .catch((error) => {
     console.error("Error scraping CEFB calendar:", error);
