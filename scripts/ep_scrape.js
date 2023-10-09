@@ -134,17 +134,20 @@ const parseEventDate = (displayStart) => {
                 }
             }
 
-            const startSeconds = "00";
-            const endSeconds = "00";
-            const formattedStartTime = `${startHours.toString().padStart(2, "0")}:${startMinutes.toString().padStart(2, "0")}:00.000-05:00`;
-            const formattedEndTime = `${endHours.toString().padStart(2, "0")}:${endMinutes.toString().padStart(2, "0")}:00.000-05:00`;
+            const formattedStartTime = moment(start)
+                .utcOffset(-5)
+                .format(`YYYY-MM-DDTHH:mm:ss.SSSZ`);
 
-
-
+            const formattedEndTime = moment(end)
+                .utcOffset(-5)
+                .format(`YYYY-MM-DDTHH:mm:ss.SSSZ`);
 
 
             // Calculate expiration date 12 months from now
-            const expiration = moment().add(12, 'months').format(`YYYY-MM-DDT${formattedStartTime}:00.000`);
+            const expiration = moment()
+                .add(12, 'months')
+                .utcOffset(-5)
+                .format(`YYYY-MM-DDTHH:mm:ss.SSSZ`);
 
             return {
                 start: moment(start).utcOffset(-5).format(`YYYY-MM-DDT${formattedStartTime}:00.000`),
