@@ -15,8 +15,6 @@ axios
     // Loop through each event element and scrape data
     $(".tribe-events-calendar-list__event-details.tribe-common-g-col").each(
       (index, element) => {
-        // Logging to check if each element is being processed
-        console.log("Processing element #" + index);
 
         // Scrape data from the CEFB website
         const eventHeader = $(element)
@@ -60,11 +58,6 @@ axios
           .text()
           .replace(/\s+/g, " ");
 
-        // Logging to check extracted data
-        console.log("Event Header:", eventHeader);
-        console.log("Event Start:", eventStart);
-        console.log("Event End:", eventEnd);
-        console.log("Event Description:", eventDescription);
 
         // Create an object for the event
         const CEFB_CalendarBlock = {
@@ -81,8 +74,6 @@ axios
       }
     );
 
-    // Logging to check the scraped events
-    console.log("CEFB Events:", CEFB_events);
 
     // Delete old CEFB events based on expiration date
     await pool.query(
