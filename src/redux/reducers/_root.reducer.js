@@ -13,7 +13,7 @@ import CategoriesReducer from './categories.reducer';
 import StagesReducer from './stages.reducer';
 import adminReducer from './admin.reducer';
 import articles from './article.reducer';
-=======
+
 import articleReducer from './article.reducer';
 import { EP_Loading_Reducer, FU_Loading_Reducer, chamber_Loading_Reducer, CEFB_Loading_Reducer } from './loading.reducer';
 
