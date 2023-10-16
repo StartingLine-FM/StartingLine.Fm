@@ -7,6 +7,9 @@ const pool = require("../server/modules/pool");
 // URL of the Emerging Prairie calendar
 const EP_url = "https://www.emergingprairie.com/calendar/";
 
+
+// ep_scrape.js
+async function epScrape() {
 axios
     .get(EP_url)
     .then(async (response) => {
@@ -157,3 +160,6 @@ const parseEventDate = (displayStart) => {
         }
     }
 };
+}
+
+module.exports = epScrape;

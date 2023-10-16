@@ -7,6 +7,9 @@ const pool = require("../server/modules/pool");
 // URL of the Fargo Moorhead West Fargo Chamber of Commerce calendar
 const CHAMBER_url = "https://www.fmwfchamber.com/events/catgid/6?";
 
+
+// chamber_scrape.js
+async function chamberScrape() {
 axios
     .get(CHAMBER_url)
     .then(async (response) => {
@@ -68,3 +71,6 @@ axios
     .catch((error) => {
         console.error("Error scraping Chamber calendar:", error);
     });
+}
+
+module.exports = chamberScrape;

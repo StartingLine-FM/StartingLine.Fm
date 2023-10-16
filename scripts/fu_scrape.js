@@ -7,6 +7,9 @@ const pool = require("../server/modules/pool");
 // URL of the Fargo Underground calendar
 const FU_url = "https://fargounderground.com/events/category/community/business/list/";
 
+
+// fu_scrape.js
+async function fuScrape() {
 axios
     .get(FU_url)
     .then(async (response) => {
@@ -157,3 +160,6 @@ const parseEventDate = (displayStart) => {
         }
     }
 };
+}
+
+module.exports = fuScrape;

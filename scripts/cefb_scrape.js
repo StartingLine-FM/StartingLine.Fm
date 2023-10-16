@@ -6,6 +6,9 @@ const pool = require("../server/modules/pool");
 // URL of the CEFB calendar
 const CEFB_url = "https://ndsu-cefb.com/events/list/";
 
+
+// cefb_scrape.js
+async function cefbScrape() {
 axios
   .get(CEFB_url)
   .then(async (response) => {
@@ -94,3 +97,6 @@ axios
   .catch((error) => {
     console.error("Error scraping CEFB calendar:", error);
   });
+}
+
+module.exports = cefbScrape;
