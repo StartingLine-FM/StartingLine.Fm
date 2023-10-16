@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
+const cron = require('node-cron');
+const omniScrape = require('./scripts/scheduler');
 
 const app = express();
 
@@ -44,4 +46,10 @@ const PORT = process.env.PORT || 5000;
 /** Listen * */
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
+});
+
+// Schedule scraping scripts to run every 30 minutes
+cron.schedule('*/30 * * * *', async () => {
+  console.log('Running scraping scripts every 5 minutes.');
+  await omniScrape();
 });

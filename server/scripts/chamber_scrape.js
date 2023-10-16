@@ -2,7 +2,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const moment = require("moment");
 const chrono = require("chrono-node");
-const pool = require("../server/modules/pool");
+const pool = require("../modules/pool");
 
 // URL of the Fargo Moorhead West Fargo Chamber of Commerce calendar
 const CHAMBER_url = "https://www.fmwfchamber.com/events/catgid/6?";

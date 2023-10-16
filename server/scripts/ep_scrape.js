@@ -2,23 +2,23 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const moment = require("moment");
 const chrono = require("chrono-node");
-const pool = require("../server/modules/pool");
+const pool = require("../modules/pool");
 
-// URL of the Fargo Underground calendar
-const FU_url = "https://fargounderground.com/events/category/community/business/list/";
+// URL of the Emerging Prairie calendar
+const EP_url = "https://www.emergingprairie.com/calendar/";
 
 
-// fu_scrape.js
-async function fuScrape() {
+// ep_scrape.js
+async function epScrape() {
 axios
-    .get(FU_url)
+    .get(EP_url)
     .then(async (response) => {
         const $ = cheerio.load(response.data);
-        const FU_events = [];
+        const EP_events = [];
 
         $(".tribe-events-calendar-list__event-details.tribe-common-g-col").each(
             (index, element) => {
-                // Scraping the Fargo Underground calendar
+                // Scraping the EP calendar
                 const eventHeader = $(element)
                     .find(
                         ".tribe-events-calendar-list__event-title.tribe-common-h6.tribe-common-h4--min-medium"
@@ -60,30 +60,30 @@ axios
 
                 const formattedDate = parseEventDate(date);
 
-                const FU_CalendarBlock = {
-                    source: "fu",
+                const EP_CalendarBlock = {
+                    source: "ep",
                     title: eventHeader,
                     start: formattedDate.start,
                     end: formattedDate.end,
                     description: eventDescription,
                     location: eventLocation,
-                    expiration: formattedDate.expiration,
+                    expiration: formattedDate.expiration, // Added expiration column
                 };
 
-                FU_events.push(FU_CalendarBlock);
+                EP_events.push(EP_CalendarBlock);
             }
         );
 
-        // Delete old FU events from the database
+        // Delete old EP events from the database
         await pool.query(
-            `DELETE FROM "calendar" WHERE "source" = 'fu' AND "expiration" <= NOW();`
+            `DELETE FROM "calendar" WHERE "source" = 'ep' AND "expiration" <= NOW();`
         );
 
         // Insert all events into the database
-        for (const event of FU_events) {
+        for (const event of EP_events) {
             await pool.query(
                 `INSERT INTO "calendar" ("source", "title", "start", "end", "description", "location", "expiration")
-        VALUES ($1, $2, $3, $4, $5, $6, $7);`,
+            VALUES ($1, $2, $3, $4, $5, $6, $7);`,
                 [
                     event.source,
                     event.title,
@@ -91,14 +91,14 @@ axios
                     event.end,
                     event.description,
                     event.location,
-                    event.expiration,
+                    event.expiration, // Include expiration column in INSERT
                 ]
             );
         }
-        console.log("Successfully inserted FU events into the database");
+        console.log("Successfully inserted EP events into the database");
     })
     .catch((error) => {
-        console.error("Error scraping FU calendar:", error);
+        console.error("Error scraping EP calendar:", error);
     });
 
 const parseEventDate = (displayStart) => {
@@ -162,4 +162,4 @@ const parseEventDate = (displayStart) => {
 };
 }
 
-module.exports = fuScrape;
+module.exports = epScrape;

@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const moment = require("moment");
-const pool = require("../server/modules/pool");
+const pool = require("../modules/pool");
 
 // URL of the CEFB calendar
 const CEFB_url = "https://ndsu-cefb.com/events/list/";
