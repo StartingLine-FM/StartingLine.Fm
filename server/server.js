@@ -48,8 +48,9 @@ app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });
 
-// Schedule scraping scripts to run every 30 minutes
-cron.schedule('*/30 * * * *', async () => {
-  console.log('Running scraping scripts every 5 minutes.');
+// Schedule scraping scripts to run every hour from 8 am to 6 pm
+cron.schedule('0 8-18 * * *', async () => {
+  console.log('Running scraping scripts every hour from 8 am to 6 pm.');
   await omniScrape();
 });
+

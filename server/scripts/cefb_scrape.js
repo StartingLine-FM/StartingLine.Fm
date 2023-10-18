@@ -92,7 +92,7 @@ axios
       );
     }
 
-    console.log("Successfully updated CEFB events in the database");
+    console.log("Successfully inserted CEFB events into the database");
   })
   .catch((error) => {
     console.error("Error scraping CEFB calendar:", error);

@@ -19,64 +19,44 @@ const MenuSidebar = () => {
   const loadingChamber = useSelector((state) => state.chamber_Loading_Reducer);
   const loadingCEFB = useSelector((state) => state.CEFB_Loading_Reducer);
 
-  const handleEP_Click = () => {
-    if (EP_Events.length === 0) {
-      // If EP calendar data is empty, fetch it
+  const handleSourceClick = (source) => {
+    if (source === 'EP' && EP_Events.length === 0) {
       dispatch({ type: 'FETCH_EP' });
-    } else {
-      // If EP calendar data is not empty, clear it
-      dispatch({ type: 'CLEAR_EP' }); 
-    }
-  };
-
-  const handleFU_Click = () => {
-    if (FU_Events.length === 0) {
-      // If FU calendar data is empty, fetch it
+    } else if (source === 'EP') {
+      dispatch({ type: 'CLEAR_EP' });
+    } else if (source === 'FU' && FU_Events.length === 0) {
       dispatch({ type: 'FETCH_FU' });
-    } else {
-      // If FU calendar data is not empty, clear it
-      dispatch({ type: 'CLEAR_FU' }); 
-    }
-  };
-  
-  const handleChamber_Click = () => {
-    if (CHAMBER_Events.length === 0) {
-      // If Chamber calendar data is empty, fetch it
+    } else if (source === 'FU') {
+      dispatch({ type: 'CLEAR_FU' });
+    } else if (source === 'CHAMBER' && CHAMBER_Events.length === 0) {
       dispatch({ type: 'FETCH_CHAMBER' });
-    } else {
-      // If Chamber calendar data is not empty, clear it
+    } else if (source === 'CHAMBER') {
       dispatch({ type: 'CLEAR_CHAMBER' });
-    }
-  };
-
-  const handleCEFB_Click = () => {
-    if (CEFB_Events.length === 0) {
-      // If CEFB calendar data is empty, fetch it
+    } else if (source === 'CEFB' && CEFB_Events.length === 0) {
       dispatch({ type: 'FETCH_CEFB' });
-    } else {
-      // If CEFB calendar data is not empty, clear it
+    } else if (source === 'CEFB') {
       dispatch({ type: 'CLEAR_CEFB' });
     }
   };
 
-  const handleClearClick = () => { // Clears all data from every calendar reducers.
+  const handleClearClick = () => {
     dispatch({ type: 'CLEAR_CALENDARS' });
   };
 
-    // Define a color mapping for each button
-    const colorMap = {
-      CEFB: 'green',
-      EP: 'red',
-      FU: 'orange',
-      Chamber: 'purple',
-    };
+  // Define a color mapping for each button
+  const colorMap = {
+    CEFB: 'green',
+    EP: 'red',
+    FU: 'orange',
+    Chamber: 'purple',
+  };
 
   return (
     <Box>
       <IconButton // The NDSU CEFB Button
         className={`calendar-button`}
         sx={{ color: CEFB_Events.length > 0 ? colorMap.CEFB : 'black' }} // Change color based on CEFB_Events length
-        onClick={handleCEFB_Click}
+        onClick={() => handleSourceClick('CEFB')}
         disabled={loadingCEFB}
       >
         {loadingCEFB ? <CircularProgress size={20} /> : <School />}
@@ -86,7 +66,7 @@ const MenuSidebar = () => {
       <IconButton // The Emerging Prairie Button
         className={`calendar-button`}
         sx={{ color: EP_Events.length > 0 ? colorMap.EP : 'black' }} // Change color based on EP_Events length
-        onClick={handleEP_Click}
+        onClick={() => handleSourceClick('EP')}
         disabled={loadingEP}
       >
         {loadingEP ? <CircularProgress size={20} /> : <BrightnessLow />}
@@ -96,7 +76,7 @@ const MenuSidebar = () => {
       <IconButton // The Fargo Underground Button
         className={`calendar-button`}
         sx={{ color: FU_Events.length > 0 ? colorMap.FU : 'black' }} // Change color based on FU_Events length
-        onClick={handleFU_Click}
+        onClick={() => handleSourceClick('FU')}
         disabled={loadingFU}
       >
         {loadingFU ? <CircularProgress size={20} /> : <HorizontalSplit />}
@@ -106,7 +86,7 @@ const MenuSidebar = () => {
       <IconButton // The Chamber of Commerce Button
         className={`calendar-button`}
         sx={{ color: CHAMBER_Events.length > 0 ? colorMap.Chamber : 'black' }} // Change color based on Chamber_Events length
-        onClick={handleChamber_Click}
+        onClick={() => handleSourceClick('CHAMBER')}
         disabled={loadingChamber}
       >
         {loadingChamber ? <CircularProgress size={20} /> : <Business />}
