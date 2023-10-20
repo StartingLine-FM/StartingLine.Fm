@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
+const cron = require('node-cron');
+const omniScrape = require('./scripts/scheduler');
+
 const app = express();
 
 const sessionMiddleware = require('./modules/session-middleware');
@@ -44,3 +47,10 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Listening on port: ${PORT}`);
 });
+
+// Schedule scraping scripts to run every hour from 8 am to 6 pm
+cron.schedule('0 8-18 * * *', async () => {
+  console.log('Running scraping scripts every hour from 8 am to 6 pm.');
+  await omniScrape();
+});
+
