@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { TextField, Button, Box, IconButton, Paper, Typography, Tooltip, Container } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete'; //Added DeleteIcon, delete option
 import EditIcon from '@mui/icons-material/Edit'; //Added EditIcon, update option
@@ -31,8 +32,9 @@ function AdminPage() {
   const [editedStageName, setEditedStageName] = useState('');
 
 
-  // useDispatch hook allows us to dispatch a Redux action
+  // useDispatch hook allows us to dispatch a Redux action and history pushes non-admin to home
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // Regular expression for URL validation
   const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
@@ -40,6 +42,14 @@ function AdminPage() {
   // useSelector hook to extract data from the Redux store state
   const categories = useSelector((state) => state.categories);
   const stages = useSelector((state) => state.stages);
+  const user = useSelector((state) => state.user);
+
+  // Check if the user is not an admin and redirect to the home page
+  useEffect(() => {
+    if (!user.admin) {
+      history.push('/home');
+    }
+  }, [user.admin, history]);
 
   // useEffect hook to fetch categories and stages once the component is mounted
   useEffect(() => {
