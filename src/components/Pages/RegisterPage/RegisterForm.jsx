@@ -24,14 +24,6 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, openRegisterMod
   const registerUser = (event) => {
     event.preventDefault();
 
-    console.log({ // show the user and their associated list and resources in the log
-      user: {
-        username: username,
-        password: password
-      },
-      todo
-    })
-
     if (!username || !password) {
       return dispatch({
         type: 'REGISTRATION_INPUT_ERROR'
@@ -55,6 +47,7 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, openRegisterMod
         todo
       }
     }
+
 
     dispatch({ // dispatch to register a user and the todo list
       type: 'REGISTER',
@@ -95,7 +88,7 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, openRegisterMod
                 required
                 sx={{ mr: 1 }}
                 value={username}
-                onChange={(event) => setUsername(event.target.value)}
+                onChange={(event) => { setUsername(event.target.value); console.log(event.target.value) }}
               />
               <TextField
                 variant='standard'
