@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Dialog, DialogContent, TextField, DialogActions, Button, DialogTitle, IconButton, Typography } from '@mui/material';
+import { Dialog, DialogContent, TextField, DialogActions, Button, DialogTitle, IconButton, Typography, Link } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import LoginPage from '../LoginPage/LoginPage';
 
@@ -23,14 +23,6 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, openRegisterMod
   // register user funciton
   const registerUser = (event) => {
     event.preventDefault();
-
-    console.log({ // show the user and their associated list and resources in the log
-      user: {
-        username: username,
-        password: password
-      },
-      todo
-    })
 
     if (!username || !password) {
       return dispatch({
@@ -55,6 +47,7 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, openRegisterMod
         todo
       }
     }
+
 
     dispatch({ // dispatch to register a user and the todo list
       type: 'REGISTER',
@@ -93,8 +86,9 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, openRegisterMod
                 type="text"
                 label="username"
                 required
+                sx={{ mr: 1 }}
                 value={username}
-                onChange={(event) => setUsername(event.target.value)}
+                onChange={(event) => { setUsername(event.target.value); console.log(event.target.value) }}
               />
               <TextField
                 variant='standard'
@@ -106,17 +100,24 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, openRegisterMod
               />
             </DialogContent>
             <DialogActions>
-              <Button
+              <Typography variant="body2" >Already have an account? </Typography>
+              <Link
                 // on click close the register modal and open the login modal
                 onClick={() => {
                   handleCloseRegister();
                   handleOpen();
                 }}
+                sx={{ mx: 1 }}
               >
-                Login
-              </Button>
+                Log in.
+              </Link>
               {/* on click register the user */}
-              <Button onClick={registerUser} type="submit" name="submit" value="Register">Register</Button>
+              <Button
+                variant="contained"
+                onClick={registerUser}
+                type="submit"
+                name="submit"
+                value="Register">Register</Button>
             </DialogActions>
           </Dialog>
         </div>
