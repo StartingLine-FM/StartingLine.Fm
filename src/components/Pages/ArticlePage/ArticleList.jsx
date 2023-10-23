@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import ArticleCard from './ArticleCard';
 //MUI
 import {
@@ -10,7 +11,15 @@ import {
 export default function ArticleList(props) {
 
     const dispatch = useDispatch();
+    const history = useHistory();
     const articleList = useSelector((store) => store.articles.articleList);
+    const user = useSelector((state) => state.user); // Get the user information
+
+    useEffect(() => {
+        if (!user.admin) {
+          history.push('/home');
+        }
+      }, [user.admin, history]);
 
     useEffect(() => {
         dispatch({

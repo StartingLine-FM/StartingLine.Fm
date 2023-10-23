@@ -21,56 +21,68 @@ function Nav({ handleOpen, setOpenRegisterModal }) {
         justifyContent: "space-between",
       }}>
         <Grid item>
+          {/*StartingLine.FM Banner that also acts as a HOME Button*/}
           <Link underline='none' href="/#/home">
             <Typography sx={{ my: 2, mx: 4 }} variant="h3" variantMapping={{ h3: 'h1' }}>StartingLine.FM</Typography>
           </Link>
         </Grid>
         <Grid item sx={{ m: 3 }}>
           <ButtonGroup>
-            {/* If no user is logged in, show these links */}
+
+            {/*HOME BUTTON*/}
+            <Button onClick={() => history.push("/#/home")} variant="contained">
+              Home
+            </Button>
+
+            {/*ADMIN BUTTON IF LOGGED IN AS ADMIN*/}
+            {user.admin && (
+              <Button onClick={() => history.push("/admin")} variant="contained">
+                Admin
+              </Button>
+            )}
+
+            {/*ARTICLES BUTTON IF LOGGED IN AS ADMIN*/}
+            {user.admin && (
+              <Button onClick={() => history.push("/articles")} variant="contained">
+                Articles
+              </Button>
+            )}
+
+            {/*CALENDAR BUTTON*/}
+            <Button onClick={() => history.push('/calendar')} variant="contained">
+              Calendar
+            </Button>
+
+            {/*TODO LIST BUTTON*/}
+            {user.id
+              ? <Button onClick={() => history.push('/todolist')} variant="contained">
+                Todo List
+              </Button >
+              : <Button onClick={() => history.push('/anonlist')} variant="contained">
+                  Todo List
+              </Button>
+            }
+
+            {/*ABOUT BUTTON*/}
+            <Button onClick={() => history.push('/about')} variant="contained">
+              About
+            </Button>
+
+            {/* If there's no user, show login/registration links */}
             {!user.id && (
-              // If there's no user, show login/registration links
               <>
                 <Button variant="contained" onClick={handleOpen} >
                   Login / Register
                 </Button>
               </>
             )}
-            {/* If a user is logged in, show these links */}
+
+            {/* If a user is logged in, show logout instead */}
             {user.id && (
               <>
-                <Button onClick={() => history.push("/#/home")} variant="contained">
-                  Home
-                </Button>
-
-                {user.admin && (
-                  <Button variant="contained">
-                    <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/admin">
-                      Admin Page
-                    </Link>
-                  </Button>
-                )}
                 <LogOutButton />
               </>
             )}
-            <Button onClick={() => history.push('/about')} variant="contained">
-
-              About
-
-            </Button>
-            <Button onClick={() => history.push('/calendar')} variant="contained">
-              Calendar
-            </Button>
-            {user.id
-              ? <Button onClick={() => history.push('/todolist')} variant="contained">
-                Todo List
-              </Button >
-              : <Button onClick={() => history.push('/anonlist')} variant="contained">
-                <Link sx={{ color: '#1d1e1e' }} underline='none' href="/#/anonlist">
-                  Todo List
-                </Link>
-              </Button>
-            }
           </ButtonGroup>
         </Grid>
       </Grid>
