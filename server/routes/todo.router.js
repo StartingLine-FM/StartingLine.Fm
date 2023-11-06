@@ -42,7 +42,7 @@ router.put('/:resource_id/:title_table_id', rejectUnauthenticated, async (req, r
     const response = await pool.query(queryText,
       [req.body.notes,
       req.body.completed,
-        req.body.todo_id])
+      req.body.todo_id])
     res.status(204).send(response.rows) // send the rows
   } catch (error) {
     // log the error 
@@ -94,52 +94,52 @@ router.delete('/:title_table_id', rejectUnauthenticated, async (req, res) => {
 
 // get for grabbing the resources based on the todo list
 router.get(`/user/todolist/resources/:title_table_id`, (req, res) => {
-    // get user id
-    const id = req.user.id;
-    // grab the title for the resource
-    const title_table_id = req.params.title_table_id
-    const queryText = `SELECT todo.notes, todo.id, todo.title_table_id, todo.resource_id, todo.completed, resource.name AS resource_name,
+  // get user id
+  const id = req.user.id;
+  // grab the title for the resource
+  const title_table_id = req.params.title_table_id
+  const queryText = `SELECT todo.notes, todo.id, todo.title_table_id, todo.resource_id, todo.completed, resource.name AS resource_name,
     resource.image_url, resource.description AS resource_description,
     resource.website, resource.email, resource.address, resource.linkedin
 FROM todo
 JOIN resource ON resource.id = todo.resource_id
 JOIN stage ON stage.id = resource.stage_id
-JOIN category ON category.id = resource.category_id
+JOIN organization ON organization.id = resource.organization_id
 WHERE todo.user_id = $1
 AND todo.title_table_id = $2;`;
-    pool.query(queryText, [id, title_table_id]).then(result => {
+  pool.query(queryText, [id, title_table_id]).then(result => {
 
-      res.status(200).send(result.rows); // send the status and the response
-    }).catch((err) => {
-      console.log('there was an error getting the resource', err) // log error
-      res.sendStatus(500); // send status
-    })
+    res.status(200).send(result.rows); // send the status and the response
+  }).catch((err) => {
+    console.log('there was an error getting the resource', err) // log error
+    res.sendStatus(500); // send status
   })
+})
 
 
 // get to grab titles
-router.get('/titles',async (req, res) => {
-    try {
-      const user_id = req.user.id;
-      // create query text
-      const queryText = `SELECT * FROM "title_table" WHERE user_id = $1;`;
-      // send back response
-      const response = await pool.query(queryText, [user_id]);
-      res.status(200).send(response.rows) // send the response
-    } catch (error) {
-      console.log('error getting the titles', error) // log error
-      res.sendStatus(500); // send status
-    }
+router.get('/titles', async (req, res) => {
+  try {
+    const user_id = req.user.id;
+    // create query text
+    const queryText = `SELECT * FROM "title_table" WHERE user_id = $1;`;
+    // send back response
+    const response = await pool.query(queryText, [user_id]);
+    res.status(200).send(response.rows) // send the response
+  } catch (error) {
+    console.log('error getting the titles', error) // log error
+    res.sendStatus(500); // send status
+  }
 })
 
-router.post('/title',rejectUnauthenticated, async (req, res) => {
+router.post('/title', rejectUnauthenticated, async (req, res) => {
   try {
     // get user 
     const user_id = req.user.id;
     // grab title
     const title = req.body.title;
     // make query
-    const queryText= `INSERT INTO "title_table" ("title", "user_id") VALUES ($1, $2);`;
+    const queryText = `INSERT INTO "title_table" ("title", "user_id") VALUES ($1, $2);`;
     // make response to send back
     const response = await pool.query(queryText, [title, user_id]);
     res.status(201).send(response.rows) // send response rows and a status of created
