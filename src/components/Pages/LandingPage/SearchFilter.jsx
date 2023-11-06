@@ -27,9 +27,45 @@ import InfoIcon from '@mui/icons-material/Info';
 import InfoModal from "./InfoModal";
 
 
-export default function SearchFilter({ currentList, setCurrentList, categories, stages }) {
+//Algolia Initiation and index
+import algoliasearch from 'algoliasearch/lite';
+const searchClient = algoliasearch('KK1UO0W0NW', 'acfecaf8e37908662d286dc1210b781b');
+import searchQuery from "algoliasearch";
+const index = searchClient.initIndex('test_resources_2');
+
+
+
+export default function SearchFilter({ currentList, setCurrentList, categories, stages, searchResults, setSearchResults }) {
+
+    //State variables to be used in Algolia search
+    // const [searchResults, setSearchResults] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+
+
+    //Algolia Event Handler
+    const handleSearchInputChange = (event) => {
+        const query = event.target.value;
+        setSearchQuery(query);
+        handleSearch(query);
+    };
+
+    //Algolia Search Function
+    const handleSearch = async (query) => {
+        if (query.length > 0) {
+            try {
+                const { hits } = await index.search(query);
+                setSearchResults(hits); // Update the searchResults from props
+                console.log('Search results:', hits);
+            } catch (error) {
+                console.error('Error searching:', error);
+            }
+        } else {
+            setSearchResults([]); // Clear the results if the query is empty
+        }
+    };
 
     // local state:
+
     // Category
     const [selectedCategory, setSelectedCategory] = useState("");
     const [categoryOpen, setCategoryOpen] = useState(false);
@@ -44,6 +80,7 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
     const [titleOpen, setTitleOpen] = useState(false);
     // Filter info modal
     const [infoOpen, setInfoOpen] = useState(false);
+
 
     // Redux
     const dispatch = useDispatch();
@@ -88,63 +125,6 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
         });
     }
 
-    // execute search with selected filters / text
-    const fetchSearch = () => {
-
-        let query = {};
-
-        // all 3 defined
-        if (selectedCategory && selectedStage && textSearch) {
-            query = {
-                category: selectedCategory,
-                stage: selectedStage,
-                text: textSearch
-            }
-            // category and stage
-        } else if (selectedCategory && selectedStage && !textSearch) {
-            query = {
-                category: selectedCategory,
-                stage: selectedStage
-            }
-            // category and text
-        } else if (selectedCategory && !selectedStage && textSearch) {
-            query = {
-                category: selectedCategory,
-                text: textSearch
-            }
-            // stage and text
-        } else if (!selectedCategory && selectedStage && textSearch) {
-            query = {
-                stage: selectedStage,
-                text: textSearch
-            }
-            // category
-        } else if (selectedCategory && !selectedStage && !textSearch) {
-            query = {
-                category: selectedCategory
-            }
-            // stage
-        } else if (!selectedCategory && selectedStage && !textSearch) {
-            query = {
-                stage: selectedStage
-            }
-            // text
-        } else if (!selectedCategory && !selectedStage && textSearch) {
-            query = {
-                text: textSearch
-            }
-        }
-
-        // Send off our dispatch with our selected query
-        dispatch({
-            type: "FETCH_SEARCH",
-            payload: {
-                query
-            }
-        })
-
-        setChanges(false);
-    }
 
     // fetch function for user todo lists based on title_table_id
     const fetchTodo = (id) => {
@@ -165,23 +145,23 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
                         placeholder="Search"
                         size="small"
                         sx={{ width: { xs: 0.85, sm: 0.7 } }}
-                        value={textSearch}
-                        onChange={(e) => setTextSearch(e.target.value)}
+                        value={searchQuery}
+                        onChange={handleSearchInputChange}
                     />
                     {/* Button is disabled and default color unless text has been entered into search bar */}
-                    {
+                    {/* {
                         textSearch
                             ? <IconButton color='primary' onClick={fetchSearch}><SendIcon /></IconButton>
                             : <IconButton ><SendOutlinedIcon /></IconButton>
-                    }
+                    } */}
                 </Grid>
                 {/* Category and Stage filter dropdowns */}
                 <Grid item>
                     {/* Apply filters button, rendered differently depending on if user has set new filters */}
-                    {changes
+                    {/* {changes
                         ? <Button variant="contained" sx={{ mx: { xs: 1, sm: 1 }, mb: 2, mt: 1, px: { xs: 5, md: 3 } }} onClick={fetchSearch} >Apply</Button>
                         : <Button variant="outlined" sx={{ mx: { xs: 1, sm: 1 }, mb: 2, mt: 1, px: { xs: 5, md: 3 } }} onClick={fetchSearch} >Apply</Button>
-                    }
+                    } */}
                     {/* Clear filters button, rendered differently depending on whether or not filters / search have been entered */}
                     {selectedCategory || selectedStage || textSearch
                         ? <Button color="secondary" variant="contained" sx={{ mx: { xs: 3, md: 0 }, mb: 2, mt: 1, px: { xs: 5, md: 3 } }} onClick={clearFilters} >Clear</Button>
