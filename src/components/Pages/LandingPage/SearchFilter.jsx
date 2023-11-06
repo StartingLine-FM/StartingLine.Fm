@@ -38,7 +38,6 @@ const index = searchClient.initIndex('test_resources_2');
 export default function SearchFilter({ currentList, setCurrentList, categories, stages, searchResults, setSearchResults }) {
 
     //State variables to be used in Algolia search
-    // const [searchResults, setSearchResults] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
 

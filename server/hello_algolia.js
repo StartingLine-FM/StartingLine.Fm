@@ -2,7 +2,7 @@ const pool = require('./modules/pool');
 const algoliasearch = require('algoliasearch');
 
 // Connect and authenticate with your Algolia app
-const client = algoliasearch('KK1UO0W0NW', '2123fc835b2954cd49ef43065ab14ba6');
+const client = algoliasearch('ALGOLIA_APP_ID', '2123fc835b2954cd49ef43065ab14ba6');
 
 // Create a new index and add records
 const index = client.initIndex('test_resources_2');
