@@ -98,7 +98,8 @@ export default function Result({ result, currentList, categories, stages }) {
             <CloseIcon />
         </IconButton>
 
-        console.log('result is', result);
+        // UNCOMMENT THE BELOW LINE TO SEE RSULTS IN CONSOLE
+        // console.log('result is', result);
 
     return (
         <>

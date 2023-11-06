@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Container, Paper, Grid, Typography } from '@mui/material';
+import algoliasearch from 'algoliasearch/lite';  // Import algoliasearch
 
 // CUSTOM COMPONENTS
 import SearchFilter from './SearchFilter';
 import Result from './Result';
+
+// Algolia Initiation and index
+const searchClient = algoliasearch('KK1UO0W0NW', 'acfecaf8e37908662d286dc1210b781b');
+const index = searchClient.initIndex('test_resources_2');
 
 function LandingPage({ currentList, setCurrentList }) {
 
@@ -19,25 +24,31 @@ function LandingPage({ currentList, setCurrentList }) {
     handleSearch(query);
   };
 
-  //Algolia Search Function
+  // Trigger a search for all resources when the page loads
+  useEffect(() => {
+    handleSearch(''); // Passing an empty query to fetch all resources
+  }, []);
+
+
+  // Algolia Search Function
   const handleSearch = async (query) => {
-    if (query.length > 0) {
-      try {
+    try {
+      if (query.length > 0) {
         const { hits } = await index.search(query);
         setSearchResults(hits);
-        console.log('Search results:', hits); // Add this line to log the search results
-      } catch (error) {
-        console.error('Error searching:', error);
+      } else {
+        // If the query is empty, return all resources
+        const { hits } = await index.search('');
+        setSearchResults(hits);
       }
-    } else {
-      setSearchResults([]); // Clear the results if the query is empty
+    } catch (error) {
+      console.error('Error searching:', error);
     }
   };
 
 
   // Redux
   const dispatch = useDispatch();
-  const search = useSelector(store => store.search);
   const categories = useSelector(store => store.categories);
   const stages = useSelector(store => store.stages);
   const todo = useSelector(store => store.todoListResourcesReducer);
@@ -46,7 +57,6 @@ function LandingPage({ currentList, setCurrentList }) {
 
   // fetches default search as well as all categories and stages on page load
   useEffect(() => {
-    // dispatch({ type: 'FETCH_SEARCH' });
     dispatch({ type: 'FETCH_CATEGORIES' });
     dispatch({ type: 'FETCH_STAGES' });
   }, [dispatch]);
@@ -80,23 +90,15 @@ function LandingPage({ currentList, setCurrentList }) {
           handleSearch={() => handleSearch(searchQuery, setSearchResults)}
         />
         <Grid item xs={12} md={8} container spacing={2}>
-          {searchResults.length > 0 ? (
-            searchResults.map(result => (
-              <Grid item xs={12} sm={6} lg={4} key={result.id}>
-                <Result
-                  result={result}
-                  currentList={currentList}
-                  setCurrentList={setCurrentList}
-                />
-              </Grid>
-            ))
-          ) : (
-            <Grid item xs={12}>
-              <Paper sx={{ p: 3 }}>
-                <Typography>Your search returned 0 results.</Typography>
-              </Paper>
+          {searchResults.map(result => (
+            <Grid item xs={12} sm={6} lg={4} key={result.id}>
+              <Result
+                result={result}
+                currentList={currentList}
+                setCurrentList={setCurrentList}
+              />
             </Grid>
-          )}
+          ))}
         </Grid>
       </Grid>
     </Container>

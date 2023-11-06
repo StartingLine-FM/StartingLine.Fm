@@ -54,7 +54,6 @@ export default function SearchFilter({ currentList, setCurrentList, categories, 
             try {
                 const { hits } = await index.search(query);
                 setSearchResults(hits); // Update the searchResults from props
-                console.log('Search results:', hits);
             } catch (error) {
                 console.error('Error searching:', error);
             }
