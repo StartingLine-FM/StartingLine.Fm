@@ -56,43 +56,60 @@ const algoliaSave = () => {
 // This endpoint is a POST request that inserts a new resource into the 'resource' table in the database.
 // It first checks if the user is authenticated and has admin privileges using the rejectUnauthenticated and isAdmin middleware.
 router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
+
     // The request body should contain the new resource's details
     const newResource = req.body;
 
-    // OKAY, so it turns out the variability of resources being able to be tagged with either support, funding, or both 
-    // with the possibility of multiple tags for each makes things, uhh
-    // COMPLICATED AS HELL FOR ADDING A NEW RESOURCE.
-    // For now my only idea is to have multiple types of "subquery" 
-    // to build our final query once we've checked to see exactly what we're sending.
-    // This approach is ass for a few reasons:
-    // 1. It's most likely gonna mean we'll need a query builder function with a gross if / else statement
-    // to parse which queries to add to the final one based on whether or not we're tagging 1 support, 1 funding, both, etc.
-    // 2. I have no idea how we're gonna effectively determine the bling number to sanitize the query
-    // if the amount of support / funding tags that can be included on a POST is variable. My only idea was to add 
-    // a `const bling = 9` (referencing the baseQuery) and then add a blingCounter function that we can plug in with
-    // our old friend String Template Literal (ex. `SELECT CAST ($${blingCounter} AS INT)...`
-    // Sorry to dump this on you, but I know you'll figure it out! Keep in mind, you don't have to take this approach.
-    // If you can come up with something more convenient or find an npm package that will make this easier or something I'd be stoked as hell lmao
+    // // instantiate the bling number as 9, because that's the determined key amount for the initial resourceQuery
+    // let bling = 10
 
-    const baseQuery = `WITH "inserted_resource" AS (
-        INSERT INTO "resource"(stage_id, organization_id, name, image_url, description, website, email, address, linkedin) 
-        VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) 
-        RETURNING "id")`
+    // // function to be called when we need to increment bling
+    // // this ensures our support and function queries will be sanitized no matter the amount of tags
+    // function blingCounter() {
+    //     return bling + 1
+    // }
+    // initial resource table insert query
+    const resourceQuery = `INSERT INTO "resource"(stage_id, organization_id, entrepreneur_id, name, image_url, description, website, email, address, linkedin) 
+        VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
+        RETURNING "id";`
+    // support and function queries each calling blingCounter for SQL sanitization
     const supportQuery = `INSERT INTO "support_join" ("support_id", "resource_id")
-    SELECT CAST($N AS INT) AS "support_id", "id" FROM "inserted_resource"`
+    VALUES($1, $2);`
     const fundingQuery = `INSERT INTO "funding_join" ("funding_id", "resource_id")
-    SELECT CAST($N AS INT) AS "funding_id", "id" FROM "inserted_resource"`
-    // NOTE: to post more than one support_id or funding_id to their respective join tables in one POST,
-    // You'll need to find a way to tack the following onto the end of the applicable queryText:
-    // UNION ALL
-    // SELECT CAST($N AS INT) AS "support/funding_id", "id" FROM "inserted_resource"
+    VALUES($1, $2);`
 
-    const queryText = `**************** FIX ME ****************`
     try {
-        // Execute the SQL query
-        await pool.query(queryText, [newResource.stage_id, newResource.organization_id, newResource.name, newResource.image_url, newResource.description, newResource.website, newResource.email, newResource.address, newResource.linkedin]);
+        // first, we instantiate the resource INSERT into a variable
+        // so we can store the RETURNING "id" value to reference for the join table INSERTs
+        let addedResource = await pool.query(
+            resourceQuery,
+            [
+                newResource.stage_id,
+                newResource.organization_id,
+                newResource.entrepreneur_id,
+                newResource.name,
+                newResource.image_url,
+                newResource.description,
+                newResource.website,
+                newResource.email,
+                newResource.address,
+                newResource.linkedin
+            ]);
+        let resourceId = addedResource.rows[0].id;
+        // we'll send 'support' and 'funding' keys in the req.body as arrays of support_id or funding_id numbers
+        // that way we can loop over them and make an insert statement for each tag needed per resource
+        if (newResource.support) {
+            for (id of newResource.support) {
+                await pool.query(supportQuery, [id, resourceId])
+            }
+        }
+        if (newResource.funding) {
+            for (id of newResource.funding) {
+                await pool.query(fundingQuery, [id, resourceId])
+            }
+        }
         // Upon successfull post, update the algolia index to reflect the newly added resource
-        algoliaSave();
+        // algoliaSave();
         // Send a 201 status code to the client to indicate that the resource was successfully created
         res.sendStatus(201);
     } catch (err) {
