@@ -112,19 +112,14 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
                     onChange={(event) => handleSearch(event.currentTarget.value)}
                 /> */}
 
-                {/* ALGOLIA BEGINS HERE */}
-                {/* <InstantSearch indexName="test_resources_2" searchClient={searchClient}> */}
+                {/* ALGOLIA SEARCH BOX */}
                 <SearchBox
                     translations={{
                         placeholder: 'Search',
                     }}
                     onChange={(event) => handleSearch(event.currentTarget.value)}
                 />
-                <Typography variant="caption">Refine by</Typography>
-                <RefinementList attribute="stage_name" />
-                {/* </InstantSearch> */}
                 <br />
-                {/* ALGOLIA ENDS HERE */}
 
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <Typography variant="caption">Filter by</Typography>
@@ -135,34 +130,30 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
                     </Tooltip>
                 </div>
                 <List>
+                    {/* ORGANIZATION DROP DOWN */}
                     <ListItemButton onClick={handleCategoryClick}>
-                        <ListItemText primary="Category" />
+                        <ListItemText primary="Organization" />
                         {categoryOpen ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse in={categoryOpen} timeout="auto" unmountOnExit>
                         <List>
-                            {categories &&
-                                categories.map(cat => (
-                                    <ListItemButton key={cat.id} onClick={() => { setSelectedCategory(cat.id); !changes && setChanges(true); }}>
-                                        {selectedCategory === cat.id ? <RadioButtonCheckedIcon color="primary" /> : <RadioButtonUncheckedIcon />}
-                                        <ListItemText sx={{ ml: 1 }} primary={cat.name} />
-                                    </ListItemButton>
-                                ))}
+                        <RefinementList
+                                attribute="organization_name"
+                                sortBy={['name:asc']}
+                            />
                         </List>
                     </Collapse>
+                    {/* BUSINESS STAGE DROP DOWN */}
                     <ListItemButton onClick={handleStageClick}>
                         <ListItemText primary="Business Stage" />
                         {stageOpen ? <ExpandLess /> : <ExpandMore />}
                     </ListItemButton>
                     <Collapse in={stageOpen} timeout="auto" unmountOnExit>
                         <List>
-                            {stages &&
-                                stages.map(stage => (
-                                    <ListItemButton key={stage.id} onClick={() => { setSelectedStage(stage.id); !changes && setChanges(true); }}>
-                                        {selectedStage === stage.id ? <RadioButtonCheckedIcon color="secondary" /> : <RadioButtonUncheckedIcon />}
-                                        <ListItemText sx={{ ml: 1 }} primary={stage.name} />
-                                    </ListItemButton>
-                                ))}
+                            <RefinementList
+                                attribute="stage_name"
+                                sortBy={['name:asc']}
+                            />
                         </List>
                     </Collapse>
                 </List>

@@ -6,6 +6,7 @@ import algoliasearch from 'algoliasearch/lite';  // Import algoliasearch
 // CUSTOM COMPONENTS
 import SearchFilter from './SearchFilter';
 import Result from './Result';
+import ResultsMap from './ResultsMap';
 import { InstantSearch, Hits } from 'react-instantsearch';
 
 // Algolia Initiation and index
@@ -80,8 +81,8 @@ function LandingPage({ currentList, setCurrentList }) {
   }, [lists])
 
   return (
-    <Container maxWidth="lg" spacing={1} sx={{ pt: 3 }}>
-      <Grid container justifyContent="center" spacing={2}>
+    <Container maxWidth="xl" spacing={1} sx={{ pt: 3 }}>
+      <Grid container justifyContent="center" spacing={4}>
         <InstantSearch searchClient={searchClient} indexName="test_resources_2">
         <SearchFilter
           currentList={currentList}
@@ -95,8 +96,8 @@ function LandingPage({ currentList, setCurrentList }) {
           setSearchResults={setSearchResults}
           handleSearch={() => handleSearch(searchQuery, setSearchResults)}
         />
-        <Grid item xs={12} md={8} container spacing={2}>
-              <Result />
+        <Grid item xs={12} md={8} container spacing={4}>
+          <ResultsMap currentList={currentList} categories={categories} stage={stages} />
         </Grid>
         </InstantSearch>
       </Grid>

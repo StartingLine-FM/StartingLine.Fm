@@ -29,7 +29,7 @@ export default function Result({ hit, currentList, categories, stages }) {
     const [snackOpen, setSnackOpen] = useState(false);
     const [message, setMessage] = useState("");
     const [color, setColor] = useState("success");
-    const { hits, results, sendEvent } = useHits({hit});
+
 
     const user = useSelector(store => store.user);
     const todoResources = useSelector(store => store.todoListResourcesReducer);
@@ -101,26 +101,23 @@ export default function Result({ hit, currentList, categories, stages }) {
             <CloseIcon />
         </IconButton>
 
-        // UNCOMMENT THE BELOW LINE TO SEE RSULTS IN CONSOLE
-        // console.log('hit is', hit);
 
     return (
         <>
-        {hits && hits.map((hit) => (
-            <Grid item xs={12} sm={6} lg={4}>  
-                <>
-                    <ResultModal
+        {hit && 
+            <>
+            <ResultModal
                         open={open}
                         handleClose={handleClose}
                         hit={hit}
-                        categories={categories}
+                        // categories={categories}
                         stages={stages}
                         userPostTodo={userPostTodo}
                         anonPostTodo={anonPostTodo}
                     />
                     <Snackbar
                         open={snackOpen}
-                        anchorOrigin={{ vertical: '', horizontal: 'left' }}
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
                         autoHideDuration={5000}
                         onClose={() => setSnackOpen(false)}
                         action={action}
@@ -129,10 +126,9 @@ export default function Result({ hit, currentList, categories, stages }) {
                             {message}
                         </Alert>
                     </Snackbar>
-                </>
-            
+                    
             <Card raised sx={{ height: 250, width: "100%" }}>
-                {todoResources.some(e => e.id === hit.id || e.resource_id === hit.id) ? (
+                {todoResources.some(e => e.objectID === hit.objectID || e.resource_id === hit.objectID) ? (
                     <Tooltip placement="right" title="Added to your current list">
                         <IconButton>
                             <CheckIcon color="primary" />
@@ -191,13 +187,13 @@ export default function Result({ hit, currentList, categories, stages }) {
                             }}>
                             {hit.description}
                         </Typography>
-                        <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={hit.category_name} />
+                        <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={hit.organization_name} />
                         <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1 }} label={hit.stage_name} />
                     </CardContent>
                 </CardActionArea>
             </Card>
-            </Grid>
-    ))}
+            </>
+}
         </>
     );
 }
