@@ -236,7 +236,7 @@ router.get('/', (req, res) => {
 
     } else {
 
-        // default
+        //default
         queryText = `SELECT 
         "resource"."id", 
         "resource"."name",
@@ -254,6 +254,8 @@ router.get('/', (req, res) => {
         JOIN "category" ON "category"."id" = "resource"."category_id"
         JOIN "stage" ON "stage"."id" = "resource"."stage_id" 
         ORDER BY LOWER("resource"."name");`;
+
+        // queryText = `SELECT * FROM "resource" ORDER BY LOWER("resource"."name");`;
 
         pool.query(queryText)
             .then(result => {

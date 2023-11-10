@@ -1,3 +1,12 @@
+CREATE TABLE "stage" (
+    "id" SERIAL PRIMARY KEY,
+    "name" VARCHAR(25) NOT NULL,
+);
+
+INSERT INTO "stage" ("name")
+VALUES ('All'), ('Ideation'), ('Start Up'), ('Growth'), ('Exit');
+
+
 CREATE TABLE "user" (
     "id" SERIAL PRIMARY KEY,
     "username" VARCHAR(40) NOT NULL,
@@ -5,30 +14,51 @@ CREATE TABLE "user" (
     "admin" BOOLEAN DEFAULT FALSE,
 );
 
-CREATE TABLE "stage" (
-    "id" SERIAL PRIMARY KEY,
-    "name" VARCHAR(25) NOT NULL,
-);
-
-INSERT INTO "stage" ("name")
-VALUES ('All'), ('Nascent'), ('Early Stage'), ('Startup/Seed'), ('Growth');
-
-CREATE TABLE "category" (
+CREATE TABLE "organization" (
     "id" SERIAL PRIMARY KEY,
     "name" VARCHAR(75) 
 );
 
-INSERT INTO "category" ("name")
-VALUES ('Government'),('Funding Organization'),('University'),('Support Organization'),('Service Provider'),('Big Company'),('Research Organization');
+INSERT INTO "organization" ("name")
+VALUES ('Government'),('University'),('NonProfit'),('Private');
+
+CREATE TABLE "entrepreneur" (
+	"id" SERIAL PRIMARY KEY,
+	"user_id" INTEGER REFERENCES "user" ("id"),
+	"title" VARCHAR(1000),
+	"description" VARCHAR(5000)
+);
+
+INSERT INTO "entrepreneur" ("title")
+VALUES ('Academic'),('Female'),('Indigenous'),('New American'),('Student'),('Veteran');
+
+CREATE TABLE "funding" (
+	"id" SERIAL PRIMARY KEY,
+	"title" VARCHAR(1000) NOT NULL,
+	"description" VARCHAR(5000)
+);
+
+INSERT INTO "funding" ("title")
+VALUES ('all'),('loan'),('equity'),('grant');
+
+CREATE TABLE "support" (
+	"id" SERIAL PRIMARY KEY,
+	"title" VARCHAR(1000) NOT NULL,
+	"description" VARCHAR(5000)
+);
+
+INSERT INTO "support" ("title")
+VALUES ('Planning'),('Networking'),('Training'),('Research'),('Ideation'),('Space');
 
 
 CREATE TABLE "resource" (
     "id" SERIAL PRIMARY KEY,
-    "stage_id" INTEGER REFERENCES "stage" ("id") NOT NULL,
-    "category_id" INTEGER REFERENCES "category" ("id") NOT NULL,
+    "stage_id" INTEGER REFERENCES "stage" ("id"),
+    "category_id" INTEGER REFERENCES "category" ("id"),
+    "entrepreneur_id" INTEGER REFERENCES "entrepreneur"("id"),
     "name" VARCHAR(250) NOT NULL,
     "image_url" VARCHAR(300),
-    "description" VARCHAR(1000) NOT NULL,
+    "description" VARCHAR(1000),
     "website" VARCHAR(500),
     "email" VARCHAR(500),
     "address" VARCHAR(500),
@@ -77,6 +107,20 @@ ALTER TABLE "calendar"
 ALTER COLUMN "expiration" TYPE TIMESTAMP WITH TIME ZONE USING expiration::timestamp with time zone;
 
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
+
+CREATE TABLE "funding_join" (
+	"id" SERIAL PRIMARY KEY,
+	"funding_id" INTEGER REFERENCES "funding" ("id"),
+	"resource_id" INTEGER REFERENCES "resource" ("id"),
+	"article_id" INTEGER REFERENCES "article" ("id")
+);
+
+CREATE TABLE "support_join" (
+	"id" SERIAL PRIMARY KEY,
+	"support_id" INTEGER REFERENCES "support" ("id"),
+	"resource_id" INTEGER REFERENCES "resource" ("id"),
+	"article_id" INTEGER REFERENCES "article" ("id")
+);
 
 -- After executing these CREATE and INSERT statements in order,
 -- import the 'FM Reasearch.csv' into your Postico (File > Import CSV)
