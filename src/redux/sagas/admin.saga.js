@@ -41,56 +41,56 @@ function* deleteResource(action) {
     }
 };
 
-// Worker Saga: fired when 'FETCH_CATEGORIES' action is dispatched
-// It fetches the list of categories from the server
-function* fetchCategories() {
+// Worker Saga: fired when 'FETCH_ORGANIZATIONS' action is dispatched
+// It fetches the list of organizations from the server
+function* fetchOrganizations() {
     try {
-        // Sends a GET request to the server to fetch all categories
-        const response = yield call(axios.get, '/api/admin/categories');
-        // Dispatches 'SET_CATEGORIES' action along with the fetched categories
-        yield put({ type: 'SET_CATEGORIES', payload: response.data });
+        // Sends a GET request to the server to fetch all organizations
+        const response = yield call(axios.get, '/api/admin/organizations');
+        // Dispatches 'SET_ORGANIZATIONS' action along with the fetched organizations
+        yield put({ type: 'SET_ORGANIZATIONS', payload: response.data });
     } catch (error) {
         // If there is an error, log the error
-        console.log('Error fetching categories', error);
+        console.log('Error fetching organizations', error);
     }
 };
 
-// Worker Saga: fired when 'POST_CATEGORY' action is dispatched
-// It posts a new category to the server
-function* postCategory(action) {
+// Worker Saga: fired when 'POST_ORGANIZATION' action is dispatched
+// It posts a new ORGANIZATION to the server
+function* postOrganization(action) {
     try {
-        // Sends a POST request to the server to add a new category
-        yield call(axios.post, '/api/admin/categories', action.payload);
-        // Dispatches 'FETCH_CATEGORIES' action to fetch the updated list of categories
-        yield put({ type: 'FETCH_CATEGORIES' });
+        // Sends a POST request to the server to add a new ORGANIZATION
+        yield call(axios.post, '/api/admin/organizations', action.payload);
+        // Dispatches 'FETCH_ORGANIZATIONS' action to fetch the updated list of organizations
+        yield put({ type: 'FETCH_ORGANIZATIONS' });
     } catch (error) {
-        console.log('Error posting category:', error);
+        console.log('Error posting organization:', error);
     }
 };
 
-// Worker Saga: fired when 'UPDATE_CATEGORY' action is dispatched
-// It updates an existing category on the server
-function* putCategory(action) {
+// Worker Saga: fired when 'UPDATE_ORGANIZATION' action is dispatched
+// It updates an existing ORGANIZATION on the server
+function* putOrganization(action) {
     try {
-        // Sends a PUT request to the server to update an existing category
-        yield call(axios.put, `/api/admin/categories/${action.payload.id}`, action.payload);
-        // Dispatches 'FETCH_CATEGORIES' action to fetch the updated list of categories
-        yield put({ type: 'FETCH_CATEGORIES' });
+        // Sends a PUT request to the server to update an existing ORGANIZATION
+        yield call(axios.put, `/api/admin/organizations/${action.payload.id}`, action.payload);
+        // Dispatches 'FETCH_ORGANIZATIONS' action to fetch the updated list of organizations
+        yield put({ type: 'FETCH_ORGANIZATIONS' });
     } catch (error) {
-        console.log('Error updating category', error);
+        console.log('Error updating organization', error);
     }
 };
 
-// Worker Saga: fired when 'DELETE_CATEGORY' action is dispatched
-// It deletes an existing category from the server
-function* deleteCategory(action) {
+// Worker Saga: fired when 'DELETE_ORGANIZATION' action is dispatched
+// It deletes an existing ORGANIZATION from the server
+function* deleteOrganization(action) {
     try {
-        // Sends a DELETE request to the server to remove an existing category
-        yield call(axios.delete, `/api/admin/categories/${action.payload}`);
-        // Dispatches 'FETCH_CATEGORIES' action to fetch the updated list of categories
-        yield put({ type: 'FETCH_CATEGORIES' });
+        // Sends a DELETE request to the server to remove an existing ORGANIZATION
+        yield call(axios.delete, `/api/admin/organizations/${action.payload}`);
+        // Dispatches 'FETCH_ORGANIZATIONS' action to fetch the updated list of organizations
+        yield put({ type: 'FETCH_ORGANIZATIONS' });
     } catch (error) {
-        console.log('Error deleting category', error);
+        console.log('Error deleting organization', error);
     }
 };
 
@@ -153,13 +153,13 @@ function* adminSaga() {
     yield takeLatest('POST_RESOURCE', postResource);
     yield takeLatest('UPDATE_RESOURCE', putResource);
     yield takeLatest('DELETE_RESOURCE', deleteResource);
-    yield takeLatest('POST_CATEGORY', postCategory);
+    yield takeLatest('POST_ORGANIZATION', postOrganization);
     yield takeLatest('POST_STAGE', postStage);
-    yield takeLatest('UPDATE_CATEGORY', putCategory);
+    yield takeLatest('UPDATE_ORGANIZATION', putOrganization);
     yield takeLatest('UPDATE_STAGE', putStage);
-    yield takeLatest('DELETE_CATEGORY', deleteCategory);
+    yield takeLatest('DELETE_ORGANIZATION', deleteOrganization);
     yield takeLatest('DELETE_STAGE', deleteStage);
-    yield takeLatest('FETCH_CATEGORIES', fetchCategories);
+    yield takeLatest('FETCH_ORGANIZATIONS', fetchOrganizations);
     yield takeLatest('FETCH_STAGES', fetchStages);
 }
 

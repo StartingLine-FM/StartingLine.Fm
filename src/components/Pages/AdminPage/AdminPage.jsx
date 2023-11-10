@@ -9,7 +9,7 @@ import CancelIcon from '@mui/icons-material/Cancel'; // Added CancelIcon, cancel
 import InfoIcon from '@mui/icons-material/Info'; //Added InfoIcon, info on how things work
 import "./AdminPage.css"
 
-// AdminPage is a functional component where Admin can add, edit or delete resources, categories, and stages
+// AdminPage is a functional component where Admin can add, edit or delete resources, organizations, and stages
 function AdminPage() {
   // State for new resource input fields using useState hook
   const [newResource, setNewResource] = useState({
@@ -20,15 +20,15 @@ function AdminPage() {
     email: '',
     address: '',
     linkedin: '',
-    category_id: '',
+    organization_id: '',
     stage_id: '',
   });
 
-  // State variables for new category and stage name, 
-  // and edited category and stage name
-  const [newCategory, setNewCategory] = useState('');
+  // State variables for new organization and stage name, 
+  // and edited organization and stage name
+  const [newOrganization, setNewOrganization] = useState('');
   const [newStage, setNewStage] = useState('');
-  const [editedCategoryName, setEditedCategoryName] = useState('');
+  const [editedOrganizationName, setEditedOrganizationName] = useState('');
   const [editedStageName, setEditedStageName] = useState('');
 
 
@@ -40,7 +40,7 @@ function AdminPage() {
   const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
   // useSelector hook to extract data from the Redux store state
-  const categories = useSelector((state) => state.categories);
+  const organizations = useSelector((state) => state.organizations);
   const stages = useSelector((state) => state.stages);
   const user = useSelector((state) => state.user);
 
@@ -51,10 +51,10 @@ function AdminPage() {
     }
   }, [user.admin, history]);
 
-  // useEffect hook to fetch categories and stages once the component is mounted
+  // useEffect hook to fetch organizations and stages once the component is mounted
   useEffect(() => {
-    // Fetch categories and stages on component mount
-    dispatch({ type: 'FETCH_CATEGORIES' });
+    // Fetch organizations and stages on component mount
+    dispatch({ type: 'FETCH_ORGANIZATIONS' });
     dispatch({ type: 'FETCH_STAGES' });
   }, [dispatch]);
 
@@ -83,7 +83,7 @@ function AdminPage() {
     }
 
     // If all fields are properly filled out, dispatch action to save new resource
-    if (newResource.name && newResource.description && newResource.stage_id && newResource.category_id) {
+    if (newResource.name && newResource.description && newResource.stage_id && newResource.organization_id) {
       dispatch({ type: 'POST_RESOURCE', payload: newResource });
       setNewResource({
         name: '',
@@ -93,12 +93,12 @@ function AdminPage() {
         email: '',
         address: '',
         linkedin: '',
-        category_id: '',
+        organization_id: '',
         stage_id: '',
       });
     } else {
       // Display a validation error message or take appropriate action
-      alert('Please provide all mandatory fields (name, description, stage, and category).');
+      alert('Please provide all mandatory fields (name, description, stage, and organization).');
     }
   };
 
@@ -107,45 +107,45 @@ function AdminPage() {
     // Note: This is not a foolproof check
     return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
   };
-  // Function to handle adding a new category
-  const handleAddCategory = (event) => {
+  // Function to handle adding a new organization
+  const handleAddOrganization = (event) => {
     event.preventDefault();
-    // If newCategory field is not empty, dispatch action to save new category
-    if (newCategory !== '') {
-      dispatch({ type: 'POST_CATEGORY', payload: { name: newCategory } });
-      // Reset newCategory state
-      setNewCategory('');
+    // If newOrganizationfield is not empty, dispatch action to save new organization
+    if (newOrganization !== '') {
+      dispatch({ type: 'POST_ORGANIZATION', payload: { name: newOrganization } });
+      // Reset newOrganization state
+      setNewOrganization('');
     } else {
-      alert('Please enter a non-empty category name.');
+      alert('Please enter a non-empty organization name.');
     }
   };
 
-  // Function to handle editing a category
-  const handleEditCategory = (categoryId, currentName) => {
-    setEditedCategoryName({ id: categoryId, name: currentName });
+  // Function to handle editing a organization
+  const handleEditOrganization = (organizationId, currentName) => {
+    setEditedOrganizationName({ id: organizationId, name: currentName });
   };
 
-  // Function to save the edited category name
-  const handleSaveEditedCategory = (categoryId) => {
-    // Call the API to update the category name in the backend
-    dispatch({ type: 'UPDATE_CATEGORY', payload: { id: categoryId, name: editedCategoryName.name } });
-    setEditedCategoryName(''); // Reset the edited category name state after saving changes
-    dispatch({ type: 'FETCH_CATEGORIES' }); // Refetch the categories
+  // Function to save the edited organization name
+  const handleSaveEditedOrganization = (organizationId) => {
+    // Call the API to update the organization name in the backend
+    dispatch({ type: 'UPDATE_ORGANIZATION', payload: { id: organizationId, name: editedOrganizationName.name } });
+    setEditedOrganizationName(''); // Reset the edited organization name state after saving changes
+    dispatch({ type: 'FETCH_ORGANIZATIONS' }); // Refetch the organizations
   };
 
-  // Function to cancel the category editing process
-  const handleCancelEditCategory = () => {
-    // This function resets the state variable "editedCategoryName" to an empty string
-    setEditedCategoryName('');
+  // Function to cancel the organization editing process
+  const handleCancelEditOrganization = () => {
+    // This function resets the state variable "editedOrganizationName" to an empty string
+    setEditedOrganizationName('');
   };
 
-  // Function for deleting a category
-  const handleDeleteCategory = (categoryId) => {
-    // This function uses the window.confirm method to make sure the user truly wants to delete the category
-    if (window.confirm('Are you sure you want to delete this category?')) {
-      // If the user confirms the deletion, it dispatches a Redux action of type 'DELETE_CATEGORY' 
-      // with the id of the category to be deleted as the payload
-      dispatch({ type: 'DELETE_CATEGORY', payload: categoryId });
+  // Function for deleting a organization
+  const handleDeleteOrganization = (organizationId) => {
+    // This function uses the window.confirm method to make sure the user truly wants to delete the organization
+    if (window.confirm('Are you sure you want to delete this organization?')) {
+      // If the user confirms the deletion, it dispatches a Redux action of type 'DELETE_organization' 
+      // with the id of the organization to be deleted as the payload
+      dispatch({ type: 'DELETE_ORGANIZATION', payload: organizationId });
     }
   };
 
@@ -287,18 +287,18 @@ function AdminPage() {
               <TextField
                 sx={{ mt: 1 }}
                 select
-                value={newResource.category_id}
-                // Updates the 'category' property of the 'newResource' state when the input value changes
+                value={newResource.organization_id}
+                // Updates the 'organization' property of the 'newResource' state when the input value changes
                 SelectProps={{
                   native: true,
                 }}
-                onChange={(event) => setNewResource({ ...newResource, category_id: event.target.value })}
+                onChange={(event) => setNewResource({ ...newResource, organization_id: event.target.value })}
                 required // This makes the field mandatory
               >
-                <option value={0}>Pick Category</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
+                <option value={0}>Pick organization</option>
+                {organizations.map((organization) => (
+                  <option key={organization.id} value={organization.id}>
+                    {organization.name}
                   </option>
                 ))}
               </TextField>
@@ -311,7 +311,7 @@ function AdminPage() {
                 SelectProps={{
                   native: true,
                 }}
-                // Updates the 'category_id' property of the 'newResource' state when the selected value changes
+                // Updates the 'organization_id' property of the 'newResource' state when the selected value changes
                 onChange={(event) => setNewResource({ ...newResource, stage_id: event.target.value })}
                 required // This makes the field mandatory
               >
@@ -330,50 +330,50 @@ function AdminPage() {
             </form>
           </Paper>
 
-          {/* Form to add a new category */}
+          {/* Form to add a new organization */}
           <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '0' }} className="admin-container">
             <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
-              Categories
-                {/* Tooltip providing more context on what "Categories" mean */}
-              <Tooltip title="These are broad sectors that classify resources based on the source or nature of the assistance. Categories include government bodies, financial contributors, academic institutions, general support services, service providers, large corporations, and research entities. Please fill in all required fields and click submit.">
+              Organizations
+              {/* Tooltip providing more context on what "organizations" mean */}
+              <Tooltip title="These are broad sectors that classify resources based on the source or nature of the assistance. Organizations include government bodies, financial contributors, academic institutions, general support services, service providers, large corporations, and research entities. Please fill in all required fields and click submit.">
                 <InfoIcon style={{ marginLeft: '10px' }} color="action" />
               </Tooltip>
 
             </Typography>
-            {/* Display existing categories */}
+            {/* Display existing organizations */}
             <div style={{ width: '100%' }}>
               <ul className="admin-list" style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
-                 {/* Mapping over the categories state and rendering each category */}
-                {categories.map((category) => (
-                  <li key={category.id}>
-                    {/* Check if current category is in edit mode */}
-                    {editedCategoryName && category.id === editedCategoryName.id ? (
-                      // Show the input field for editing the category name
+                {/* Mapping over the organizations state and rendering each organization */}
+                {organizations.map((organization) => (
+                  <li key={organization.id}>
+                    {/* Check if current organization is in edit mode */}
+                    {editedOrganizationName && organization.id === editedOrganizationName.id ? (
+                      // Show the input field for editing the organization name
                       <TextField
-                        value={editedCategoryName.name}
+                        value={editedOrganizationName.name}
                         onChange={(event) =>
-                          setEditedCategoryName({ ...editedCategoryName, name: event.target.value })
+                          setEditedOrganizationName({ ...editedOrganizationName, name: event.target.value })
                         }
                       />
                     ) : (
-                      // Display the category name
-                      <span>{category.name}</span>
+                      // Display the organization name
+                      <span>{organization.name}</span>
                     )}
 
                     <div>
-                      {editedCategoryName && category.id === editedCategoryName.id ? (
+                      {editedOrganizationName && organization.id === editedrganizationName.id ? (
                         <>
                           <IconButton
                             color="primary"
-                            aria-label="Save category"
-                            onClick={() => handleSaveEditedCategory(category.id)}
+                            aria-label="Save organization"
+                            onClick={() => handleSaveEditedOrganization(organization.id)}
                           >
                             <SaveIcon />
                           </IconButton>
                           <IconButton
                             color="secondary"
-                            aria-label="Cancel edit category"
-                            onClick={handleCancelEditCategory}
+                            aria-label="Cancel edit organization"
+                            onClick={handleCancelEditOrganization}
                           >
                             <CancelIcon />
                           </IconButton>
@@ -381,16 +381,16 @@ function AdminPage() {
                       ) : (
                         <IconButton
                           color="primary"
-                          aria-label="Edit category"
-                          onClick={() => handleEditCategory(category.id, category.name)}
+                          aria-label="Edit organization"
+                          onClick={() => handleEditOrganization(organization.id, organization.name)}
                         >
                           <EditIcon />
                         </IconButton>
                       )}
                       <IconButton
                         color="secondary"
-                        aria-label="Delete category"
-                        onClick={() => handleDeleteCategory(category.id)}
+                        aria-label="Delete organization"
+                        onClick={() => handleDeleteOrganization(organization.id)}
                       >
                         <DeleteIcon />
                       </IconButton>
@@ -398,15 +398,15 @@ function AdminPage() {
                   </li>
                 ))}
               </ul>
-              <form className="admin-form" onSubmit={handleAddCategory}>
+              <form className="admin-form" onSubmit={handleAddOrganization}>
                 <TextField
-                  label="New Category"
-                  value={newCategory}
-                  onChange={(event) => setNewCategory(event.target.value)}
+                  label="New organization"
+                  value={newOrganization}
+                  onChange={(event) => setNewOrganization(event.target.value)}
                 />
-                 {/* Button for submitting the new category form */}
+                {/* Button for submitting the new organization form */}
                 <Button sx={{ mt: 1 }} variant="contained" color="primary" type="submit">
-                  Add Category
+                  Add Organization
                 </Button>
               </form>
             </div>
@@ -416,7 +416,7 @@ function AdminPage() {
           <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '0' }} className="admin-container">
             <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
               Stages
-                {/* Tooltip providing more context on what "Stages" mean */}
+              {/* Tooltip providing more context on what "Stages" mean */}
               <Tooltip title="These signify the different phases in a business's life cycle. They range from the nascent or concept phase, through early development, startup or seed stage, and to the growth and expansion phase. Resources are categorized to match the relevant needs at each business stage. Please fill in all required fields and click submit.">
                 <InfoIcon style={{ marginLeft: '10px' }} color="action" />
               </Tooltip>
@@ -484,7 +484,7 @@ function AdminPage() {
                   value={newStage}
                   onChange={(event) => setNewStage(event.target.value)}
                 />
-                 {/* Button for submitting the new stage form */}
+                {/* Button for submitting the new stage form */}
                 <Button sx={{ mt: 1 }} variant="contained" color="primary" type="submit">
                   Add Stage
                 </Button>
