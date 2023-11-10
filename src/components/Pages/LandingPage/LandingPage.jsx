@@ -6,6 +6,7 @@ import algoliasearch from 'algoliasearch/lite';  // Import algoliasearch
 // CUSTOM COMPONENTS
 import SearchFilter from './SearchFilter';
 import Result from './Result';
+import { InstantSearch, Hits } from 'react-instantsearch';
 
 // Algolia Initiation and index
 const searchClient = algoliasearch('KK1UO0W0NW', 'acfecaf8e37908662d286dc1210b781b');
@@ -24,10 +25,10 @@ function LandingPage({ currentList, setCurrentList }) {
     handleSearch(query);
   };
 
-  // Trigger a search for all resources when the page loads
-  useEffect(() => {
-    handleSearch(''); // Passing an empty query to fetch all resources
-  }, []);
+  //Trigger a search for all resources when the page loads
+  // useEffect(() => {
+  //   handleSearch(''); // Passing an empty query to fetch all resources
+  // }, []);
 
 
   // Algolia Search Function
@@ -36,6 +37,8 @@ function LandingPage({ currentList, setCurrentList }) {
       if (query.length > 0) {
         const { hits } = await index.search(query);
         setSearchResults(hits);
+        console.log('searchResults are:', searchResults)
+        console.log('hits are:', hits)
       } else {
         // If the query is empty, return all resources
         const { hits } = await index.search('');
@@ -45,6 +48,8 @@ function LandingPage({ currentList, setCurrentList }) {
       console.error('Error searching:', error);
     }
   };
+
+  console.log('searchResults are:', searchResults)
 
 
   // Redux
@@ -77,6 +82,7 @@ function LandingPage({ currentList, setCurrentList }) {
   return (
     <Container maxWidth="lg" spacing={1} sx={{ pt: 3 }}>
       <Grid container justifyContent="center" spacing={2}>
+        <InstantSearch searchClient={searchClient} indexName="test_resources_2">
         <SearchFilter
           currentList={currentList}
           setCurrentList={setCurrentList}
@@ -90,16 +96,9 @@ function LandingPage({ currentList, setCurrentList }) {
           handleSearch={() => handleSearch(searchQuery, setSearchResults)}
         />
         <Grid item xs={12} md={8} container spacing={2}>
-          {searchResults.map(result => (
-            <Grid item xs={12} sm={6} lg={4} key={result.id}>
-              <Result
-                result={result}
-                currentList={currentList}
-                setCurrentList={setCurrentList}
-              />
-            </Grid>
-          ))}
+              <Result />
         </Grid>
+        </InstantSearch>
       </Grid>
     </Container>
   );

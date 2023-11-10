@@ -23,7 +23,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 
-export default function ResultModal({ open, handleClose, result, userPostTodo, anonPostTodo, stages, categories }) {
+export default function ResultModal({ open, handleClose, hit, userPostTodo, anonPostTodo, stages, categories }) {
 
     // local state
     // admin edit state
@@ -58,21 +58,21 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
         let stage_id;
 
         // if there's a change made, send the changed data, else send existing data
-        newName ? name = newName : name = result.name;
-        newImage ? image_url = newImage : image_url = result.image_url;
-        newDescription ? description = newDescription : description = result.description;
-        newWebsite ? website = newWebsite : website = result.website;
-        newLinkedIn ? linkedin = newLinkedIn : linkedin = result.linkedin;
-        newEmail ? email = newEmail : email = result.email;
-        newAddress ? address = newAddress : address = result.address;
-        newCategory ? category_id = newCategory : category_id = result.category_id;
-        newStage ? stage_id = newStage : stage_id = result.stage_id;
+        newName ? name = newName : name = hit.name;
+        newImage ? image_url = newImage : image_url = hit.image_url;
+        newDescription ? description = newDescription : description = hit.description;
+        newWebsite ? website = newWebsite : website = hit.website;
+        newLinkedIn ? linkedin = newLinkedIn : linkedin = hit.linkedin;
+        newEmail ? email = newEmail : email = hit.email;
+        newAddress ? address = newAddress : address = hit.address;
+        newCategory ? category_id = newCategory : category_id = hit.category_id;
+        newStage ? stage_id = newStage : stage_id = hit.stage_id;
 
         // send dispatch to update resource
         dispatch({
             type: "UPDATE_RESOURCE",
             payload: {
-                id: result.id,
+                id: hit.id,
                 name,
                 image_url,
                 description,
@@ -111,7 +111,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
 
         dispatch({
             type: "DELETE_RESOURCE",
-            payload: result.id
+            payload: hit.id
         })
 
         // close dialog
@@ -132,20 +132,20 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                     </IconButton>
                 </DialogActions>
                 {/* Text fields for edit mode */}
-                <DialogTitle>Edit entry for {result.name}</DialogTitle>
+                <DialogTitle>Edit entry for {hit.name}</DialogTitle>
                 <DialogContent sx={{ pt: 1, mt: 1 }}>
                     {/* Name edit: set to populate current Name to be edited */}
                     <TextField
                         label="Edit Name"
                         sx={{ m: 1 }}
-                        value={newName || result.name}
+                        value={newName || hit.name}
                         onChange={(e) => setNewName(e.target.value)}
                     />
                     {/* Description edit: set to populate current Description to be edited */}
                     <TextField
                         sx={{ m: 1, width: "50%" }}
-                        label={result.description ? "Edit Description" : 'Add description'}
-                        value={newDescription || result.description}
+                        label={hit.description ? "Edit Description" : 'Add description'}
+                        value={newDescription || hit.description}
                         onChange={(e) => setNewDescription(e.target.value)}
                         multiline
                         rows={3}
@@ -153,26 +153,26 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                     />
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.website ? "Edit Website" : 'Add website url'}
-                        value={newWebsite || result.website}
+                        label={hit.website ? "Edit Website" : 'Add website url'}
+                        value={newWebsite || hit.website}
                         onChange={(e) => setNewWebsite(e.target.value)}
                     />
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.email ? "Edit Email" : 'Add email'}
-                        value={newEmail || result.email}
+                        label={hit.email ? "Edit Email" : 'Add email'}
+                        value={newEmail || hit.email}
                         onChange={(e) => setNewEmail(e.target.value)}
                     />
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.linkedin ? "Edit LinkedIn" : 'Add LinkedIn url'}
-                        value={newLinkedIn || result.linkedin}
+                        label={hit.linkedin ? "Edit LinkedIn" : 'Add LinkedIn url'}
+                        value={newLinkedIn || hit.linkedin}
                         onChange={(e) => setNewLinkedIn(e.target.value)}
                     />
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.address ? "Edit Address" : 'Add address'}
-                        value={newAddress || result.address}
+                        label={hit.address ? "Edit Address" : 'Add address'}
+                        value={newAddress || hit.address}
                         onChange={(e) => setNewAddress(e.target.value)}
                     />
                     {/* Image URL is the only field that doesn't populate the current value by default,
@@ -180,7 +180,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                     the whole input instead of just editing parts of it */}
                     <TextField
                         sx={{ m: 1 }}
-                        label={result.image_url ? result.image_url : 'Add Image URL'}
+                        label={hit.image_url ? hit.image_url : 'Add Image URL'}
                         value={newImage}
                         onChange={(e) => setNewImage(e.target.value)}
                     />
@@ -188,7 +188,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                     <TextField
                         sx={{ m: 1 }}
                         select
-                        defaultValue={result.category_id}
+                        defaultValue={hit.category_id}
                         SelectProps={{
                             native: true,
                         }}
@@ -208,7 +208,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                     <TextField
                         sx={{ m: 1 }}
                         select
-                        defaultValue={result.stage_id}
+                        defaultValue={hit.stage_id}
                         SelectProps={{
                             native: true,
                         }}
@@ -238,7 +238,7 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                             </IconButton>
                         </>
                         // checks if current to-do list contains this resource
-                        : todoResources.some(e => e.id === result.id || e.resource_id === result.id)
+                        : todoResources.some(e => e.id === hit.id || e.resource_id === hit.id)
                             // if on the current list, renders a checkmark
                             ? <IconButton>
                                 <CheckIcon color="primary" />
@@ -259,21 +259,21 @@ export default function ResultModal({ open, handleClose, result, userPostTodo, a
                     </IconButton>
                 </DialogActions>
                 {/* Title and content display */}
-                <DialogTitle>{result.name}</DialogTitle>
-                {result.image_url &&
+                <DialogTitle>{hit.name}</DialogTitle>
+                {hit.image_url &&
                     <div style={{ padding: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '250px', overflow: 'hidden' }}>
-                        <img style={{ display: 'block', maxWidth: '100%', maxHeight: '250px' }} src={result.image_url} alt={result.name} />
+                        <img style={{ display: 'block', maxWidth: '100%', maxHeight: '250px' }} src={hit.image_url} alt={hit.name} />
                     </div>
                 }
                 <DialogContent sx={{ gap: 2, display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '100%', bgcolor: 'background.paper' }}>
-                    <Typography variant="body1">{result.description}</Typography>
-                    <Link target="_blank" rel="noopener noreferrer" href={result.website}>{result.website && result.website}</Link>
-                    <Link href={`mailto:${result.email}`}>{result.email && result.email}</Link>
-                    <Link target="_blank" rel="noopener noreferrer" href={result.linkedin}>{result.linkedin && result.linkedin}</Link>
-                    <Typography variant="body1">{result.address && result.address}</Typography>
+                    <Typography variant="body1">{hit.description}</Typography>
+                    <Link target="_blank" rel="noopener noreferrer" href={hit.website}>{hit.website && hit.website}</Link>
+                    <Link href={`mailto:${hit.email}`}>{hit.email && hit.email}</Link>
+                    <Link target="_blank" rel="noopener noreferrer" href={hit.linkedin}>{hit.linkedin && hit.linkedin}</Link>
+                    <Typography variant="body1">{hit.address && hit.address}</Typography>
                     <DialogContentText>
-                        <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={result.category_name} />
-                        <Chip color="secondary" sx={{ mt: 2 }} label={result.stage_name} />
+                        <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={hit.category_name} />
+                        <Chip color="secondary" sx={{ mt: 2 }} label={hit.stage_name} />
                     </DialogContentText>
                 </DialogContent>
             </Dialog>

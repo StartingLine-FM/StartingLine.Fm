@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
+import { useHits } from "react-instantsearch";
 import moment from "moment";
 
 import ResultModal from "./ResultModal";
@@ -15,18 +16,20 @@ import {
     Chip,
     Snackbar,
     Alert,
-    Tooltip
+    Tooltip,
+    Grid
 } from '@mui/material'
 
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function Result({ result, currentList, categories, stages }) {
+export default function Result({ hit, currentList, categories, stages }) {
     const [open, setOpen] = useState(false);
     const [snackOpen, setSnackOpen] = useState(false);
     const [message, setMessage] = useState("");
     const [color, setColor] = useState("success");
+    const { hits, results, sendEvent } = useHits({hit});
 
     const user = useSelector(store => store.user);
     const todoResources = useSelector(store => store.todoListResourcesReducer);
@@ -46,7 +49,7 @@ export default function Result({ result, currentList, categories, stages }) {
         snackbarConditionals(e);
         dispatch({
             type: "POST_ANON_TODO_LIST",
-            payload: result
+            payload: hit
         });
         setSnackOpen(true);
     }
@@ -67,7 +70,7 @@ export default function Result({ result, currentList, categories, stages }) {
         currentList && dispatch({
             type: "POST_TODO_LIST",
             payload: {
-                resource_id: result.id,
+                resource_id: hit.id,
                 title_table_id: currentList
             }
         });
@@ -99,16 +102,17 @@ export default function Result({ result, currentList, categories, stages }) {
         </IconButton>
 
         // UNCOMMENT THE BELOW LINE TO SEE RSULTS IN CONSOLE
-        // console.log('result is', result);
+        // console.log('hit is', hit);
 
     return (
         <>
-            {result && (
+        {hits && hits.map((hit) => (
+            <Grid item xs={12} sm={6} lg={4}>  
                 <>
                     <ResultModal
                         open={open}
                         handleClose={handleClose}
-                        result={result}
+                        hit={hit}
                         categories={categories}
                         stages={stages}
                         userPostTodo={userPostTodo}
@@ -126,9 +130,9 @@ export default function Result({ result, currentList, categories, stages }) {
                         </Alert>
                     </Snackbar>
                 </>
-            )}
+            
             <Card raised sx={{ height: 250, width: "100%" }}>
-                {todoResources.some(e => e.id === result.id || e.resource_id === result.id) ? (
+                {todoResources.some(e => e.id === hit.id || e.resource_id === hit.id) ? (
                     <Tooltip placement="right" title="Added to your current list">
                         <IconButton>
                             <CheckIcon color="primary" />
@@ -149,9 +153,9 @@ export default function Result({ result, currentList, categories, stages }) {
                 )
                 }
                 <CardActionArea onClick={handleClickOpen} >
-                    {result.image_url ? (
+                    {hit.image_url ? (
                         <div style={{ padding: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px', overflow: 'hidden' }}>
-                            <img style={{ display: 'block', maxWidth: '100%', maxHeight: '100px' }} src={result.image_url} alt={result.name} />
+                            <img style={{ display: 'block', maxWidth: '100%', maxHeight: '100px' }} src={hit.image_url} alt={hit.name} />
                         </div>
                     ) : (
                         <div style={{ padding: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px', overflow: 'hidden' }}>
@@ -169,7 +173,7 @@ export default function Result({ result, currentList, categories, stages }) {
                                 WebkitLineClamp: "1",
                                 WebkitBoxOrient: "vertical"
                             }}>
-                            {result.name}
+                            {hit.name}
                         </Typography>
                         <Typography
                             paragraph
@@ -185,13 +189,15 @@ export default function Result({ result, currentList, categories, stages }) {
                                 WebkitLineClamp: "3",
                                 WebkitBoxOrient: "vertical",
                             }}>
-                            {result.description}
+                            {hit.description}
                         </Typography>
-                        <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={result.category_name} />
-                        <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1 }} label={result.stage_name} />
+                        <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={hit.category_name} />
+                        <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1 }} label={hit.stage_name} />
                     </CardContent>
                 </CardActionArea>
             </Card>
+            </Grid>
+    ))}
         </>
     );
 }
