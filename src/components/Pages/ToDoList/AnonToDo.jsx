@@ -49,7 +49,7 @@ export default function AnonToDo({ handleOpenRegister }) {
         dispatch({
             type: 'PUT_ANON_TODO_LIST',
             payload: {
-                id: resource.id,
+                id: resource.objectID,
                 notes,
             }
         })
@@ -139,10 +139,10 @@ export default function AnonToDo({ handleOpenRegister }) {
                                 {/* Opens AnonToDoModal */}
                                 <ListItem sx={{ fontSize: { xs: 12, md: 16 } }} >
                                     <Tooltip title="Click to view more details">
-                                        <ListItemButton onClick={() => { setSelectedResource(resource.id); setOpen(true); }} >{resource.name}</ListItemButton>
+                                        <ListItemButton onClick={() => { setSelectedResource(resource.objectID); setOpen(true); }} >{resource.name}</ListItemButton>
                                     </Tooltip>
                                 </ListItem>
-                                {editMode && selectedResource === resource.id
+                                {editMode && selectedResource === resource.objectID
                                     // if in Edit Mode, show text fields
                                     ? <ListItem sx={{ width: { xs: "100%" } }}>
                                         <ListItemText>
@@ -172,7 +172,7 @@ export default function AnonToDo({ handleOpenRegister }) {
                                         </ListItemText>
                                     </ListItem>
                                 }
-                                {editMode && selectedResource === resource.id
+                                {editMode && selectedResource === resource.objectID
                                     // if this resource is in Edit Mode, show Save and Close buttons
                                     ? <>
                                         <ListItem sx={{ width: { xs: 50, md: 100 } }}>
@@ -194,7 +194,7 @@ export default function AnonToDo({ handleOpenRegister }) {
                                     : <>
                                         <Tooltip title="Edit Notes">
                                             <ListItem sx={{ width: { xs: 50, md: 100 } }}>
-                                                <IconButton onClick={() => { setSelectedResource(resource.id); setEditMode(true) }}>
+                                                <IconButton onClick={() => { setSelectedResource(resource.objectID); setEditMode(true) }}>
                                                     <ModeEditIcon color="primary" />
                                                 </IconButton>
                                             </ListItem>
@@ -202,7 +202,7 @@ export default function AnonToDo({ handleOpenRegister }) {
 
                                         <ListItem sx={{ width: { xs: 65, md: 100 } }}>
                                             <Tooltip title="Delete Item">
-                                                <IconButton onClick={() => deleteResource(resource.id)}>
+                                                <IconButton onClick={() => deleteResource(resource.objectID)}>
                                                     <DeleteIcon color="secondary" />
                                                 </IconButton>
                                             </Tooltip>
@@ -210,7 +210,7 @@ export default function AnonToDo({ handleOpenRegister }) {
                                     </>
                                 }
                             </List>
-                            {selectedResource === resource.id && (
+                            {selectedResource === resource.objectID && (
                                 <AnonToDoModal
                                     open={open}
                                     setSelectedResource={setSelectedResource}

@@ -146,6 +146,39 @@ function* deleteStage(action) {
     }
 };
 
+function* fetchEntrepreneur() {
+    try {
+        // Sends a GET request to the server to fetch all entrepreneur types
+        const response = yield call(axios.get, '/api/admin/entrepreneur');
+        // Dispatches 'SET_ENTREPRENEUR' action along with the fetched entrepreneur types
+        yield put({ type: 'SET_ENTREPRENEUR', payload: response.data });
+    } catch (error) {
+        console.log('Error fetching entrepreneur', error);
+    }
+}
+
+function* fetchSupport() {
+    try {
+        // Sends a GET request to the server to fetch all support types
+        const response = yield call(axios.get, '/api/admin/support');
+        // Dispatches 'SET_SUPPORT' action along with the fetched support types
+        yield put({ type: 'SET_SUPPORT', payload: response.data });
+    } catch (error) {
+        console.log('Error fetching support', error);
+    }
+}
+
+function* fetchFunding() {
+    try {
+        // Sends a GET request to the server to fetch all funding types
+        const response = yield call(axios.get, '/api/admin/Funding');
+        // Dispatches 'SET_FUNDING' action along with the fetched funding types
+        yield put({ type: 'SET_FUNDING', payload: response.data });
+    } catch (error) {
+        console.log('Error fetching funding', error);
+    }
+}
+
 // Watcher Saga: Fires when certain actions are dispatched
 function* adminSaga() {
     // Take latest is a helper function provided by redux-saga
@@ -161,6 +194,9 @@ function* adminSaga() {
     yield takeLatest('DELETE_STAGE', deleteStage);
     yield takeLatest('FETCH_ORGANIZATIONS', fetchOrganizations);
     yield takeLatest('FETCH_STAGES', fetchStages);
+    yield takeLatest('FETCH_ENTREPRENEUR', fetchEntrepreneur);
+    yield takeLatest('FETCH_SUPPORT', fetchSupport);
+    yield takeLatest('FETCH_FUNDING', fetchFunding);
 }
 
 export default adminSaga;
