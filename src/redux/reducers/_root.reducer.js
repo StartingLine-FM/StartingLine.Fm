@@ -8,10 +8,13 @@ import FU_Reducer from './FU.reducer';
 import chamber_Reducer from './chamber.reducer';
 import CEFB_Reducer from './CEFB.reducer';
 import tableListReducer from './tablelist.reducer';
-import OrganizationsReducerReducer from './organizations.reducer'
+import organizationsReducer from './organizations.reducer'
 import StagesReducer from './stages.reducer';
 import adminReducer from './admin.reducer';
 import articles from './article.reducer';
+import entrepreneurReducer from './entrepreneur.reducer';
+import supportReducer from './support.reducer';
+import fundingReducer from './funding.reducer';
 
 import { EP_Loading_Reducer, FU_Loading_Reducer, chamber_Loading_Reducer, CEFB_Loading_Reducer } from './loading.reducer';
 
@@ -32,8 +35,11 @@ const rootReducer = combineReducers({
   CEFB_Reducer, //gives the user access to the scraped NDSU CEFB Calendar
   todoListResourcesReducer,
   tableListReducer, // will have an id and username if someone is logged in
-  organizations: OrganizationsReducerReducer, //sets the organizations for the project
+  organizations: organizationsReducer, //sets the organizations for the project
   stages: StagesReducer, // sets the stages for the project
+  entrepreneur: entrepreneurReducer,
+  support: supportReducer,
+  funding: fundingReducer,
   EP_Loading_Reducer,
   FU_Loading_Reducer,
   chamber_Loading_Reducer,

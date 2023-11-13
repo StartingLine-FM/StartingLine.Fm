@@ -2,7 +2,7 @@
 // updating the state relating to organizations.
 // Reducers specify how the application's state changes in response to actions 
 // sent to the store.
-const OrganizationsReducer = (state = [], action) => {
+const organizationsReducer = (state = [], action) => {
   switch (action.type) {
     // In the case of the 'SET_ORGANIZATIONS' action, it returns the payload 
     // of the action which is the new state for organizations.
@@ -16,4 +16,4 @@ const OrganizationsReducer = (state = [], action) => {
 };
 
 // Export the organizationsReducer as a default export so it can be used by other modules.
-export default OrganizationsReducer;
+export default organizationsReducer;
