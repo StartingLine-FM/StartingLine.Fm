@@ -40,6 +40,9 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
     const [changes, setChanges] = useState(false);
     const [titleOpen, setTitleOpen] = useState(false);
     const [infoOpen, setInfoOpen] = useState(false);
+    const [supportOpen, setSupportOpen] = useState(false);
+    const [entrepreneurOpen, setEntrepreneurOpen] = useState(false);
+    const [fundingOpen, setFundingOpen] = useState(false);
 
     const dispatch = useDispatch();
     const user = useSelector(store => store.user);
@@ -72,6 +75,18 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
         setTitleOpen(!titleOpen);
     };
 
+    const handleSupportClick = () => {
+        setSupportOpen(!supportOpen);
+    }
+
+    const handleEntrepreneurClick = () => {
+        setEntrepreneurOpen(!entrepreneurOpen);
+    }
+
+    const handleFundingClick = () => {
+        setFundingOpen(!fundingOpen);
+    }
+
     const handleInfoOpen = () => {
         setInfoOpen(true);
     };
@@ -102,15 +117,6 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
         <Grid item xs={12} md={3}>
             <Paper sx={{ width: { xs: "100%" }, mr: { sm: 2 }, px: 2, pt: 2 }}>
                 <InfoModal infoOpen={infoOpen} handleInfoClose={handleInfoClose} />
-
-                {/* LEGACY TEXT FIELD*/}
-                {/* <TextField
-                    placeholder="Search"
-                    size="small"
-                    sx={{ width: { xs: 0.85, sm: 0.7 } }}
-                    value={searchQuery}
-                    onChange={(event) => handleSearch(event.currentTarget.value)}
-                /> */}
 
                 {/* ALGOLIA SEARCH BOX */}
                 <SearchBox
@@ -152,6 +158,45 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
                         <List>
                             <RefinementList
                                 attribute="stage_name"
+                                sortBy={['name:asc']}
+                            />
+                        </List>
+                    </Collapse>
+                    {/* SUPPORT DROP DOWN */}
+                    <ListItemButton onClick={handleSupportClick}>
+                        <ListItemText primary="Support Type" />
+                        {supportOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={supportOpen} timeout="auto" unmountOnExit>
+                        <List>
+                            <RefinementList
+                                attribute="support_titles"
+                                sortBy={['name:asc']}
+                            />
+                        </List>
+                    </Collapse>
+                    {/* ENTREPRENEUR DROP DOWN */}
+                    <ListItemButton onClick={handleEntrepreneurClick}>
+                        <ListItemText primary="Entrepreneur" />
+                        {entrepreneurOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={entrepreneurOpen} timeout="auto" unmountOnExit>
+                        <List>
+                            <RefinementList
+                                attribute="entrepreneur_title"
+                                sortBy={['name:asc']}
+                            />
+                        </List>
+                    </Collapse>
+                    {/* FUNDING DROP DOWN */}
+                    <ListItemButton onClick={handleFundingClick}>
+                        <ListItemText primary="Funding Type" />
+                        {fundingOpen ? <ExpandLess /> : <ExpandMore />}
+                    </ListItemButton>
+                    <Collapse in={fundingOpen} timeout="auto" unmountOnExit>
+                        <List>
+                            <RefinementList
+                                attribute="funding_titles"
                                 sortBy={['name:asc']}
                             />
                         </List>
