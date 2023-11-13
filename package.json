@@ -27,6 +27,7 @@
     "dotenv": "^8.6.0",
     "express": "^4.17.1",
     "framer-motion": "^10.13.1",
+    "instantsearch.css": "^8.1.0",
     "moment": "^2.29.4",
     "node-cron": "^3.0.2",
     "passport": "^0.4.1",

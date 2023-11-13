@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch, RefinementList, SearchBox, Menu, HierarchicalMenu, ToggleRefinement, DynamicWidgets } from 'react-instantsearch';
+import 'instantsearch.css/themes/satellite.css';
+
 // MUI
 import {
     Grid,
@@ -170,7 +172,7 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
                     <Collapse in={supportOpen} timeout="auto" unmountOnExit>
                         <List>
                             <RefinementList
-                                attribute="support_titles"
+                                attribute="support_titles.title"
                                 sortBy={['name:asc']}
                             />
                         </List>
