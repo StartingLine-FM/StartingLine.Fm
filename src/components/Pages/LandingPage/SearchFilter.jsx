@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch, RefinementList, SearchBox, Menu, HierarchicalMenu, ToggleRefinement, DynamicWidgets } from 'react-instantsearch';
+import 'instantsearch.css/themes/satellite.css';
+
 // MUI
 import {
     Grid,
@@ -135,6 +137,63 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
                         </IconButton>
                     </Tooltip>
                 </div>
+
+                {/* BUSINESS STAGE DROP DOWN */}
+                <ListItemButton onClick={handleStageClick}>
+                    <ListItemText primary="Business Stage" />
+                    {stageOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={stageOpen} timeout="auto" unmountOnExit>
+                    <List>
+                        <RefinementList
+                            attribute="stage_name"
+                            sortBy={['name:asc']}
+                        />
+                    </List>
+                </Collapse>
+
+                {/* SUPPORT DROP DOWN */}
+                <ListItemButton onClick={handleSupportClick}>
+                    <ListItemText primary="Support Type" />
+                    {supportOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={supportOpen} timeout="auto" unmountOnExit>
+                    <List>
+                        <RefinementList
+                            attribute="support_titles.title"
+                            sortBy={['name:asc']}
+                        />
+                    </List>
+                </Collapse>
+
+                {/* FUNDING DROP DOWN */}
+                <ListItemButton onClick={handleFundingClick}>
+                    <ListItemText primary="Funding Type" />
+                    {fundingOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={fundingOpen} timeout="auto" unmountOnExit>
+                    <List>
+                        <RefinementList
+                            attribute="funding_titles"
+                            sortBy={['name:asc']}
+                        />
+                    </List>
+                </Collapse>
+
+                {/* ENTREPRENEUR DROP DOWN */}
+                <ListItemButton onClick={handleEntrepreneurClick}>
+                    <ListItemText primary="Entrepreneur" />
+                    {entrepreneurOpen ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={entrepreneurOpen} timeout="auto" unmountOnExit>
+                    <List>
+                        <RefinementList
+                            attribute="entrepreneur_title"
+                            sortBy={['name:asc']}
+                        />
+                    </List>
+                </Collapse>
+
                 <List>
                     {/* ORGANIZATION DROP DOWN */}
                     <ListItemButton onClick={handleCategoryClick}>
@@ -143,64 +202,16 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
                     </ListItemButton>
                     <Collapse in={categoryOpen} timeout="auto" unmountOnExit>
                         <List>
-                        <RefinementList
+                            <RefinementList
                                 attribute="organization_name"
                                 sortBy={['name:asc']}
                             />
                         </List>
                     </Collapse>
-                    {/* BUSINESS STAGE DROP DOWN */}
-                    <ListItemButton onClick={handleStageClick}>
-                        <ListItemText primary="Business Stage" />
-                        {stageOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={stageOpen} timeout="auto" unmountOnExit>
-                        <List>
-                            <RefinementList
-                                attribute="stage_name"
-                                sortBy={['name:asc']}
-                            />
-                        </List>
-                    </Collapse>
-                    {/* SUPPORT DROP DOWN */}
-                    <ListItemButton onClick={handleSupportClick}>
-                        <ListItemText primary="Support Type" />
-                        {supportOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={supportOpen} timeout="auto" unmountOnExit>
-                        <List>
-                            <RefinementList
-                                attribute="support_titles"
-                                sortBy={['name:asc']}
-                            />
-                        </List>
-                    </Collapse>
-                    {/* ENTREPRENEUR DROP DOWN */}
-                    <ListItemButton onClick={handleEntrepreneurClick}>
-                        <ListItemText primary="Entrepreneur" />
-                        {entrepreneurOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={entrepreneurOpen} timeout="auto" unmountOnExit>
-                        <List>
-                            <RefinementList
-                                attribute="entrepreneur_title"
-                                sortBy={['name:asc']}
-                            />
-                        </List>
-                    </Collapse>
-                    {/* FUNDING DROP DOWN */}
-                    <ListItemButton onClick={handleFundingClick}>
-                        <ListItemText primary="Funding Type" />
-                        {fundingOpen ? <ExpandLess /> : <ExpandMore />}
-                    </ListItemButton>
-                    <Collapse in={fundingOpen} timeout="auto" unmountOnExit>
-                        <List>
-                            <RefinementList
-                                attribute="funding_titles"
-                                sortBy={['name:asc']}
-                            />
-                        </List>
-                    </Collapse>
+
+
+
+
                 </List>
             </Paper>
             {user.id && titles.length > 0 &&
