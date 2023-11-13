@@ -24,7 +24,7 @@ const queryText = `
   r."address",
   r."linkedin"
 FROM "resource" r
-LEFT JOIN "organization" o ON o."id" = r."category_id"
+LEFT JOIN "organization" o ON o."id" = r."organization_id"
 LEFT JOIN "stage" s ON s."id" = r."stage_id"
 LEFT JOIN "entrepreneur" e ON e."id" = r."entrepreneur_id"
 LEFT JOIN "support_join" sj ON r."id" = sj."resource_id"

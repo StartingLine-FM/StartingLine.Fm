@@ -195,8 +195,8 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                         label="Edit Category"
                         onChange={e => setNewCategory(e.target.value)}
                     >
-                        {categories &&
-                            categories.map(cat => {
+                        {organizations &&
+                            organizations.map(cat => {
                                 return (
                                     <option value={cat.id}>{cat.name}</option>
                                 );
@@ -272,7 +272,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <Link target="_blank" rel="noopener noreferrer" href={hit.linkedin}>{hit.linkedin && hit.linkedin}</Link>
                     <Typography variant="body1">{hit.address && hit.address}</Typography>
                     <DialogContentText>
-                        <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={hit.category_name} />
+                        <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={hit.organization_name} />
                         <Chip color="secondary" sx={{ mt: 2 }} label={hit.stage_name} />
                     </DialogContentText>
                 </DialogContent>
