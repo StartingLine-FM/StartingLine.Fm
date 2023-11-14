@@ -9,24 +9,10 @@ import SaveIcon from '@mui/icons-material/Save'; // Added SaveIcon, save option
 import CancelIcon from '@mui/icons-material/Cancel'; // Added CancelIcon, cancel option
 import InfoIcon from '@mui/icons-material/Info'; //Added InfoIcon, info on how things work
 import "./AdminPage.css"
+import ResourceForm from './ResourceForm';
 
 // AdminPage is a functional component where Admin can add, edit or delete resources, organizations, and stages
 function AdminPage() {
-  // State for new resource input fields using useState hook
-  const [newResource, setNewResource] = useState({
-    name: '',
-    image_url: '',
-    description: '',
-    website: '',
-    email: '',
-    address: '',
-    linkedin: '',
-    organization_id: '',
-    stage_id: '',
-    entrepreneur_id: '',
-    support: [],
-    funding: []
-  });
 
   // State variables for new organization and stage name, 
   // and edited organization and stage name
@@ -44,9 +30,6 @@ function AdminPage() {
   // useDispatch hook allows us to dispatch a Redux action and history pushes non-admin to home
   const dispatch = useDispatch();
   const history = useHistory();
-
-  // Regular expression for URL validation
-  const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
 
   // useSelector hook to extract data from the Redux store state
   const user = useSelector((state) => state.user);
@@ -74,54 +57,6 @@ function AdminPage() {
   }, [dispatch]);
 
 
-  // handleSubmit is a function that validates newResource input fields and dispatches a new resource
-  const handleSubmit = (event) => {
-    // prevent default form submission
-    event.preventDefault();
-
-    // Validate the LinkedIn URL
-    if (newResource.linkedin !== '' && !urlRegex.test(newResource.linkedin)) {
-      alert('Invalid LinkedIn URL');
-      return;
-    }
-
-    // Validate the Website URL
-    if (newResource.website !== '' && !urlRegex.test(newResource.website)) {
-      alert('Invalid Website URL');
-      return;
-    }
-
-    // Validate the Image URL
-    if (newResource.image_url && !isValidImageUrl(newResource.image_url)) {
-      alert('Invalid Image URL');
-      return;
-    }
-
-    // If all fields are properly filled out, dispatch action to save new resource
-    if (newResource.name && newResource.description && newResource.stage_id && newResource.organization_id) {
-      dispatch({ type: 'POST_RESOURCE', payload: newResource });
-      setNewResource({
-        name: '',
-        image_url: '',
-        description: '',
-        website: '',
-        email: '',
-        address: '',
-        linkedin: '',
-        organization_id: '',
-        stage_id: '',
-      });
-    } else {
-      // Display a validation error message or take appropriate action
-      alert('Please provide all mandatory fields (name, description, stage, and organization).');
-    }
-  };
-
-  const isValidImageUrl = (url) => {
-    // A simple check to see if the URL ends with common image file extensions
-    // Note: This is not a foolproof check
-    return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
-  };
   // Function to handle adding a new organization
   const handleAddOrganization = (event) => {
     event.preventDefault();
@@ -227,38 +162,6 @@ function AdminPage() {
     }
   }
 
-  const handleAddSupportField = () => {
-    return (
-      <>
-        <TextField
-          sx={{ mt: 1 }}
-          select
-          value={newResource.support}
-          SelectProps={{
-            native: true,
-          }}
-          // Updates the 'support' property of the 'newResource' state when the selected value changes
-          onChange={(event) => setNewResource({ ...newResource.support = [newResource.support, ...event.target.value] })}
-        >
-          {/* A default option prompting the user to select a stage */}
-          <option value={0}>Select support type</option>
-          {/* Mapping over the 'support' array to create an option for each stage */}
-          {support.map((e) => (
-            <option key={e.id} value={e.id}>
-              {e.title}
-            </option>
-          ))}
-        </TextField>
-        <IconButton onClick={handleAddSupportField}>
-          <AddIcon />
-        </IconButton>
-        <IconButton>
-          <CancelIcon />
-        </IconButton>
-      </>
-    )
-  }
-
   return (
     <Container>
       <Paper sx={{ mt: 3 }}>
@@ -270,229 +173,7 @@ function AdminPage() {
           {/* </Paper> */}
         </div>
         <Grid container justifyContent='center' spacing={3}>
-          <Grid item xs={9}>
-            <Paper style={{ marginBottom: '50px' }} className="admin-container">
-              {/* Information about the form is displayed here */}
-              <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
-                Contribute Resource
-                {/* The Tooltip component is used here to provide additional information about the form */}
-                <Tooltip title="This form allows the addition of new resources. Complete all required fields with accurate information. After confirming details, click 'Submit' for user availability.">
-                  <InfoIcon style={{ marginLeft: '10px' }} color="action" />
-                </Tooltip>
-              </Typography>
-              {/* Form to add a new resource */}
-              <form className='admin-form' onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap' }}>
-                <Grid item container xs={12}>
-                  <Grid item xs={4}>
-                    <TextField
-                      label="Name"
-                      fullWidth
-                      value={newResource.name}
-                      // Updates the 'name' property of the 'newResource' state when the input value changes
-                      onChange={(event) => setNewResource({ ...newResource, name: event.target.value })}
-                      required // This makes the field mandatory
-                    />
-                  </Grid>
-                  <Grid item xs={8}>
-                    <TextField
-                      sx={{ mx: 1 }}
-                      label="Image URL"
-                      fullWidth
-                      value={newResource.image_url}
-                      // Updates the 'image_url' property of the 'newResource' state when the input value changes
-                      onChange={(event) => setNewResource({ ...newResource, image_url: event.target.value })}
-                    />
-                  </Grid>
-                </Grid>
-                <Grid item>
-                  <TextField
-                    sx={{ mt: 1 }}
-                    label="Description"
-                    multiline
-                    fullWidth
-                    rows={3}
-                    value={newResource.description}
-                    // Updates the 'description' property of the 'newResource' state when the input value changes
-                    onChange={(event) => setNewResource({ ...newResource, description: event.target.value })}
-                    required // This makes the field mandatory
-                  />
-                </Grid>
-                <Grid item container spacing={1} xs={12}>
-                  <Grid item xs={3}>
-                    <TextField
-                      label="LinkedIn"
-                      value={newResource.linkedin}
-                      // Updates the 'linkedin' property of the 'newResource' state when the input value changes
-                      onChange={(event) => setNewResource({ ...newResource, linkedin: event.target.value })}
-                      // Validate the LinkedIn URL using the regex
-                      // A valid LinkedIn URL starts with "https://www.linkedin.com/"
-                      error={!urlRegex.test(newResource.linkedin) && newResource.linkedin !== ''}
-                      helperText={newResource.linkedin !== '' && !urlRegex.test(newResource.linkedin) ? 'Invalid LinkedIn URL' : ''}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <TextField
-                      label="Website"
-                      value={newResource.website}
-                      // Updates the 'website' property of the 'newResource' state when the input value changes
-                      onChange={(event) => setNewResource({ ...newResource, website: event.target.value })}
-                      // Validate the Website URL using the regex
-                      // A valid Website URL starts with "http://" or "https://"
-                      error={!urlRegex.test(newResource.website) && newResource.website !== ''}
-                      helperText={newResource.website !== '' && !urlRegex.test(newResource.website) ? 'Invalid Website URL' : ''}
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <TextField
-                      label="Email"
-                      type="email"
-                      value={newResource.email}
-                      // Updates the 'email' property of the 'newResource' state when the input value changes
-                      onChange={(event) => setNewResource({ ...newResource, email: event.target.value })}
-                      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" // Regular expression for email validation
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <TextField
-                      label="Address"
-                      value={newResource.address}
-                      // Updates the 'address' property of the 'newResource' state when the input value changes
-                      onChange={(event) => setNewResource({ ...newResource, address: event.target.value })}
-                    />
-                  </Grid>
-                </Grid>
-                <Grid item container spacing={1} xs={12}>
-                  <Grid item xs={4}>
-                    <TextField
-                      select
-                      fullWidth
-                      value={newResource.organization_id}
-                      // Updates the 'organization' property of the 'newResource' state when the input value changes
-                      SelectProps={{
-                        native: true,
-                      }}
-                      onChange={(event) => setNewResource({ ...newResource, organization_id: event.target.value })}
-                      required // This makes the field mandatory
-                    >
-                      <option value={0}>Select organization type</option>
-                      {organizations.map((organization) => (
-                        <option key={organization.id} value={organization.id}>
-                          {organization.name}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item xs={4}>
-                    {/* This is a form select input for choosing a resource stage. */}
-                    <TextField
-                      select
-                      fullWidth
-                      value={newResource.stage_id}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      // Updates the 'organization_id' property of the 'newResource' state when the selected value changes
-                      onChange={(event) => setNewResource({ ...newResource, stage_id: event.target.value })}
-                      required // This makes the field mandatory
-                    >
-                      {/* A default option prompting the user to select a stage */}
-                      <option value={0}>Select business stage</option>
-                      {/* Mapping over the 'stages' array to create an option for each stage */}
-                      {stages.map((stage) => (
-                        <option key={stage.id} value={stage.id}>
-                          {stage.name}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <TextField
-                      select
-                      fullWidth
-                      value={newResource.entrepreneur_id}
-                      SelectProps={{
-                        native: true,
-                      }}
-                      // Updates the 'organization_id' property of the 'newResource' state when the selected value changes
-                      onChange={(event) => setNewResource({ ...newResource, entrepreneur_id: event.target.value })}
-                    >
-                      {/* A default option prompting the user to select a stage */}
-                      <option value={0}>Select entrepreneur type</option>
-                      {/* Mapping over the 'entrepreneur' array to create an option for each stage */}
-                      {entrepreneur.map((e) => (
-                        <option key={e.id} value={e.id}>
-                          {e.title}
-                        </option>
-                      ))}
-                    </TextField>
-                  </Grid>
-                </Grid>
-                <Grid item container xs={12} spacing={1}>
-                  <Grid item container xs={6} spacing={1}>
-                    <Grid item>
-                      <TextField
-                        sx={{ mt: 1 }}
-                        select
-                        value={newResource.support}
-                        SelectProps={{
-                          native: true,
-                        }}
-                        // Updates the 'support' property of the 'newResource' state when the selected value changes
-                        onChange={(event) => setNewResource({ ...newResource.support = [newResource.support, ...event.target.value] })}
-                      >
-                        {/* A default option prompting the user to select a stage */}
-                        <option value={0}>Select support type</option>
-                        {/* Mapping over the 'support' array to create an option for each stage */}
-                        {support.map((e) => (
-                          <option key={e.id} value={e.id}>
-                            {e.title}
-                          </option>
-                        ))}
-                      </TextField>
-                      <IconButton onClick={handleAddSupportField}>
-                        <AddIcon />
-                      </IconButton>
-                      <IconButton>
-                        <CancelIcon />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                  <Grid item container xs={6} spacing={1}>
-                    <Grid item>
-                      <TextField
-                        sx={{ mt: 1 }}
-                        select
-                        value={newResource.funding}
-                        SelectProps={{
-                          native: true,
-                        }}
-                        // Updates the 'funding' property of the 'newResource' state when the selected value changes
-                        onChange={(event) => setNewResource({ ...newResource, funding: [...event.target.value] })}
-                      >
-                        {/* A default option prompting the user to select a stage */}
-                        <option value={0}>Select funding type</option>
-                        {/* Mapping over the 'funding' array to create an option for each stage */}
-                        {funding.map((e) => (
-                          <option key={e.id} value={e.id}>
-                            {e.title}
-                          </option>
-                        ))}
-                      </TextField>
-                      <IconButton onClick={handleAddSupportField}>
-                        <AddIcon />
-                      </IconButton>
-                      <IconButton>
-                        <CancelIcon />
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                </Grid>
-                <Button sx={{ mt: 1 }} variant="contained" color="primary" type="submit">
-                  Add Resource
-                </Button>
-              </form>
-            </Paper>
-          </Grid>
+          <ResourceForm organizations={organizations} stages={stages} entrepreneur={entrepreneur} funding={funding} support={support} />
           <Grid item xs={4}>
             {/* Form to add a new organization */}
             <Paper style={{ marginBottom: '50px', flexGrow: 1, flexBasis: '0' }} className="admin-container">

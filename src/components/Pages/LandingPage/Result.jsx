@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
-import { useHits } from "react-instantsearch";
 import moment from "moment";
 
 import ResultModal from "./ResultModal";
@@ -8,7 +7,6 @@ import fallbackImage from './resource-fallback-image.jpg';
 
 import {
     Card,
-    CardMedia,
     Typography,
     CardContent,
     CardActionArea,
@@ -17,7 +15,6 @@ import {
     Snackbar,
     Alert,
     Tooltip,
-    Grid
 } from '@mui/material'
 
 import AddIcon from '@mui/icons-material/Add';

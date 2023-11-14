@@ -17,8 +17,8 @@ const isAdmin = (req, res, next) => {
     }
 };
 
-const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_SEARCH_KEY);
-const index = client.initIndex('resources');
+const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
+const index = client.initIndex('test_resources');
 const algoliaQuery =
     `SELECT
     r."id" AS "objectID",
@@ -48,7 +48,9 @@ const algoliaQuery =
 
 const algoliaSave = () => {
     pool.query(algoliaQuery)
-        .then(result => index.saveObjects(result.rows))
+        .then(result => {
+            index.saveObjects(result.rows);
+        })
         .catch(err => console.log("Error on algolia saveObjects:", err));
 }
 
@@ -61,8 +63,6 @@ router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
 
     // The request body should contain the new resource's details
     const newResource = req.body;
-    const support = req.body.support;
-    const funding = req.body.funding
 
     // initial resource table insert query
     const resourceQuery = `INSERT INTO "resource"(stage_id, organization_id, entrepreneur_id, name, image_url, description, website, email, address, linkedin) 
@@ -92,17 +92,14 @@ router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
                 newResource.linkedin
             ]);
         let resourceId = addedResource.rows[0].id;
-        // we'll send 'support' and 'funding' keys in the req.body as arrays of support_id or funding_id objects
-        // ex. funding: [{id: 1, funding_id: 2, resource_id: 3}, {id: 2, funding_id: 3, resource_id: 3}]
-        // that way we can loop over them and make an insert statement for each tag needed per resource
-        if (support) {
-            for (tag of support) {
-                await pool.query(supportQuery, [support.support_id, support.resourceId, support.id])
+        if (newResource.support.length > 0) {
+            for (tag of newResource.support) {
+                await pool.query(supportQuery, [tag, resourceId])
             }
         }
-        if (funding) {
-            for (tag of funding) {
-                await pool.query(fundingQuery, [funding.funding_id, funding.resourceId, funding.id])
+        if (newResource.funding.length > 0) {
+            for (tag of newResource.funding) {
+                await pool.query(fundingQuery, [tag, resourceId])
             }
         }
         // Upon successfull post, update the algolia index to reflect the newly added resource
@@ -124,8 +121,8 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     const updatedResource = req.body;
     const resourceId = req.params.id
     // The SQL query to update a resource
-        // initial resource table insert query
-        const resourceQuery = `
+    // initial resource table insert query
+    const resourceQuery = `
         UPDATE "resource" 
         SET 
         stage_id = $1, 
@@ -143,9 +140,7 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     const fundingQuery = `UPDATE "funding_join" SET "funding_id"=$1, "resource_id"=$2, WHERE "id"=$3;`
 
     try {
-        // first, we instantiate the resource INSERT into a variable
-        // so we can store the RETURNING "id" value to reference for the join table INSERTs
-        let addedResource = await pool.query(
+        await pool.query(
             resourceQuery,
             [
                 updatedResource.stage_id,
@@ -175,7 +170,7 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
         }
         // Upon successful update, update the algolia index to reflect the newly added resource
         algoliaSave();
-       // Send a 200 status code to the client to indicate that the request was successful
+        // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);
     } catch (err) {
         // Log the error and send a 500 status code to the client if an error occurs
@@ -255,6 +250,7 @@ router.put('/organizations/:id', rejectUnauthenticated, isAdmin, async (req, res
     try {
         // Execute the SQL query
         await pool.query(queryText, [updatedOrganization.name, updatedOrganization.description, req.params.id]);
+        algoliaSave();
         // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);
     } catch (err) {
@@ -280,6 +276,7 @@ router.delete('/organizations/:id', rejectUnauthenticated, isAdmin, async (req, 
         console.log('Error deleting organization', err);
         res.sendStatus(500);
     }
+
 });
 
 // ***** STAGE *****
@@ -333,6 +330,7 @@ router.put('/stages/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     try {
         // Execute the SQL query
         await pool.query(queryText, [updatedStage.name, updatedStage.description, req.params.id]);
+        algoliaSave();
         // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);
     } catch (err) {
@@ -411,6 +409,7 @@ router.put('/support/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     try {
         // Execute the SQL query
         await pool.query(queryText, [updatedSupport.name, updatedSupport.description, req.params.id]);
+        algoliaSave();
         // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);
     } catch (err) {
@@ -489,6 +488,7 @@ router.put('/funding/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     try {
         // Execute the SQL query
         await pool.query(queryText, [updatedFunding.name, updatedFunding.description, req.params.id]);
+        algoliaSave();
         // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);
     } catch (err) {
@@ -567,6 +567,7 @@ router.put('/entrepreneur/:id', rejectUnauthenticated, isAdmin, async (req, res)
     try {
         // Execute the SQL query
         await pool.query(queryText, [updatedEntrepreneur.name, updatedEntrepreneur.description, req.params.id]);
+        algoliaSave();
         // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);
     } catch (err) {
