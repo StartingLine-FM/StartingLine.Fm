@@ -7,22 +7,6 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
 
     const dispatch = useDispatch();
 
-    // State for new resource input fields using useState hook
-    // const [newResource, setNewResource] = useState({
-    //     name: '',
-    //     image_url: '',
-    //     description: '',
-    //     website: '',
-    //     email: '',
-    //     address: '',
-    //     linkedin: '',
-    //     organization_id: '',
-    //     stage_id: '',
-    //     entrepreneur_id: '',
-    //     support: [],
-    //     funding: [],
-    // });
-
     const [newName, setNewName] = useState('')
     const [newImage, setNewImage] = useState('')
     const [newDescription, setNewDescription] = useState('')
@@ -135,7 +119,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
     };
 
     return (
-        <Grid item xs={9}>
+        <Grid item xs={12} md={9}>
             <Paper style={{ marginBottom: '50px' }} className="admin-container">
                 {/* Information about the form is displayed here */}
                 <Typography variant="h6" component="h6" style={{ marginBottom: '20px', textAlign: 'center', color: '#55c6f0' }}>
@@ -186,9 +170,10 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
 
 
                     <Grid item container spacing={1} xs={12}>
-                        <Grid item xs={3} sx={{ mb: 1 }}>
+                        <Grid item xs={12} md={3} sx={{ mb: 1 }}>
                             <TextField
                                 label="LinkedIn"
+                                fullWidth
                                 value={newLinkedIn}
                                 // Updates the 'linkedin' property of the 'newResource' state when the input value changes
                                 onChange={(event) => setNewLinkedIn(event.target.value)}
@@ -199,9 +184,10 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                             />
                         </Grid>
 
-                        <Grid item xs={3} sx={{ mb: 1 }}>
+                        <Grid item xs={12} md={3} sx={{ mb: 1 }}>
                             <TextField
                                 label="Website"
+                                fullWidth
                                 value={newWebsite}
                                 // Updates the 'website' property of the 'newResource' state when the input value changes
                                 onChange={(event) => setNewWebsite(event.target.value)}
@@ -212,10 +198,11 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                             />
                         </Grid>
 
-                        <Grid item xs={3} sx={{ mb: 1 }}>
+                        <Grid item xs={12} md={3} sx={{ mb: 1 }}>
                             <TextField
                                 label="Email"
                                 type="email"
+                                fullWidth
                                 value={newEmail}
                                 // Updates the 'email' property of the 'newResource' state when the input value changes
                                 onChange={(event) => setNewEmail(event.target.value)}
@@ -223,9 +210,10 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                             />
                         </Grid>
 
-                        <Grid item xs={3} sx={{ mb: 1 }}>
+                        <Grid item xs={12} md={3} sx={{ mb: 1 }}>
                             <TextField
                                 label="Address"
+                                fullWidth
                                 value={newAddress}
                                 // Updates the 'address' property of the 'newResource' state when the input value changes
                                 onChange={(event) => setNewAddress(event.target.value)}
@@ -235,7 +223,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
 
 
                     <Grid item container spacing={1} xs={12}>
-                        <Grid item xs={4}>
+                        <Grid item xs={12} md={4}>
                             <TextField
                                 select
                                 fullWidth
@@ -256,7 +244,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                             </TextField>
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid item xs={12} md={4}>
                             {/* This is a form select input for choosing a resource stage. */}
                             <TextField
                                 select
@@ -280,7 +268,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                             </TextField>
                         </Grid>
 
-                        <Grid item xs={4}>
+                        <Grid item xs={12} md={4}>
                             <TextField
                                 select
                                 fullWidth
@@ -305,7 +293,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
 
 
                     <Grid item container xs={12} spacing={1}>
-                        <Grid item container xs={6}>
+                        <Grid item container xs={12} md={6}>
                             <Grid item xs={12}>
                                 <TextField
                                     sx={{ mt: 1 }}
@@ -377,7 +365,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                         </Grid>
 
 
-                        <Grid item container xs={6}>
+                        <Grid item container xs={12} md={6}>
                             <Grid item xs={12}>
                                 <TextField
                                     sx={{ mt: 1 }}
