@@ -24,7 +24,10 @@ import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 
+
+
 export default function Result({ hit, currentList, categories, stages }) {
+// console.log("Result - hit:", hit);
     const [open, setOpen] = useState(false);
     const [snackOpen, setSnackOpen] = useState(false);
     const [message, setMessage] = useState("");

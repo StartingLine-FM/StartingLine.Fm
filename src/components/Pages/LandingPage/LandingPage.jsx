@@ -26,11 +26,6 @@ function LandingPage({ currentList, setCurrentList }) {
     handleSearch(query);
   };
 
-  //Trigger a search for all resources when the page loads
-  // useEffect(() => {
-  //   handleSearch(''); // Passing an empty query to fetch all resources
-  // }, []);
-
 
   // Algolia Search Function
   const handleSearch = async (query) => {

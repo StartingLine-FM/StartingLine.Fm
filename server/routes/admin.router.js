@@ -122,7 +122,9 @@ router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
 router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the updated resource's details
     const updatedResource = req.body;
+    console.log('the req body is', req.body)
     const resourceId = req.params.id
+    console.log('the req params is', req.params.id)
     // The SQL query to update a resource
         // initial resource table insert query
         const resourceQuery = `
