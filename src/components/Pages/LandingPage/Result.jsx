@@ -69,11 +69,10 @@ export default function Result({ hit, currentList, categories, stages }) {
                 }
             });
         }
-
         currentList && dispatch({
             type: "POST_TODO_LIST",
             payload: {
-                resource_id: hit.id,
+                resource_id: hit.objectID,
                 title_table_id: currentList
             }
         });
