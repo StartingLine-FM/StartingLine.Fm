@@ -104,8 +104,7 @@ function* fetchTableLists(action) {
             const titles = yield select(store => store.tableListReducer) 
             let title_table_id = titles[0].id
             let todo = action.payload
-            console.log(title_table_id);
-            console.log(todo);
+
    
              for(let item of todo) {
                yield put({

@@ -1,5 +1,5 @@
 // hook imports
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 // MUI
@@ -23,7 +23,8 @@ import SaveIcon from '@mui/icons-material/Save';
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 
-export default function ResultModal({ open, handleClose, hit, userPostTodo, anonPostTodo, stages, categories }) {
+export default function ResultModal({ open, handleClose, hit, userPostTodo, anonPostTodo }) {
+    // console.log('hits are', {hit});
 
     // local state
     // admin edit state
@@ -36,16 +37,25 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
     const [newEmail, setNewEmail] = useState('')
     const [newAddress, setNewAddress] = useState('')
     const [newLinkedIn, setNewLinkedIn] = useState('')
-    const [newCategory, setNewCategory] = useState('')
-    const [newStage, setNewStage] = useState('')
+    const [newOrganization, setNewOrganization] = useState('');
+    const [newStage, setNewStage] = useState('');
+    const [newSupport, setNewSupport] = useState('');
+    const [newFunding, setNewFunding] = useState('');
+    const [newEntrepreneur, setNewEntrepreneur] = useState('');
 
     // Redux
     const user = useSelector(store => store.user);
     const todoResources = useSelector(store => store.todoListResourcesReducer);
+    const organizations = useSelector(store => store.organizations);
+    const stages = useSelector(store => store.stages);
+    const funding = useSelector(store => store.funding);
+    const support = useSelector(store => store.support);
+    const entrepreneur = useSelector(store => store.entrepreneur);
     const dispatch = useDispatch();
 
     // click handler for saving our admin edit changes
     const putResource = () => {
+        console.log("Resource ID:", hit.id);
         // instantiate payload keys
         let name;
         let image_url;
@@ -54,7 +64,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
         let email;
         let address;
         let linkedin;
-        let category_id;
+        let organization_id;
         let stage_id;
 
         // if there's a change made, send the changed data, else send existing data
@@ -65,14 +75,14 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
         newLinkedIn ? linkedin = newLinkedIn : linkedin = hit.linkedin;
         newEmail ? email = newEmail : email = hit.email;
         newAddress ? address = newAddress : address = hit.address;
-        newCategory ? category_id = newCategory : category_id = hit.category_id;
+        newOrganization ? organization_id = newOrganization : organization_id = hit.organization_id;
         newStage ? stage_id = newStage : stage_id = hit.stage_id;
 
         // send dispatch to update resource
         dispatch({
             type: "UPDATE_RESOURCE",
             payload: {
-                id: hit.id,
+                id: hit.objectID,
                 name,
                 image_url,
                 description,
@@ -80,7 +90,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                 email,
                 address,
                 linkedin,
-                category_id,
+                organization_id,
                 stage_id
             }
         })
@@ -101,7 +111,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
         setNewEmail('');
         setNewAddress('');
         setNewLinkedIn('');
-        setNewCategory('');
+        setNewOrganization('');
         setNewStage('');
         setEditMode(false);
     }
@@ -117,6 +127,27 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
         // close dialog
         handleClose();
     }
+
+    //console log useEffects
+    useEffect(() => {
+        dispatch({ type: 'FETCH_ORGANIZATIONS' });
+        // console.log('Organizations:', organizations);
+    }, []);
+
+    useEffect(() => {
+        dispatch({ type: 'FETCH_SUPPORT' });
+        // console.log('Support:', support);
+    }, []);
+
+    useEffect(() => {
+        dispatch({ type: 'FETCH_FUNDING' });
+        // console.log('Funding:', funding);
+    }, []);
+
+    useEffect(() => {
+        dispatch({ type: 'FETCH_ENTREPRENEUR' });
+        // console.log('Entrepreneur:', entrepreneur);
+    }, []);
 
     return (
         editMode
@@ -184,43 +215,111 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                         value={newImage}
                         onChange={(e) => setNewImage(e.target.value)}
                     />
-                    {/* Category edit dropdown */}
+                    {/* Organization edit dropdown */}
                     <TextField
-                        sx={{ m: 1 }}
+                        sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={hit.category_id}
+                        defaultValue={hit.organization_id}
                         SelectProps={{
                             native: true,
                         }}
-                        label="Edit Category"
-                        onChange={e => setNewCategory(e.target.value)}
+                        label="Select Organization"
+                        onChange={e => setNewOrganization(e.target.value)}
                     >
+                        {/* <option value={null}>-- Change Org --</option> */}
                         {organizations &&
-                            organizations.map(cat => {
-                                return (
-                                    <option value={cat.id}>{cat.name}</option>
-                                );
-                            })}
-
+                            organizations.map(org => (
+                                <option key={org.id} value={org.id}>
+                                    {org.name}
+                                </option>
+                            ))}
                     </TextField>
                     <br />
+
                     {/* Stage edit dropdown */}
                     <TextField
-                        sx={{ m: 1 }}
+                        sx={{ m: 1, width: '20ch' }}
                         select
                         defaultValue={hit.stage_id}
                         SelectProps={{
                             native: true,
                         }}
-                        label="Edit Business Stage"
-                        onChange={e => setNewStage(e.target.value)}>
+                        label="Select Business Stage"
+                        onChange={e => setNewStage(e.target.value)}
+                    >
+                        {/* <option value={null}>-- Change Stage --</option> */}
                         {stages &&
-                            stages.map(s => {
-                                return (
-                                    <option value={s.id}>{s.name}</option>
-                                );
-                            })}
+                            stages.map(stage => (
+                                <option key={stage.id} value={stage.id}>
+                                    {stage.name}
+                                </option>
+                            ))}
                     </TextField>
+                    <br />
+
+                    {/* Support edit dropdown */}
+                    <TextField
+                        sx={{ m: 1, width: '20ch' }}
+                        select
+                        defaultValue={null}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        label="Select Support"
+                        onChange={e => setNewSupport(e.target.value)}
+                    >
+                        <option value={null}>-- Add Support Tag --</option>
+                        {support &&
+                            support.map(item => (
+                                <option key={item.id} value={item.id}>
+                                    {item.title}
+                                </option>
+                            ))}
+                    </TextField>
+                    <br />
+
+                    {/* Funding edit dropdown */}
+                    <TextField
+                        sx={{ m: 1, width: '20ch' }}
+                        select
+                        defaultValue={null}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        label="Select Funding"
+                        onChange={e => setNewFunding(e.target.value)}
+                    >
+                        <option value={null}>-- None --</option>
+                        {funding &&
+                            funding.map(item => (
+                                <option key={item.id} value={item.id}>
+                                    {item.title}
+                                </option>
+                            ))}
+                    </TextField>
+                    <br />
+
+                    {/* Entrepreneur edit dropdown */}
+                    <TextField
+                        sx={{ m: 1, width: '20ch' }}
+                        select
+                        defaultValue={null}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        label="Select Entrepreneur"
+                        onChange={e => setNewEntrepreneur(e.target.value)}
+                    >
+                        <option value={null}>-- None --</option>
+                        {entrepreneur &&
+                            entrepreneur.map(item => (
+                                <option key={item.id} value={item.id}>
+                                    {item.title}
+                                </option>
+                            ))}
+                    </TextField>
+                    <br />
+
                 </DialogContent>
             </Dialog>
             // if NOT in edit mode, show as normal
