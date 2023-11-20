@@ -220,7 +220,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        value={newOrganization || hit.organization_name}
+                        defaultValue={hit.organization_id}
                         SelectProps={{
                             native: true,
                         }}
