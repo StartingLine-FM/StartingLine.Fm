@@ -53,13 +53,13 @@ function Nav({ handleOpen, setOpenRegisterModal }) {
               Calendar
             </Button>
 
-            {/*TODO LIST BUTTON*/}
+            {/*TO-DO LIST BUTTON*/}
             {user.id
               ? <Button onClick={() => history.push('/todolist')} variant="contained">
-                Todo List
+                To-do List
               </Button >
               : <Button onClick={() => history.push('/anonlist')} variant="contained">
-                  Todo List
+                  To-do List
               </Button>
             }
 

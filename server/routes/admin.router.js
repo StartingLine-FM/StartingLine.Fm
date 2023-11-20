@@ -18,41 +18,98 @@ const isAdmin = (req, res, next) => {
 };
 
 const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
-const index = client.initIndex('test_resources');
-const algoliaQuery =
-    `SELECT
-    r."id" AS "objectID",
-    r."name",
-    r."description",
-    r."image_url",
-    o."name" AS "organization_name",
-    s."name" AS "stage_name",
-    e."title" AS "entrepreneur_title",
-    STRING_AGG("support"."title", ', ') AS "support_titles",
-    STRING_AGG("funding"."title", ', ') AS "funding_titles",
-    sj."id" AS "support_join_id",
-    fj."id" AS "funding_join_id",
-    r."website",
-    r."email",
-    r."address",
-    r."linkedin"
-  FROM "resource" r
-  LEFT JOIN "organization" o ON o."id" = r."organization_id"
-  LEFT JOIN "stage" s ON s."id" = r."stage_id"
-  LEFT JOIN "entrepreneur" e ON e."id" = r."entrepreneur_id"
-  LEFT JOIN "support_join" sj ON r."id" = sj."resource_id"
-  LEFT JOIN "support" support ON sj."support_id" = support."id"
-  LEFT JOIN "funding_join" fj ON r."id" = fj."resource_id"
-  LEFT JOIN "funding" funding ON fj."funding_id" = funding."id"
-  GROUP BY r."id", o."name", s."name", e."title", sj."id", fj."id";`;
+const index = client.initIndex('test_resources_2');
+const algoliaQuery = `
+    SELECT
+        r."id" AS "objectID",
+        r."name",
+        r."description",
+        r."image_url",
+        o."name" AS "organization_name",
+        o."id" AS "organization_id",
+        s."name" AS "stage_name",
+        s."id" AS "stage_id",
+        e."title" AS "entrepreneur_title",
+        (
+            SELECT ARRAY_AGG("support"."title")
+            FROM "support_join" sj
+            JOIN "support" ON sj."support_id" = "support"."id"
+            WHERE sj."resource_id" = r."id"
+        ) AS "support_titles",
+        STRING_AGG("funding"."title", ', ') AS "funding_titles",
+        r."website",
+        r."email",
+        r."address",
+        r."linkedin"
+    FROM "resource" r
+    LEFT JOIN "organization" o ON o."id" = r."organization_id"
+    LEFT JOIN "stage" s ON s."id" = r."stage_id"
+    LEFT JOIN "entrepreneur" e ON e."id" = r."entrepreneur_id"
+    LEFT JOIN "funding_join" fj ON r."id" = fj."resource_id"
+    LEFT JOIN "funding" funding ON fj."funding_id" = funding."id"
+    GROUP BY
+        r."id",
+        o."name",
+        o."id",
+        s."name",
+        s."id",
+        e."title";
+`;
 
-const algoliaSave = () => {
-    pool.query(algoliaQuery)
-        .then(result => {
-            index.saveObjects(result.rows);
-        })
-        .catch(err => console.log("Error on algolia saveObjects:", err));
-}
+const fetchSupportTitles = async (resourceId) => {
+    const supportQuery = `
+        SELECT "support"."title"
+        FROM "support_join" sj
+        JOIN "support" ON sj."support_id" = "support"."id"
+        WHERE sj."resource_id" = $1;
+    `;
+    try {
+        const result = await pool.query(supportQuery, [resourceId]);
+        return result.rows.map(row => row.title);
+    } catch (error) {
+        console.log("Error fetching support titles:", error);
+        throw error;
+    }
+};
+
+const algoliaSave = async () => {
+    try {
+        // Fetch data from PostgreSQL
+        const result = await pool.query(algoliaQuery);
+        console.log("Fetched data from PostgreSQL:", result.rows);
+
+        // Transform data for Algolia
+        const resources = result.rows.map(row => ({
+            objectID: row.objectID,
+            name: row.name,
+            description: row.description,
+            image_url: row.image_url,
+            organization_id: row.organization_id,
+            organization_name: row.organization_name,
+            stage_name: row.stage_name,
+            stage_id: row.stage_id,
+            entrepreneur_title: row.entrepreneur_title,
+            support_titles: Array.isArray(row.support_titles) ? row.support_titles : [],
+            funding_titles: Array.isArray(row.funding_titles) ? row.funding_titles : [],
+            website: row.website,
+            email: row.email,
+            address: row.address,
+            linkedin: row.linkedin,
+        }));
+
+        // Save the resources into the Algolia index
+        await index.saveObjects(resources);
+        console.log("Algolia index updated successfully");
+    } catch (error) {
+        console.log("Error on Algolia saveObjects:", error);
+    }
+};
+
+
+
+
+
+
 
 // ***** RESOURCE *****
 
@@ -103,7 +160,7 @@ router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
             }
         }
         // Upon successfull post, update the algolia index to reflect the newly added resource
-        algoliaSave();
+        await algoliaSave(resourceId);
         // Send a 201 status code to the client to indicate that the resource was successfully created
         res.sendStatus(201);
     } catch (err) {
@@ -130,52 +187,50 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
         stage_id = $1, 
         organization_id=$2, 
         entrepreneur_id=$3, 
-        name=$4, image_url=$5, 
+        name=$4, 
+        image_url=$5, 
         description=$6, 
         website=$7, 
         email=$8, 
         address=$9, 
         linkedin=$10
-        WHERE id=$11`
-    // support and function queries
-    const supportQuery = `UPDATE "support_join" SET "support_id"=$1, "resource_id"=$2, WHERE "id"=$3;`
-    const fundingQuery = `UPDATE "funding_join" SET "funding_id"=$1, "resource_id"=$2, WHERE "id"=$3;`
+        WHERE id=$11`;
+
+    const supportQuery = `UPDATE "support_join" SET "support_id"=$1, "resource_id"=$2 WHERE "id"=$3;`;
+    const fundingQuery = `UPDATE "funding_join" SET "funding_id"=$1, "resource_id"=$2 WHERE "id"=$3;`;
 
     try {
-        await pool.query(
-            resourceQuery,
-            [
-                updatedResource.stage_id,
-                updatedResource.organization_id,
-                updatedResource.entrepreneur_id,
-                updatedResource.name,
-                updatedResource.image_url,
-                updatedResource.description,
-                updatedResource.website,
-                updatedResource.email,
-                updatedResource.address,
-                updatedResource.linkedin,
-                resourceId
-            ]);
+        await pool.query(resourceQuery, [
+            updatedResource.stage_id,
+            updatedResource.organization_id,
+            updatedResource.entrepreneur_id,
+            updatedResource.name,
+            updatedResource.image_url,
+            updatedResource.description,
+            updatedResource.website,
+            updatedResource.email,
+            updatedResource.address,
+            updatedResource.linkedin,
+            resourceId
+        ]);
         // we'll send 'support' and 'funding' keys in the req.body as arrays of support_id or funding_id objects
         // ex. funding: {id: 1, funding_id: 2, resource_id: 3}
         // that way we can loop over them and make an insert statement for each tag needed per resource
         if (updatedResource.support) {
-            for (tag of updatedResource.support) {
-                await pool.query(supportQuery, [support.support_id, support.resourceId, support.id])
+            for (const support of updatedResource.support) {
+                await pool.query(supportQuery, [support.support_id, support.resource_id, support.id]);
             }
         }
+
         if (updatedResource.funding) {
-            for (tag of updatedResource.funding) {
-                await pool.query(fundingQuery, [funding.funding_id, funding.resourceId, funding.id])
+            for (const funding of updatedResource.funding) {
+                await pool.query(fundingQuery, [funding.funding_id, funding.resource_id, funding.id]);
             }
         }
-        // Upon successful update, update the algolia index to reflect the newly added resource
-        algoliaSave();
-        // Send a 200 status code to the client to indicate that the request was successful
+        // Update the Algolia index
+        await algoliaSave(resourceId);
         res.sendStatus(200);
     } catch (err) {
-        // Log the error and send a 500 status code to the client if an error occurs
         console.log('Error updating resource', err);
         res.sendStatus(500);
     }

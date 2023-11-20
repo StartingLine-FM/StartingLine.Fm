@@ -19,6 +19,8 @@ function* putResource(action) {
     try {
         //sends a PUT request to the server to update a resource
         yield call(axios.put, `/api/admin/${action.payload.id}`, action.payload);
+        console.log ('action.payload', action.payload);
+        console.log ('action.payload.id', action.payload.id);
     } catch (error) {
         console.log('Error updating resource', error);
     }

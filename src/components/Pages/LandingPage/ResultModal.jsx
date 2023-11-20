@@ -24,7 +24,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 
 export default function ResultModal({ open, handleClose, hit, userPostTodo, anonPostTodo }) {
-    // console.log('hits are', {hit});
+    console.log('hits are', { hit });
 
     // local state
     // admin edit state
@@ -55,7 +55,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
     // click handler for saving our admin edit changes
     const putResource = () => {
-        console.log("Resource ID:", hit.id);
+        // console.log("Resource ID:", hit.id);
         // instantiate payload keys
         let name;
         let image_url;
@@ -93,7 +93,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                 organization_id,
                 stage_id
             }
-        })
+        });
 
         // clear all inputs
         clearInputs();
@@ -101,6 +101,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
         // close dialog box
         handleClose();
     }
+
 
     // function to clear state for all admin edit fields
     const clearInputs = () => {
@@ -219,17 +220,16 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={hit.organization_id}
+                        value={newOrganization || hit.organization_name}
                         SelectProps={{
                             native: true,
                         }}
                         label="Select Organization"
                         onChange={e => setNewOrganization(e.target.value)}
                     >
-                        {/* <option value={null}>-- Change Org --</option> */}
                         {organizations &&
                             organizations.map(org => (
-                                <option key={org.id} value={org.id}>
+                                <option key={org.id} value={org.name}>
                                     {org.name}
                                 </option>
                             ))}
@@ -244,18 +244,16 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                         SelectProps={{
                             native: true,
                         }}
-                        label="Select Business Stage"
-                        onChange={e => setNewStage(e.target.value)}
-                    >
-                        {/* <option value={null}>-- Change Stage --</option> */}
+                        label="Edit Business Stage"
+                        onChange={e => setNewStage(e.target.value)}>
                         {stages &&
-                            stages.map(stage => (
-                                <option key={stage.id} value={stage.id}>
-                                    {stage.name}
-                                </option>
-                            ))}
+                            stages.map(s => {
+                                return (
+                                    <option value={s.id}>{s.name}</option>
+                                );
+                            })}
                     </TextField>
-                    <br />
+
 
                     {/* Support edit dropdown */}
                     <TextField
@@ -297,7 +295,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                                 </option>
                             ))}
                     </TextField>
-                    <br />
+
 
                     {/* Entrepreneur edit dropdown */}
                     <TextField
