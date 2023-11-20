@@ -76,25 +76,30 @@ const algoliaSave = async () => {
     try {
         // Fetch data from PostgreSQL
         const result = await pool.query(algoliaQuery);
-        console.log("Fetched data from PostgreSQL:", result.rows);
+        // console.log("Fetched data from PostgreSQL:", result.rows);
 
         // Transform data for Algolia
-        const resources = result.rows.map(row => ({
-            objectID: row.objectID,
-            name: row.name,
-            description: row.description,
-            image_url: row.image_url,
-            organization_id: row.organization_id,
-            organization_name: row.organization_name,
-            stage_name: row.stage_name,
-            stage_id: row.stage_id,
-            entrepreneur_title: row.entrepreneur_title,
-            support_titles: Array.isArray(row.support_titles) ? row.support_titles : [],
-            funding_titles: Array.isArray(row.funding_titles) ? row.funding_titles : [],
-            website: row.website,
-            email: row.email,
-            address: row.address,
-            linkedin: row.linkedin,
+        const resources = await Promise.all(result.rows.map(async (row) => {
+            const supportTitles = await fetchSupportTitles(row.objectID);
+
+            return {
+                objectID: row.objectID,
+                name: row.name,
+                description: row.description,
+                image_url: row.image_url,
+                organization_id: row.organization_id,
+                organization_name: row.organization_name,
+                stage_name: row.stage_name,
+                stage_id: row.stage_id,
+                entrepreneur_id: row.entrepreneur_id, // Add entrepreneur_id
+                entrepreneur_title: row.entrepreneur_title,
+                support_titles: supportTitles,
+                funding_titles: Array.isArray(row.funding_titles) ? row.funding_titles : [],
+                website: row.website,
+                email: row.email,
+                address: row.address,
+                linkedin: row.linkedin,
+            };
         }));
 
         // Save the resources into the Algolia index
@@ -104,6 +109,8 @@ const algoliaSave = async () => {
         console.log("Error on Algolia saveObjects:", error);
     }
 };
+
+
 
 
 
@@ -174,13 +181,9 @@ router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
 // This endpoint is a PUT request that updates an existing resource in the 'resource' table in the database.
 // It first checks if the user is authenticated and has admin privileges using the rejectUnauthenticated and isAdmin middleware.
 router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
-    // The request body should contain the updated resource's details
     const updatedResource = req.body;
-    console.log('the req body is', req.body)
-    const resourceId = req.params.id
-    console.log('the req params is', req.params.id)
-    // The SQL query to update a resource
-    // initial resource table insert query
+    const resourceId = req.params.id;
+
     const resourceQuery = `
         UPDATE "resource" 
         SET 
@@ -194,10 +197,8 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
         email=$8, 
         address=$9, 
         linkedin=$10
-        WHERE id=$11`;
-
-    const supportQuery = `UPDATE "support_join" SET "support_id"=$1, "resource_id"=$2 WHERE "id"=$3;`;
-    const fundingQuery = `UPDATE "funding_join" SET "funding_id"=$1, "resource_id"=$2 WHERE "id"=$3;`;
+        WHERE id=$11
+    `;
 
     try {
         await pool.query(resourceQuery, [
@@ -213,20 +214,23 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
             updatedResource.linkedin,
             resourceId
         ]);
-        // we'll send 'support' and 'funding' keys in the req.body as arrays of support_id or funding_id objects
-        // ex. funding: {id: 1, funding_id: 2, resource_id: 3}
-        // that way we can loop over them and make an insert statement for each tag needed per resource
+
+        // Update support join table
         if (updatedResource.support) {
             for (const support of updatedResource.support) {
-                await pool.query(supportQuery, [support.support_id, support.resource_id, support.id]);
+                const supportQuery = `UPDATE "support_join" SET "support_id"=$1 WHERE "id"=$2;`;
+                await pool.query(supportQuery, [support.support_id, support.id]);
             }
         }
 
+        // Update funding join table
         if (updatedResource.funding) {
             for (const funding of updatedResource.funding) {
-                await pool.query(fundingQuery, [funding.funding_id, funding.resource_id, funding.id]);
+                const fundingQuery = `UPDATE "funding_join" SET "funding_id"=$1 WHERE "id"=$2;`;
+                await pool.query(fundingQuery, [funding.funding_id, funding.id]);
             }
         }
+
         // Update the Algolia index
         await algoliaSave(resourceId);
         res.sendStatus(200);
@@ -235,6 +239,7 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
         res.sendStatus(500);
     }
 });
+
 
 // Route to delete a resource for the admin
 // This endpoint is a DELETE request that removes an existing resource from the 'resource' table in the database.

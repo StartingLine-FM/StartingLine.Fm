@@ -39,9 +39,17 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
     const [newLinkedIn, setNewLinkedIn] = useState('')
     const [newOrganization, setNewOrganization] = useState('');
     const [newStage, setNewStage] = useState('');
-    const [newSupport, setNewSupport] = useState('');
-    const [newFunding, setNewFunding] = useState('');
     const [newEntrepreneur, setNewEntrepreneur] = useState('');
+    //Multi tag madness 
+    const [newSupport1, setNewSupport1] = useState(hit.support_titles[0] ? hit.support_titles[0].id : null);
+    const [newSupport2, setNewSupport2] = useState(hit.support_titles[1] ? hit.support_titles[1].id : null);
+    const [newSupport3, setNewSupport3] = useState(hit.support_titles[2] ? hit.support_titles[2].id : null);
+
+    const [newFunding1, setNewFunding1] = useState(hit.funding_titles[0] ? hit.funding_titles[0].id : null);
+    const [newFunding2, setNewFunding2] = useState(hit.funding_titles[1] ? hit.funding_titles[1].id : null);
+    const [newFunding3, setNewFunding3] = useState(hit.funding_titles[2] ? hit.funding_titles[2].id : null);
+
+
 
     // Redux
     const user = useSelector(store => store.user);
@@ -55,52 +63,41 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
     // click handler for saving our admin edit changes
     const putResource = () => {
-        // console.log("Resource ID:", hit.id);
-        // instantiate payload keys
-        let name;
-        let image_url;
-        let description;
-        let website;
-        let email;
-        let address;
-        let linkedin;
-        let organization_id;
-        let stage_id;
+        // Instantiate payload keys
+        const payload = {
+            id: hit.objectID,
+            name: newName || hit.name,
+            image_url: newImage || hit.image_url,
+            description: newDescription || hit.description,
+            website: newWebsite || hit.website,
+            email: newEmail || hit.email,
+            address: newAddress || hit.address,
+            linkedin: newLinkedIn || hit.linkedin,
+            organization_id: newOrganization || hit.organization_id,
+            stage_id: newStage || hit.stage_id,
+            entrepreneur_id: newEntrepreneur || hit.entrepreneur_id,
+            // Include support and funding arrays in the payload
+            support: newSupport || hit.support,
+            funding: Array.isArray(newFunding) ? newFunding : [newFunding],
+        };
 
-        // if there's a change made, send the changed data, else send existing data
-        newName ? name = newName : name = hit.name;
-        newImage ? image_url = newImage : image_url = hit.image_url;
-        newDescription ? description = newDescription : description = hit.description;
-        newWebsite ? website = newWebsite : website = hit.website;
-        newLinkedIn ? linkedin = newLinkedIn : linkedin = hit.linkedin;
-        newEmail ? email = newEmail : email = hit.email;
-        newAddress ? address = newAddress : address = hit.address;
-        newOrganization ? organization_id = newOrganization : organization_id = hit.organization_id;
-        newStage ? stage_id = newStage : stage_id = hit.stage_id;
+        console.log('Update Resource Payload:', payload);
 
-        // send dispatch to update resource
+        // Send dispatch to update resource
         dispatch({
             type: "UPDATE_RESOURCE",
-            payload: {
-                id: hit.objectID,
-                name,
-                image_url,
-                description,
-                website,
-                email,
-                address,
-                linkedin,
-                organization_id,
-                stage_id
-            }
+            payload,
         });
 
-        // clear all inputs
+        // Clear all inputs
         clearInputs();
 
-        // close dialog box
+        // Close dialog box
         handleClose();
-    }
+    };
+
+
+
 
 
     // function to clear state for all admin edit fields
@@ -254,54 +251,11 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                             })}
                     </TextField>
 
-
-                    {/* Support edit dropdown */}
-                    <TextField
-                        sx={{ m: 1, width: '20ch' }}
-                        select
-                        defaultValue={null}
-                        SelectProps={{
-                            native: true,
-                        }}
-                        label="Select Support"
-                        onChange={e => setNewSupport(e.target.value)}
-                    >
-                        <option value={null}>-- Add Support Tag --</option>
-                        {support &&
-                            support.map(item => (
-                                <option key={item.id} value={item.id}>
-                                    {item.title}
-                                </option>
-                            ))}
-                    </TextField>
-                    <br />
-
-                    {/* Funding edit dropdown */}
-                    <TextField
-                        sx={{ m: 1, width: '20ch' }}
-                        select
-                        defaultValue={null}
-                        SelectProps={{
-                            native: true,
-                        }}
-                        label="Select Funding"
-                        onChange={e => setNewFunding(e.target.value)}
-                    >
-                        <option value={null}>-- None --</option>
-                        {funding &&
-                            funding.map(item => (
-                                <option key={item.id} value={item.id}>
-                                    {item.title}
-                                </option>
-                            ))}
-                    </TextField>
-
-
                     {/* Entrepreneur edit dropdown */}
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={null}
+                        defaultValue={hit.entrepreneur_id || null}
                         SelectProps={{
                             native: true,
                         }}
@@ -310,13 +264,143 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     >
                         <option value={null}>-- None --</option>
                         {entrepreneur &&
-                            entrepreneur.map(item => (
+                            entrepreneur.map(ent => (
+                                <option key={ent.id} value={ent.id}>
+                                    {ent.title}
+                                </option>
+                            ))}
+                    </TextField>
+
+
+                    {/* Add some sort of divider???*/}
+
+
+                    {/* Support 1 edit dropdown */}
+                    <TextField
+                        sx={{ m: 1, width: '20ch' }}
+                        select
+                        defaultValue={newSupport1}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        label="Select Support 1"
+                        onChange={e => setNewSupport1(e.target.value)}
+                    >
+                        {/* <option value={null}>-- Add Support Tag --</option> */}
+                        {support &&
+                            support.map(item => (
                                 <option key={item.id} value={item.id}>
                                     {item.title}
                                 </option>
                             ))}
                     </TextField>
+
+                    {/* Funding 1 dropdown */}
+                    <TextField
+                        sx={{ m: 1, width: '20ch' }}
+                        select
+                        defaultValue={newFunding1}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        label="Select Funding 1"
+                        onChange={(e) => setNewFunding1(e.target.value)}
+                    >
+                        {/* <option value={null}>-- None --</option> */}
+                        {funding &&
+                            funding.map(fund => (
+                                <option key={fund.id} value={fund.id}>
+                                    {fund.title}
+                                </option>
+                            ))}
+                    </TextField>
+
+
+
                     <br />
+
+                    {/* Support 2 dropdown */}
+                    <TextField
+                        sx={{ m: 1, width: '20ch' }}
+                        select
+                        defaultValue={newSupport2}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        label="Select Support 2"
+                        onChange={(e) => setNewSupport2(e.target.value)}
+                    >
+                        {/* <option value={null}>-- Add Support Tag --</option> */}
+                        {support &&
+                            support.map(item => (
+                                <option key={item.id} value={item.id}>
+                                    {item.title}
+                                </option>
+                            ))}
+                    </TextField>
+
+                    {/* Funding 2 dropdown */}
+                    <TextField
+                        sx={{ m: 1, width: '20ch' }}
+                        select
+                        defaultValue={newFunding2}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        label="Select Funding 2"
+                        onChange={(e) => setNewFunding2(e.target.value)}
+                    >
+                        {/* <option value={null}>-- None --</option> */}
+                        {funding &&
+                            funding.map(fund => (
+                                <option key={fund.id} value={fund.id}>
+                                    {fund.title}
+                                </option>
+                            ))}
+                    </TextField>
+
+                    <br />
+
+                    {/* Support 3 dropdown */}
+                    <TextField
+                        sx={{ m: 1, width: '20ch' }}
+                        select
+                        defaultValue={newSupport3}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        label="Select Support 3"
+                        onChange={(e) => setNewSupport3(e.target.value)}
+                    >
+                        {/* <option value={null}>-- Add Support Tag --</option> */}
+                        {support &&
+                            support.map(item => (
+                                <option key={item.id} value={item.id}>
+                                    {item.title}
+                                </option>
+                            ))}
+                    </TextField>
+
+                    {/* Funding 3 dropdown */}
+                    <TextField
+                        sx={{ m: 1, width: '20ch' }}
+                        select
+                        defaultValue={newFunding3}
+                        SelectProps={{
+                            native: true,
+                        }}
+                        label="Select Funding 3"
+                        onChange={(e) => setNewFunding3(e.target.value)}
+                    >
+                        {/* <option value={null}>-- None --</option> */}
+                        {funding &&
+                            funding.map(fund => (
+                                <option key={fund.id} value={fund.id}>
+                                    {fund.title}
+                                </option>
+                            ))}
+                    </TextField>
+
 
                 </DialogContent>
             </Dialog>
@@ -370,7 +454,9 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <Typography variant="body1">{hit.address && hit.address}</Typography>
                     <DialogContentText>
                         <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={hit.organization_name} />
-                        <Chip color="secondary" sx={{ mt: 2 }} label={hit.stage_name} />
+                        <Chip color="secondary" sx={{ mt: 2, mr: 1 }} label={hit.stage_name} />
+                        <Chip color="primary" variant="outlined" sx={{ mt: 2, mr: 1 }} label={hit.entrepreneur_title} />
+                        <Chip color="secondary" variant="outlined" sx={{ mt: 2 }} label={hit.funding_titles} />
                     </DialogContentText>
                 </DialogContent>
             </Dialog>

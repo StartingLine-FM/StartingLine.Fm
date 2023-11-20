@@ -5,7 +5,7 @@ const algoliasearch = require('algoliasearch');
 const client = algoliasearch('KK1UO0W0NW', '2123fc835b2954cd49ef43065ab14ba6');
 
 // Create a new index and add records
-const index = client.initIndex('test_resources_2');
+const index = client.initIndex('test_resource_3');
 
 // SQL query to retrieve data for indexing
 const queryText = `
@@ -20,8 +20,10 @@ const queryText = `
     s."id" AS "stage_id",
     e."title" AS "entrepreneur_title",
     e."id" AS "entrepreneur_id",
+    sj."id" AS "support_join_id",  -- Add the primary key from the support join table
+    fj."id" AS "funding_join_id",  -- Add the primary key from the funding join table
     support."title" AS "support_title", -- Individual support titles
-    funding."title" AS "funding_titles",
+    funding."title" AS "funding_title",
     r."website",
     r."email",
     r."address",
@@ -38,11 +40,18 @@ const queryText = `
 
 pool.query(queryText)
   .then(result => {
-    // Group support titles into an array of objects for each resource
+    // Group support and funding titles into arrays of objects for each resource
     const resources = result.rows.reduce((acc, row) => {
       const existingResource = acc.find(r => r.objectID === row.objectID);
       if (existingResource) {
-        existingResource.support_titles.push({ title: row.support_title });
+        existingResource.support_titles.push({
+          title: row.support_title,
+          id: row.support_join_id  // Add the primary key from the support join table
+        });
+        existingResource.funding_titles.push({
+          title: row.funding_title,
+          id: row.funding_join_id  // Add the primary key from the funding join table
+        });
       } else {
         acc.push({
           objectID: row.objectID,
@@ -55,8 +64,14 @@ pool.query(queryText)
           stage_id: row.stage_id,
           entrepreneur_title: row.entrepreneur_title,
           entrepreneur_id: row.entrepreneur_id,
-          support_titles: [{ title: row.support_title }],
-          funding_titles: row.funding_titles,
+          support_titles: [{
+            title: row.support_title,
+            id: row.support_join_id  // Add the primary key from the support join table
+          }],
+          funding_titles: [{
+            title: row.funding_title,
+            id: row.funding_join_id  // Add the primary key from the funding join table
+          }],
           website: row.website,
           email: row.email,
           address: row.address,
