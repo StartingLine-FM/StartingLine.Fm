@@ -122,7 +122,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
         dispatch({
             type: "DELETE_RESOURCE",
-            payload: hit.id
+            payload: hit.objectID
         })
 
         // close dialog
