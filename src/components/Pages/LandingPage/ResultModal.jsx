@@ -77,8 +77,14 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
             stage_id: newStage || hit.stage_id,
             entrepreneur_id: newEntrepreneur || hit.entrepreneur_id,
             // Include support and funding arrays in the payload
-            support: newSupport || hit.support,
-            funding: Array.isArray(newFunding) ? newFunding : [newFunding],
+            support: [
+                {id: 1, support_id:1}, {id:2, support_id:2}],
+
+            fundin: [
+                { title: newFunding1 },
+                { title: newFunding2 },
+                { title: newFunding3 },
+            ],
         };
 
         console.log('Update Resource Payload:', payload);
@@ -146,6 +152,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
         dispatch({ type: 'FETCH_ENTREPRENEUR' });
         // console.log('Entrepreneur:', entrepreneur);
     }, []);
+
 
     return (
         editMode
@@ -274,16 +281,15 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
                     {/* Add some sort of divider???*/}
 
-
                     {/* Support 1 edit dropdown */}
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={newSupport1}
+                        defaultValue={hit.support_titles[0] && hit.support_titles[0].supportID}
                         SelectProps={{
                             native: true,
                         }}
-                        label="Select Support 1"
+                        label='Select Support 1 Tag'
                         onChange={e => setNewSupport1(e.target.value)}
                     >
                         {/* <option value={null}>-- Add Support Tag --</option> */}
@@ -294,16 +300,15 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                                 </option>
                             ))}
                     </TextField>
-
                     {/* Funding 1 dropdown */}
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={newFunding1}
+                        defaultValue={hit.funding_titles[0] && hit.funding_titles[0].fundingID} 
                         SelectProps={{
                             native: true,
                         }}
-                        label="Select Funding 1"
+                        label='Select Funding 1 Tag'
                         onChange={(e) => setNewFunding1(e.target.value)}
                     >
                         {/* <option value={null}>-- None --</option> */}
@@ -314,20 +319,16 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                                 </option>
                             ))}
                     </TextField>
-
-
-
                     <br />
-
                     {/* Support 2 dropdown */}
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={newSupport2}
+                        defaultValue={hit.support_titles[1] && hit.support_titles[1].supportID}
                         SelectProps={{
                             native: true,
                         }}
-                        label="Select Support 2"
+                        label='Select Support 2 Tag'
                         onChange={(e) => setNewSupport2(e.target.value)}
                     >
                         {/* <option value={null}>-- Add Support Tag --</option> */}
@@ -338,16 +339,15 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                                 </option>
                             ))}
                     </TextField>
-
                     {/* Funding 2 dropdown */}
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={newFunding2}
+                        defaultValue={hit.funding_titles[1] && hit.funding_titles[1].fundingID}
                         SelectProps={{
                             native: true,
                         }}
-                        label="Select Funding 2"
+                        label='Select Funding 2 Tag'
                         onChange={(e) => setNewFunding2(e.target.value)}
                     >
                         {/* <option value={null}>-- None --</option> */}
@@ -358,18 +358,16 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                                 </option>
                             ))}
                     </TextField>
-
                     <br />
-
                     {/* Support 3 dropdown */}
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={newSupport3}
+                        defaultValue={hit.support_titles[2] && hit.support_titles[2].supportID}
                         SelectProps={{
                             native: true,
                         }}
-                        label="Select Support 3"
+                        label='Select Support 3 Tag'
                         onChange={(e) => setNewSupport3(e.target.value)}
                     >
                         {/* <option value={null}>-- Add Support Tag --</option> */}
@@ -380,16 +378,15 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                                 </option>
                             ))}
                     </TextField>
-
                     {/* Funding 3 dropdown */}
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={newFunding3}
+                        defaultValue={hit.funding_titles[2] && hit.funding_titles[2].fundingID}
                         SelectProps={{
                             native: true,
                         }}
-                        label="Select Funding 3"
+                        label='Select Funding 3 Tag'
                         onChange={(e) => setNewFunding3(e.target.value)}
                     >
                         {/* <option value={null}>-- None --</option> */}
@@ -400,8 +397,6 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                                 </option>
                             ))}
                     </TextField>
-
-
                 </DialogContent>
             </Dialog>
             // if NOT in edit mode, show as normal
@@ -451,14 +446,33 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <Link target="_blank" rel="noopener noreferrer" href={hit.website}>{hit.website && hit.website}</Link>
                     <Link href={`mailto:${hit.email}`}>{hit.email && hit.email}</Link>
                     <Link target="_blank" rel="noopener noreferrer" href={hit.linkedin}>{hit.linkedin && hit.linkedin}</Link>
+
                     <Typography variant="body1">{hit.address && hit.address}</Typography>
+
+
                     <DialogContentText>
                         <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={hit.organization_name} />
                         <Chip color="secondary" sx={{ mt: 2, mr: 1 }} label={hit.stage_name} />
                         <Chip color="primary" variant="outlined" sx={{ mt: 2, mr: 1 }} label={hit.entrepreneur_title} />
-                        <Chip color="secondary" variant="outlined" sx={{ mt: 2 }} label={hit.funding_titles} />
+                        {hit.funding_titles && (
+                            <Chip
+                                color="secondary"
+                                variant="outlined"
+                                sx={{ mt: 2, mr: 1 }}
+                                label={hit.funding_titles.map((funding) => funding.title).join(', ')}
+                            />
+                        )}
+                        {hit.support_titles && (
+                            <Chip
+                                color="primary"
+                                variant="outlined"
+                                sx={{ mt: 2, mr: 1 }}
+                                label={hit.support_titles.map((support) => support.title).join(', ')}
+                            />
+                        )}
                     </DialogContentText>
                 </DialogContent>
             </Dialog>
     )
+
 }
