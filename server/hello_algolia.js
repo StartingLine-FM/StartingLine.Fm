@@ -20,11 +20,11 @@ const queryText = `
     s."id" AS "stage_id",
     e."title" AS "entrepreneur_title",
     e."id" AS "entrepreneur_id",
-    sj."id" AS "support_join_id",  -- Add the primary key from the support join table
-    fj."id" AS "funding_join_id",  -- Add the primary key from the funding join table
-    sj."support_id" AS "support_id",  -- Add the support ID from the support join table
-    fj."funding_id" AS "funding_id",  -- Add the funding ID from the funding join table
-    support."title" AS "support_title", -- Individual support titles
+    sj."id" AS "support_join_id", 
+    fj."id" AS "funding_join_id",  
+    sj."support_id" AS "support_id",  
+    fj."funding_id" AS "funding_id",  
+    support."title" AS "support_title", 
     funding."title" AS "funding_title",
     r."website",
     r."email",

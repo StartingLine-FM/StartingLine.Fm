@@ -36,7 +36,12 @@ const algoliaQuery = `
             JOIN "support" ON sj."support_id" = "support"."id"
             WHERE sj."resource_id" = r."id"
         ) AS "support_titles",
-        STRING_AGG("funding"."title", ', ') AS "funding_titles",
+        (
+            SELECT ARRAY_AGG("funding"."title")
+            FROM "funding_join" fj
+            JOIN "funding" ON fj."funding_id" = "funding"."id"
+            WHERE fj."resource_id" = r."id"
+        ) AS "funding_titles",
         r."website",
         r."email",
         r."address",
@@ -45,8 +50,6 @@ const algoliaQuery = `
     LEFT JOIN "organization" o ON o."id" = r."organization_id"
     LEFT JOIN "stage" s ON s."id" = r."stage_id"
     LEFT JOIN "entrepreneur" e ON e."id" = r."entrepreneur_id"
-    LEFT JOIN "funding_join" fj ON r."id" = fj."resource_id"
-    LEFT JOIN "funding" funding ON fj."funding_id" = funding."id"
     GROUP BY
         r."id",
         o."name",
@@ -56,18 +59,64 @@ const algoliaQuery = `
         e."title";
 `;
 
-const fetchSupportTitles = async (resourceId) => {
-    const supportQuery = `
-        SELECT "support"."title"
-        FROM "support_join" sj
-        JOIN "support" ON sj."support_id" = "support"."id"
-        WHERE sj."resource_id" = $1;
+const fetchSupportJoinIds = async (resourceId) => {
+    const supportJoinIdsQuery = `
+        SELECT "id"
+        FROM "support_join"
+        WHERE "resource_id" = $1;
     `;
     try {
-        const result = await pool.query(supportQuery, [resourceId]);
+        const result = await pool.query(supportJoinIdsQuery, [resourceId]);
+        return result.rows.map(row => row.support_join_id);
+    } catch (error) {
+        console.log("Error fetching support join IDs:", error);
+        throw error;
+    }
+};
+
+const fetchFundingJoinIds = async (resourceId) => {
+    const fundingJoinIdsQuery = `
+        SELECT "id"
+        FROM "funding_join"
+        WHERE "resource_id" = $1;
+    `;
+    try {
+        const result = await pool.query(fundingJoinIdsQuery, [resourceId]);
+        return result.rows.map(row => row.funding_join_id);
+    } catch (error) {
+        console.log("Error fetching funding join IDs:", error);
+        throw error;
+    }
+};
+
+const fetchSupportTitles = async (supportJoinIds) => {
+    // Use the join IDs to fetch support titles
+    const supportTitlesQuery = `
+        SELECT "title"
+        FROM "support_join"
+        WHERE "id" IN ($1);
+    `;
+    try {
+        const result = await pool.query(supportTitlesQuery, [supportJoinIds]);
         return result.rows.map(row => row.title);
     } catch (error) {
         console.log("Error fetching support titles:", error);
+        throw error;
+    }
+};
+
+const fetchFundingTitles = async (fundingJoinIds) => {
+    // Use the join IDs to fetch funding titles
+    const fundingTitlesQuery = `
+        SELECT "title"
+        FROM "funding_join"
+        WHERE "id" IN ($1);
+    `;
+    try {
+        const result = await pool.query(fundingTitlesQuery, [fundingJoinIds]);
+        return result.rows.map(row => row.title);
+    } catch (error) {
+        console.log("Error fetching funding titles:", error);
         throw error;
     }
 };
@@ -76,11 +125,28 @@ const algoliaSave = async () => {
     try {
         // Fetch data from PostgreSQL
         const result = await pool.query(algoliaQuery);
-        // console.log("Fetched data from PostgreSQL:", result.rows);
 
         // Transform data for Algolia
         const resources = await Promise.all(result.rows.map(async (row) => {
-            const supportTitles = await fetchSupportTitles(row.objectID);
+            // Fetch join IDs for support and funding titles
+            const supportJoinIds = await fetchSupportJoinIds(row.objectID);
+            const fundingJoinIds = await fetchFundingJoinIds(row.objectID);
+
+            // Fetch titles using join IDs
+            const supportTitles = await fetchSupportTitles(supportJoinIds);
+            const fundingTitles = await fetchFundingTitles(fundingJoinIds);
+
+            // Map the titles into objects with specific keys
+            const mappedSupportTitles = supportTitles.map(title => ({
+                title: row.support_title,
+                id: row.support_join_id,
+                supportID: row.support_id
+            }));
+            const mappedFundingTitles = fundingTitles.map(title => ({
+                title: row.funding_title,
+                id: row.funding_join_id,
+                fundingID: row.funding_id
+            }));
 
             return {
                 objectID: row.objectID,
@@ -91,10 +157,10 @@ const algoliaSave = async () => {
                 organization_name: row.organization_name,
                 stage_name: row.stage_name,
                 stage_id: row.stage_id,
-                entrepreneur_id: row.entrepreneur_id, // Add entrepreneur_id
+                entrepreneur_id: row.entrepreneur_id,
                 entrepreneur_title: row.entrepreneur_title,
-                support_titles: supportTitles,
-                funding_titles: Array.isArray(row.funding_titles) ? row.funding_titles : [],
+                support_titles: mappedSupportTitles,
+                funding_titles: mappedFundingTitles,
                 website: row.website,
                 email: row.email,
                 address: row.address,
@@ -109,13 +175,6 @@ const algoliaSave = async () => {
         console.log("Error on Algolia saveObjects:", error);
     }
 };
-
-
-
-
-
-
-
 
 
 // ***** RESOURCE *****

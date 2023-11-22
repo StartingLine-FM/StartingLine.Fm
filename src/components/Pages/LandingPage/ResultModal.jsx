@@ -474,5 +474,4 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                 </DialogContent>
             </Dialog>
     )
-
 }
