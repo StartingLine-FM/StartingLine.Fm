@@ -12,7 +12,7 @@ import { InstantSearch, Hits } from 'react-instantsearch';
 // Algolia Initiation and index
 const searchClient = algoliasearch('KK1UO0W0NW', 'acfecaf8e37908662d286dc1210b781b');
 // const index = searchClient.initIndex('test_resources_2');
-const index = searchClient.initIndex('test_resource_3');
+const index = searchClient.initIndex('test_resources');
 
 function LandingPage({ currentList, setCurrentList }) {
 
@@ -79,22 +79,22 @@ function LandingPage({ currentList, setCurrentList }) {
   return (
     <Container maxWidth="xl" spacing={1} sx={{ pt: 3 }}>
       <Grid container justifyContent="center" spacing={4}>
-        <InstantSearch searchClient={searchClient} indexName="test_resource_3">
-        <SearchFilter
-          currentList={currentList}
-          setCurrentList={setCurrentList}
-          categories={categories}
-          stages={stages}
-          todo={todo}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          searchResults={searchResults}
-          setSearchResults={setSearchResults}
-          handleSearch={() => handleSearch(searchQuery, setSearchResults)}
-        />
-        <Grid item xs={12} md={8} container spacing={4}>
-          <ResultsMap currentList={currentList} categories={categories} stage={stages} />
-        </Grid>
+        <InstantSearch searchClient={searchClient} indexName="test_resources">
+          <SearchFilter
+            currentList={currentList}
+            setCurrentList={setCurrentList}
+            categories={categories}
+            stages={stages}
+            todo={todo}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            searchResults={searchResults}
+            setSearchResults={setSearchResults}
+            handleSearch={() => handleSearch(searchQuery, setSearchResults)}
+          />
+          <Grid item xs={12} md={8} container spacing={4}>
+            <ResultsMap currentList={currentList} categories={categories} stage={stages} />
+          </Grid>
         </InstantSearch>
       </Grid>
     </Container>

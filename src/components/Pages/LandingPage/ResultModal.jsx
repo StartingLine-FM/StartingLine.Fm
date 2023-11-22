@@ -41,13 +41,19 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
     const [newStage, setNewStage] = useState('');
     const [newEntrepreneur, setNewEntrepreneur] = useState('');
     //Multi tag madness 
-    const [newSupport1, setNewSupport1] = useState(hit.support_titles[0] ? hit.support_titles[0].id : null);
-    const [newSupport2, setNewSupport2] = useState(hit.support_titles[1] ? hit.support_titles[1].id : null);
-    const [newSupport3, setNewSupport3] = useState(hit.support_titles[2] ? hit.support_titles[2].id : null);
+    const [newSupport1, setNewSupport1] = useState(hit.support ? hit.support[0] ? hit.support[0].id : null : null);
+    const [newSupport2, setNewSupport2] = useState(hit.support ? hit.support[1] ? hit.support[1].id : null : null);
+    const [newSupport3, setNewSupport3] = useState(hit.support ? hit.support[2] ? hit.support[2].id : null : null);
+    const [updatedSupportJoin1, setUpdatedSupportJoin1] = useState(null);
+    const [updatedSupportJoin2, setUpdatedSupportJoin2] = useState(null);
+    const [updatedSupportJoin3, setUpdatedSupportJoin3] = useState(null);
 
-    const [newFunding1, setNewFunding1] = useState(hit.funding_titles[0] ? hit.funding_titles[0].id : null);
-    const [newFunding2, setNewFunding2] = useState(hit.funding_titles[1] ? hit.funding_titles[1].id : null);
-    const [newFunding3, setNewFunding3] = useState(hit.funding_titles[2] ? hit.funding_titles[2].id : null);
+    const [newFunding1, setNewFunding1] = useState(hit.funding ? hit.funding[0] ? hit.funding[0].id : null : null);
+    const [newFunding2, setNewFunding2] = useState(hit.funding ? hit.funding[1] ? hit.funding[1].id : null : null);
+    const [newFunding3, setNewFunding3] = useState(hit.funding ? hit.funding[2] ? hit.funding[2].id : null : null);
+    const [updatedFundingJoin1, setUpdatedFundingJoin1] = useState(null);
+    const [updatedFundingJoin2, setUpdatedFundingJoin2] = useState(null);
+    const [updatedFundingJoin3, setUpdatedFundingJoin3] = useState(null);
 
 
 
@@ -63,6 +69,35 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
     // click handler for saving our admin edit changes
     const putResource = () => {
+
+        const supportArray = []
+        const fundingArray = []
+
+        const buildSupportArray = () => {
+
+            newSupport1
+                ? updatedSupportJoin1
+                    ? supportArray.push({ support_id: newSupport1, support_join_id: updatedSupportJoin1 })
+                    : supportArray.push({ support_id: newSupport1 })
+                : null;
+
+            newSupport2
+                ? updatedSupportJoin2
+                    ? supportArray.push({ support_id: newSupport2, support_join_id: updatedSupportJoin2 })
+                    : supportArray.push({ support_id: newSupport2 })
+                : null;
+
+            newSupport3
+                ? updatedSupportJoin3
+                    ? supportArray.push({ support_id: newSupport3, support_join_id: updatedSupportJoin3 })
+                    : supportArray.push({ support_id: newSupport3 })
+                : null;
+
+            console.log(supportArray)
+        }
+
+        buildSupportArray();
+
         // Instantiate payload keys
         const payload = {
             id: hit.objectID,
@@ -77,13 +112,11 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
             stage_id: newStage || hit.stage_id,
             entrepreneur_id: newEntrepreneur || hit.entrepreneur_id,
             // Include support and funding arrays in the payload
-            support: [
-                {id: 1, support_id:1}, {id:2, support_id:2}],
-
-            fundin: [
-                { title: newFunding1 },
-                { title: newFunding2 },
-                { title: newFunding3 },
+            support: supportArray,
+            funding: [
+                { funding_id: newFunding1, funding_join_id: updatedFundingJoin1 },
+                { funding_id: newFunding2, funding_join_id: updatedFundingJoin2 },
+                { funding_id: newFunding3, funding_join_id: updatedFundingJoin3 },
             ],
         };
 
@@ -285,14 +318,20 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={hit.support_titles[0] && hit.support_titles[0].supportID}
+                        defaultValue={hit.support ? hit.support[0].support_id : null}
                         SelectProps={{
                             native: true,
                         }}
-                        label='Select Support 1 Tag'
-                        onChange={e => setNewSupport1(e.target.value)}
+                        label='Select Support Tag'
+                        onChange={e => {
+                            setNewSupport1(e.target.value);
+                            hit.support
+                                ? setUpdatedSupportJoin1(hit.support[0].support_join_id)
+                                : null;
+                            console.log(hit.support[0].support_join_id);
+                        }}
                     >
-                        {/* <option value={null}>-- Add Support Tag --</option> */}
+                        <option value={null}>-- Add Support Tag --</option>
                         {support &&
                             support.map(item => (
                                 <option key={item.id} value={item.id}>
@@ -304,14 +343,19 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={hit.funding_titles[0] && hit.funding_titles[0].fundingID} 
+                        defaultValue={hit.funding ? hit.funding[0].funding_id : null}
                         SelectProps={{
                             native: true,
                         }}
                         label='Select Funding 1 Tag'
-                        onChange={(e) => setNewFunding1(e.target.value)}
+                        onChange={e => {
+                            setNewFunding1(e.target.value);
+                            hit.funding
+                                ? setUpdatedFundingJoin1(hit.funding[0].funding_join_id)
+                                : null
+                        }}
                     >
-                        {/* <option value={null}>-- None --</option> */}
+                        <option value={null}>-- Add Funding Tag --</option>
                         {funding &&
                             funding.map(fund => (
                                 <option key={fund.id} value={fund.id}>
@@ -324,14 +368,20 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={hit.support_titles[1] && hit.support_titles[1].supportID}
+                        defaultValue={hit.support ? hit.support[1] ? hit.support[1].support_id : null : null}
                         SelectProps={{
                             native: true,
                         }}
                         label='Select Support 2 Tag'
-                        onChange={(e) => setNewSupport2(e.target.value)}
+                        onChange={e => {
+                            setNewSupport2(e.target.value);
+                            hit.support && hit.support[1]
+                                ? setUpdatedSupportJoin2(hit.support[1].support_join_id)
+                                : null;
+                            console.log(hit.support[1].support_join_id);
+                        }}
                     >
-                        {/* <option value={null}>-- Add Support Tag --</option> */}
+                        <option value={null}>-- Add Support Tag --</option>
                         {support &&
                             support.map(item => (
                                 <option key={item.id} value={item.id}>
@@ -343,14 +393,19 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={hit.funding_titles[1] && hit.funding_titles[1].fundingID}
+                        defaultValue={hit.funding ? hit.funding[1] ? hit.funding[1].funding_id : null : null}
                         SelectProps={{
                             native: true,
                         }}
                         label='Select Funding 2 Tag'
-                        onChange={(e) => setNewFunding2(e.target.value)}
+                        onChange={e => {
+                            setNewFunding2(e.target.value);
+                            hit.funding && hit.funding[1]
+                                ? setUpdatedFundingJoin2(hit.funding[1].funding_join_id)
+                                : null
+                        }}
                     >
-                        {/* <option value={null}>-- None --</option> */}
+                        <option value={null}>-- Add Funding Tag --</option>
                         {funding &&
                             funding.map(fund => (
                                 <option key={fund.id} value={fund.id}>
@@ -363,14 +418,20 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={hit.support_titles[2] && hit.support_titles[2].supportID}
+                        defaultValue={hit.support ? hit.support[2] ? hit.support[2].support_id : null : null}
                         SelectProps={{
                             native: true,
                         }}
                         label='Select Support 3 Tag'
-                        onChange={(e) => setNewSupport3(e.target.value)}
+                        onChange={e => {
+                            setNewSupport3(e.target.value);
+                            hit.support && hit.support[2]
+                                ? setUpdatedSupportJoin3(hit.support[2].support_join_id)
+                                : null;
+                            console.log(hit.support[2].support_join_id);
+                        }}
                     >
-                        {/* <option value={null}>-- Add Support Tag --</option> */}
+                        <option value={null}>-- Add Support Tag --</option>
                         {support &&
                             support.map(item => (
                                 <option key={item.id} value={item.id}>
@@ -382,14 +443,19 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <TextField
                         sx={{ m: 1, width: '20ch' }}
                         select
-                        defaultValue={hit.funding_titles[2] && hit.funding_titles[2].fundingID}
+                        defaultValue={hit.funding ? hit.funding[2] ? hit.funding[2].funding_id : null : null}
                         SelectProps={{
                             native: true,
                         }}
                         label='Select Funding 3 Tag'
-                        onChange={(e) => setNewFunding3(e.target.value)}
+                        onChange={e => {
+                            setNewFunding3(e.target.value);
+                            hit.funding && hit.funding[2]
+                                ? setUpdatedFundingJoin3(hit.funding[2].funding_join_id)
+                                : null
+                        }}
                     >
-                        {/* <option value={null}>-- None --</option> */}
+                        <option value={null}>-- Add Funding Tag --</option>
                         {funding &&
                             funding.map(fund => (
                                 <option key={fund.id} value={fund.id}>
@@ -453,21 +519,21 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     <DialogContentText>
                         <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={hit.organization_name} />
                         <Chip color="secondary" sx={{ mt: 2, mr: 1 }} label={hit.stage_name} />
-                        <Chip color="primary" variant="outlined" sx={{ mt: 2, mr: 1 }} label={hit.entrepreneur_title} />
-                        {hit.funding_titles && (
+                        {hit.entrepreneur_title && <Chip color="primary" variant="outlined" sx={{ mt: 2, mr: 1 }} label={hit.entrepreneur_title} />}
+                        {hit.funding && (
                             <Chip
                                 color="secondary"
                                 variant="outlined"
                                 sx={{ mt: 2, mr: 1 }}
-                                label={hit.funding_titles.map((funding) => funding.title).join(', ')}
+                                label={hit.funding.map((funding) => funding.title).join(', ')}
                             />
                         )}
-                        {hit.support_titles && (
+                        {hit.support && (
                             <Chip
                                 color="primary"
                                 variant="outlined"
                                 sx={{ mt: 2, mr: 1 }}
-                                label={hit.support_titles.map((support) => support.title).join(', ')}
+                                label={hit.support.map((support) => support.title).join(', ')}
                             />
                         )}
                     </DialogContentText>
