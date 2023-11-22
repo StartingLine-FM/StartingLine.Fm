@@ -72,7 +72,7 @@ function LandingPage({ currentList, setCurrentList }) {
   useEffect(() => {
     if (lists.length === 1) {
       setCurrentList(lists[0].id);
-      dispatch({ type: 'FETCH_TODO_LIST_RESOURCES', payload: { title_table_id: lists[0].id } })
+      dispatch({ type: 'FETCH_TODO_LIST_RESOURCES', payload: { title_table_id: lists[0].id}})
     }
   }, [lists])
 

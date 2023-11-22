@@ -1,6 +1,6 @@
 // hooks
 import { useSelector, useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // MUI
 import {
     Typography,
@@ -43,7 +43,10 @@ export default function AnonToDo({ handleOpenRegister }) {
         let notes;
 
         // if notes have been changed, send newNotes, else send whatever is already there
-        newNotes ? notes = newNotes : notes = resource.notes;
+        newNotes ? (notes = newNotes) : (notes = resource.notes);
+
+        console.log('Updating resource with the following notes:', notes);
+        console.log('Resource ID:', resource.objectID);
 
         // send off updated resource
         dispatch({
@@ -51,13 +54,15 @@ export default function AnonToDo({ handleOpenRegister }) {
             payload: {
                 id: resource.objectID,
                 notes,
-            }
-        })
+            },
+        });
 
         // clear the inputs
         setNewNotes('');
         setEditMode(false);
-    }
+    };
+
+
 
     // closes AnonToDoModal
     const handleClose = () => {
@@ -66,10 +71,10 @@ export default function AnonToDo({ handleOpenRegister }) {
     }
 
     // deletes a resource from to-do list
-    const deleteResource = (id) => {
+    const deleteResource = (resource) => {
         dispatch({
             type: 'DELETE_ANON_TODO_LIST',
-            payload: id
+            payload: resource.objectID
         })
     }
 
@@ -180,6 +185,7 @@ export default function AnonToDo({ handleOpenRegister }) {
                                                 <IconButton onClick={() => putResource(resource)}>
                                                     <SaveIcon color="primary" />
                                                 </IconButton>
+
                                             </Tooltip>
                                         </ListItem>
                                         <ListItem sx={{ width: { xs: 65, md: 100 } }}>
@@ -202,7 +208,7 @@ export default function AnonToDo({ handleOpenRegister }) {
 
                                         <ListItem sx={{ width: { xs: 65, md: 100 } }}>
                                             <Tooltip title="Delete Item">
-                                                <IconButton onClick={() => deleteResource(resource.objectID)}>
+                                                <IconButton onClick={() => deleteResource(resource)}>
                                                     <DeleteIcon color="secondary" />
                                                 </IconButton>
                                             </Tooltip>

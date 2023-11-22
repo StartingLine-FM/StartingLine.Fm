@@ -47,8 +47,6 @@ function RegisterForm({ handleOpen, handleClose, openLoginModal, openRegisterMod
         todo
       }
     }
-
-
     dispatch({ // dispatch to register a user and the todo list
       type: 'REGISTER',
       payload
