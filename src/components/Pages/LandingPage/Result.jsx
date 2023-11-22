@@ -24,7 +24,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 
 export default function Result({ hit, currentList, categories, stages }) {
-// console.log("Result - hit:", hit);
+    // console.log("Result - hit:", hit);
     const [open, setOpen] = useState(false);
     const [snackOpen, setSnackOpen] = useState(false);
     const [message, setMessage] = useState("");
@@ -188,6 +188,25 @@ export default function Result({ hit, currentList, categories, stages }) {
                                 </Typography>
                                 <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={hit.organization_name} />
                                 <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1 }} label={hit.stage_name} />
+                                <Chip color="primary" variant="outlined" size="small" sx={{ fontSize: "10px", ml: 1 }} label={hit.entrepreneur_title} />
+                                {hit.funding_titles && (
+                                    <Chip
+                                        color="secondary"
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ fontSize: "10px", ml: 1 }}
+                                        label={hit.funding_titles.map((funding) => funding.title).join(', ')}
+                                    />
+                                )}
+                                {hit.support_titles && (
+                                    <Chip
+                                        color="primary"
+                                        variant="outlined"
+                                        size="small"
+                                        sx={{ fontSize: "10px", ml: 1 }}
+                                        label={hit.support_titles.map((support) => support.title).join(', ')}
+                                    />
+                                )}
                             </CardContent>
                         </CardActionArea>
                     </Card>
