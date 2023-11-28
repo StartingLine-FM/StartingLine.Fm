@@ -34,7 +34,7 @@ SELECT
     CASE
         WHEN COUNT(sj."support_id") = 0 THEN NULL
         ELSE jsonb_agg(
-            jsonb_build_object(
+            DISTINCT jsonb_build_object(
                 'support_id', sj."support_id",
                 'support_join_id', sj."id",
                 'title', su."title"
@@ -44,7 +44,7 @@ SELECT
     CASE
         WHEN COUNT(fj."funding_id") = 0 THEN NULL
         ELSE jsonb_agg(
-            jsonb_build_object(
+            DISTINCT jsonb_build_object(
                 'funding_id', fj."funding_id",
                 'funding_join_id', fj."id",
                 'title', f."title"
@@ -133,7 +133,7 @@ router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
             }
         }
         // Upon successfull post, update the algolia index to reflect the newly added resource
-        await algoliaSave(resourceId);
+        algoliaSave();
         // Send a 201 status code to the client to indicate that the resource was successfully created
         res.sendStatus(201);
     } catch (err) {
@@ -224,13 +224,17 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
 // It first checks if the user is authenticated and has admin privileges using the rejectUnauthenticated and isAdmin middleware.
 router.delete('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The SQL query to delete a resource
-    const queryText = 'DELETE FROM resource WHERE id =$1';
+    const resourceText = 'DELETE FROM resource WHERE id =$1;';
+    const supportText = `DELETE FROM support_join WHERE resource_id=$1;`;
+    const fundingText = `DELETE FROM funding_join WHERE resource_id=$1;`;
     try {
-        // Execute the SQL query
-        await pool.query(queryText, [req.params.id]);
+        await pool.query(supportText, [req.params.id]);
+        await pool.query(fundingText, [req.params.id]);
+        await pool.query(resourceText, [req.params.id]);
         // Upon successful delete, delete object from algolia index
         index.deleteObject(req.params.id)
         // Send a 200 status code to the client to indicate that the request was successful
+        console.log('Successfully deleted resource')
         res.sendStatus(200);
     } catch (err) {
         // Log the error and send a 500 status code to the client if an error occurs

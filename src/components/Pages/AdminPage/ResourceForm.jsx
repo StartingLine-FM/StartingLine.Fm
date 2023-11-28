@@ -16,13 +16,13 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
     const [newLinkedIn, setNewLinkedIn] = useState('')
     const [newOrganization, setNewOrganization] = useState('')
     const [newStage, setNewStage] = useState('')
-    const [newEntrepreneur, setNewEntrepreneur] = useState(null)
-    const [newSupport1, setNewSupport1] = useState('')
-    const [newSupport2, setNewSupport2] = useState('')
-    const [newSupport3, setNewSupport3] = useState('')
-    const [newFunding1, setNewFunding1] = useState('')
-    const [newFunding2, setNewFunding2] = useState('')
-    const [newFunding3, setNewFunding3] = useState('')
+    const [newEntrepreneur, setNewEntrepreneur] = useState(0)
+    const [newSupport1, setNewSupport1] = useState(0)
+    const [newSupport2, setNewSupport2] = useState(0)
+    const [newSupport3, setNewSupport3] = useState(0)
+    const [newFunding1, setNewFunding1] = useState(0)
+    const [newFunding2, setNewFunding2] = useState(0)
+    const [newFunding3, setNewFunding3] = useState(0)
 
     // Regular expression for URL validation
     const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/i;
@@ -79,6 +79,12 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
             return;
         }
 
+        let entrepreneurID;
+
+        if (newEntrepreneur !== 0) {
+            entrepreneurID = newEntrepreneur;
+        }
+
         // If all fields are properly filled out, dispatch action to save new resource
         if (newName && newDescription && newStage && newOrganization && (supportArr || fundingArr)) {
             const newResource = {
@@ -91,10 +97,11 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                 linkedin: newLinkedIn,
                 organization_id: newOrganization,
                 stage_id: newStage,
-                entrepreneur_id: newEntrepreneur,
+                entrepreneur_id: (newEntrepreneur === '' ? null : newEntrepreneur),
                 support: supportArr,
                 funding: fundingArr
             }
+
             dispatch({ type: 'POST_RESOURCE', payload: newResource });
             setNewName('');
             setNewDescription('');
@@ -280,7 +287,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                                 onChange={(event) => setNewEntrepreneur(event.target.value)}
                             >
                                 {/* A default option prompting the user to select a stage */}
-                                <option value={0}>Select entrepreneur type</option>
+                                <option value={''}>Select entrepreneur type</option>
                                 {/* Mapping over the 'entrepreneur' array to create an option for each stage */}
                                 {entrepreneur.map((e) => (
                                     <option key={e.id} value={e.id}>
@@ -307,7 +314,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                                     onChange={(e) => setNewSupport1(e.target.value)}
                                 >
                                     {/* A default option prompting the user to select a stage */}
-                                    <option value={0}>Select support type (optional)</option>
+                                    <option value={''}>Select support type (optional)</option>
                                     {/* Mapping over the 'support' array to create an option for each stage */}
                                     {support.map((s) => (
                                         <option key={s.id} value={s.id}>
@@ -330,7 +337,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                                     onChange={(e) => setNewSupport2(e.target.value)}
                                 >
                                     {/* A default option prompting the user to select a stage */}
-                                    <option value={0}>Select support type (optional)</option>
+                                    <option value={''}>Select support type (optional)</option>
                                     {/* Mapping over the 'support' array to create an option for each stage */}
                                     {support.map((s) => (
                                         <option key={s.id} value={s.id}>
@@ -353,7 +360,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                                     onChange={(e) => setNewSupport3(e.target.value)}
                                 >
                                     {/* A default option prompting the user to select a stage */}
-                                    <option value={0}>Select support type (optional)</option>
+                                    <option value={''}>Select support type (optional)</option>
                                     {/* Mapping over the 'support' array to create an option for each stage */}
                                     {support.map((s) => (
                                         <option key={s.id} value={s.id}>
@@ -379,7 +386,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                                     onChange={(e) => setNewFunding1(e.target.value)}
                                 >
                                     {/* A default option prompting the user to select a stage */}
-                                    <option value={0}>Select funding type (optional) </option>
+                                    <option value={''}>Select funding type (optional) </option>
                                     {/* Mapping over the 'funding' array to create an option for each stage */}
                                     {funding.map((f) => (
                                         <option key={f.id} value={f.id}>
@@ -402,7 +409,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                                     onChange={(e) => setNewFunding2(e.target.value)}
                                 >
                                     {/* A default option prompting the user to select a stage */}
-                                    <option value={0}>Select funding type (optional)</option>
+                                    <option value={''}>Select funding type (optional)</option>
                                     {/* Mapping over the 'funding' array to create an option for each stage */}
                                     {funding.map((f) => (
                                         <option key={f.id} value={f.id}>
@@ -425,7 +432,7 @@ export default function ResourceForm({ stages, organizations, entrepreneur, fund
                                     onChange={(e) => setNewFunding3(e.target.value)}
                                 >
                                     {/* A default option prompting the user to select a stage */}
-                                    <option value={0}>Select funding type (optional)</option>
+                                    <option value={''}>Select funding type (optional)</option>
                                     {/* Mapping over the 'funding' array to create an option for each stage */}
                                     {funding.map((f) => (
                                         <option key={f.id} value={f.id}>

@@ -75,19 +75,19 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
         const buildSupportArray = () => {
 
-            newSupport1 !== 0
+            newSupport1
                 ? updatedSupportJoin1
                     ? supportArray.push({ support_id: newSupport1, support_join_id: updatedSupportJoin1 })
                     : supportArray.push({ support_id: newSupport1 })
                 : null;
 
-            newSupport2 !== 0
+            newSupport2
                 ? updatedSupportJoin2
                     ? supportArray.push({ support_id: newSupport2, support_join_id: updatedSupportJoin2 })
                     : supportArray.push({ support_id: newSupport2 })
                 : null;
 
-            newSupport3 !== 0
+            newSupport3
                 ? updatedSupportJoin3
                     ? supportArray.push({ support_id: newSupport3, support_join_id: updatedSupportJoin3 })
                     : supportArray.push({ support_id: newSupport3 })
@@ -100,19 +100,19 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
         const buildFundingArray = () => {
 
-            newFunding1 !== 0
+            newFunding1
                 ? updatedFundingJoin1
                     ? fundingArray.push({ funding_id: newFunding1, funding_join_id: updatedFundingJoin1 })
                     : fundingArray.push({ funding_id: newFunding1 })
                 : null;
 
-            newFunding2 !== 0
+            newFunding2
                 ? updatedFundingJoin2
                     ? fundingArray.push({ funding_id: newFunding2, funding_join_id: updatedFundingJoin2 })
                     : fundingArray.push({ funding_id: newFunding2 })
                 : null;
 
-            newFunding3 !== 0
+            newFunding3
                 ? updatedFundingJoin3
                     ? fundingArray.push({ funding_id: newFunding3, funding_join_id: updatedFundingJoin3 })
                     : fundingArray.push({ funding_id: newFunding3 })
