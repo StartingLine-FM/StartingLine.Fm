@@ -60,7 +60,7 @@ function LandingPage({ currentList, setCurrentList }) {
   // fetches default search as well as all categories and stages on page load
   useEffect(() => {
     dispatch({ type: 'FETCH_CATEGORIES' });
-    dispatch({ type: 'FETCH_STAGES' });
+    dispatch({ type: 'FETCH_STAGE' });
   }, [dispatch]);
 
   // fetches list of To-Do List titles for a logged-in user

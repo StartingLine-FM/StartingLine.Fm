@@ -19,8 +19,8 @@ function* putResource(action) {
     try {
         //sends a PUT request to the server to update a resource
         yield call(axios.put, `/api/admin/${action.payload.id}`, action.payload);
-        console.log ('action.payload', action.payload);
-        console.log ('action.payload.id', action.payload.id);
+        console.log('action.payload', action.payload);
+        console.log('action.payload.id', action.payload.id);
     } catch (error) {
         console.log('Error updating resource', error);
     }
@@ -58,7 +58,7 @@ function* postOrganization(action) {
         // Sends a POST request to the server to add a new ORGANIZATION
         yield call(axios.post, '/api/admin/organizations', action.payload);
         // Dispatches 'FETCH_ORGANIZATIONS' action to fetch the updated list of organizations
-        yield put({ type: 'FETCH_ORGANIZATIONS' });
+        yield put({ type: 'FETCH_ORGANIZATION' });
     } catch (error) {
         console.log('Error posting organization:', error);
     }
@@ -71,7 +71,7 @@ function* putOrganization(action) {
         // Sends a PUT request to the server to update an existing ORGANIZATION
         yield call(axios.put, `/api/admin/organizations/${action.payload.id}`, action.payload);
         // Dispatches 'FETCH_ORGANIZATIONS' action to fetch the updated list of organizations
-        yield put({ type: 'FETCH_ORGANIZATIONS' });
+        yield put({ type: 'FETCH_ORGANIZATION' });
     } catch (error) {
         console.log('Error updating organization', error);
     }
@@ -84,7 +84,7 @@ function* deleteOrganization(action) {
         // Sends a DELETE request to the server to remove an existing ORGANIZATION
         yield call(axios.delete, `/api/admin/organizations/${action.payload}`);
         // Dispatches 'FETCH_ORGANIZATIONS' action to fetch the updated list of organizations
-        yield put({ type: 'FETCH_ORGANIZATIONS' });
+        yield put({ type: 'FETCH_ORGANIZATION' });
     } catch (error) {
         console.log('Error deleting organization', error);
     }
@@ -110,7 +110,7 @@ function* postStage(action) {
         // Sends a POST request to the server to add a new stage
         yield call(axios.post, '/api/admin/stages', action.payload);
         // Dispatches 'FETCH_STAGES' action to fetch the updated list of stages
-        yield put({ type: 'FETCH_STAGES' });
+        yield put({ type: 'FETCH_STAGE' });
     } catch (error) {
         console.log('Error posting stage:', error);
     }
@@ -123,7 +123,7 @@ function* putStage(action) {
         // Sends a PUT request to the server to update an existing stage
         yield call(axios.put, `/api/admin/stages/${action.payload.id}`, action.payload);
         // Dispatches 'FETCH_STAGES' action to fetch the updated list of stages
-        yield put({ type: 'FETCH_STAGES' });
+        yield put({ type: 'FETCH_STAGE' });
     } catch (error) {
         console.log('Error updating stage', error);
     }
@@ -136,7 +136,7 @@ function* deleteStage(action) {
         // Sends a DELETE request to the server to remove an existing stage
         yield call(axios.delete, `/api/admin/stages/${action.payload}`);
         // Dispatches 'FETCH_STAGES' action to fetch the updated list of stages
-        yield put({ type: 'FETCH_STAGES' });
+        yield put({ type: 'FETCH_STAGE' });
     } catch (error) {
         console.log('Error deleting stage', error);
     }
@@ -144,14 +144,40 @@ function* deleteStage(action) {
 
 function* fetchEntrepreneur() {
     try {
-        // Sends a GET request to the server to fetch all entrepreneur types
         const response = yield call(axios.get, '/api/admin/entrepreneur');
-        // Dispatches 'SET_ENTREPRENEUR' action along with the fetched entrepreneur types
         yield put({ type: 'SET_ENTREPRENEUR', payload: response.data });
     } catch (error) {
         console.log('Error fetching entrepreneur', error);
     }
 }
+
+
+function* postEntrepreneur(action) {
+    try {
+        yield call(axios.post, '/api/admin/entrepreneur', action.payload);
+        yield put({ type: 'FETCH_ENTREPRENEUR' });
+    } catch (error) {
+        console.log('Error posting entrepreneur:', error);
+    }
+};
+
+function* putEntrepreneur(action) {
+    try {
+        yield call(axios.put, `/api/admin/entrepreneur/${action.payload.id}`, action.payload);
+        yield put({ type: 'FETCH_ENTREPRENEUR' });
+    } catch (error) {
+        console.log('Error updating entrepreneur', error);
+    }
+};
+
+function* deleteEntrepreneur(action) {
+    try {
+        yield call(axios.delete, `/api/admin/entrepreneur/${action.payload}`);
+        yield put({ type: 'FETCH_ENTREPRENEUR' });
+    } catch (error) {
+        console.log('Error deleting entrepreneur', error);
+    }
+};
 
 function* fetchSupport() {
     try {
@@ -164,6 +190,33 @@ function* fetchSupport() {
     }
 }
 
+function* postSupport(action) {
+    try {
+        yield call(axios.post, '/api/admin/support', action.payload);
+        yield put({ type: 'FETCH_SUPPORT' });
+    } catch (error) {
+        console.log('Error posting Support:', error);
+    }
+};
+
+function* putSupport(action) {
+    try {
+        yield call(axios.put, `/api/admin/support/${action.payload.id}`, action.payload);
+        yield put({ type: 'FETCH_SUPPORT' });
+    } catch (error) {
+        console.log('Error updating Support', error);
+    }
+};
+
+function* deleteSupport(action) {
+    try {
+        yield call(axios.delete, `/api/admin/support/${action.payload}`);
+        yield put({ type: 'FETCH_SUPPORT' });
+    } catch (error) {
+        console.log('Error deleting support', error);
+    }
+};
+
 function* fetchFunding() {
     try {
         // Sends a GET request to the server to fetch all funding types
@@ -175,6 +228,33 @@ function* fetchFunding() {
     }
 }
 
+function* postFunding(action) {
+    try {
+        yield call(axios.post, '/api/admin/funding', action.payload);
+        yield put({ type: 'FETCH_FUNDING' });
+    } catch (error) {
+        console.log('Error posting funding:', error);
+    }
+};
+
+function* putFunding(action) {
+    try {
+        yield call(axios.put, `/api/admin/funding/${action.payload.id}`, action.payload);
+        yield put({ type: 'FETCH_FUNDING' });
+    } catch (error) {
+        console.log('Error updating funding', error);
+    }
+};
+
+function* deleteFunding(action) {
+    try {
+        yield call(axios.delete, `/api/admin/funding/${action.payload}`);
+        yield put({ type: 'FETCH_FUNDING' });
+    } catch (error) {
+        console.log('Error deleting funding', error);
+    }
+};
+
 // Watcher Saga: Fires when certain actions are dispatched
 function* adminSaga() {
     // Take latest is a helper function provided by redux-saga
@@ -184,12 +264,21 @@ function* adminSaga() {
     yield takeLatest('DELETE_RESOURCE', deleteResource);
     yield takeLatest('POST_ORGANIZATION', postOrganization);
     yield takeLatest('POST_STAGE', postStage);
+    yield takeLatest('POST_ENTREPRENEUR', postEntrepreneur);
+    yield takeLatest('POST_SUPPORT', postSupport);
+    yield takeLatest('POST_FUNDING', postFunding)
     yield takeLatest('UPDATE_ORGANIZATION', putOrganization);
     yield takeLatest('UPDATE_STAGE', putStage);
+    yield takeLatest('UPDATE_FUNDING', putFunding);
+    yield takeLatest('UPDATE_SUPPORT', putSupport);
+    yield takeLatest('UPDATE_ENTREPRENEUR', putEntrepreneur);
     yield takeLatest('DELETE_ORGANIZATION', deleteOrganization);
     yield takeLatest('DELETE_STAGE', deleteStage);
-    yield takeLatest('FETCH_ORGANIZATIONS', fetchOrganizations);
-    yield takeLatest('FETCH_STAGES', fetchStages);
+    yield takeLatest('DELETE_ENTREPRENEUR', deleteEntrepreneur);
+    yield takeLatest('DELETE_SUPPORT', deleteSupport);
+    yield takeLatest('DELETE_FUNDING', deleteFunding);
+    yield takeLatest('FETCH_ORGANIZATION', fetchOrganizations);
+    yield takeLatest('FETCH_STAGE', fetchStages);
     yield takeLatest('FETCH_ENTREPRENEUR', fetchEntrepreneur);
     yield takeLatest('FETCH_SUPPORT', fetchSupport);
     yield takeLatest('FETCH_FUNDING', fetchFunding);

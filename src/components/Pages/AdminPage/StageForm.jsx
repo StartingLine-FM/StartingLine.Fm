@@ -33,7 +33,7 @@ export default function StageForm({ stages }) {
         // Sets the state variable 'editedStageName' to the current stage name that is to be edited
         setEditedStageName({ id: stageId, name: currentName });
         // Refetches the stages data
-        dispatch({ type: 'FETCH_STAGES' });
+        dispatch({ type: 'FETCH_STAGE' });
     };
 
     // Function to save the changes made to the stage name
@@ -43,7 +43,7 @@ export default function StageForm({ stages }) {
         // Resets the 'editedStageName' state variable to an empty string after the stage name has been updated
         setEditedStageName('');
         // Refetches the stages data to reflect the changes
-        dispatch({ type: 'FETCH_STAGES' });
+        dispatch({ type: 'FETCH_STAGE' });
     };
 
     // Function to cancel the editing process of a stage

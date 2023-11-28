@@ -350,7 +350,7 @@ router.post('/stages', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the new stage details
     const newStage = req.body;
     // The SQL query to insert a new stage
-    const queryText = "INSERT INTO stage (name, description) VALUES ($1, $2)";
+    const queryText = "INSERT INTO stage (name) VALUES ($1)";
     try {
         // Execute the SQL query
         await pool.query(queryText, [newStage.name]);
@@ -429,10 +429,10 @@ router.post('/support', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the new support details
     const newSupport = req.body;
     // The SQL query to insert a new Support
-    const queryText = "INSERT INTO support (name, description) VALUES ($1, $2)";
+    const queryText = "INSERT INTO support (title) VALUES ($1)";
     try {
         // Execute the SQL query
-        await pool.query(queryText, [newSupport.name]);
+        await pool.query(queryText, [newSupport.title]);
         // Send a 201 status code to the client to indicate that the resource was successfully created
         res.sendStatus(201);
     } catch (err) {
@@ -449,10 +449,10 @@ router.put('/support/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the updated support details
     const updatedSupport = req.body;
     // The SQL query to update a support
-    const queryText = 'UPDATE support SET name = $1, description = $2 WHERE id = $3';
+    const queryText = 'UPDATE support SET title = $1, description = $2 WHERE id = $3';
     try {
         // Execute the SQL query
-        await pool.query(queryText, [updatedSupport.name, updatedSupport.description, req.params.id]);
+        await pool.query(queryText, [updatedSupport.title, updatedSupport.description, req.params.id]);
         algoliaSave();
         // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);
@@ -508,10 +508,10 @@ router.post('/funding', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the new funding details
     const newFunding = req.body;
     // The SQL query to insert a new funding
-    const queryText = "INSERT INTO funding (name, description) VALUES ($1, $2)";
+    const queryText = "INSERT INTO funding (title) VALUES ($1)";
     try {
         // Execute the SQL query
-        await pool.query(queryText, [newFunding.name]);
+        await pool.query(queryText, [newFunding.title]);
         // Send a 201 status code to the client to indicate that the resource was successfully created
         res.sendStatus(201);
     } catch (err) {
@@ -528,10 +528,10 @@ router.put('/funding/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the updated funding details
     const updatedFunding = req.body;
     // The SQL query to update a funding
-    const queryText = 'UPDATE funding SET name = $1, description = $2 WHERE id = $3';
+    const queryText = 'UPDATE funding SET title = $1, description = $2 WHERE id = $3';
     try {
         // Execute the SQL query
-        await pool.query(queryText, [updatedFunding.name, updatedFunding.description, req.params.id]);
+        await pool.query(queryText, [updatedFunding.title, updatedFunding.description, req.params.id]);
         algoliaSave();
         // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);
@@ -587,10 +587,10 @@ router.post('/entrepreneur', rejectUnauthenticated, isAdmin, async (req, res) =>
     // The request body should contain the new entrepreneur details
     const newEntrepreneur = req.body;
     // The SQL query to insert a new entrepreneur
-    const queryText = "INSERT INTO entrepreneur (name, description) VALUES ($1, $2)";
+    const queryText = "INSERT INTO entrepreneur (title) VALUES ($1)";
     try {
         // Execute the SQL query
-        await pool.query(queryText, [newEntrepreneur.name]);
+        await pool.query(queryText, [newEntrepreneur.title]);
         // Send a 201 status code to the client to indicate that the resource was successfully created
         res.sendStatus(201);
     } catch (err) {
@@ -607,10 +607,10 @@ router.put('/entrepreneur/:id', rejectUnauthenticated, isAdmin, async (req, res)
     // The request body should contain the updated entrepreneur details
     const updatedEntrepreneur = req.body;
     // The SQL query to update a entrepreneur
-    const queryText = 'UPDATE entrepreneur SET name = $1, description = $2 WHERE id = $3';
+    const queryText = 'UPDATE entrepreneur SET title = $1, description = $2 WHERE id = $3';
     try {
         // Execute the SQL query
-        await pool.query(queryText, [updatedEntrepreneur.name, updatedEntrepreneur.description, req.params.id]);
+        await pool.query(queryText, [updatedEntrepreneur.title, updatedEntrepreneur.description, req.params.id]);
         algoliaSave();
         // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);

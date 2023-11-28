@@ -31,8 +31,8 @@ function AdminPage() {
   // useEffect hook to fetch organizations and stages once the component is mounted
   useEffect(() => {
     // Fetch organizations and stages on component mount
-    dispatch({ type: 'FETCH_ORGANIZATIONS' });
-    dispatch({ type: 'FETCH_STAGES' });
+    dispatch({ type: 'FETCH_ORGANIZATION' });
+    dispatch({ type: 'FETCH_STAGE' });
     dispatch({ type: 'FETCH_ENTREPRENEUR' });
     dispatch({ type: 'FETCH_SUPPORT' });
     dispatch({ type: 'FETCH_FUNDING' });
@@ -46,11 +46,11 @@ function AdminPage() {
       </Typography>
       <Grid container justifyContent='center' alignItems='center' spacing={2}>
         <ResourceForm organizations={organizations} stages={stages} entrepreneur={entrepreneur} funding={funding} support={support} />
-        <TagForm tagRedux={stages} tagTitle={'Stage'} size={4} />
-        <TagForm tagRedux={support} tagTitle={'Support'} size={4} />
-        <TagForm tagRedux={funding} tagTitle={'Funding'} size={4} />
-        <TagForm tagRedux={entrepreneur} tagTitle={'Entrepreneur'} size={6} />
-        <TagForm tagRedux={organizations} tagTitle={'Organization'} size={6} />
+        <TagForm tagRedux={stages} tagTitle={'Stage'} size={4} column={'name'} />
+        <TagForm tagRedux={support} tagTitle={'Support'} column={'title'} size={4} />
+        <TagForm tagRedux={funding} tagTitle={'Funding'} column={'title'} size={4} />
+        <TagForm tagRedux={entrepreneur} tagTitle={'Entrepreneur'} column={'title'} size={6} />
+        <TagForm tagRedux={organizations} tagTitle={'Organization'} column={'name'} size={6} />
       </Grid >
     </Container >
   );

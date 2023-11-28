@@ -188,7 +188,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
     //console log useEffects
     useEffect(() => {
-        dispatch({ type: 'FETCH_ORGANIZATIONS' });
+        dispatch({ type: 'FETCH_ORGANIZATION' });
         // console.log('Organizations:', organizations);
     }, []);
 

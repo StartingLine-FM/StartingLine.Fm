@@ -7,33 +7,38 @@ import SaveIcon from '@mui/icons-material/Save'; // Added SaveIcon, save option
 import CancelIcon from '@mui/icons-material/Cancel'; // Added CancelIcon, cancel option
 // import InfoIcon from '@mui/icons-material/Info'; //Added InfoIcon, info on how things work
 
-export default function TagForm({ tagRedux, tagTitle, size }) {
+export default function TagForm({ tagRedux, tagTitle, size, column }) {
 
     const [newName, setNewName] = useState('');
-    const [newDescription, setNewDescription] = useState('');
     const [editedName, setEditedName] = useState('');
-    const [editedDescription, setEditedDescription] = useState('');
     const dispatch = useDispatch()
 
     const handleAdd = (event) => {
         // This function prevents the default form submission event
         event.preventDefault();
         // Checks if the new name is not an empty string before dispatching the action to add the new 
-        if (newName !== '') {
+        if (newName !== '' && column === 'name') {
             // Dispatches a Redux action of type 'POST_' with the new  name as the payload
-            dispatch({ type: `POST_${tagTitle.toUpperCase()}`, payload: { name: newName, description: newDescription } });
+            dispatch({ type: `POST_${tagTitle.toUpperCase()}`, payload: { name: newName } });
+            // Resets the new name state variable to an empty string
+            setNewName('');
+        } else if (newName !== '' && column === 'title') {
+            // Dispatches a Redux action of type 'POST_' with the new  name as the payload
+            dispatch({ type: `POST_${tagTitle.toUpperCase()}`, payload: { title: newName } });
             // Resets the new  name state variable to an empty string
             setNewName('');
         } else {
             // If the new  name is an empty string, an alert message is shown asking the user to enter a non-empty  name
-            alert('Please enter a non-empty  name.');
+            alert('Please enter a non-empty name.');
         }
     };
 
     // Function to initiate the editing process of a 
     const handleEdit = (Id, currentName) => {
         // Sets the state variable 'editedName' to the current  name that is to be edited
-        setEditedName({ id: Id, name: currentName });
+        if (column === 'name') {
+            setEditedName({ id: Id, name: currentName });
+        } else setEditedName({ id: Id, title: currentName })
         // Refetches the s data
         dispatch({ type: `FETCH_${tagTitle.toUpperCase()}` });
     };
@@ -41,7 +46,12 @@ export default function TagForm({ tagRedux, tagTitle, size }) {
     // Function to save the changes made to the  name
     const handleSaveEdit = (Id) => {
         // Dispatches a Redux action of type 'UPDATE_' with the new  name and its id as the payload
-        dispatch({ type: `UPDATE_${tagTitle.toUpperCase()}`, payload: { id: Id, name: editedName.name } });
+        if (column === 'name') {
+            dispatch({ type: `UPDATE_${tagTitle.toUpperCase()}`, payload: { id: Id, name: editedName.name } });
+            // Resets the 'editedName' state variable to an empty string after the  name has been updated
+            setEditedName('');
+        } else
+            dispatch({ type: `UPDATE_${tagTitle.toUpperCase()}`, payload: { id: Id, title: editedName.title } });
         // Resets the 'editedName' state variable to an empty string after the  name has been updated
         setEditedName('');
         // Refetches the s data to reflect the changes
@@ -84,10 +94,14 @@ export default function TagForm({ tagRedux, tagTitle, size }) {
                                         // Show the input field for editing the  name
                                         <Grid item xs={8}>
                                             <TextField
-                                                value={editedName.name}
+                                                value={
+                                                    column === 'name' ? editedName.name : editedName.title
+                                                }
                                                 size='small'
                                                 onChange={(event) =>
-                                                    setEditedName({ ...editedName, name: event.target.value })
+                                                    column === 'name'
+                                                        ? setEditedName({ ...editedName, name: event.target.value })
+                                                        : setEditedName({ ...editedName, title: event.target.value })
                                                 }
                                             />
                                         </Grid>
@@ -119,7 +133,11 @@ export default function TagForm({ tagRedux, tagTitle, size }) {
                                         <Grid item xs={4}>
                                             <IconButton
                                                 aria-label="Edit "
-                                                onClick={() => handleEdit(tag.id, (tag.title || tag.name))}
+                                                onClick={() => handleEdit(tag.id, (
+                                                    column === 'name'
+                                                        ? tag.name
+                                                        : tag.title
+                                                ))}
                                             >
                                                 <EditIcon />
                                             </IconButton>
