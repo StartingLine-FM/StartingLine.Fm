@@ -187,27 +187,40 @@ export default function Result({ hit, currentList, categories, stages }) {
                                     }}>
                                     {hit.description}
                                 </Typography>
-                                <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={hit.organization_name} />
-                                <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1 }} label={hit.stage_name} />
-                                <Chip color="primary" variant="outlined" size="small" sx={{ fontSize: "10px", ml: 1 }} label={hit.entrepreneur_title} />
-                                {hit.funding_titles && (
+                                {hit.organization_name ?
+                                    <Chip color="primary" size="small" sx={{ fontSize: "10px" }} label={hit.organization_name} />
+                                    : null
+                                }
+                                {hit.stage_name ?
+                                    <Chip color="secondary" size="small" sx={{ fontSize: "10px", ml: 1 }} label={hit.stage_name} />
+                                    : null
+                                }
+                                {hit.entrepreneur_title ?
+                                    <Chip color="primary" variant="outlined" size="small" sx={{ fontSize: "10px", ml: 1 }} label={hit.entrepreneur_title} />
+                                    : null
+                                }
+                                {hit.funding ? (
                                     <Chip
                                         color="secondary"
                                         variant="outlined"
                                         size="small"
                                         sx={{ fontSize: "10px", ml: 1 }}
-                                        label={hit.funding_titles.map((funding) => funding.title).join(', ')}
+                                        label={hit.funding.map((f) => f.title).join(', ')}
                                     />
-                                )}
-                                {hit.support_titles && (
+                                )
+                                    : null
+                                }
+                                {hit.support ? (
                                     <Chip
                                         color="primary"
                                         variant="outlined"
                                         size="small"
                                         sx={{ fontSize: "10px", ml: 1 }}
-                                        label={hit.support_titles.map((support) => support.title).join(', ')}
+                                        label={hit.support.map((s) => s.title).join(', ')}
                                     />
-                                )}
+                                )
+                                    : null
+                                }
                             </CardContent>
                         </CardActionArea>
                     </Card>

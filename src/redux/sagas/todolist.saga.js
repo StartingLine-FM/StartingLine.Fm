@@ -5,7 +5,7 @@ import moment from "moment";
 
 // function that runs the saga generator functions
 function* todolistSaga() {
-    yield takeLatest('POST_TODO_LIST', postTodoList); 
+    yield takeLatest('POST_TODO_LIST', postTodoList);
     yield takeLatest('POST_ANON_TO_REGISTERED', postAnonToRegistered)
     yield takeLatest('PUT_TODO_LIST', putTodoList);
     yield takeLatest('DELETE_TODO_LIST_RESOURCE', deleteTodoListResource);
@@ -100,23 +100,23 @@ function* fetchTableLists(action) {
         const response = yield axios.get('/api/todo/titles')
         console.log(response.data) // log the response
         yield put({ type: "SET_TABLE_LIST", payload: response.data }); // update the table list for the title ids
-        if(action.payload){
+        if (action.payload) {
 
-            const titles = yield select(store => store.tableListReducer) 
+            const titles = yield select(store => store.tableListReducer)
             let title_table_id = titles[0].id
             let todo = action.payload
 
-   
-             for(let item of todo) {
-               yield put({
-                 type: "POST_TODO_LIST",
-                 payload: {
-                   resource_id: item.id,
-                   title_table_id,
-                   notes: item.notes
-                 }
-               })
-             }
+
+            for (let item of todo) {
+                yield put({
+                    type: "POST_TODO_LIST",
+                    payload: {
+                        resource_id: item.id,
+                        title_table_id,
+                        notes: item.notes
+                    }
+                })
+            }
         }
     } catch (error) {
         // log the error if there is one
@@ -127,13 +127,13 @@ function* fetchTableLists(action) {
 function* postNewTitle(action) {
     try {
         // make request
-        const response = yield axios.post('api/todo/title', {title: action.payload.title})
+        const response = yield axios.post('api/todo/title', { title: action.payload.title })
         console.log(response.data) // make sure you are getting the correct data
         console.log("post new title action.payload:", action.payload);
 
-        if(action.payload.todo){
+        if (action.payload.todo) {
             console.log("sending to fetchTableLists:", action.payload.todo)
-            yield put({ type: "FETCH_TABLE_LISTS", payload: action.payload.todo})
+            yield put({ type: "FETCH_TABLE_LISTS", payload: action.payload.todo })
         } else yield put({ type: "FETCH_TABLE_LISTS" });
     } catch (error) {
         console.log('there was an error posting a new title', error)
@@ -147,16 +147,16 @@ function* postAnonToRegistered(action) {
 
         // if the newly registered user had a todo list
         if (todo.length > 0) {
-    
-          let currentDate = moment().format("MM/DD/YYYY");
 
-          yield put({
-            type: "POST_NEW_TITLE",
-            payload: {
-              title: `TO-DO: ${currentDate}`,
-              todo
-            }
-          })
+            let currentDate = moment().format("MM/DD/YYYY");
+
+            yield put({
+                type: "POST_NEW_TITLE",
+                payload: {
+                    title: `TO-DO: ${currentDate}`,
+                    todo
+                }
+            })
         } else return;
     } catch (error) {
         console.log("Error posting new user's anon todo list", error);

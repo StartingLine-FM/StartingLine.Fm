@@ -18,162 +18,69 @@ const isAdmin = (req, res, next) => {
 };
 
 const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
-const index = client.initIndex('test_resource_3');
+const index = client.initIndex('test_resources');
 const algoliaQuery = `
-    SELECT
-        r."id" AS "objectID",
-        r."name",
-        r."description",
-        r."image_url",
-        o."name" AS "organization_name",
-        o."id" AS "organization_id",
-        s."name" AS "stage_name",
-        s."id" AS "stage_id",
-        e."title" AS "entrepreneur_title",
-        (
-            SELECT ARRAY_AGG("support"."title")
-            FROM "support_join" sj
-            JOIN "support" ON sj."support_id" = "support"."id"
-            WHERE sj."resource_id" = r."id"
-        ) AS "support_titles",
-        (
-            SELECT ARRAY_AGG("funding"."title")
-            FROM "funding_join" fj
-            JOIN "funding" ON fj."funding_id" = "funding"."id"
-            WHERE fj."resource_id" = r."id"
-        ) AS "funding_titles",
-        r."website",
-        r."email",
-        r."address",
-        r."linkedin"
-    FROM "resource" r
-    LEFT JOIN "organization" o ON o."id" = r."organization_id"
-    LEFT JOIN "stage" s ON s."id" = r."stage_id"
-    LEFT JOIN "entrepreneur" e ON e."id" = r."entrepreneur_id"
-    GROUP BY
-        r."id",
-        o."name",
-        o."id",
-        s."name",
-        s."id",
-        e."title";
+SELECT
+    r."id" AS "objectID",
+    r."name",
+    r."description",
+    r."image_url",
+    o."name" AS "organization_name",
+    o."id" AS "organization_id",
+    s."name" AS "stage_name",
+    s."id" AS "stage_id",
+    e."title" AS "entrepreneur_title",
+    e."id" AS "entrepreneur_id",
+    CASE
+        WHEN COUNT(sj."support_id") = 0 THEN NULL
+        ELSE jsonb_agg(
+            DISTINCT jsonb_build_object(
+                'support_id', sj."support_id",
+                'support_join_id', sj."id",
+                'title', su."title"
+            )
+        )
+    END AS "support",
+    CASE
+        WHEN COUNT(fj."funding_id") = 0 THEN NULL
+        ELSE jsonb_agg(
+            DISTINCT jsonb_build_object(
+                'funding_id', fj."funding_id",
+                'funding_join_id', fj."id",
+                'title', f."title"
+            )
+        )
+    END AS "funding",
+    r."website",
+    r."email",
+    r."address",
+    r."linkedin"
+FROM "resource" r
+LEFT JOIN "organization" o ON o."id" = r."organization_id"
+LEFT JOIN "stage" s ON s."id" = r."stage_id"
+LEFT JOIN "entrepreneur" e ON e."id" = r."entrepreneur_id"
+LEFT JOIN "support_join" sj ON sj."resource_id" = r."id"
+LEFT JOIN "support" su ON su."id" = sj."support_id"
+LEFT JOIN "funding_join" fj ON fj."resource_id" = r."id"
+LEFT JOIN "funding" f ON f."id" = fj."funding_id"
+GROUP BY
+    r."id",
+    o."name",
+    o."id",
+    s."name",
+    s."id",
+    e."title",
+    e."id";
 `;
 
-const fetchSupportJoinIds = async (resourceId) => {
-    const supportJoinIdsQuery = `
-        SELECT "id"
-        FROM "support_join"
-        WHERE "resource_id" = $1;
-    `;
-    try {
-        const result = await pool.query(supportJoinIdsQuery, [resourceId]);
-        return result.rows.map(row => row.support_join_id);
-    } catch (error) {
-        console.log("Error fetching support join IDs:", error);
-        throw error;
-    }
-};
-
-const fetchFundingJoinIds = async (resourceId) => {
-    const fundingJoinIdsQuery = `
-        SELECT "id"
-        FROM "funding_join"
-        WHERE "resource_id" = $1;
-    `;
-    try {
-        const result = await pool.query(fundingJoinIdsQuery, [resourceId]);
-        return result.rows.map(row => row.funding_join_id);
-    } catch (error) {
-        console.log("Error fetching funding join IDs:", error);
-        throw error;
-    }
-};
-
-const fetchSupportTitles = async (supportJoinIds) => {
-    // Use the join IDs to fetch support titles
-    const supportTitlesQuery = `
-        SELECT "title"
-        FROM "support_join"
-        WHERE "id" IN ($1);
-    `;
-    try {
-        const result = await pool.query(supportTitlesQuery, [supportJoinIds]);
-        return result.rows.map(row => row.title);
-    } catch (error) {
-        console.log("Error fetching support titles:", error);
-        throw error;
-    }
-};
-
-const fetchFundingTitles = async (fundingJoinIds) => {
-    // Use the join IDs to fetch funding titles
-    const fundingTitlesQuery = `
-        SELECT "title"
-        FROM "funding_join"
-        WHERE "id" IN ($1);
-    `;
-    try {
-        const result = await pool.query(fundingTitlesQuery, [fundingJoinIds]);
-        return result.rows.map(row => row.title);
-    } catch (error) {
-        console.log("Error fetching funding titles:", error);
-        throw error;
-    }
-};
-
-const algoliaSave = async () => {
-    try {
-        // Fetch data from PostgreSQL
-        const result = await pool.query(algoliaQuery);
-
-        // Transform data for Algolia
-        const resources = await Promise.all(result.rows.map(async (row) => {
-            // Fetch join IDs for support and funding titles
-            const supportJoinIds = await fetchSupportJoinIds(row.objectID);
-            const fundingJoinIds = await fetchFundingJoinIds(row.objectID);
-
-            // Fetch titles using join IDs
-            const supportTitles = await fetchSupportTitles(supportJoinIds);
-            const fundingTitles = await fetchFundingTitles(fundingJoinIds);
-
-            // Map the titles into objects with specific keys
-            const mappedSupportTitles = supportTitles.map(title => ({
-                title: row.support_title,
-                id: row.support_join_id,
-                supportID: row.support_id
-            }));
-            const mappedFundingTitles = fundingTitles.map(title => ({
-                title: row.funding_title,
-                id: row.funding_join_id,
-                fundingID: row.funding_id
-            }));
-
-            return {
-                objectID: row.objectID,
-                name: row.name,
-                description: row.description,
-                image_url: row.image_url,
-                organization_id: row.organization_id,
-                organization_name: row.organization_name,
-                stage_name: row.stage_name,
-                stage_id: row.stage_id,
-                entrepreneur_id: row.entrepreneur_id,
-                entrepreneur_title: row.entrepreneur_title,
-                support_titles: mappedSupportTitles,
-                funding_titles: mappedFundingTitles,
-                website: row.website,
-                email: row.email,
-                address: row.address,
-                linkedin: row.linkedin,
-            };
-        }));
-
-        // Save the resources into the Algolia index
-        await index.saveObjects(resources);
-        console.log("Algolia index updated successfully");
-    } catch (error) {
-        console.log("Error on Algolia saveObjects:", error);
-    }
+const algoliaSave = () => {
+    pool.query(algoliaQuery)
+        .then(result => {
+            index.saveObjects(result.rows)
+                .then(() => console.log('Resources indexed successfully'))
+                .catch(error => console.error('Error indexing resources:', error));
+        })
+        .catch(err => console.error('Error fetching data:', err));
 };
 
 
@@ -226,7 +133,7 @@ router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
             }
         }
         // Upon successfull post, update the algolia index to reflect the newly added resource
-        await algoliaSave(resourceId);
+        algoliaSave();
         // Send a 201 status code to the client to indicate that the resource was successfully created
         res.sendStatus(201);
     } catch (err) {
@@ -276,22 +183,34 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
 
         // Update support join table
         if (updatedResource.support) {
-            for (const support of updatedResource.support) {
-                const supportQuery = `UPDATE "support_join" SET "support_id"=$1 WHERE "id"=$2;`;
-                await pool.query(supportQuery, [support.support_id, support.id]);
+            for (s of updatedResource.support) {
+                if (s.support_join_id) {
+                    const supportQuery = `UPDATE "support_join" SET "support_id"=$1 WHERE "id"=$2;`;
+                    await pool.query(supportQuery, [s.support_id, s.support_join_id]);
+                }
+                else {
+                    const supportQuery = `INSERT INTO "support_join"("support_id", "resource_id") VALUES($1, $2)`
+                    await pool.query(supportQuery, [s.support_id, resourceId])
+                }
             }
         }
 
         // Update funding join table
         if (updatedResource.funding) {
-            for (const funding of updatedResource.funding) {
-                const fundingQuery = `UPDATE "funding_join" SET "funding_id"=$1 WHERE "id"=$2;`;
-                await pool.query(fundingQuery, [funding.funding_id, funding.id]);
+            for (f of updatedResource.funding) {
+                if (f.funding_join_id) {
+                    const fundingQuery = `UPDATE "funding_join" SET "funding_id"=$1 WHERE "id"=$2;`;
+                    await pool.query(fundingQuery, [f.funding_id, f.funding_join_id]);
+                }
+                else {
+                    const fundingQuery = `INSERT INTO "funding_join"("funding_id", "resource_id") VALUES($1, $2)`
+                    await pool.query(fundingQuery, [f.funding_id, resourceId])
+                }
             }
         }
 
         // Update the Algolia index
-        await algoliaSave(resourceId);
+        algoliaSave();
         res.sendStatus(200);
     } catch (err) {
         console.log('Error updating resource', err);
@@ -305,13 +224,17 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
 // It first checks if the user is authenticated and has admin privileges using the rejectUnauthenticated and isAdmin middleware.
 router.delete('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The SQL query to delete a resource
-    const queryText = 'DELETE FROM resource WHERE id =$1';
+    const resourceText = 'DELETE FROM resource WHERE id =$1;';
+    const supportText = `DELETE FROM support_join WHERE resource_id=$1;`;
+    const fundingText = `DELETE FROM funding_join WHERE resource_id=$1;`;
     try {
-        // Execute the SQL query
-        await pool.query(queryText, [req.params.id]);
+        await pool.query(supportText, [req.params.id]);
+        await pool.query(fundingText, [req.params.id]);
+        await pool.query(resourceText, [req.params.id]);
         // Upon successful delete, delete object from algolia index
         index.deleteObject(req.params.id)
         // Send a 200 status code to the client to indicate that the request was successful
+        console.log('Successfully deleted resource')
         res.sendStatus(200);
     } catch (err) {
         // Log the error and send a 500 status code to the client if an error occurs
@@ -427,7 +350,7 @@ router.post('/stages', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the new stage details
     const newStage = req.body;
     // The SQL query to insert a new stage
-    const queryText = "INSERT INTO stage (name, description) VALUES ($1, $2)";
+    const queryText = "INSERT INTO stage (name) VALUES ($1)";
     try {
         // Execute the SQL query
         await pool.query(queryText, [newStage.name]);
@@ -506,10 +429,10 @@ router.post('/support', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the new support details
     const newSupport = req.body;
     // The SQL query to insert a new Support
-    const queryText = "INSERT INTO support (name, description) VALUES ($1, $2)";
+    const queryText = "INSERT INTO support (title) VALUES ($1)";
     try {
         // Execute the SQL query
-        await pool.query(queryText, [newSupport.name]);
+        await pool.query(queryText, [newSupport.title]);
         // Send a 201 status code to the client to indicate that the resource was successfully created
         res.sendStatus(201);
     } catch (err) {
@@ -526,10 +449,10 @@ router.put('/support/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the updated support details
     const updatedSupport = req.body;
     // The SQL query to update a support
-    const queryText = 'UPDATE support SET name = $1, description = $2 WHERE id = $3';
+    const queryText = 'UPDATE support SET title = $1, description = $2 WHERE id = $3';
     try {
         // Execute the SQL query
-        await pool.query(queryText, [updatedSupport.name, updatedSupport.description, req.params.id]);
+        await pool.query(queryText, [updatedSupport.title, updatedSupport.description, req.params.id]);
         algoliaSave();
         // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);
@@ -585,10 +508,10 @@ router.post('/funding', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the new funding details
     const newFunding = req.body;
     // The SQL query to insert a new funding
-    const queryText = "INSERT INTO funding (name, description) VALUES ($1, $2)";
+    const queryText = "INSERT INTO funding (title) VALUES ($1)";
     try {
         // Execute the SQL query
-        await pool.query(queryText, [newFunding.name]);
+        await pool.query(queryText, [newFunding.title]);
         // Send a 201 status code to the client to indicate that the resource was successfully created
         res.sendStatus(201);
     } catch (err) {
@@ -605,10 +528,10 @@ router.put('/funding/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the updated funding details
     const updatedFunding = req.body;
     // The SQL query to update a funding
-    const queryText = 'UPDATE funding SET name = $1, description = $2 WHERE id = $3';
+    const queryText = 'UPDATE funding SET title = $1, description = $2 WHERE id = $3';
     try {
         // Execute the SQL query
-        await pool.query(queryText, [updatedFunding.name, updatedFunding.description, req.params.id]);
+        await pool.query(queryText, [updatedFunding.title, updatedFunding.description, req.params.id]);
         algoliaSave();
         // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);
@@ -664,10 +587,10 @@ router.post('/entrepreneur', rejectUnauthenticated, isAdmin, async (req, res) =>
     // The request body should contain the new entrepreneur details
     const newEntrepreneur = req.body;
     // The SQL query to insert a new entrepreneur
-    const queryText = "INSERT INTO entrepreneur (name, description) VALUES ($1, $2)";
+    const queryText = "INSERT INTO entrepreneur (title) VALUES ($1)";
     try {
         // Execute the SQL query
-        await pool.query(queryText, [newEntrepreneur.name]);
+        await pool.query(queryText, [newEntrepreneur.title]);
         // Send a 201 status code to the client to indicate that the resource was successfully created
         res.sendStatus(201);
     } catch (err) {
@@ -684,10 +607,10 @@ router.put('/entrepreneur/:id', rejectUnauthenticated, isAdmin, async (req, res)
     // The request body should contain the updated entrepreneur details
     const updatedEntrepreneur = req.body;
     // The SQL query to update a entrepreneur
-    const queryText = 'UPDATE entrepreneur SET name = $1, description = $2 WHERE id = $3';
+    const queryText = 'UPDATE entrepreneur SET title = $1, description = $2 WHERE id = $3';
     try {
         // Execute the SQL query
-        await pool.query(queryText, [updatedEntrepreneur.name, updatedEntrepreneur.description, req.params.id]);
+        await pool.query(queryText, [updatedEntrepreneur.title, updatedEntrepreneur.description, req.params.id]);
         algoliaSave();
         // Send a 200 status code to the client to indicate that the request was successful
         res.sendStatus(200);

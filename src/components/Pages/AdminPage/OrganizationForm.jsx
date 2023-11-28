@@ -36,7 +36,7 @@ export default function OrganizationForm({ organizations }) {
         // Call the API to update the organization name in the backend
         dispatch({ type: 'UPDATE_ORGANIZATION', payload: { id: organizationId, name: editedOrganizationName.name } });
         setEditedOrganizationName(''); // Reset the edited organization name state after saving changes
-        dispatch({ type: 'FETCH_ORGANIZATIONS' }); // Refetch the organizations
+        dispatch({ type: 'FETCH_ORGANIZATION' }); // Refetch the organizations
     };
 
     // Function to cancel the organization editing process
