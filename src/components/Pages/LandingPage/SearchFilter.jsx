@@ -29,7 +29,7 @@ import InfoModal from "./InfoModal";
 
 // Algolia Initiation and index
 const searchClient = algoliasearch('KK1UO0W0NW', 'acfecaf8e37908662d286dc1210b781b');
-// const index = searchClient.initIndex('test_resources_2');
+// const index = searchClient.initIndex('resource_windows');
 
 
 

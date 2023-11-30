@@ -6,7 +6,7 @@ require('dotenv').config();
 const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
 
 // Create a new index and add records
-const index = client.initIndex('test_resources');
+const index = client.initIndex('resource_windows');
 
 // SQL query to retrieve data for indexing
 const queryText = `
