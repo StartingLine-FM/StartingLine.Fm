@@ -93,6 +93,7 @@ function* fetchResourceInformation(action) {
     }
 }
 
+
 function* fetchTableLists(action) {
     try {
         // make request
