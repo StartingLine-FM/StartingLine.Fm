@@ -30,6 +30,7 @@ import InfoModal from "./InfoModal";
 // Algolia Initiation and index
 const searchClient = algoliasearch('KK1UO0W0NW', 'acfecaf8e37908662d286dc1210b781b');
 // const index = searchClient.initIndex('resource_windows');
+const index = searchClient.initIndex('test_resource3');
 
 
 
@@ -174,7 +175,7 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
                 <Collapse in={fundingOpen} timeout="auto" unmountOnExit>
                     <List>
                         <RefinementList
-                            attribute="funding_titles.title"
+                            attribute="funding.title"
                             sortBy={['name:asc']}
                         />
                     </List>

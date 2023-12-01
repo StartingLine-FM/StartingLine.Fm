@@ -69,57 +69,40 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
     // click handler for saving our admin edit changes
     const putResource = () => {
+        const supportArray = [];
+        const fundingArray = [];
 
-        const supportArray = []
-        const fundingArray = []
+        // Define the newSupport and newFunding Arrays.
+        const newSupportArray = support.map(tag => tag.id);
+        const newFundingArray = funding.map(tag => tag.id);
 
         const buildSupportArray = () => {
+            // Loop through support tags
+            for (let i = 0; i < 3; i++) {
+                const supportId = hit.support && hit.support[i] ? hit.support[i].id : 0;
+                const supportJoinId = hit.support && hit.support[i] ? hit.support[i].support_join_id : null;
 
-            newSupport1
-                ? updatedSupportJoin1
-                    ? supportArray.push({ support_id: newSupport1, support_join_id: updatedSupportJoin1 })
-                    : supportArray.push({ support_id: newSupport1 })
-                : null;
-
-            newSupport2
-                ? updatedSupportJoin2
-                    ? supportArray.push({ support_id: newSupport2, support_join_id: updatedSupportJoin2 })
-                    : supportArray.push({ support_id: newSupport2 })
-                : null;
-
-            newSupport3
-                ? updatedSupportJoin3
-                    ? supportArray.push({ support_id: newSupport3, support_join_id: updatedSupportJoin3 })
-                    : supportArray.push({ support_id: newSupport3 })
-                : null;
-
-            console.log(supportArray)
-        }
+                supportArray.push({
+                    support_id: newSupportArray && newSupportArray[i] ? newSupportArray[i] : 0,
+                    support_join_id: newSupportArray && newSupportArray[i] === 0 ? supportJoinId : null,
+                });
+            }
+        };
 
         buildSupportArray();
 
         const buildFundingArray = () => {
+            // Loop through funding tags
+            for (let i = 0; i < 3; i++) {
+                const fundingId = hit.funding && hit.funding[i] ? hit.funding[i].id : 0;
+                const fundingJoinId = hit.funding && hit.funding[i] ? hit.funding[i].funding_join_id : null;
 
-            newFunding1
-                ? updatedFundingJoin1
-                    ? fundingArray.push({ funding_id: newFunding1, funding_join_id: updatedFundingJoin1 })
-                    : fundingArray.push({ funding_id: newFunding1 })
-                : null;
-
-            newFunding2
-                ? updatedFundingJoin2
-                    ? fundingArray.push({ funding_id: newFunding2, funding_join_id: updatedFundingJoin2 })
-                    : fundingArray.push({ funding_id: newFunding2 })
-                : null;
-
-            newFunding3
-                ? updatedFundingJoin3
-                    ? fundingArray.push({ funding_id: newFunding3, funding_join_id: updatedFundingJoin3 })
-                    : fundingArray.push({ funding_id: newFunding3 })
-                : null;
-
-            console.log(fundingArray)
-        }
+                fundingArray.push({
+                    funding_id: newFundingArray && newFundingArray[i] ? newFundingArray[i] : 0,
+                    funding_join_id: newFundingArray && newFundingArray[i] === 0 ? fundingJoinId : null,
+                });
+            }
+        };
 
         buildFundingArray();
 
@@ -144,10 +127,10 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
         console.log('Update Resource Payload:', payload);
 
         // Send dispatch to update resource
-        // dispatch({
-        //     type: "UPDATE_RESOURCE",
-        //     payload,
-        // });
+        dispatch({
+            type: "UPDATE_RESOURCE",
+            payload,
+        });
 
         // Clear all inputs
         clearInputs();
@@ -287,7 +270,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                     >
                         {organizations &&
                             organizations.map(org => (
-                                <option key={org.id} value={org.name}>
+                                <option key={org.id} value={org.id}>
                                     {org.name}
                                 </option>
                             ))}
