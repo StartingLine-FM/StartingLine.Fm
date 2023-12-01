@@ -11,8 +11,8 @@ import { InstantSearch, Hits } from 'react-instantsearch';
 
 // Algolia Initiation and index
 const searchClient = algoliasearch('KK1UO0W0NW', 'acfecaf8e37908662d286dc1210b781b');
-// const index = searchClient.initIndex('test_resources_2');
-const index = searchClient.initIndex('test_resources');
+// const index = searchClient.initIndex('test_resource3');
+const index = searchClient.initIndex('resource_windows');
 
 function LandingPage({ currentList, setCurrentList }) {
 
@@ -72,14 +72,14 @@ function LandingPage({ currentList, setCurrentList }) {
   useEffect(() => {
     if (lists.length === 1) {
       setCurrentList(lists[0].id);
-      dispatch({ type: 'FETCH_TODO_LIST_RESOURCES', payload: { title_table_id: lists[0].id}})
+      dispatch({ type: 'FETCH_TODO_LIST_RESOURCES', payload: { title_table_id: lists[0].id } })
     }
   }, [lists])
 
   return (
     <Container maxWidth="xl" spacing={1} sx={{ pt: 3 }}>
       <Grid container justifyContent="center" spacing={4}>
-        <InstantSearch searchClient={searchClient} indexName="test_resources">
+        <InstantSearch searchClient={searchClient} indexName="test_resource_3">
           <SearchFilter
             currentList={currentList}
             setCurrentList={setCurrentList}

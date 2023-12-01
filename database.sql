@@ -1,6 +1,6 @@
 CREATE TABLE "stage" (
     "id" SERIAL PRIMARY KEY,
-    "name" VARCHAR(25) NOT NULL,
+    "name" VARCHAR(25) NOT NULL
 );
 
 INSERT INTO "stage" ("name")
@@ -11,7 +11,7 @@ CREATE TABLE "user" (
     "id" SERIAL PRIMARY KEY,
     "username" VARCHAR(40) NOT NULL,
     "password" VARCHAR(100) NOT NULL,
-    "admin" BOOLEAN DEFAULT FALSE,
+    "admin" BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE "organization" (
@@ -54,7 +54,7 @@ VALUES ('Planning'),('Networking'),('Training'),('Research'),('Ideation'),('Spac
 CREATE TABLE "resource" (
     "id" SERIAL PRIMARY KEY,
     "stage_id" INTEGER REFERENCES "stage" ("id"),
-    "category_id" INTEGER REFERENCES "category" ("id"),
+    "organization_id" INTEGER REFERENCES "organization" ("id"),
     "entrepreneur_id" INTEGER REFERENCES "entrepreneur"("id"),
     "name" VARCHAR(250) NOT NULL,
     "image_url" VARCHAR(300),
@@ -101,7 +101,7 @@ CREATE TABLE "calendar" (
 
 ALTER TABLE "calendar"
 ADD CONSTRAINT unique_event
-UNIQUE ("source", "title", "start", "end");
+UNIQUE ("source", "title", "start");
 
 ALTER TABLE "calendar"
 ALTER COLUMN "expiration" TYPE TIMESTAMP WITH TIME ZONE USING expiration::timestamp with time zone;
@@ -231,7 +231,7 @@ SET
     "address" = '3550 38th Ave S, Ste G Fargo, ND 58104',
     "linkedin" = 'https://www.linkedin.com/company/north-dakota-women-s-business-center/'
 WHERE
-    "id" = '11';
+    "name" = North Dakota Women's Business Center';
     
     UPDATE "resource"
 SET

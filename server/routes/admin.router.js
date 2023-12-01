@@ -18,7 +18,7 @@ const isAdmin = (req, res, next) => {
 };
 
 const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
-const index = client.initIndex('test_resources');
+const index = client.initIndex('test_resource_3');
 const algoliaQuery = `
 SELECT
     r."id" AS "objectID",
@@ -150,6 +150,30 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     const updatedResource = req.body;
     const resourceId = req.params.id;
 
+
+
+    const supportDeleteIds = [];
+    const fundingDeleteIds = [];
+
+    // Loop for handling deletes
+    if (updatedResource.support) {
+        for (s of updatedResource.support) {
+            if (s.support_id === 0 && s.support_join_id) {
+                // If support_id is set to 0 and there is a join_id, add it to the delete array
+                supportDeleteIds.push(s.support_join_id);
+            }
+        }
+    }
+
+    if (updatedResource.funding) {
+        for (f of updatedResource.funding) {
+            if (f.funding_id === 0 && f.funding_join_id) {
+                // If funding_id is set to 0 and there is a join_id, add it to the delete array
+                fundingDeleteIds.push(f.funding_join_id);
+            }
+        }
+    }
+
     const resourceQuery = `
         UPDATE "resource" 
         SET 
@@ -181,30 +205,43 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
             resourceId
         ]);
 
-        // Update support join table
+        // Delete support join entries
+        for (const supportId of supportDeleteIds) {
+            const supportDeleteQuery = `DELETE FROM "support_join" WHERE "id"=$1;`;
+            await pool.query(supportDeleteQuery, [supportId]);
+        }
+
+        // Delete funding join entries
+        for (const fundingId of fundingDeleteIds) {
+            const fundingDeleteQuery = `DELETE FROM "funding_join" WHERE "id"=$1;`;
+            await pool.query(fundingDeleteQuery, [fundingId]);
+        }
+
+        // Loop for handling inserts
         if (updatedResource.support) {
             for (s of updatedResource.support) {
-                if (s.support_join_id) {
-                    const supportQuery = `UPDATE "support_join" SET "support_id"=$1 WHERE "id"=$2;`;
-                    await pool.query(supportQuery, [s.support_id, s.support_join_id]);
-                }
-                else {
-                    const supportQuery = `INSERT INTO "support_join"("support_id", "resource_id") VALUES($1, $2)`
-                    await pool.query(supportQuery, [s.support_id, resourceId])
+                if (s.support_id !== 0) {
+                    if (s.support_join_id) {
+                        const supportQuery = `UPDATE "support_join" SET "support_id"=$1 WHERE "id"=$2;`;
+                        await pool.query(supportQuery, [s.support_id, s.support_join_id]);
+                    } else {
+                        const supportQuery = `INSERT INTO "support_join"("support_id", "resource_id") VALUES($1, $2)`;
+                        await pool.query(supportQuery, [s.support_id, resourceId]);
+                    }
                 }
             }
         }
 
-        // Update funding join table
         if (updatedResource.funding) {
             for (f of updatedResource.funding) {
-                if (f.funding_join_id) {
-                    const fundingQuery = `UPDATE "funding_join" SET "funding_id"=$1 WHERE "id"=$2;`;
-                    await pool.query(fundingQuery, [f.funding_id, f.funding_join_id]);
-                }
-                else {
-                    const fundingQuery = `INSERT INTO "funding_join"("funding_id", "resource_id") VALUES($1, $2)`
-                    await pool.query(fundingQuery, [f.funding_id, resourceId])
+                if (f.funding_id !== 0) {
+                    if (f.funding_join_id) {
+                        const fundingQuery = `UPDATE "funding_join" SET "funding_id"=$1 WHERE "id"=$2;`;
+                        await pool.query(fundingQuery, [f.funding_id, f.funding_join_id]);
+                    } else {
+                        const fundingQuery = `INSERT INTO "funding_join"("funding_id", "resource_id") VALUES($1, $2)`
+                        await pool.query(fundingQuery, [f.funding_id, resourceId])
+                    }
                 }
             }
         }
@@ -217,6 +254,9 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
         res.sendStatus(500);
     }
 });
+
+
+
 
 
 // Route to delete a resource for the admin
