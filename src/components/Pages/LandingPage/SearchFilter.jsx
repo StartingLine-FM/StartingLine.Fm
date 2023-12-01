@@ -161,7 +161,7 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
                 <Collapse in={supportOpen} timeout="auto" unmountOnExit>
                     <List>
                         <RefinementList
-                            attribute="support_titles.title"
+                            attribute="support.title"
                             sortBy={['name:asc']}
                         />
                     </List>

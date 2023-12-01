@@ -24,7 +24,6 @@ import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 
 export default function ResultModal({ open, handleClose, hit, userPostTodo, anonPostTodo }) {
-    console.log('hits are', { hit });
 
     // local state
     // admin edit state
@@ -43,19 +42,13 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
     const [newEntrepreneur, setNewEntrepreneur] = useState('');
 
     //Multi tag madness 
-    const [newSupport1, setNewSupport1] = useState(hit.support ? hit.support[0] ? hit.support[0].id : 0 : 0);
-    const [newSupport2, setNewSupport2] = useState(hit.support ? hit.support[1] ? hit.support[1].id : 0 : 0);
-    const [newSupport3, setNewSupport3] = useState(hit.support ? hit.support[2] ? hit.support[2].id : 0 : 0);
-    const [updatedSupportJoin1, setUpdatedSupportJoin1] = useState(0);
-    const [updatedSupportJoin2, setUpdatedSupportJoin2] = useState(0);
-    const [updatedSupportJoin3, setUpdatedSupportJoin3] = useState(0);
+    const [newSupport1, setNewSupport1] = useState(0);
+    const [newSupport2, setNewSupport2] = useState(0);
+    const [newSupport3, setNewSupport3] = useState(0);
 
-    const [newFunding1, setNewFunding1] = useState(hit.funding ? hit.funding[0] ? hit.funding[0].id : 0 : 0);
-    const [newFunding2, setNewFunding2] = useState(hit.funding ? hit.funding[1] ? hit.funding[1].id : 0 : 0);
-    const [newFunding3, setNewFunding3] = useState(hit.funding ? hit.funding[2] ? hit.funding[2].id : 0 : 0);
-    const [updatedFundingJoin1, setUpdatedFundingJoin1] = useState(0);
-    const [updatedFundingJoin2, setUpdatedFundingJoin2] = useState(0);
-    const [updatedFundingJoin3, setUpdatedFundingJoin3] = useState(0);
+    const [newFunding1, setNewFunding1] = useState(0);
+    const [newFunding2, setNewFunding2] = useState(0);
+    const [newFunding3, setNewFunding3] = useState(0);
 
     // Redux
     const user = useSelector(store => store.user);
@@ -68,40 +61,54 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
     const dispatch = useDispatch();
 
     // click handler for saving our admin edit changes
-    const putResource = () => {
+    const putResource = (hit) => {
         const supportArray = [];
         const fundingArray = [];
 
-        // Define the newSupport and newFunding Arrays.
-        const newSupportArray = support.map(tag => tag.id);
-        const newFundingArray = funding.map(tag => tag.id);
 
         const buildSupportArray = () => {
-            // Loop through support tags
-            for (let i = 0; i < 3; i++) {
-                const supportId = hit.support && hit.support[i] ? hit.support[i].id : 0;
-                const supportJoinId = hit.support && hit.support[i] ? hit.support[i].support_join_id : null;
 
-                supportArray.push({
-                    support_id: newSupportArray && newSupportArray[i] ? newSupportArray[i] : 0,
-                    support_join_id: newSupportArray && newSupportArray[i] === 0 ? supportJoinId : null,
-                });
-            }
+            // Loop through support tags
+            if (newSupport1 !== 0) {
+                supportArray.push(newSupport1)
+            } else if (hit.support && hit.support[0]) {
+                supportArray.push(hit.support[0].support_id)
+            } else supportArray.push('0')
+
+            if (newSupport2 !== 0) {
+                supportArray.push(newSupport2)
+            } else if (hit.support && hit.support[1]) {
+                supportArray.push(hit.support[1].support_id)
+            } else supportArray.push('0')
+
+            if (newSupport3 !== 0) {
+                supportArray.push(newSupport3)
+            } else if (hit.support && hit.support[2]) {
+                supportArray.push(hit.support[2].support_id)
+            } else supportArray.push('0')
         };
 
         buildSupportArray();
 
         const buildFundingArray = () => {
-            // Loop through funding tags
-            for (let i = 0; i < 3; i++) {
-                const fundingId = hit.funding && hit.funding[i] ? hit.funding[i].id : 0;
-                const fundingJoinId = hit.funding && hit.funding[i] ? hit.funding[i].funding_join_id : null;
+            // Loop through Funding tags
+            if (newFunding1 !== 0) {
+                fundingArray.push(newFunding1)
+            } else if (hit.funding && hit.funding[0]) {
+                fundingArray.push(hit.funding[0].funding_id)
+            } else fundingArray.push('0')
 
-                fundingArray.push({
-                    funding_id: newFundingArray && newFundingArray[i] ? newFundingArray[i] : 0,
-                    funding_join_id: newFundingArray && newFundingArray[i] === 0 ? fundingJoinId : null,
-                });
-            }
+            if (newFunding2 !== 0) {
+                fundingArray.push(newFunding2)
+            } else if (hit.funding && hit.funding[1]) {
+                fundingArray.push(hit.funding[1].funding_id)
+            } else fundingArray.push('0')
+
+            if (newFunding3 !== 0) {
+                fundingArray.push(newFunding3)
+            } else if (hit.funding && hit.funding[2]) {
+                fundingArray.push(hit.funding[2].funding_id)
+            } else fundingArray.push('0')
         };
 
         buildFundingArray();
@@ -137,6 +144,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
         // Close dialog box
         handleClose();
+        location.reload();
     };
 
 
@@ -169,26 +177,26 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
         handleClose();
     }
 
-    //console log useEffects
-    useEffect(() => {
-        dispatch({ type: 'FETCH_ORGANIZATION' });
-        // console.log('Organizations:', organizations);
-    }, []);
+    // //console log useEffects
+    // useEffect(() => {
+    //     dispatch({ type: 'FETCH_ORGANIZATION' });
+    //     // console.log('Organizations:', organizations);
+    // }, []);
 
-    useEffect(() => {
-        dispatch({ type: 'FETCH_SUPPORT' });
-        // console.log('Support:', support);
-    }, []);
+    // useEffect(() => {
+    //     dispatch({ type: 'FETCH_SUPPORT' });
+    //     // console.log('Support:', support);
+    // }, []);
 
-    useEffect(() => {
-        dispatch({ type: 'FETCH_FUNDING' });
-        // console.log('Funding:', funding);
-    }, []);
+    // useEffect(() => {
+    //     dispatch({ type: 'FETCH_FUNDING' });
+    //     // console.log('Funding:', funding);
+    // }, []);
 
-    useEffect(() => {
-        dispatch({ type: 'FETCH_ENTREPRENEUR' });
-        // console.log('Entrepreneur:', entrepreneur);
-    }, []);
+    // useEffect(() => {
+    //     dispatch({ type: 'FETCH_ENTREPRENEUR' });
+    //     // console.log('Entrepreneur:', entrepreneur);
+    // }, []);
 
 
     return (
@@ -197,7 +205,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
             ? <Dialog open={open} onClose={handleClose} >
                 {/* Save and Close buttons */}
                 <DialogActions>
-                    <IconButton onClick={putResource} >
+                    <IconButton onClick={() => putResource(hit)} >
                         <SaveIcon />
                     </IconButton>
                     <IconButton onClick={() => { handleClose(), clearInputs() }} >
@@ -330,12 +338,6 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                         onChange={e => {
                             // sets the newSupport1 state variable (the support tag to be added or changed
                             setNewSupport1(e.target.value);
-                            // checks if there is an existing support tag with a join ID and sets
-                            // the updatedSupportJoin1 to that ID # 
-                            hit.support[0] && hit.support[0].support_join_id
-                                ? setUpdatedSupportJoin1(hit.support[0].support_join_id)
-                                : 0;
-                            console.log(hit.support[0].support_join_id);
                         }}
                     >
                         <option value={0}>-- Add Support Tag --</option>
@@ -357,9 +359,6 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                         label='Select Funding 1 Tag'
                         onChange={e => {
                             setNewFunding1(e.target.value);
-                            hit.funding[0]
-                                ? setUpdatedFundingJoin1(hit.funding[0].funding_join_id)
-                                : 0
                         }}
                     >
                         <option value={0}>-- Add Funding Tag --</option>
@@ -382,10 +381,6 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                         label='Select Support 2 Tag'
                         onChange={e => {
                             setNewSupport2(e.target.value);
-                            hit.support && hit.support[1]
-                                ? setUpdatedSupportJoin2(hit.support[1].support_join_id)
-                                : 0;
-                            console.log(hit.support[1].support_join_id);
                         }}
                     >
                         <option value={0}>-- Add Support Tag --</option>
@@ -407,9 +402,6 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                         label='Select Funding 2 Tag'
                         onChange={e => {
                             setNewFunding2(e.target.value);
-                            hit.funding && hit.funding[1]
-                                ? setUpdatedFundingJoin2(hit.funding[1].funding_join_id)
-                                : 0
                         }}
                     >
                         <option value={0}>-- Add Funding Tag --</option>
@@ -432,10 +424,6 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                         label='Select Support 3 Tag'
                         onChange={e => {
                             setNewSupport3(e.target.value);
-                            hit.support && hit.support[2]
-                                ? setUpdatedSupportJoin3(hit.support[2].support_join_id)
-                                : 0;
-                            console.log(hit.support[2].support_join_id);
                         }}
                     >
                         <option value={0}>-- Add Support Tag --</option>
@@ -457,9 +445,6 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                         label='Select Funding 3 Tag'
                         onChange={e => {
                             setNewFunding3(e.target.value);
-                            hit.funding && hit.funding[2]
-                                ? setUpdatedFundingJoin3(hit.funding[2].funding_join_id)
-                                : 0
                         }}
                     >
                         <option value={0}>-- Add Funding Tag --</option>

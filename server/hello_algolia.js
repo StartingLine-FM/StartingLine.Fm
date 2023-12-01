@@ -6,7 +6,7 @@ require('dotenv').config();
 const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
 
 // Create a new index and add records
-const index = client.initIndex('resource_windows');
+const index = client.initIndex('test_resource_3');
 
 // SQL query to retrieve data for indexing
 const queryText = `
@@ -20,10 +20,11 @@ SELECT
     s."name" AS "stage_name",
     s."id" AS "stage_id",
     e."title" AS "entrepreneur_title",
+    e."id" AS "entrepreneur_id",
     CASE
         WHEN COUNT(sj."support_id") = 0 THEN NULL
         ELSE jsonb_agg(
-            jsonb_build_object(
+            DISTINCT jsonb_build_object(
                 'support_id', sj."support_id",
                 'support_join_id', sj."id",
                 'title', su."title"
@@ -33,7 +34,7 @@ SELECT
     CASE
         WHEN COUNT(fj."funding_id") = 0 THEN NULL
         ELSE jsonb_agg(
-            jsonb_build_object(
+            DISTINCT jsonb_build_object(
                 'funding_id', fj."funding_id",
                 'funding_join_id', fj."id",
                 'title', f."title"
@@ -58,7 +59,8 @@ GROUP BY
     o."id",
     s."name",
     s."id",
-    e."title";
+    e."title",
+    e."id";
 `;
 
 pool.query(queryText)
