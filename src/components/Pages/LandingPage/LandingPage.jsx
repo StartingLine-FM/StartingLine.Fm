@@ -59,8 +59,11 @@ function LandingPage({ currentList, setCurrentList }) {
 
   // fetches default search as well as all categories and stages on page load
   useEffect(() => {
-    dispatch({ type: 'FETCH_CATEGORIES' });
+    dispatch({ type: 'FETCH_ORGANIZATION' });
     dispatch({ type: 'FETCH_STAGE' });
+    dispatch({ type: 'FETCH_ENTREPRENEUR' });
+    dispatch({ type: 'FETCH_SUPPORT' });
+    dispatch({ type: 'FETCH_FUNDING' });
   }, [dispatch]);
 
   // fetches list of To-Do List titles for a logged-in user
@@ -71,8 +74,9 @@ function LandingPage({ currentList, setCurrentList }) {
   // sets current list as the first item of the lists array if user only has 1 list
   useEffect(() => {
     if (lists.length === 1) {
-      setCurrentList(lists[0].id);
-      dispatch({ type: 'FETCH_TODO_LIST_RESOURCES', payload: { title_table_id: lists[0].id } })
+      let listID = lists[0].id
+      setCurrentList(listID);
+      dispatch({ type: 'FETCH_TODO_LIST_RESOURCES', payload: listID })
     }
   }, [lists])
 

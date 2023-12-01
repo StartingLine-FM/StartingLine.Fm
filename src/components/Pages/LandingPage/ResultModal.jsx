@@ -24,7 +24,6 @@ import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
 
 export default function ResultModal({ open, handleClose, hit, userPostTodo, anonPostTodo }) {
-    console.log('hits are', { hit });
 
     // local state
     // admin edit state
@@ -178,26 +177,26 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
         handleClose();
     }
 
-    //console log useEffects
-    useEffect(() => {
-        dispatch({ type: 'FETCH_ORGANIZATION' });
-        // console.log('Organizations:', organizations);
-    }, []);
+    // //console log useEffects
+    // useEffect(() => {
+    //     dispatch({ type: 'FETCH_ORGANIZATION' });
+    //     // console.log('Organizations:', organizations);
+    // }, []);
 
-    useEffect(() => {
-        dispatch({ type: 'FETCH_SUPPORT' });
-        // console.log('Support:', support);
-    }, []);
+    // useEffect(() => {
+    //     dispatch({ type: 'FETCH_SUPPORT' });
+    //     // console.log('Support:', support);
+    // }, []);
 
-    useEffect(() => {
-        dispatch({ type: 'FETCH_FUNDING' });
-        // console.log('Funding:', funding);
-    }, []);
+    // useEffect(() => {
+    //     dispatch({ type: 'FETCH_FUNDING' });
+    //     // console.log('Funding:', funding);
+    // }, []);
 
-    useEffect(() => {
-        dispatch({ type: 'FETCH_ENTREPRENEUR' });
-        // console.log('Entrepreneur:', entrepreneur);
-    }, []);
+    // useEffect(() => {
+    //     dispatch({ type: 'FETCH_ENTREPRENEUR' });
+    //     // console.log('Entrepreneur:', entrepreneur);
+    // }, []);
 
 
     return (

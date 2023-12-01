@@ -51,7 +51,7 @@ export default function Result({ hit, currentList, categories, stages }) {
             type: "POST_ANON_TODO_LIST",
             payload: hit
         });
-        console.log('todoResources are',todoResources);
+        console.log('todoResources are', todoResources);
         setSnackOpen(true);
     }
 
@@ -67,6 +67,7 @@ export default function Result({ hit, currentList, categories, stages }) {
                 }
             });
         }
+
         currentList && dispatch({
             type: "POST_TODO_LIST",
             payload: {
@@ -74,7 +75,7 @@ export default function Result({ hit, currentList, categories, stages }) {
                 title_table_id: currentList
             }
         });
-        console.log('todoResources are',todoResources);
+        console.log('todoResources are', todoResources);
         setSnackOpen(true);
     }
 
@@ -128,7 +129,7 @@ export default function Result({ hit, currentList, categories, stages }) {
                     </Snackbar>
 
                     <Card raised sx={{ height: 250, width: "100%" }}>
-                        {todoResources.some(e => e.resource_id == hit.objectID || e.resource_id == hit.objectID) ? (
+                        {todoResources.some(e => e.objectID == hit.objectID || e.resource_id == hit.objectID) ? (
                             <Tooltip placement="right" title="Added to your current list">
                                 <IconButton>
                                     <CheckIcon color="primary" />

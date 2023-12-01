@@ -111,7 +111,7 @@ function* fetchTableLists(action) {
                 yield put({
                     type: "POST_TODO_LIST",
                     payload: {
-                        resource_id: item.id,
+                        resource_id: item.objectID,
                         title_table_id,
                         notes: item.notes
                     }

@@ -94,6 +94,11 @@ router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
     // The request body should contain the new resource's details
     const newResource = req.body;
 
+    let entrepreneurId = newResource.entrepreneur_id
+
+    if (entrepreneurId == 0) {
+        entrepreneurId = null;
+    }
     // initial resource table insert query
     const resourceQuery = `INSERT INTO "resource"(stage_id, organization_id, entrepreneur_id, name, image_url, description, website, email, address, linkedin) 
         VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) 
@@ -112,7 +117,7 @@ router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
             [
                 newResource.stage_id,
                 newResource.organization_id,
-                newResource.entrepreneur_id,
+                entrepreneurId,
                 newResource.name,
                 newResource.image_url,
                 newResource.description,
