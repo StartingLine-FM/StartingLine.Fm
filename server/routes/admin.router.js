@@ -149,6 +149,11 @@ router.post('/', rejectUnauthenticated, isAdmin, async (req, res) => {
 router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
     const updatedResource = req.body;
     const resourceId = req.params.id;
+    let entrepreneurId = updatedResource.entrepreneur_id
+
+    if (entrepreneurId == 0) {
+        entrepreneurId = null;
+    }
 
     console.log(req.body);
     const deleteSupport = `DELETE FROM "support_join" WHERE "resource_id"=$1`
@@ -190,7 +195,7 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
         await pool.query(resourceQuery, [
             updatedResource.stage_id,
             updatedResource.organization_id,
-            updatedResource.entrepreneur_id,
+            entrepreneurId,
             updatedResource.name,
             updatedResource.image_url,
             updatedResource.description,
@@ -205,7 +210,7 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
         // Loop for handling inserts
         if (updatedResource.support) {
             for (s of updatedResource.support) {
-                if (s !== 0) {
+                if (s != 0) {
                     const supportQuery = `INSERT INTO "support_join"("support_id", "resource_id") VALUES($1, $2)`;
                     await pool.query(supportQuery, [s, resourceId]);
                     console.log("support update success")
@@ -216,7 +221,7 @@ router.put('/:id', rejectUnauthenticated, isAdmin, async (req, res) => {
 
         if (updatedResource.funding) {
             for (f of updatedResource.funding) {
-                if (f !== 0) {
+                if (f != 0) {
                     const fundingQuery = `INSERT INTO "funding_join"("funding_id", "resource_id") VALUES($1, $2)`;
                     await pool.query(fundingQuery, [f, resourceId]);
                     console.log("funding update success")
