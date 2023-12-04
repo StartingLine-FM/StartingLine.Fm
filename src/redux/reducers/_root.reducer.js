@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import errors from './errors.reducer';
 import user from './user.reducer';
-import search from './search.reducer'
 import todoListResourcesReducer from './todolistresources.reducer';
 import EP_Reducer from './EP.reducer';
 import FU_Reducer from './FU.reducer';
@@ -27,7 +26,6 @@ import { EP_Loading_Reducer, FU_Loading_Reducer, chamber_Loading_Reducer, CEFB_L
 const rootReducer = combineReducers({
   errors, // contains registrationMessage and loginMessage
   user, // will have an id and username if someone is logged in
-  search,// current search results
   admin: adminReducer, //gives the user access to adding, updating and deleting resources, organizations and stages if logged in as an admin
   EP_Reducer, //gives the user access to the scraped Emerging Prairie Calendar
   FU_Reducer, //gives the user access to the scraped Fargo Underground Calendar

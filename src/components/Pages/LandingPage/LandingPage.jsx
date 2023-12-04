@@ -11,8 +11,7 @@ import { InstantSearch, Hits } from 'react-instantsearch';
 
 // Algolia Initiation and index
 const searchClient = algoliasearch('KK1UO0W0NW', 'acfecaf8e37908662d286dc1210b781b');
-// const index = searchClient.initIndex('test_resource3');
-const index = searchClient.initIndex('test_resource_3');
+const index = searchClient.initIndex('resource');
 
 function LandingPage({ currentList, setCurrentList }) {
 
@@ -83,7 +82,7 @@ function LandingPage({ currentList, setCurrentList }) {
   return (
     <Container maxWidth="xl" spacing={1} sx={{ pt: 3 }}>
       <Grid container justifyContent="center" spacing={4}>
-        <InstantSearch searchClient={searchClient} indexName="test_resource_3">
+        <InstantSearch searchClient={searchClient} indexName="resource">
           <SearchFilter
             currentList={currentList}
             setCurrentList={setCurrentList}

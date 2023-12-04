@@ -3,7 +3,6 @@ import loginSaga from './login.saga';
 import registrationSaga from './registration.saga';
 import userSaga from './user.saga';
 import todolistSaga from './todolist.saga';
-import searchSaga from './search.saga';
 import watchCalendars from './calendar.saga';
 import adminSaga from './admin.saga';
 import articleSaga from './article.saga';
@@ -21,7 +20,6 @@ export default function* rootSaga() {
     userSaga(),
     todolistSaga(), // calls the todolist saga
     watchCalendars(), //calls the calendar sagas
-    searchSaga(),
     adminSaga(), //calls the admin sagas
     articleSaga(),
   ]);
