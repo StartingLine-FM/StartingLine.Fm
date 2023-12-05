@@ -101,7 +101,9 @@ const MenuSidebar = () => {
         <Typography marginLeft={1}>Clear Calendars</Typography>
       </IconButton>
     </Box>
+
   );
 };
+
 
 export default MenuSidebar;

@@ -29,7 +29,8 @@ import InfoModal from "./InfoModal";
 
 // Algolia Initiation and index
 const searchClient = algoliasearch('KK1UO0W0NW', 'acfecaf8e37908662d286dc1210b781b');
-const index = searchClient.initIndex('resource');
+// const index = searchClient.initIndex('resource');
+const index = searchClient.initIndex('resource_windows');
 
 export default function SearchFilter({ searchQuery, setSearchQuery, currentList, setCurrentList, categories, stages, searchResults, setSearchResults }) {
     const [selectedCategory, setSelectedCategory] = useState("");
@@ -119,11 +120,11 @@ export default function SearchFilter({ searchQuery, setSearchQuery, currentList,
 
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <Typography variant="caption">Filter by</Typography>
-                    <Tooltip title='Click to see Category and Business Stage details'>
+                    {/* <Tooltip title='Click to see Category and Business Stage details'>
                         <IconButton onClick={handleInfoOpen}>
                             <InfoIcon fontSize="small" />
                         </IconButton>
-                    </Tooltip>
+                    </Tooltip> */}
                 </div>
 
                 {/* BUSINESS STAGE DROP DOWN */}

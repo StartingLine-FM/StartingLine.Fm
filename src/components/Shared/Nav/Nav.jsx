@@ -23,7 +23,7 @@ function Nav({ handleOpen, setOpenRegisterModal }) {
         <Grid item>
           {/*StartingLine.FM Banner that also acts as a HOME Button*/}
           <Link underline='none' href="/#/home">
-            <Typography sx={{ my: 2, mx: 4 }} variant="h3" variantMapping={{ h3: 'h1' }}>StartingLine.FM</Typography>
+            <Typography sx={{ my: 2, mx: 4 }} variant="h4" variantMapping={{ h3: 'h1' }}>StartingLine.FM</Typography>
           </Link>
         </Grid>
         <Grid item sx={{ m: 3 }}>
@@ -59,7 +59,7 @@ function Nav({ handleOpen, setOpenRegisterModal }) {
                 To-do List
               </Button >
               : <Button onClick={() => history.push('/anonlist')} variant="contained">
-                  To-do List
+                To-do List
               </Button>
             }
 
