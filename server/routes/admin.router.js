@@ -19,6 +19,7 @@ const isAdmin = (req, res, next) => {
 
 const client = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
 const index = client.initIndex('resource');
+// const index = client.initIndex('resource_windows');
 const algoliaQuery = `
 SELECT
     r."id" AS "objectID",

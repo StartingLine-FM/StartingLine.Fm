@@ -12,6 +12,7 @@ import { InstantSearch, Hits } from 'react-instantsearch';
 // Algolia Initiation and index
 const searchClient = algoliasearch('KK1UO0W0NW', 'acfecaf8e37908662d286dc1210b781b');
 const index = searchClient.initIndex('resource');
+// const index = searchClient.initIndex('resource_windows');
 
 function LandingPage({ currentList, setCurrentList }) {
 
@@ -19,12 +20,6 @@ function LandingPage({ currentList, setCurrentList }) {
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
-  //Algolia Event Handler
-  const handleSearchInputChange = (event) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-    handleSearch(query);
-  };
 
 
   // Algolia Search Function

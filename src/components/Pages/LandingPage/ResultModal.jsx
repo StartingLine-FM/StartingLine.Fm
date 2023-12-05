@@ -28,7 +28,6 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
     // local state
     // admin edit state
     const [editMode, setEditMode] = useState(false);
-
     // resource keys for admin edit
     const [newName, setNewName] = useState('')
     const [newImage, setNewImage] = useState('')
@@ -62,6 +61,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
     // click handler for saving our admin edit changes
     const putResource = (hit) => {
+
         const supportArray = [];
         const fundingArray = [];
 
