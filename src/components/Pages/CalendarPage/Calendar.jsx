@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { Box, Typography, Card, CardHeader } from '@mui/material';
+import { Box, Typography, Card, CardHeader, Paper } from '@mui/material';
 
 const Calendar = () => {
   const EP_Events = useSelector((store) => store.EP_Reducer);
@@ -26,8 +26,7 @@ const Calendar = () => {
     ...CEFB_Events,
   ].flat(); // Use flat to remove nested arrays
 
-  console.log("allEvents:", allEvents);
-
+  // console.log("allEvents:", allEvents);
 
   const handleEventDidMount = (info) => {
     const startDate = format(new Date(info.event.start), 'MMMM d @ h:mm a');
@@ -62,55 +61,47 @@ const Calendar = () => {
     window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${info.event.title}&dates=${startDate}/${endDate}&details=${description}&location=${info.event.extendedProps.location}`, '_blank');
   };
 
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      <Card sx={{ paddingleft: 2, paddingRight: 2, paddingBottom: 2 }}>
-        {allEvents.length > 0 ? (
-          <CardHeader
-            title='Local Events'
-            className='calendar-title'
-          />
-        ) : (
-          <Typography variant="h6" className="calendar-empty">
-            To begin: click institution buttons on the left to see their events
-          </Typography>
-        )}
 
-        <FullCalendar
-          plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          contentHeight={'65vh'}
-          events={allEvents}
-          headerToolbar={{
-            left: 'prev,next,today',
-            center: 'title',
-            right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek',
-          }}
-          eventDidMount={handleEventDidMount}
-          eventClick={handleEventClick}
-          views={{
-            dayGridMonth: {
-              titleFormat: { year: 'numeric', month: 'short', day: 'numeric' },
-            },
-            dayGridWeek: {
-              titleFormat: { year: 'numeric', month: 'short', day: 'numeric' },
-            },
-            dayGridDay: {
-              titleFormat: { year: 'numeric', month: 'short', day: 'numeric' },
-            },
-            listWeek: {
-              titleFormat: { year: 'numeric', month: 'short', day: 'numeric' },
-            },
-          }}
-        />
-      </Card>
-    </Box>
+  return (
+    <Paper sx={{ px: 2, pb: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
+      {allEvents.length > 0 ? (
+        <Typography variant="h6">Local Events</Typography>
+      ) : (
+        <Typography variant="h6" className="calendar-empty">
+          To begin: click institution buttons on the left to see their events
+        </Typography>
+      )}
+
+      <FullCalendar
+        plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
+        initialView={"dayGridMonth"}
+        events={allEvents}
+        width="inherit"
+        handleWindowResize
+        aspectRatio={1.25}
+        headerToolbar={{
+          left: 'prev,next,today',
+          center: 'title',
+          right: 'dayGridMonth,dayGridWeek,dayGridDay,listWeek',
+        }}
+        eventDidMount={handleEventDidMount}
+        eventClick={handleEventClick}
+        views={{
+          dayGridMonth: {
+            titleFormat: { year: 'numeric', month: 'short', day: 'numeric' },
+          },
+          dayGridWeek: {
+            titleFormat: { year: 'numeric', month: 'short', day: 'numeric' },
+          },
+          dayGridDay: {
+            titleFormat: { year: 'numeric', month: 'short', day: 'numeric' },
+          },
+          listWeek: {
+            titleFormat: { year: 'numeric', month: 'short', day: 'numeric' },
+          },
+        }}
+      />
+    </Paper>
   );
 };
 

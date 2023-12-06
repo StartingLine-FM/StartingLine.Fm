@@ -75,7 +75,7 @@ function LandingPage({ currentList, setCurrentList }) {
   }, [lists])
 
   return (
-    <Container maxWidth="xl" spacing={1} sx={{ pt: 3 }}>
+    <Container maxWidth="xl" spacing={1} sx={{ py: 3 }}>
       <Grid container justifyContent="center" spacing={4}>
         <InstantSearch searchClient={searchClient} indexName="resource">
           <SearchFilter

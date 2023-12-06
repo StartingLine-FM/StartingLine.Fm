@@ -1,7 +1,7 @@
 import React from 'react';
 import "./CalendarPage.css";
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, IconButton, Typography, CircularProgress } from '@mui/material';
+import { Box, IconButton, Typography, CircularProgress, Grid } from '@mui/material';
 import { School, Business, BrightnessLow, HorizontalSplit, Clear } from '@mui/icons-material';
 
 const MenuSidebar = () => {
@@ -52,55 +52,65 @@ const MenuSidebar = () => {
   };
 
   return (
-    <Box>
-      <IconButton // The NDSU CEFB Button
-        className={`calendar-button`}
-        sx={{ color: CEFB_Events.length > 0 ? colorMap.CEFB : 'black' }} // Change color based on CEFB_Events length
-        onClick={() => handleSourceClick('CEFB')}
-        disabled={loadingCEFB}
-      >
-        {loadingCEFB ? <CircularProgress size={20} /> : <School />}
-        <Typography className={CEFB_Events.length > 0 ? 'active-cefb' : 'passive'} paddingLeft={1} paddingRight={1}>NDSU CEFB</Typography>
-      </IconButton>
+    <Grid container>
+      <Grid item xs={12}>
+        <IconButton // The NDSU CEFB Button
+          className={`calendar-button`}
+          sx={{ color: CEFB_Events.length > 0 ? colorMap.CEFB : 'black' }} // Change color based on CEFB_Events length
+          onClick={() => handleSourceClick('CEFB')}
+          disabled={loadingCEFB}
+        >
+          {loadingCEFB ? <CircularProgress size={20} /> : <School />}
+          <Typography className={CEFB_Events.length > 0 ? 'active-cefb' : 'passive'} paddingLeft={1} paddingRight={1}>NDSU CEFB</Typography>
+        </IconButton>
+      </Grid>
 
-      <IconButton // The Emerging Prairie Button
-        className={`calendar-button`}
-        sx={{ color: EP_Events.length > 0 ? colorMap.EP : 'black' }} // Change color based on EP_Events length
-        onClick={() => handleSourceClick('EP')}
-        disabled={loadingEP}
-      >
-        {loadingEP ? <CircularProgress size={20} /> : <BrightnessLow />}
-        <Typography className={EP_Events.length > 0 ? 'active-ep' : 'passive'} paddingLeft={1} paddingRight={1}>Emerging Prairie</Typography>
-      </IconButton>
+      <Grid item xs={12}>
+        <IconButton // The Emerging Prairie Button
+          className={`calendar-button`}
+          sx={{ color: EP_Events.length > 0 ? colorMap.EP : 'black' }} // Change color based on EP_Events length
+          onClick={() => handleSourceClick('EP')}
+          disabled={loadingEP}
+        >
+          {loadingEP ? <CircularProgress size={20} /> : <BrightnessLow />}
+          <Typography className={EP_Events.length > 0 ? 'active-ep' : 'passive'} paddingLeft={1} paddingRight={1}>Emerging Prairie</Typography>
+        </IconButton>
+      </Grid>
 
-      <IconButton // The Fargo Underground Button
-        className={`calendar-button`}
-        sx={{ color: FU_Events.length > 0 ? colorMap.FU : 'black' }} // Change color based on FU_Events length
-        onClick={() => handleSourceClick('FU')}
-        disabled={loadingFU}
-      >
-        {loadingFU ? <CircularProgress size={20} /> : <HorizontalSplit />}
-        <Typography className={FU_Events.length > 0 ? 'active-fu' : 'passive'} paddingLeft={1} paddingRight={1}>Fargo Underground</Typography>
-      </IconButton>
+      <Grid item xs={12}>
+        <IconButton // The Fargo Underground Button
+          className={`calendar-button`}
+          sx={{ color: FU_Events.length > 0 ? colorMap.FU : 'black' }} // Change color based on FU_Events length
+          onClick={() => handleSourceClick('FU')}
+          disabled={loadingFU}
+        >
+          {loadingFU ? <CircularProgress size={20} /> : <HorizontalSplit />}
+          <Typography className={FU_Events.length > 0 ? 'active-fu' : 'passive'} paddingLeft={1} paddingRight={1}>Fargo Underground</Typography>
+        </IconButton>
+      </Grid>
 
-      <IconButton // The Chamber of Commerce Button
-        className={`calendar-button`}
-        sx={{ color: CHAMBER_Events.length > 0 ? colorMap.Chamber : 'black' }} // Change color based on Chamber_Events length
-        onClick={() => handleSourceClick('CHAMBER')}
-        disabled={loadingChamber}
-      >
-        {loadingChamber ? <CircularProgress size={20} /> : <Business />}
-        <Typography className={CHAMBER_Events.length > 0 ? 'active-chamber' : 'passive'} paddingLeft={1} paddingRight={1}>FMWF Chamber</Typography>
-      </IconButton>
+      <Grid item xs={12}>
+        <IconButton // The Chamber of Commerce Button
+          className={`calendar-button`}
+          sx={{ color: CHAMBER_Events.length > 0 ? colorMap.Chamber : 'black' }} // Change color based on Chamber_Events length
+          onClick={() => handleSourceClick('CHAMBER')}
+          disabled={loadingChamber}
+        >
+          {loadingChamber ? <CircularProgress size={20} /> : <Business />}
+          <Typography className={CHAMBER_Events.length > 0 ? 'active-chamber' : 'passive'} paddingLeft={1} paddingRight={1}>FMWF Chamber</Typography>
+        </IconButton>
+      </Grid>
 
-      <IconButton onClick={handleClearClick} // The Clear Button
-        className='calendar-button'
-        color='inherit'
-      >
-        <Clear />
-        <Typography marginLeft={1}>Clear Calendars</Typography>
-      </IconButton>
-    </Box>
+      <Grid item xs={12}>
+        <IconButton onClick={handleClearClick} // The Clear Button
+          className='calendar-button'
+          color='inherit'
+        >
+          <Clear />
+          <Typography marginLeft={1}>Clear Calendars</Typography>
+        </IconButton>
+      </Grid>
+    </Grid >
 
   );
 };
