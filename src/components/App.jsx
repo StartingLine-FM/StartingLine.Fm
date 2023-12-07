@@ -6,7 +6,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { ThemeProvider, Container } from '@mui/material';
 import { useState } from 'react';
 import Nav from './Shared/Nav/Nav';
 import Footer from './Shared/Footer/Footer';
@@ -197,7 +197,7 @@ function App() {
               <h1>404</h1>
             </Route>
           </Switch>
-          {/* <Footer /> */}
+
         </div>
       </Router>
     </ThemeProvider>
