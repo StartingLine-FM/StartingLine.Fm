@@ -28,7 +28,6 @@ const CalendarPage = () => {
           <Paper elevation={3}>
             <CalendarInfoModal calendarInfoOpen={calendarInfoOpen} handleCalendarInfoClose={handleCalendarInfoClose} />
             <Box sx={{ p: 2 }} className='the-sidebar'>
-              {/* // Typography component with a Tooltip and InfoIcon provides user guidance */}
               <Typography
                 className='sidebar-title'
                 variant="h5"
@@ -40,9 +39,7 @@ const CalendarPage = () => {
                   </IconButton>
                 </Tooltip>
               </Typography>
-              {/* // MenuSidebar Component */}
               <MenuSidebar />
-
             </Box>
           </Paper>
         </Grid>

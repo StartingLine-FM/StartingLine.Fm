@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect, useRef } from 'react';
 import "./CalendarPage.css";
 import { useSelector } from 'react-redux';
 import FullCalendar from '@fullcalendar/react';
@@ -26,7 +27,19 @@ const Calendar = () => {
     ...CEFB_Events,
   ].flat(); // Use flat to remove nested arrays
 
-  // console.log("allEvents:", allEvents);
+
+  const ref = useRef(null);
+
+  useEffect(() => {
+    let calendarApi = ref.current.getApi();
+
+    if (window.innerWidth > 600) {
+      calendarApi.changeView("dayGridMonth")
+    }
+    if (window.innerWidth < 600) {
+      calendarApi.changeView("listWeek")
+    }
+  }, []);
 
   const handleEventDidMount = (info) => {
     const startDate = format(new Date(info.event.start), 'MMMM d @ h:mm a');
@@ -53,6 +66,7 @@ const Calendar = () => {
     });
   };
 
+
   const handleEventClick = (info) => {
     let startDate = moment(info.event.start).format('YYYYMMDD[T]HHmmSS');
     let endDate = moment(info.event.end).format('YYYYMMDD[T]HHmmSS');
@@ -65,12 +79,10 @@ const Calendar = () => {
     <Paper sx={{ px: 2, pb: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
       <Typography variant="h6">Local Events</Typography>
       <FullCalendar
+        ref={ref}
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
-        initialView={"dayGridMonth"}
         events={allEvents}
-        width="inherit"
-        handleWindowResize
-        aspectRatio={1.25}
+        contentHeight="auto"
         headerToolbar={{
           left: 'prev,next,today',
           center: 'title',

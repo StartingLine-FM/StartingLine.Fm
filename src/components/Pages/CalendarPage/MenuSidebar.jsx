@@ -1,7 +1,7 @@
 import React from 'react';
 import "./CalendarPage.css";
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, IconButton, Typography, CircularProgress, Grid } from '@mui/material';
+import { IconButton, Typography, CircularProgress, Grid } from '@mui/material';
 import { School, Business, BrightnessLow, HorizontalSplit, Clear } from '@mui/icons-material';
 
 const MenuSidebar = () => {
@@ -53,7 +53,7 @@ const MenuSidebar = () => {
 
   return (
     <Grid container>
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={3} md={12}>
         <IconButton // The NDSU CEFB Button
           className={`calendar-button`}
           sx={{ color: CEFB_Events.length > 0 ? colorMap.CEFB : 'black' }} // Change color based on CEFB_Events length
@@ -65,7 +65,7 @@ const MenuSidebar = () => {
         </IconButton>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={3} md={12}>
         <IconButton // The Emerging Prairie Button
           className={`calendar-button`}
           sx={{ color: EP_Events.length > 0 ? colorMap.EP : 'black' }} // Change color based on EP_Events length
@@ -73,11 +73,11 @@ const MenuSidebar = () => {
           disabled={loadingEP}
         >
           {loadingEP ? <CircularProgress size={20} /> : <BrightnessLow />}
-          <Typography className={EP_Events.length > 0 ? 'active-ep' : 'passive'} paddingLeft={1} paddingRight={1}>Emerging Prairie</Typography>
+          <Typography align="left" className={EP_Events.length > 0 ? 'active-ep' : 'passive'} paddingLeft={1} paddingRight={1}>Emerging Prairie</Typography>
         </IconButton>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={3} md={12}>
         <IconButton // The Fargo Underground Button
           className={`calendar-button`}
           sx={{ color: FU_Events.length > 0 ? colorMap.FU : 'black' }} // Change color based on FU_Events length
@@ -85,11 +85,11 @@ const MenuSidebar = () => {
           disabled={loadingFU}
         >
           {loadingFU ? <CircularProgress size={20} /> : <HorizontalSplit />}
-          <Typography className={FU_Events.length > 0 ? 'active-fu' : 'passive'} paddingLeft={1} paddingRight={1}>Fargo Underground</Typography>
+          <Typography align="left" className={FU_Events.length > 0 ? 'active-fu' : 'passive'} paddingLeft={1} paddingRight={1}>Fargo Underground</Typography>
         </IconButton>
       </Grid>
 
-      <Grid item xs={12}>
+      <Grid item xs={12} sm={3} md={12}>
         <IconButton // The Chamber of Commerce Button
           className={`calendar-button`}
           sx={{ color: CHAMBER_Events.length > 0 ? colorMap.Chamber : 'black' }} // Change color based on Chamber_Events length
@@ -97,7 +97,7 @@ const MenuSidebar = () => {
           disabled={loadingChamber}
         >
           {loadingChamber ? <CircularProgress size={20} /> : <Business />}
-          <Typography className={CHAMBER_Events.length > 0 ? 'active-chamber' : 'passive'} paddingLeft={1} paddingRight={1}>FMWF Chamber</Typography>
+          <Typography align="left" className={CHAMBER_Events.length > 0 ? 'active-chamber' : 'passive'} paddingLeft={1} paddingRight={1}>FMWF Chamber</Typography>
         </IconButton>
       </Grid>
 
@@ -107,7 +107,7 @@ const MenuSidebar = () => {
           color='inherit'
         >
           <Clear />
-          <Typography marginLeft={1}>Clear Calendars</Typography>
+          <Typography align="left" marginLeft={1}>Clear Calendars</Typography>
         </IconButton>
       </Grid>
     </Grid >

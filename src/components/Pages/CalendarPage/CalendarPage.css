@@ -48,23 +48,36 @@
 }
 
 .fc {
-    /* the calendar root */
-    width: 800px;
+
+    width: min(800px, inherit);
     min-height: 400px;
     margin: 0 auto;
-    padding: 20px;
     overflow-x: none;
 }
 
-.fc-daygrid-day-number, .fc-col-header-cell-cushion {
-color:black;
+
+.fc-daygrid-day-number,
+.fc-col-header-cell-cushion {
+    color: black;
 }
 
 .fc-header-toolbar {
     color: #55c6f0;
 }
 
-.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
-    color:#55c6f0;
+.fc-direction-ltr .fc-button-group>.fc-button:not(:last-child) {
+    color: #55c6f0;
 }
 
+@media (max-width: 730px) {
+    .fc-header-toolbar {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+
+
+.fc-toolbar-title {
+    font-size: 1em;
+}

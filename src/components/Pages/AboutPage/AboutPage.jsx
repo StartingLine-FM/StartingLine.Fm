@@ -14,7 +14,7 @@ function AboutPage() {
 
   return (
     <Container style={{ marginBottom: '50px' }}>
-      <Paper sx={{mt:3, p:3}}>
+      <Paper sx={{ mt: 3, p: 3 }}>
         <Typography variant="h6" style={titleStyle} align="center">
           Research and Client Information:
         </Typography>
@@ -32,7 +32,7 @@ function AboutPage() {
         </Typography>
       </Paper>
 
-      
+
 
       <Paper style={{ marginTop: '20px', padding: '20px' }}>
         <Typography variant="h6" style={titleStyle} align="center">
@@ -62,36 +62,6 @@ function AboutPage() {
 
       <Paper style={{ marginTop: '20px', padding: '20px' }}>
         <Typography variant="h6" style={titleStyle} align="center">
-          Category and Stage Definitions:
-        </Typography>
-
-        <Typography variant="body1" style={{ fontWeight: 'bold', marginTop: '10px' }}>
-          Categories:
-        </Typography>
-        <ul>
-          <li>Government: Resources from federal, state, and local governments that can assist startups in various ways.</li>
-          <li>Funding: Sources of financial support for startups, including venture capitalists, angel investors, and grant programs.</li>
-          <li>University: University-affiliated programs, incubators, or resources that can assist startups.</li>
-          <li>Support: Organizations or platforms that offer support to startups, such as mentorship programs, networking organizations, coworking spaces, and incubators.</li>
-          <li>Service Provider: Businesses that provide services that startups may need, such as legal services, marketing, business consulting, etc.</li>
-          <li>Big Company: Large corporations that might provide partnerships, sponsorships, or resources for startups.</li>
-          <li>Research: Research institutions or platforms that can provide startups with market, industry, or technological research.</li>
-        </ul>
-
-        <Typography variant="body1" style={{ fontWeight: 'bold', marginTop: '10px' }}>
-          Stages:
-        </Typography>
-        <ul>
-          <li>All Stages: Resources that are applicable to startups at any stage in their life cycle.</li>
-          <li>Nascent: Resources targeted towards ideas or businesses in the very early stages of development.</li>
-          <li>Early: Resources for startups that have begun operations but are still in the early stages of their business life cycle.</li>
-          <li>Startup/Seed: Resources for startups that are in the process of developing their product or service and likely looking for seed funding.</li>
-          <li>Growth: Resources for startups that have a finished product or service and are looking to scale up their operations.</li>
-        </ul>
-      </Paper>
-
-      <Paper style={{ marginTop: '20px', padding: '20px' }}>
-        <Typography variant="h6" style={titleStyle} align="center">
           Coding and Technology Details:
         </Typography>
         <Typography variant="body1">
@@ -105,8 +75,7 @@ function AboutPage() {
             <li>Redux</li>
             <li>Material UI</li>
             <li>Fullcalendar.io</li>
-            <li>Axios</li>
-            <li>Moment</li>
+            <li>Algolia InstantSearch</li>
           </ul>
 
           <Typography variant="body1" style={{ fontWeight: 'bold', marginTop: '10px' }}>
@@ -114,7 +83,7 @@ function AboutPage() {
           </Typography>
           <ul>
             <li>Express</li>
-            <li>PG</li>
+            <li>PostgreSQL</li>
             <li>Passport</li>
             <li>Cheerio</li>
             <li>Chrono-node</li>
