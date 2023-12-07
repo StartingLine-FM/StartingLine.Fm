@@ -61,17 +61,9 @@ const Calendar = () => {
     window.open(`https://www.google.com/calendar/render?action=TEMPLATE&text=${info.event.title}&dates=${startDate}/${endDate}&details=${description}&location=${info.event.extendedProps.location}`, '_blank');
   };
 
-
   return (
     <Paper sx={{ px: 2, pb: 2, display: "flex", flexDirection: "column", alignItems: "center" }}>
-      {allEvents.length > 0 ? (
-        <Typography variant="h6">Local Events</Typography>
-      ) : (
-        <Typography variant="h6" className="calendar-empty">
-          To begin: click institution buttons on the left to see their events
-        </Typography>
-      )}
-
+      <Typography variant="h6">Local Events</Typography>
       <FullCalendar
         plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
         initialView={"dayGridMonth"}

@@ -5,9 +5,9 @@ import algoliasearch from 'algoliasearch/lite';  // Import algoliasearch
 
 // CUSTOM COMPONENTS
 import SearchFilter from './SearchFilter';
-import Result from './Result';
 import ResultsMap from './ResultsMap';
 import { InstantSearch, Hits } from 'react-instantsearch';
+import { SearchResults } from 'algoliasearch-helper';
 
 // Algolia Initiation and index
 const searchClient = algoliasearch('KK1UO0W0NW', 'acfecaf8e37908662d286dc1210b781b');
@@ -19,7 +19,6 @@ function LandingPage({ currentList, setCurrentList }) {
   //State variables to be used in Algolia search
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-
 
 
   // Algolia Search Function
@@ -39,8 +38,6 @@ function LandingPage({ currentList, setCurrentList }) {
       console.error('Error searching:', error);
     }
   };
-
-  console.log('searchResults are:', searchResults)
 
 
   // Redux
@@ -90,9 +87,13 @@ function LandingPage({ currentList, setCurrentList }) {
             setSearchResults={setSearchResults}
             handleSearch={() => handleSearch(searchQuery, setSearchResults)}
           />
+
+
           <Grid item xs={12} md={8} container spacing={4}>
             <ResultsMap currentList={currentList} categories={categories} stage={stages} />
           </Grid>
+
+
         </InstantSearch>
       </Grid>
     </Container>
