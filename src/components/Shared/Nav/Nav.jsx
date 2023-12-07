@@ -30,41 +30,41 @@ function Nav({ handleOpen, setOpenRegisterModal }) {
           <ButtonGroup>
 
             {/*HOME BUTTON*/}
-            <Button onClick={() => history.push("/#/home")} variant="contained">
+            <Button onClick={() => history.push("/#/home")} variant="text">
               Home
             </Button>
 
             {/*ADMIN BUTTON IF LOGGED IN AS ADMIN*/}
             {user.admin && (
-              <Button onClick={() => history.push("/admin")} variant="contained">
+              <Button onClick={() => history.push("/admin")} variant="text">
                 Admin
               </Button>
             )}
 
             {/*ARTICLES BUTTON IF LOGGED IN AS ADMIN*/}
             {user.admin && (
-              <Button onClick={() => history.push("/articles")} variant="contained">
+              <Button onClick={() => history.push("/articles")} variant="text">
                 Articles
               </Button>
             )}
 
             {/*CALENDAR BUTTON*/}
-            <Button onClick={() => history.push('/calendar')} variant="contained">
+            <Button onClick={() => history.push('/calendar')} variant="text">
               Calendar
             </Button>
 
             {/*TO-DO LIST BUTTON*/}
             {user.id
-              ? <Button onClick={() => history.push('/todolist')} variant="contained">
+              ? <Button onClick={() => history.push('/todolist')} variant="text">
                 To-do List
               </Button >
-              : <Button onClick={() => history.push('/anonlist')} variant="contained">
+              : <Button onClick={() => history.push('/anonlist')} variant="text">
                 To-do List
               </Button>
             }
 
             {/*ABOUT BUTTON*/}
-            <Button onClick={() => history.push('/about')} variant="contained">
+            <Button onClick={() => history.push('/about')} variant="text">
               About
             </Button>
 
