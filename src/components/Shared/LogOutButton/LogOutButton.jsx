@@ -16,7 +16,7 @@ function LogOutButton(props) {
 
   return (
     <Button
-      variant='contained'
+      variant='text'
       // This Button shows up in multiple locations and is styled differently
       // because it's styled differently depending on where it is used, the className
       // is passed to it from it's parents through React props
