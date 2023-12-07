@@ -9,6 +9,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    Divider,
     Typography,
     TextField,
     IconButton,
@@ -325,6 +326,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
 
                     {/* Add some sort of divider???*/}
+                    <Divider color='black' />
 
                     {/* Support 1 edit dropdown */}
                     <TextField
@@ -334,7 +336,7 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                         SelectProps={{
                             native: true,
                         }}
-                        label='Select Support Tag'
+                        label='Select Support 1 Tag'
                         onChange={e => {
                             // sets the newSupport1 state variable (the support tag to be added or changed
                             setNewSupport1(e.target.value);
@@ -510,12 +512,11 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
 
                     <DialogContentText>
                         <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={hit.organization_name} />
-                        <Chip color="secondary" sx={{ mt: 2, mr: 1 }} label={hit.stage_name} />
-                        {hit.entrepreneur_title && <Chip color="primary" variant="outlined" sx={{ mt: 2, mr: 1 }} label={hit.entrepreneur_title} />}
+                        <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={hit.stage_name} />
+                        {hit.entrepreneur_title && <Chip color="primary" sx={{ mt: 2, mr: 1 }} label={hit.entrepreneur_title} />}
                         {hit.funding && (
                             <Chip
-                                color="secondary"
-                                variant="outlined"
+                                color="primary"
                                 sx={{ mt: 2, mr: 1 }}
                                 label={hit.funding.map((funding) => funding.title).join(', ')}
                             />
@@ -523,7 +524,6 @@ export default function ResultModal({ open, handleClose, hit, userPostTodo, anon
                         {hit.support && (
                             <Chip
                                 color="primary"
-                                variant="outlined"
                                 sx={{ mt: 2, mr: 1 }}
                                 label={hit.support.map((support) => support.title).join(', ')}
                             />
