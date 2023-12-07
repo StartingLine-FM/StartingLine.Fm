@@ -71,16 +71,16 @@ const Calendar = () => {
       }}
     >
       <Card sx={{ paddingleft: 2, paddingRight: 2, paddingBottom: 2 }}>
-        {allEvents.length > 0 ? (
+        {/* {allEvents.length > 0 ? ( */}
           <CardHeader
             title='Local Events'
             className='calendar-title'
           />
-        ) : (
-          <Typography variant="h6" className="calendar-empty">
-            To begin: click institution buttons on the left to see their events
-          </Typography>
-        )}
+        {/* // ) : (
+        //   <Typography variant="h6" className="calendar-empty">
+        //     To begin: click institution buttons on the left to see their events
+        //   </Typography>
+        // )} */}
 
         <FullCalendar
           plugins={[dayGridPlugin, listPlugin, interactionPlugin]}
