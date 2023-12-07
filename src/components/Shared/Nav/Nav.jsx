@@ -28,47 +28,49 @@ function Nav({ handleOpen, setOpenRegisterModal }) {
 
           {/*HOME BUTTON*/}
           <Grid item>
-            <Button onClick={() => history.push("/#/home")} variant="contained">
+            <Button onClick={() => history.push("/#/home")} variant="text"
               Home
             </Button>
           </Grid>
 
+
           {/*ADMIN BUTTON IF LOGGED IN AS ADMIN*/}
           {user.admin && (
             <Grid item>
-              <Button onClick={() => history.push("/admin")} variant="contained">
+              <Button onClick={() => history.push("/admin")} variant="text">
                 Admin
               </Button>
             </Grid>
           )}
 
+
           {/*ARTICLES BUTTON IF LOGGED IN AS ADMIN*/}
           {user.admin && (
             <Grid item>
-              <Button onClick={() => history.push("/articles")} variant="contained">
+              <Button onClick={() => history.push("/articles")} variant="text">
                 Articles
               </Button>
             </Grid>
           )}
 
+
           {/*CALENDAR BUTTON*/}
           <Grid item>
-            <Button onClick={() => history.push('/calendar')} variant="contained">
+            <Button onClick={() => history.push('/calendar')} variant="text">
               Calendar
             </Button>
           </Grid>
-
           {/*TO-DO LIST BUTTON*/}
           {user.id
             ?
             <Grid item>
-              <Button onClick={() => history.push('/todolist')} variant="contained">
+              <Button onClick={() => history.push('/todolist')} variant="text">
                 To-do List
               </Button >
             </Grid>
             :
             <Grid item>
-              <Button onClick={() => history.push('/anonlist')} variant="contained">
+              <Button onClick={() => history.push('/anonlist')} variant="text">
                 To-do List
               </Button>
             </Grid>
@@ -76,7 +78,7 @@ function Nav({ handleOpen, setOpenRegisterModal }) {
 
           {/*ABOUT BUTTON*/}
           <Grid item>
-            <Button onClick={() => history.push('/about')} variant="contained">
+            <Button onClick={() => history.push('/about')} variant="text">
               About
             </Button>
           </Grid>
@@ -84,7 +86,7 @@ function Nav({ handleOpen, setOpenRegisterModal }) {
           {/* If there's no user, show login/registration links */}
           {!user.id && (
             <Grid item>
-              <Button variant="contained" onClick={handleOpen} >
+              <Button variant="text" onClick={handleOpen} >
                 Login / Register
               </Button>
             </Grid>

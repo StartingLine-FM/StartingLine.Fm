@@ -144,7 +144,6 @@ export default function ToDoList({ currentList, setCurrentList }) {
             bgcolor: 'background.paper'
         }
     }
-
     return (
         <>
             <Grid container >
@@ -161,9 +160,17 @@ export default function ToDoList({ currentList, setCurrentList }) {
                                             <DeleteIcon />
                                         </IconButton>
                                     }>
-                                        <ListItemButton onClick={() => { setCurrentList(list.id); dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id }); }} key={i}>
+                                        <ListItemButton
+                                            onClick={() => {
+                                                setCurrentList(list);
+                                                dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id });
+                                            }}
+                                            key={i}
+                                            sx={{ backgroundColor: currentList && currentList.id === list.id ? "lightgray" : "transparent" }}
+                                        >
                                             <ListItemText variant='h4' >{list.title}</ListItemText>
                                         </ListItemButton>
+
                                     </ListItem>
                                 ))}
                                 {/* if new title edit mode is true show these components */}
@@ -196,6 +203,21 @@ export default function ToDoList({ currentList, setCurrentList }) {
                 <Grid item md={8} xs={12}>
                     <Container sx={{ padding: 3 }}>
                         <Paper sx={{ flexDirection: 'column', width: '100%', display: 'flex', justifyContent: 'flex-end', height: '100%' }} elevation={2}>
+
+                            {/* Display message when no to-do list is selected */}
+                            {!currentList && title_resources.length === 0 && (
+                                <Typography align="center" pt={3} marginBottom={3}>
+                                    Please select a to-do list
+                                </Typography>
+                            )}
+
+                            {/* Display message when a to-do list is selected but has no resources */}
+                            {currentList && title_resources.length === 0 && (
+                                <Typography align="center" pt={3} marginBottom={3}>
+                                    Add a resource to this list to get started
+                                </Typography>
+                            )}
+
                             {/* show if there are resources related to the title clicked on */}
                             {title_resources.length > 0 && (<Typography paddingRight={3.5} secondaryAction variant='h4' gutterBottom align='center' justifyContent={'left'}>
                                 <span style={{ display: 'flex', alignContent: 'center', paddingLeft: 65, paddingTop: 20, justifyContent: 'space-between' }}>
