@@ -144,7 +144,6 @@ export default function ToDoList({ currentList, setCurrentList }) {
             bgcolor: 'background.paper'
         }
     }
-
     return (
         <>
             <Grid container >
@@ -161,9 +160,17 @@ export default function ToDoList({ currentList, setCurrentList }) {
                                             <DeleteIcon />
                                         </IconButton>
                                     }>
-                                        <ListItemButton onClick={() => { setCurrentList(list.id); dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id }); }} key={i}>
+                                        <ListItemButton
+                                            onClick={() => {
+                                                setCurrentList(list);
+                                                dispatch({ type: "FETCH_TODO_LIST_RESOURCES", payload: list.id });
+                                            }}
+                                            key={i}
+                                            sx={{ backgroundColor: currentList && currentList.id === list.id ? "lightgray" : "transparent" }}
+                                        >
                                             <ListItemText variant='h4' >{list.title}</ListItemText>
                                         </ListItemButton>
+
                                     </ListItem>
                                 ))}
                                 {/* if new title edit mode is true show these components */}
@@ -199,7 +206,7 @@ export default function ToDoList({ currentList, setCurrentList }) {
 
                             {/* Display message when no to-do list is selected */}
                             {!currentList && title_resources.length === 0 && (
-                                <Typography  align="center" pt={3} marginBottom={3}>
+                                <Typography align="center" pt={3} marginBottom={3}>
                                     Please select a to-do list
                                 </Typography>
                             )}
