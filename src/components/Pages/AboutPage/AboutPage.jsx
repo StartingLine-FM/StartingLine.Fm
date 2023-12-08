@@ -1,12 +1,6 @@
 import React from 'react';
 import { Container, Typography, Paper, List, ListItem, ListItemText } from '@mui/material';
 
-
-// This is one of our simplest components
-// It doesn't have local state,
-// It doesn't dispatch any redux actions or display any part of redux state
-// or even care what the redux state is'
-
 function AboutPage() {
   // style constants
   const titleStyle = { fontWeight: 'bold', marginBottom: '8px' };
@@ -36,29 +30,51 @@ function AboutPage() {
 
       <Paper style={{ marginTop: '20px', padding: '20px' }}>
         <Typography variant="h6" style={titleStyle} align="center">
-          Project and Team Information:
+          Jolitz Cohort Information:
         </Typography>
         <Typography variant="body1">
-          The project was the result of the first-time collaboration of a team comprising of Kord Maurer, Eyan Anderson, Sawyer Jensen, and Jack Blonigen. Their collective expertise and shared commitment paved the way for the creation of a web app to serve the startup business ecosystem for North Dakota State University.
+          StartingLine is the result of one of the two client projects executed by Emerging Digital Academy's Jolitz Cohort over the summer of 2023. The original StartingLine team consisted of Kord Maurer, Eyan Anderson, Sawyer Jenson, and Jack Blonigen. The four worked together to create the original MVP, each tackling one of four primary components. Individual contribution include....
         </Typography>
         <List>
           <ListItem>
-            <ListItemText primary="Kord Maurer" secondary="Kord stepped up to the challenge, demonstrating his technical abilities and teamwork skills in his first ever team project. Kord took the lead in developing a robust search filter, crafting an engaging landing page, and managing the presentation of search results. His versatility shone through in his assistance with the ToDo section, his work on the database, and his attention to aesthetic detail in the general styling of the project." />
+            <ListItemText primary="Kord Maurer" secondary="Kord took the lead in developing StartingLine's orginal search input algorithm, crafting and styling an engaging landing page, and managing the presentation of search results into the cards. He also contributed heavily with the ToDo section, database schemas, and his attention to aesthetic detail." />
           </ListItem>
           <ListItem>
-            <ListItemText primary="Eyan Anderson" secondary="Eyan navigated his first team project with a steadfast determination and quickly became a core member of the team. He undertook the demanding task of developing the majority of the ToDo section, creating an intuitive and functional tool for users. Eyan also played a significant role in shaping the project's aesthetic, contributing to the general styling and ensuring a visually cohesive and engaging user experience." />
+            <ListItemText primary="Eyan Anderson" secondary="Eyan undertook the task of developing the majority of the ToDo list feature, creating this intuitive and functional tool for users. Eyan also played a significant role in shaping the project's aesthetic, contributing to the general styling and ensuring a visually cohesive and engaging user experience." />
           </ListItem>
           <ListItem>
-            <ListItemText primary="Sawyer Jensen" secondary="For Sawyer, the project presented an opportunity to delve into team dynamics for the first time, and he embraced it with enthusiasm. He undertook the complex task of learning to scrape data and worked diligently on components of the admin section, contributing to general styling. His notable accomplishment was the implementation of the calendar, a feature that has added great value to the project." />
+            <ListItemText primary="Sawyer Jenson" secondary="Sawyer is the madman who did the Calendar feature; learning to web scrape data, apply regex expressions, and timezones; integrating all of it into the react full calendar api. He built and designed the institution side menu and the majority of the calendar feature. He also contributed to the admin page." />
           </ListItem>
           <ListItem>
-            <ListItemText primary="Jack Blonigen" secondary="Jack, despite being new to working in a team, demonstrated strong leadership and technical skills. He successfully handled the primary aspects of the admin section, ensuring a smooth backend functionality. Jack's expertise shone in his work on the calendar features specific to Google and his detailed work on the about section. His general contributions to styling further elevated the overall user experience." />
+            <ListItemText primary="Jack Blonigen" secondary="Jack handled the majority of the original admin section, writing most of the back end code, as well as front end forms. Jack also was the one to figure out and implement the google calendar functionality within StartingLine's own calendar. He also contributed greatly to original documentation." />
           </ListItem>
         </List>
         <Typography variant="body1" style={listItemStyle}>
           The foundation built by this first-time team sets the stage for an effective resource platform that could revolutionize the startup ecosystem in the Fargo-Moorhead area.
         </Typography>
       </Paper>
+
+
+
+      <Paper sx={{ mt: 3, p: 3 }}>
+        <Typography variant="h6" style={titleStyle} align="center">
+          Emerging Digital Academy Co-Op Program:
+        </Typography>
+        <Typography variant="body1" style={listItemStyle}>
+          In September of 2023, a little over a month after the Jolitz Cohort graduated on August 3rd, the EDA Co-Op program was born. Kord and Sawyer would continue working on the StartingLine application for Dr. Onnolee Nordstrom and Dr. Joshua Marineu.
+        </Typography>
+        <Typography variant="body1" style={listItemStyle}>
+          Over the Fall and Winter of 2023 Kord and Sawyer oversaw multiple bug fixes and visual changes including mobile responsiveness. The tag system was overhauled from just two separate tags to the five categories we have now. The Calendar also added its fourth institution, NDSU CEFB which is Dr. Onnolee's Office. The calendar was also changed to do a database cron-job instead of single GET requests that scraped the institution calendars live. The admin page also got a comprehensive facelift. 
+        </Typography>
+        <Typography variant="body1" style={listItemStyle}>
+          The most exhaustive and profound addition was the Algolia implementaion, a search handling software seen in applications like Amazon. Our hope is that one day StartingLine will have so many resources to filter through that this will be appreciated and help with rapid scaling.
+        </Typography>
+        <Typography variant="body1" style={listItemStyle}>
+          {/* Nothing, write a new paragraph here if you want. */}
+        </Typography>
+      </Paper>
+
+
 
       <Paper style={{ marginTop: '20px', padding: '20px' }}>
         <Typography variant="h6" style={titleStyle} align="center">
