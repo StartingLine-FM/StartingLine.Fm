@@ -28,7 +28,7 @@ function Nav({ handleOpen, setOpenRegisterModal }) {
 
           {/*HOME BUTTON*/}
           <Grid item>
-            <Button onClick={() => history.push("/#/home")} variant="text"
+            <Button onClick={() => history.push("/#/home")} variant="text">
               Home
             </Button>
           </Grid>
